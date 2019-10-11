@@ -1,12 +1,12 @@
 
 from pathlib import Path
 import pandas as pd
-import numpy as np
 import string
 
 ROOT_PATH = Path(__file__).absolute().parents[2]
 
 THRESHOLD = 3
+
 
 def basic_data_cleaning(df_path, save_path, voc_save_path):
     """
