@@ -13,7 +13,7 @@ def order_raw_data_and_move_to_interim(data_path, dataset):
     test_dict = {}
     val_dict = {}
 
-    columns = ['image_id', 'caption_id', 'caption', 'tokens']
+    columns = ['image_id', 'caption_id', 'caption']
 
     for col in columns:
         train_dict[col] = []
@@ -32,14 +32,12 @@ def order_raw_data_and_move_to_interim(data_path, dataset):
         captions = image['sentences']
         for caption in captions:
             raw_caption = caption['raw']
-            tokens = caption['tokens']
             caption_id = image_id[:-4] + '#' + str(caption['sentid'])
             # add info to dicts
             if split != 'restval':
                 full_dict[split]['image_id'].append(image_id)
                 full_dict[split]['caption_id'].append(caption_id)
                 full_dict[split]['caption'].append(raw_caption)
-                full_dict[split]['tokens'].append(tokens)
 
     train_df = pd.DataFrame(train_dict, columns=columns)
     test_df = pd.DataFrame(test_dict, columns=columns)
@@ -58,7 +56,7 @@ def order_raw_data_and_move_to_interim(data_path, dataset):
 
 
 if __name__ == '__main__':
-    dataset_ = 'flickr30k'
+    dataset_ = 'coco'
     data_path_ = ROOT_PATH.joinpath('data', 'raw', 'karpathy_split', 'dataset_' + dataset_ + '.json')
     order_raw_data_and_move_to_interim(data_path_, dataset_)
 

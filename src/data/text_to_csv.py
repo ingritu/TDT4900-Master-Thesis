@@ -20,7 +20,7 @@ def text_to_csv(file_path, save_path):
     """
     # set up caption dictionary
     captions = {}
-    labels = ['image_id', 'caption_id', 'caption', 'tokens']
+    labels = ['image_id', 'caption_id', 'caption']
     for l in labels:
         captions[l] = []
 
@@ -45,7 +45,6 @@ def text_to_csv(file_path, save_path):
         captions['image_id'].append(image_id)
         captions['caption_id'].append(caption_id)
         captions['caption'].append(caption)
-        captions['tokens'].append(caption_tokens)
 
     # convert dict to DataFrame
     cap_df = pd.DataFrame(data=captions, columns=labels)
@@ -53,7 +52,7 @@ def text_to_csv(file_path, save_path):
 
 
 if __name__ == '__main__':
-    dataset_ = 'Flickr30k'
+    dataset_ = 'Flickr8k'
     if dataset_ == 'Flickr8k':
         file_path_ = ROOT_PATH.joinpath('data', 'raw', dataset_,
                                         'Flickr_TextData',
