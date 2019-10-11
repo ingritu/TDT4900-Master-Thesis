@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 import pandas as pd
 
-ROOT_PATH = Path(__file__).parents[2]
+ROOT_PATH = Path(__file__).absolute().parents[2]
 
 
 def order_raw_data_and_move_to_interim(data_path, dataset):
