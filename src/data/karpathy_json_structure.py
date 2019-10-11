@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-ROOT_PATH = Path(__file__).parent
+ROOT_PATH = Path(__file__).parents[2]
 
 
 def shallow_insights_about_dataset(data_path, dataset):
