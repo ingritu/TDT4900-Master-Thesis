@@ -60,6 +60,8 @@ def basic_data_cleaning(df_path, save_path, voc_save_path):
 
     caption_df.to_csv(save_path)
     vocabulary = [key for key in corpus.keys() if corpus[key] >= THRESHOLD]
+    vocabulary.insert(0, 'startseq')
+    vocabulary.insert(1, 'endseq')
     with open(voc_save_path, 'w') as voc_file:
         for word in vocabulary:
             voc_file.write(word + '\n')
