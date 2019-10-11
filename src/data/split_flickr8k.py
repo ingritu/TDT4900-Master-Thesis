@@ -1,0 +1,49 @@
+from pathlib import Path
+import pandas as pd
+
+ROOT_PATH = Path(__file__).absolute().parents[2]
+
+
+def make_train_val_test_split(df_path, split_paths, save_path):
+    # get df
+    cap_df = pd.read_csv(df_path)
+    train_path = split_paths[0]
+    val_path = split_paths[1]
+    test_path = split_paths[2]
+
+    # read train val test files
+    with open(train_path, 'r') as train_file:
+        train_images = [im_id.strip() for im_id in train_file.readlines()
+                        if len(im_id) > 0]
+    with open(val_path, 'r') as val_file:
+        val_images = [im_id.strip() for im_id in val_file.readlines()
+                      if len(im_id) > 0]
+    with open(test_path, 'r') as test_file:
+        test_images = [im_id.strip() for im_id in test_file.readlines()
+                       if len(im_id) > 0]
+    train_df = cap_df.loc[cap_df.loc[:, 'image_id'].isin(train_images), :]
+    val_df = cap_df.loc[cap_df.loc[:, 'image_id'].isin(val_images), :]
+    test_df = cap_df.loc[cap_df.loc[:, 'image_id'].isin(test_images), :]
+
+    # save splits
+    train_df.to_csv(save_path.joinpath('Flickr8k_train.csv'))
+    val_df.to_csv(save_path.joinpath('Flickr8k_val.csv'))
+    test_df.to_csv(save_path.joinpath('Flickr8k_test.csv'))
+    print("Finished making splits!")
+
+
+if __name__ == '__main__':
+    df_path_ = ROOT_PATH.joinpath('data', 'interim', 'Flickr8k',
+                                  'Flickr8k_token.csv')
+    train_path_ = ROOT_PATH.joinpath('data', 'raw', 'Flickr8k',
+                                     'Flickr_TextData',
+                                     'Flickr_8k.trainImages.txt')
+    val_path_ = ROOT_PATH.joinpath('data', 'raw', 'Flickr8k',
+                                   'Flickr_TextData',
+                                   'Flickr_8k.devImages.txt')
+    test_path_ = ROOT_PATH.joinpath('data', 'raw', 'Flickr8k',
+                                    'Flickr_TextData',
+                                    'Flickr_8k.testImages.txt')
+    split_paths_ = [train_path_, val_path_, test_path_]
+    save_path_ = ROOT_PATH.joinpath('data', 'interim', 'Flickr8k')
+    make_train_val_test_split(df_path_, split_paths_, save_path_)
