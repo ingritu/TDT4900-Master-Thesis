@@ -1,5 +1,6 @@
 # Custom stuff
 data/
+!src/data
 
 # Created by https://www.gitignore.io/api/pycharm,jupyternotebooks
 # Edit at https://www.gitignore.io/?templates=pycharm,jupyternotebooks
