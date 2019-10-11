@@ -45,7 +45,7 @@ def order_raw_data_and_move_to_interim(data_path, dataset):
     test_df = pd.DataFrame(test_dict, columns=columns)
     val_df = pd.DataFrame(val_dict, columns=columns)
 
-    save_path = ROOT_PATH.joinpath('data', 'interim')
+    save_path = ROOT_PATH.joinpath('data', 'interim', 'karpathy_split')
 
     train_file = save_path.joinpath(dataset + '_train.csv')
     test_file = save_path.joinpath(dataset + '_test.csv')
@@ -59,7 +59,7 @@ def order_raw_data_and_move_to_interim(data_path, dataset):
 
 if __name__ == '__main__':
     dataset_ = 'flickr30k'
-    data_path_ = ROOT_PATH.joinpath('data', 'raw', 'dataset_' + dataset_ + '.json')
+    data_path_ = ROOT_PATH.joinpath('data', 'raw', 'karpathy_split', 'dataset_' + dataset_ + '.json')
     order_raw_data_and_move_to_interim(data_path_, dataset_)
 
 

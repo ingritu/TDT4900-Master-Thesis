@@ -43,5 +43,5 @@ def shallow_insights_about_dataset(data_path, dataset):
 
 if __name__ == '__main__':
     dataset_ = 'flickr30k'
-    data_path_ = ROOT_PATH.joinpath('data', 'raw', 'dataset_' + dataset_ + '.json')
+    data_path_ = ROOT_PATH.joinpath('data', 'raw', 'karpathy_split', 'dataset_' + dataset_ + '.json')
     shallow_insights_about_dataset(data_path_, dataset_)
