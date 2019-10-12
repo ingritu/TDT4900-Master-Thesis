@@ -24,9 +24,12 @@ def load_inception():
     model = InceptionV3(weights='imagenet')
     new_model = Model(model.input, model.layers[-2].output)
     new_model.summary()
+    return new_model
 
 
 def encode(image, model):
+    # add one more dimension
+    image = np.expand_dims(image, axis=0)
     # preprocess the image
     image = preprocess_input(image)
     # Get the encoding vector for the image
@@ -40,25 +43,25 @@ def extract_image_features(image_path, save_path, split_set_path):
     model = load_pre_trained_model()
     data_df = pd.read_csv(split_set_path)
     image_split = set(data_df.loc[:, 'image_id'])
-    print(len(image_split))
-    print(image_split)
     start = time()
     encoding_data = {}
-    num_images = len(list(image_path.glob('*.jpg')))
+    n = len(image_split)
+    count = 0
     for im_file in image_path.glob('*.jpg'):
         p = len(str(im_file.parent)) + 1
         image_name = str(im_file)[p:]
         if image_name in image_split:
-            encoding_data[im_file[num_images:]] = encode(imread(im_file),
-                                                         model)
+            count += 1
+            encoding_data[image_name] = encode(imread(im_file), model)
+            print(str(count) + ' / ' + str(n))
     print("Time taken in seconds =", time() - start)
-
     # Save the bottleneck train features to disk
     with open(save_path, "wb") as encoded_pickle:
         dump(encoding_data, encoded_pickle)
 
 
 def load_visual_features(feature_path):
-    train_features = load(open(feature_path, "rb"))
-    print('Photos: %d' % len(train_features))
-    return train_features
+    with open(feature_path, 'rb') as file:
+        data_features = load(file)
+    print('Photos: %d' % len(data_features))
+    return data_features

@@ -12,11 +12,11 @@ if __name__ == '__main__':
     dataset = 'Flickr8k'
     image_path_ = ROOT_PATH.joinpath('data', 'interim', dataset,
                                      'Images', str(DIMENSIONS[0]) + 'x'
-                                     + str(DIMENSIONS[2]))
+                                     + str(DIMENSIONS[1]))
     save_path_ = ROOT_PATH.joinpath('data', 'processed', dataset,
                                     'Images',
-                                    'encoded_val_images.pkl')
+                                    'encoded_test_images.pkl')
     split_set_path_ = ROOT_PATH.joinpath('data', 'interim', dataset,
-                                         'Flickr8k_val.csv')
+                                         'Flickr8k_test.csv')
 
     extract_image_features(image_path_, save_path_, split_set_path_)
