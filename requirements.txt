@@ -1,3 +1,4 @@
+keras
 scikit-image
 # required packages
 pandas
