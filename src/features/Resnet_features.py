@@ -5,14 +5,12 @@ from keras.applications.inception_v3 import InceptionV3
 from keras.models import Model
 from skimage.io import imread
 import numpy as np
-import pickle
+from pickle import dump
+from pickle import load
 from time import time
 import pandas as pd
 
 ROOT_PATH = Path(__file__).absolute().parents[2]
-
-# default image size for Resnet is 224x224
-DIMENSIONS = (299, 299, 3)
 
 
 def load_pre_trained_model():
@@ -57,18 +55,10 @@ def extract_image_features(image_path, save_path, split_set_path):
 
     # Save the bottleneck train features to disk
     with open(save_path, "wb") as encoded_pickle:
-        pickle.dump(encoding_data, encoded_pickle)
+        dump(encoding_data, encoded_pickle)
 
 
-if __name__ == '__main__':
-    dataset = 'Flickr8k'
-    image_path_ = ROOT_PATH.joinpath('data', 'interim', dataset,
-                                     'Images', str(DIMENSIONS[0]) + 'x'
-                                     + str(DIMENSIONS[2]))
-    save_path_ = ROOT_PATH.joinpath('data', 'processed', dataset,
-                                    'Images',
-                                    'encoded_val_images.pkl')
-    split_set_path_ = ROOT_PATH.joinpath('data', 'interim', dataset,
-                                         'Flickr8k_val.csv')
-
-    extract_image_features(image_path_, save_path_, split_set_path_)
+def load_visual_features(feature_path):
+    train_features = load(open(feature_path, "rb"))
+    print('Photos: %d' % len(train_features))
+    return train_features
