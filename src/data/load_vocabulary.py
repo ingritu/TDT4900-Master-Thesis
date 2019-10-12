@@ -1,7 +1,13 @@
 
 def load_vocabulary(voc_path):
-    vocabulary = {}
+    vocabulary = set()
     with open(voc_path, 'r') as voc_file:
-        for i, word in enumerate(voc_file.readlines()):
-            vocabulary[word] = i
-    return vocabulary
+        vocabulary.add([word.strip() for word in voc_file.readlines()
+                        if len(word) > 0])
+    vocabulary.add('UNK')
+    wordtoix = {}
+    ixtoword = {}
+    for i, word in enumerate(vocabulary):
+        wordtoix[word] = i
+        ixtoword[i] = word
+    return wordtoix, ixtoword
