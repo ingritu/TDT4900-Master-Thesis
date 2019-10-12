@@ -17,7 +17,6 @@ DIMENSIONS = (299, 299, 3)
 
 def load_pre_trained_model():
     model = InceptionResNetV2(weights='imagenet')
-    model.summary()
     model_new = Model(model.input, model.layers[-2].output)
     model_new.summary()
     return model_new
@@ -25,7 +24,6 @@ def load_pre_trained_model():
 
 def load_inception():
     model = InceptionV3(weights='imagenet')
-    model.summary()
     new_model = Model(model.input, model.layers[-2].output)
     new_model.summary()
 
@@ -41,23 +39,25 @@ def encode(image, model):
 
 
 def extract_image_features(image_path, save_path, split_set_path):
-    #model = load_pre_trained_model()
+    model = load_pre_trained_model()
     data_df = pd.read_csv(split_set_path)
     image_split = set(data_df.loc[:, 'image_id'])
     print(len(image_split))
     print(image_split)
-    '''''''''
     start = time()
     encoding_data = {}
-    num_images = len(image_path.glob('*.jpg'))
+    num_images = len(list(image_path.glob('*.jpg')))
     for im_file in image_path.glob('*.jpg'):
-        encoding_data[im_file[num_images:]] = encode(imread(im_file), model)
+        p = len(str(im_file.parent)) + 1
+        image_name = str(im_file)[p:]
+        if image_name in image_split:
+            encoding_data[im_file[num_images:]] = encode(imread(im_file),
+                                                         model)
     print("Time taken in seconds =", time() - start)
 
     # Save the bottleneck train features to disk
     with open(save_path, "wb") as encoded_pickle:
         pickle.dump(encoding_data, encoded_pickle)
-    '''''''''
 
 
 if __name__ == '__main__':
@@ -67,8 +67,8 @@ if __name__ == '__main__':
                                      + str(DIMENSIONS[2]))
     save_path_ = ROOT_PATH.joinpath('data', 'processed', dataset,
                                     'Images',
-                                    'encoded_train_images.pkl')
+                                    'encoded_val_images.pkl')
     split_set_path_ = ROOT_PATH.joinpath('data', 'interim', dataset,
-                                         'Flickr8k_train_clean.csv')
+                                         'Flickr8k_val.csv')
 
     extract_image_features(image_path_, save_path_, split_set_path_)
