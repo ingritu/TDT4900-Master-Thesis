@@ -39,23 +39,17 @@ def data_generator(data_df, batch_size, steps_per_epoch,
             for i in range(batch_size * step, batch_size * (step + 1)):
                 image = get_image(visual_features, data_df, i)
                 caption = get_caption(data_df, i)
-                print(caption)
                 # create partial captions
                 seq = [wordtoix[word] for word in caption.split(' ')
                        if word in wordtoix]
-                print(seq)
                 # split one sequence into multiple X, y pairs
                 for j in range(1, len(seq)):
                     # split into input and output pair
                     in_seq, out_seq = seq[:j], seq[j]
-                    print('inseq:', in_seq)
-                    print('outseg', out_seq)
                     # pad input sequence
                     in_seq = pad_sequences([in_seq], maxlen=max_length)[0]
-                    print('padded inseq', in_seq)
                     # encode output sequence
                     out_seq = to_categorical([out_seq], num_classes=vocab_size)[0]
-                    print('one hot out', out_seq)
                     # store
                     x1 = np.append(x1, image)
                     x2 = np.append(x2, in_seq)
