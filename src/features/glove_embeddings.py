@@ -13,9 +13,7 @@ def load_glove_vectors(glove_path):
     return embeddings_index
 
 
-def embeddings_matrix(vocab_size, wordtoix, embeddings_index):
-    embedding_dim = 500
-    # Get 200-dim dense vector for each of the 10000 words in out vocabulary
+def embeddings_matrix(vocab_size, wordtoix, embeddings_index, embedding_dim):
     embedding_matrix = np.zeros((vocab_size, embedding_dim))
     for word, i in wordtoix.items():
         # if i < max_words:

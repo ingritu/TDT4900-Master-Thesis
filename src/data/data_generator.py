@@ -29,9 +29,9 @@ def data_generator(data_df, batch_size, steps_per_epoch,
         data_df = data_df.reset_index()
         for step in range(steps_per_epoch):
             # create a new batch
-            x1 = np.array([])
-            x2 = np.array([])
-            y = np.array([])
+            x1 = []
+            x2 = []
+            y = []
             # Steps per epoch is equal to floor of
             # total_samples/batch_size
             # TODO: make steps per epoch equal to ceiling of
@@ -51,11 +51,14 @@ def data_generator(data_df, batch_size, steps_per_epoch,
                     # encode output sequence
                     out_seq = to_categorical([out_seq], num_classes=vocab_size)[0]
                     # store
-                    x1 = np.append(x1, image)
-                    x2 = np.append(x2, in_seq)
-                    y = np.append(y, out_seq)
+                    x1.append(image)
+                    x2.append(in_seq)
+                    y.append(out_seq)
             # new shuffle state for next epoch
             shuffle_state = r.randint(0, 10000)
+            x1 = np.array(x1)
+            x2 = np.array(x2)
+            y = np.array(y)
             yield [[x1, x2], y]
 
 

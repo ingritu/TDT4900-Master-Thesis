@@ -15,8 +15,8 @@ if __name__ == '__main__':
                                      + str(DIMENSIONS[1]))
     save_path_ = ROOT_PATH.joinpath('data', 'processed', dataset,
                                     'Images',
-                                    'encoded_test_images.pkl')
+                                    'encoded_full_images.pkl')
     split_set_path_ = ROOT_PATH.joinpath('data', 'interim', dataset,
-                                         'Flickr8k_test.csv')
+                                         'Flickr8k_full.csv')
 
     extract_image_features(image_path_, save_path_, split_set_path_)

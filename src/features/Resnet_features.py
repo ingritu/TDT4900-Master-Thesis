@@ -40,6 +40,9 @@ def encode(image, model):
 
 
 def extract_image_features(image_path, save_path, split_set_path):
+    # consider splitting the process up in parts and then
+    # combining the parts at the end, to reduce the amount of images
+    # in memory at any time
     model = load_pre_trained_model()
     data_df = pd.read_csv(split_set_path)
     image_split = set(data_df.loc[:, 'image_id'])

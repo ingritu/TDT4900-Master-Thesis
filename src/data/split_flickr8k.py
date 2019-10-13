@@ -24,15 +24,22 @@ def make_train_val_test_split(df_path, split_paths, save_path):
     train_df = cap_df.loc[cap_df.loc[:, 'image_id'].isin(train_images), :]
     val_df = cap_df.loc[cap_df.loc[:, 'image_id'].isin(val_images), :]
     test_df = cap_df.loc[cap_df.loc[:, 'image_id'].isin(test_images), :]
+    # make a merged version
+    full_df = train_df.copy()
+    full_df = full_df.append(val_df)
+    full_df = full_df.append(test_df)
 
     # save splits
     train_df.to_csv(save_path.joinpath('Flickr8k_train.csv'))
     val_df.to_csv(save_path.joinpath('Flickr8k_val.csv'))
     test_df.to_csv(save_path.joinpath('Flickr8k_test.csv'))
+    # save full set
+    full_df.to_csv(save_path.joinpath('Flickr8k_full.csv'))
     print("Finished making splits!")
 
 
 if __name__ == '__main__':
+    # TODO: move to make dataset
     df_path_ = ROOT_PATH.joinpath('data', 'interim', 'Flickr8k',
                                   'Flickr8k_token.csv')
     train_path_ = ROOT_PATH.joinpath('data', 'raw', 'Flickr8k',

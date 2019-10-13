@@ -27,7 +27,7 @@ class CaptionGenerator:
                                              'interim',
                                              'Flickr8k',
                                              'Flickr8k_vocabulary.csv'),
-                 embedding_dim=200,
+                 embedding_dim=300,
                  pre_trained_embeddings=True,
                  em_path=ROOT_PATH.joinpath('data',
                                             'processed',
@@ -37,7 +37,7 @@ class CaptionGenerator:
                                                  'processed',
                                                  'Flickr8k',
                                                  'Images',
-                                                 '299x299'),
+                                                 'encoded_full_images.pkl'),
                  save_path=ROOT_PATH.joinpath('models'),
                  verbose=True
                  ):
@@ -66,7 +66,7 @@ class CaptionGenerator:
         # build and compile the model
         self.build_model()
         self.model.compile(optimizer=optimizer,
-                           loss='categorical_cross_entropy')
+                           loss='categorical_crossentropy')
 
     def build_model(self):
         pass
@@ -82,26 +82,29 @@ class CaptionGenerator:
               seed=2222):
         # TODO: implement early stopping
         train_df = pd.read_csv(train_path)
-        val_df = pd.read_csv(val_path)
+
         steps_per_epoch = len(train_df) // batch_size
-        val_steps = len(val_df) // batch_size
+
         train_generator = data_generator(train_df,
                                          batch_size=batch_size,
                                          steps_per_epoch=steps_per_epoch,
                                          wordtoix=self.wordtoix,
                                          features=self.encoded_features,
                                          seed=seed)
+        # hold out on validation for now
+        '''''''''
+        val_df = pd.read_csv(val_path)
+        val_steps = len(val_df) // batch_size
         val_generator = data_generator(val_df,
                                        batch_size=batch_size,
                                        steps_per_epoch=val_steps,
                                        wordtoix=self.wordtoix,
                                        features=self.encoded_features)
+        '''''''''
         # train model
         self.model.fit_generator(train_generator,
                                  epochs=epochs,
-                                 steps_per_epoch=steps_per_epoch,
-                                 validation_data=val_generator,
-                                 validation_steps=val_steps)
+                                 steps_per_epoch=steps_per_epoch)
         # save model
         date_time_obj = datetime.now()
         timestamp_str = date_time_obj.strftime("%d-%b-%Y (%H:%M:%S.%f)")
@@ -139,8 +142,11 @@ class CaptionGenerator:
 class TutorialModel(CaptionGenerator):
 
     def __init__(self, max_length,
-                 voc_path,
-                 embedding_dim,
+                 voc_path=ROOT_PATH.joinpath('data',
+                                             'interim',
+                                             'Flickr8k',
+                                             'Flickr8k_vocabulary.csv'),
+                 embedding_dim=300,
                  pre_trained_embeddings=True,
                  em_path=ROOT_PATH.joinpath('data',
                                             'processed',
@@ -150,18 +156,18 @@ class TutorialModel(CaptionGenerator):
                                                  'processed',
                                                  'Flickr8k',
                                                  'Images',
-                                                 '299x299'),
+                                                 'encoded_full_images.pkl'),
                  save_path=ROOT_PATH.joinpath('models'),
                  verbose=True
                  ):
         super().__init__(max_length,
-                         voc_path,
-                         embedding_dim,
-                         pre_trained_embeddings,
-                         em_path,
-                         feature_path,
-                         save_path,
-                         verbose)
+                         voc_path=voc_path,
+                         embedding_dim=embedding_dim,
+                         pre_trained_embeddings=pre_trained_embeddings,
+                         em_path=em_path,
+                         feature_path=feature_path,
+                         save_path=save_path,
+                         verbose=verbose)
         self.model_name = 'Tutorial'
 
     def build_model(self):
@@ -191,7 +197,8 @@ class TutorialModel(CaptionGenerator):
             embeddings_index = load_glove_vectors(self.em_path)
             embedding_matrix = embeddings_matrix(self.vocab_size,
                                                  self.wordtoix,
-                                                 embeddings_index)
+                                                 embeddings_index,
+                                                 self.embedding_dim)
             # Attach pre-trained embeddings to embeddings layer
             self.model.layers[2].set_weights([embedding_matrix])
             self.model.layers[2].trainable = False
