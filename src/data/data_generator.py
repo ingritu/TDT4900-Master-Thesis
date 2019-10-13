@@ -34,6 +34,10 @@ def data_generator(data_df, batch_size, steps_per_epoch,
             x1 = np.array([])
             x2 = np.array([])
             y = np.array([])
+            # Steps per epoch is equal to floor of
+            # total_samples/batch_size
+            # TODO: make steps per epoch equal to ceiling of
+            # TODO (continued): total_samples/batch_size
             for i in range(batch_size * step, batch_size * (step + 1)):
                 image = get_image(visual_features, data_df, i)
                 caption = get_caption(data_df, i)

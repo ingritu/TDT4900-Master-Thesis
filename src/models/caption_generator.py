@@ -55,8 +55,8 @@ class CaptionGenerator:
               train_path,
               val_path,
               batch_size,
-              epochs
-              ):
+              epochs,
+              seed=2222):
         train_df = pd.read_csv(train_path)
         val_df = pd.read_csv(val_path)
         steps_per_epoch = len(train_df) // batch_size
@@ -65,7 +65,8 @@ class CaptionGenerator:
                                          batch_size=batch_size,
                                          steps_per_epoch=steps_per_epoch,
                                          wordtoix=self.wordtoix,
-                                         feature_path=self.feature_path)
+                                         feature_path=self.feature_path,
+                                         seed=seed)
         val_generator = data_generator(val_df,
                                        batch_size=batch_size,
                                        steps_per_epoch=val_steps,

@@ -1,7 +1,12 @@
 # Custom stuff
-data/
+data/*
+!data/README.md
 !src/data
 __pycache__/
+models/*
+!models/README.md
+!src/models
+!README.md
 
 # Created by https://www.gitignore.io/api/pycharm,jupyternotebooks
 # Edit at https://www.gitignore.io/?templates=pycharm,jupyternotebooks
