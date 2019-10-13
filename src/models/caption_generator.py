@@ -108,8 +108,8 @@ class CaptionGenerator:
         # save model
         date_time_obj = datetime.now()
         timestamp_str = date_time_obj.strftime("%d-%b-%Y (%H:%M:%S.%f)")
-        self.model.save(self.model_name + '_' + str(timestamp_str) +
-                        '_' + '.h5')
+        self.model.save(self.model_save_path.joinpath(
+            self.model_name + '_' + str(timestamp_str) + '_' + '.h5'))
 
     def predict(self, test_path):
         # TODO: implement beam search instead of greedy search/MLE

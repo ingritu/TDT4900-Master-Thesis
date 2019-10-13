@@ -36,21 +36,3 @@ def make_train_val_test_split(df_path, split_paths, save_path):
     # save full set
     full_df.to_csv(save_path.joinpath('Flickr8k_full.csv'))
     print("Finished making splits!")
-
-
-if __name__ == '__main__':
-    # TODO: move to make dataset
-    df_path_ = ROOT_PATH.joinpath('data', 'interim', 'Flickr8k',
-                                  'Flickr8k_token.csv')
-    train_path_ = ROOT_PATH.joinpath('data', 'raw', 'Flickr8k',
-                                     'Flickr_TextData',
-                                     'Flickr_8k.trainImages.txt')
-    val_path_ = ROOT_PATH.joinpath('data', 'raw', 'Flickr8k',
-                                   'Flickr_TextData',
-                                   'Flickr_8k.devImages.txt')
-    test_path_ = ROOT_PATH.joinpath('data', 'raw', 'Flickr8k',
-                                    'Flickr_TextData',
-                                    'Flickr_8k.testImages.txt')
-    split_paths_ = [train_path_, val_path_, test_path_]
-    save_path_ = ROOT_PATH.joinpath('data', 'interim', 'Flickr8k')
-    make_train_val_test_split(df_path_, split_paths_, save_path_)

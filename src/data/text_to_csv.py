@@ -49,19 +49,3 @@ def text_to_csv(file_path, save_path):
     # convert dict to DataFrame
     cap_df = pd.DataFrame(data=captions, columns=labels)
     cap_df.to_csv(save_path)
-
-
-if __name__ == '__main__':
-    dataset_ = 'Flickr8k'
-    if dataset_ == 'Flickr8k':
-        file_path_ = ROOT_PATH.joinpath('data', 'raw', dataset_,
-                                        'Flickr_TextData',
-                                        'Flickr8k.token.txt')
-        save_path_ = ROOT_PATH.joinpath('data', 'interim', dataset_,
-                                        'Flickr8k_token.csv')
-    else:
-        file_path_ = ROOT_PATH.joinpath('data', 'raw', dataset_,
-                                        'results_20130124.token')
-        save_path_ = ROOT_PATH.joinpath('data', 'interim', dataset_,
-                                        'Flickr30k_token.csv')
-    text_to_csv(file_path_, save_path_)

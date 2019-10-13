@@ -53,11 +53,3 @@ def order_raw_data_and_move_to_interim(data_path, dataset):
     test_df.to_csv(test_file)
     val_df.to_csv(val_file)
     print("finished job!!")
-
-
-if __name__ == '__main__':
-    dataset_ = 'coco'
-    data_path_ = ROOT_PATH.joinpath('data', 'raw', 'karpathy_split', 'dataset_' + dataset_ + '.json')
-    order_raw_data_and_move_to_interim(data_path_, dataset_)
-
-
