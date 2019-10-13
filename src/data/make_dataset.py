@@ -2,6 +2,7 @@ from pathlib import Path
 from src.data.handle_karpathy_split import order_raw_data_and_move_to_interim
 from src.data.text_to_csv import text_to_csv
 from src.data.split_flickr8k import make_train_val_test_split
+from src.data.data_cleaning import basic_data_cleaning
 
 ROOT_PATH = Path(__file__).absolute().parents[2]
 
@@ -44,3 +45,11 @@ if __name__ == '__main__':
     split_paths_ = [train_path_, val_path_, test_path_]
     save_path_ = ROOT_PATH.joinpath('data', 'interim', 'Flickr8k')
     make_train_val_test_split(df_path_, split_paths_, save_path_)
+    # ################ DATA CLEANING ######################### #
+    df_path_ = ROOT_PATH.joinpath('data', 'interim', 'Flickr8k',
+                                  'Flickr8k_train.csv')
+    save_path_ = ROOT_PATH.joinpath('data', 'interim', 'Flickr8k',
+                                    'Flickr8k_train_clean.csv')
+    voc_save_path_ = ROOT_PATH.joinpath('data', 'interim', 'Flickr8k',
+                                        'Flickr8k_vocabulary.csv')
+    basic_data_cleaning(df_path_, save_path_, voc_save_path_)

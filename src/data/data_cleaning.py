@@ -65,13 +65,3 @@ def basic_data_cleaning(df_path, save_path, voc_save_path):
     with open(voc_save_path, 'w') as voc_file:
         for word in vocabulary:
             voc_file.write(word + '\n')
-
-
-if __name__ == '__main__':
-    df_path_ = ROOT_PATH.joinpath('data', 'interim', 'Flickr8k',
-                                  'Flickr8k_train.csv')
-    save_path_ = ROOT_PATH.joinpath('data', 'interim', 'Flickr8k',
-                                    'Flickr8k_train_clean.csv')
-    voc_save_path_ = ROOT_PATH.joinpath('data', 'interim', 'Flickr8k',
-                                        'Flickr8k_vocabulary.csv')
-    basic_data_cleaning(df_path_, save_path_, voc_save_path_)
