@@ -4,7 +4,7 @@ Image Captioning
 ## Project Structure
 ```
 ├── data
-│   ├── data_cleaning.py
+│   ├── raw
 │   ├── interim
 │   ├── processed
 │   └── README.md
