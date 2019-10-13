@@ -1,3 +1,3 @@
 # Data
 
-All datasets is saved here.
+All datasets are saved here.

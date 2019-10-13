@@ -4,3 +4,5 @@ scikit-image
 # required packages
 pandas
 numpy
+h5py
+tensorflow

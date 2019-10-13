@@ -2,7 +2,6 @@ from pathlib import Path
 import numpy as np
 from sklearn.utils import shuffle
 import random as r
-from src.data.load_vocabulary import load_vocabulary
 from src.features.Resnet_features import load_visual_features
 from keras.utils import to_categorical
 from keras.preprocessing.sequence import pad_sequences
@@ -11,7 +10,7 @@ ROOT_PATH = Path(__file__).absolute().parents[2]
 
 
 def data_generator(data_df, batch_size, steps_per_epoch,
-                   wordtoix, feature_path, seed=2222):
+                   wordtoix, features, seed=2222):
     """
     outputs data in batches
     """
@@ -20,7 +19,6 @@ def data_generator(data_df, batch_size, steps_per_epoch,
     shuffle_state = r.randint(0, 10000)
 
     # load visual features
-    visual_features = load_visual_features(feature_path)
     max_length = max([len(c.split()) for c in set(data_df.loc[:, 'clean_caption'])])
     vocab_size = len(wordtoix)
     # infinite loop
@@ -39,7 +37,7 @@ def data_generator(data_df, batch_size, steps_per_epoch,
             # TODO: make steps per epoch equal to ceiling of
             # TODO (continued): total_samples/batch_size
             for i in range(batch_size * step, batch_size * (step + 1)):
-                image = get_image(visual_features, data_df, i)
+                image = get_image(features, data_df, i)
                 caption = get_caption(data_df, i)
                 # create partial captions
                 seq = [wordtoix[word] for word in caption.split(' ')
