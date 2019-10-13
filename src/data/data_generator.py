@@ -11,15 +11,13 @@ ROOT_PATH = Path(__file__).absolute().parents[2]
 
 
 def data_generator(data_df, batch_size, steps_per_epoch,
-                   voc_path, feature_path, seed=2222):
+                   wordtoix, feature_path, seed=2222):
     """
     outputs data in batches
     """
     # TODO: order data to create batches with captions of roughly the same length
     r.seed(seed)
     shuffle_state = r.randint(0, 10000)
-    # Load vocabulary
-    wordtoix, ixtoword = load_vocabulary(voc_path)
 
     # load visual features
     visual_features = load_visual_features(feature_path)
