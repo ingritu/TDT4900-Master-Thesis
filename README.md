@@ -13,7 +13,9 @@ Image Captioning
 ├── models
 │   └── README.md
 ├── notebooks
-│   └── README.md
+│   ├── karpathy_split_exploration.ipynb
+│   ├── README.md
+│   └── visualize_word_frequency.ipynb
 ├── README.md
 ├── references
 │   └── README.md
@@ -25,7 +27,6 @@ Image Captioning
     │   ├── data_cleaning.py
     │   ├── data_generator.py
     │   ├── handle_karpathy_split.py
-    │   ├── karpathy_json_structure.py
     │   ├── load_vocabulary.py
     │   ├── make_dataset.py
     │   ├── max_length_caption.py
