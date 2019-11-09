@@ -33,6 +33,7 @@ def basic_data_cleaning(df_path, save_path, voc_save_path):
         cap_tokens = [word for word in cap_tokens
                       if len(word) > 1 or word == 'a']
         # remove tokens with numbers in them
+        # TODO: consider converting numbers to number words
         cap_tokens = [word for word in cap_tokens if word.isalpha()]
 
         # add words to corpus

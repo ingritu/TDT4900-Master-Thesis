@@ -33,19 +33,19 @@ def make_dataframe(data_path):
 
     images = data_dict['images']
     captions = data_dict['annotations']
-    image_counter = 0
+    cap_counter = 0
     for imgobj in images:
         im_id = imgobj['file_name']
         cap_ids, caps = find_captions(captions, imgobj['id'])
         for c in range(len(cap_ids)):
             cap_id = im_id + "#" + str(cap_ids[c])
-            caption = captions[c]
+            caption = caps[c]
             out_dict['image_id'].append(im_id)
             out_dict['caption_id'].append(im_id + "#" + cap_id)
             out_dict['caption'].append(caption)
-            image_counter += 1
-            if image_counter % 1000 == 0:
-                print(image_counter)
+            cap_counter += 1
+            if cap_counter % 1000 == 0:
+                print(cap_counter)
 
     data_df = pd.DataFrame(data=out_dict, columns=out_dict.keys())
     return data_df
