@@ -5,11 +5,20 @@ import json
 ROOT_PATH = Path(__file__).absolute().parents[2]
 
 
-def find_image_filename(images, image_id):
-    for imgobj in images:
-        if imgobj['id'] == image_id:
-            return imgobj['file_name']
-    return ''
+def find_captions(captions, image_id):
+    cap_ids = []
+    caps = []
+    remove_objects = []
+    for capobj in captions:
+        if capobj['image_id'] == image_id:
+            cap_ids.append(capobj['id'])
+            caps.append(capobj['caption'])
+            remove_objects.append(capobj)
+    # remove used captions
+    for c in remove_objects:
+        captions.remove(c)
+    # print('cap_size', len(captions))
+    return cap_ids, caps
 
 
 def make_dataframe(data_path):
@@ -21,15 +30,22 @@ def make_dataframe(data_path):
         'caption_id': [],
         'caption': []
     }
+
     images = data_dict['images']
-    for capobj in data_dict['annotations']:
-        im_id = find_image_filename(images,
-                                    capobj['image_id'])
-        cap_id = str(capobj['id'])
-        caption = capobj['caption']
-        out_dict['image_id'].append(im_id)
-        out_dict['caption_id'].append(im_id + "#" + cap_id)
-        out_dict['caption'].append(caption)
+    captions = data_dict['annotations']
+    image_counter = 0
+    for imgobj in images:
+        im_id = imgobj['file_name']
+        cap_ids, caps = find_captions(captions, imgobj['id'])
+        for c in range(len(cap_ids)):
+            cap_id = im_id + "#" + str(cap_ids[c])
+            caption = captions[c]
+            out_dict['image_id'].append(im_id)
+            out_dict['caption_id'].append(im_id + "#" + cap_id)
+            out_dict['caption'].append(caption)
+            image_counter += 1
+            if image_counter % 1000 == 0:
+                print(image_counter)
 
     data_df = pd.DataFrame(data=out_dict, columns=out_dict.keys())
     return data_df
