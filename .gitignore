@@ -7,6 +7,7 @@ models/*
 !models/README.md
 !src/models
 !README.md
+notebooks/visuals
 
 # Created by https://www.gitignore.io/api/pycharm,jupyternotebooks
 # Edit at https://www.gitignore.io/?templates=pycharm,jupyternotebooks
