@@ -56,13 +56,56 @@ def basic_data_cleaning(df_path, save_path, voc_save_path):
         cap_tokens = ['startseq'] + cap_tokens + ['endseq']
         caption_df.at[i, 'clean_caption'] = ' '.join(cap_tokens)
 
+    # remove captions with more than 40% UNK tokens in captions
+    count_before = len(caption_df)
+    remove_caps = []
+    for i in range(len(caption_df)):
+        caption = caption_df.loc[i, 'clean_caption'].split()
+        length = len(caption)
+        UNKs = sum([1 if w == 'UNK' else 0 for w in caption])
+        if UNKs/length > 0.4:
+            remove_caps.append(caption_df.loc[i, 'caption_id'])
+
+    caption_df = caption_df.loc[
+                 ~caption_df.loc[:, 'caption_id'].isin(remove_caps), :]
+    count_after = len(caption_df)
+    if count_after != count_before - len(remove_caps):
+        print("Did not remove 40% UNK captions!!"
+              "\nOr something else went wrong.")
+
+    # TODO: remove bad mm mmmmm mmmm captions if they still exist
+    count_before = count_after
+    remove_caps = []
+    for i in range(len(caption_df)):
+        caption = caption_df.loc[i, 'caption_clean'].split()
+        if is_all_one_letter(caption, 'm'):
+            remove_caps.append(caption_df.loc[i, 'caption_id'])
+
+    caption_df = caption_df.loc[
+                 ~caption_df.loc[:, 'caption_id'].isin(remove_caps), :]
+    count_after = len(caption_df)
+    if count_after != count_before - len(remove_caps):
+        print("Did not remove bad mmmm captions!!"
+              "\nOr something else went wrong.")
+
     print('vocabulary size that will be used:',
           len(corpus) - len(replace_corpus))
-
+    # save captions
     caption_df.to_csv(save_path)
+
+    # vocabulary stuff
     vocabulary = [key for key in corpus.keys() if corpus[key] >= THRESHOLD]
     vocabulary.insert(0, 'startseq')
     vocabulary.insert(1, 'endseq')
     with open(voc_save_path, 'w') as voc_file:
         for word in vocabulary:
             voc_file.write(word + '\n')
+
+
+def is_all_one_letter(caption, letter):
+    for word in caption:
+        for char in word:
+            if char != letter:
+                return False
+    return True
+
