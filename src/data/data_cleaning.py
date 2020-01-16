@@ -65,10 +65,12 @@ def basic_data_cleaning(df_path, save_path, voc_save_path):
         length = len(caption)
         unks = sum([1 if w == 'UNK' else 0 for w in caption])
         if unks/length > UNK_PERCENTAGE:
+            print("removes too many UNKs")
             remove_caps.append(caption_df.loc[i, 'caption_id'])
 
     caption_df = caption_df.loc[
                  ~caption_df.loc[:, 'caption_id'].isin(remove_caps), :]
+    caption_df = caption_df.reset_index(drop=True)
     count_after = len(caption_df)
     if count_after != count_before - len(remove_caps):
         print("Did not remove 40% UNK captions!!"
@@ -78,12 +80,14 @@ def basic_data_cleaning(df_path, save_path, voc_save_path):
     count_before = count_after
     remove_caps = []
     for i in range(len(caption_df)):
-        caption = caption_df.loc[i, 'caption_clean'].split()
+        caption = caption_df.loc[i, 'clean_caption'].split()
         if is_all_one_letter(caption, 'm'):
+            print("adds mmmmm mmmm to remove")
             remove_caps.append(caption_df.loc[i, 'caption_id'])
 
     caption_df = caption_df.loc[
                  ~caption_df.loc[:, 'caption_id'].isin(remove_caps), :]
+    caption_df = caption_df.reset_index(drop=True)
     count_after = len(caption_df)
     if count_after != count_before - len(remove_caps):
         print("Did not remove bad mmmm captions!!"
@@ -104,7 +108,8 @@ def basic_data_cleaning(df_path, save_path, voc_save_path):
 
 
 def is_all_one_letter(caption, letter):
-    for word in caption:
+    tmp_caption = caption[1:len(caption) - 1]
+    for word in tmp_caption:
         for char in word:
             if char != letter:
                 return False

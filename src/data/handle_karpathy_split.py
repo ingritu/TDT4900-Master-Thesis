@@ -38,6 +38,11 @@ def order_raw_data_and_move_to_interim(data_path, dataset):
                 full_dict[split]['image_id'].append(image_id)
                 full_dict[split]['caption_id'].append(caption_id)
                 full_dict[split]['caption'].append(raw_caption)
+            else:
+                # supplement training dataset with restval
+                full_dict['train']['image_id'].append(image_id)
+                full_dict['train']['caption_id'].append(caption_id)
+                full_dict['train']['caption'].append(raw_caption)
 
     train_df = pd.DataFrame(train_dict, columns=columns)
     test_df = pd.DataFrame(test_dict, columns=columns)
