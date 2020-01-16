@@ -14,5 +14,5 @@ Main file for creating the dataset splits, for the data exploration.
 
 # create initial subset with 1 caption per image
 
-# create the next and so on adding an extra caption per image for each itr 
+# create the next and so on adding an extra caption per image for each itr
 
