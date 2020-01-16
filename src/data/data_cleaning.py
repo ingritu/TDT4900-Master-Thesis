@@ -6,6 +6,7 @@ import string
 ROOT_PATH = Path(__file__).absolute().parents[2]
 
 THRESHOLD = 3
+UNK_PERCENTAGE = 0.4
 
 
 def basic_data_cleaning(df_path, save_path, voc_save_path):
@@ -29,13 +30,13 @@ def basic_data_cleaning(df_path, save_path, voc_save_path):
         cap_tokens = [word.lower() for word in cap_tokens]
         # remove punctuation from each token
         cap_tokens = [word.translate(table) for word in cap_tokens]
-        # remove hanging 's'
+        # converting numbers to number words and remove large numbers
+        cap_tokens = [word if word.isalpha() else number_to_word(word)
+                      for word in cap_tokens]
+
+        # remove hanging 's' and other possible weired one letter words
         cap_tokens = [word for word in cap_tokens
                       if len(word) > 1 or word == 'a']
-        # remove tokens with numbers in them
-        # TODO: consider converting numbers to number words
-        cap_tokens = [word for word in cap_tokens if word.isalpha()]
-
         # add words to corpus
         for word in cap_tokens:
             if word not in corpus.keys():
@@ -62,8 +63,8 @@ def basic_data_cleaning(df_path, save_path, voc_save_path):
     for i in range(len(caption_df)):
         caption = caption_df.loc[i, 'clean_caption'].split()
         length = len(caption)
-        UNKs = sum([1 if w == 'UNK' else 0 for w in caption])
-        if UNKs/length > 0.4:
+        unks = sum([1 if w == 'UNK' else 0 for w in caption])
+        if unks/length > UNK_PERCENTAGE:
             remove_caps.append(caption_df.loc[i, 'caption_id'])
 
     caption_df = caption_df.loc[
@@ -73,7 +74,7 @@ def basic_data_cleaning(df_path, save_path, voc_save_path):
         print("Did not remove 40% UNK captions!!"
               "\nOr something else went wrong.")
 
-    # TODO: remove bad mm mmmmm mmmm captions if they still exist
+    # remove bad mm mmmmm mmmm captions if they still exist
     count_before = count_after
     remove_caps = []
     for i in range(len(caption_df)):
@@ -109,3 +110,11 @@ def is_all_one_letter(caption, letter):
                 return False
     return True
 
+
+def number_to_word(word):
+    numbers = {'0': 'zero', '1': 'one', '2': 'two', '3': 'three', '4': 'four',
+               '5': 'five', '6': 'six', '7': 'seven', '8': 'eight',
+               '9': 'nine'}
+    if word in numbers.keys():
+        return numbers[word]
+    return ''
