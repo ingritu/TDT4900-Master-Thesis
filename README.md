@@ -15,7 +15,8 @@ Image Captioning
 ├── notebooks
 │   ├── karpathy_split_exploration.ipynb
 │   ├── README.md
-│   └── visualize_word_frequency.ipynb
+│   ├── visualize_word_frequency.ipynb
+│   └── visuals
 ├── README.md
 ├── references
 │   └── README.md
@@ -31,6 +32,7 @@ Image Captioning
     │   ├── make_dataset.py
     │   ├── max_length_caption.py
     │   ├── split_flickr8k.py
+    │   ├── subset_splits.py
     │   └── text_to_csv.py
     ├── features
     │   ├── build_features.py
