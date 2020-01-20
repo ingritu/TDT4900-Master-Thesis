@@ -124,7 +124,7 @@ class CaptionGenerator:
         Returns
         -------
         predicted_captions : dict. Dictionary containing one prediction
-            per image. 
+            per image.
         """
         test_path = Path(test_path)
         test_df = pd.read_csv(test_path)
@@ -175,12 +175,29 @@ class CaptionGenerator:
         -------
         captions : list. contains b captions.
         """
+        # initialization
         in_token = ['startseq']
         captions = [[in_token, 0.0]]
         for _ in range(self.max_length):
+            # check if all captions have their endseq token.
+            all_done = True
+            for caption in captions:
+                # check for at least one caption without endseq token.
+                if caption[0][-1] != 'endseq' and all_done:
+                    all_done = False
+            if all_done:
+                break
+
             # size of tmp_captions is max b^2
             tmp_captions = []
             for caption in captions:
+                if caption[0][-1] == 'endseq':
+                    # skip expanding if caption has an 'endseq' token.
+                    tmp_captions.append(caption)
+                    continue
+                # if this process proves to be to computationally heavy
+                # then consider trade off with memory, by having extra
+                # variable with both index rep and string rep. 
                 sequence = [self.wordtoix[w] for w in caption[0]
                             if w in self.wordtoix]
                 sequence = pad_sequences([sequence], maxlen=self.max_length)
