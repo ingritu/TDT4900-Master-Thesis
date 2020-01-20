@@ -122,6 +122,14 @@ class CaptionGenerator:
             predicted_captions[image_name] = prediction
         return predicted_captions
 
+    def beam_search(self, image, b):
+        """
+
+        :param image: image numpy array
+        :param b: beam size
+        :return: most probable caption.
+        """
+
     def greedy_search(self, image):
         # Maximum likelihood estimation
         in_tokens = ['startseq']
