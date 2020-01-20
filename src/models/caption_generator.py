@@ -16,6 +16,7 @@ import numpy as np
 from keras.preprocessing.sequence import pad_sequences
 from keras.models import load_model
 from datetime import datetime
+from copy import deepcopy
 
 ROOT_PATH = Path(__file__).absolute().parents[2]
 
@@ -111,8 +112,21 @@ class CaptionGenerator:
         self.model.save(self.model_save_path.joinpath(
             self.model_name + '_' + str(timestamp_str) + '_' + '.h5'))
 
-    def predict(self, test_path):
-        # TODO: implement beam search instead of greedy search/MLE
+    def predict_greedy(self, test_path):
+        """
+        Make predictions using greedy search as inference.
+
+        Parameters
+        ----------
+        test_path : Path or str. Path to the .csv file containing test
+            cases.
+
+        Returns
+        -------
+        predicted_captions : dict. Dictionary containing one prediction
+            per image. 
+        """
+        test_path = Path(test_path)
         test_df = pd.read_csv(test_path)
         predicted_captions = {}
         images = test_df.loc[:, 'image_id']
@@ -122,19 +136,91 @@ class CaptionGenerator:
             predicted_captions[image_name] = prediction
         return predicted_captions
 
-    def beam_search(self, image, b):
+    def predict_beam(self, test_path, b=3):
         """
+        Make predictions using beam search as inference.
 
-        :param image: image numpy array
-        :param b: beam size
-        :return: most probable caption.
+        Parameters
+        ----------
+        test_path : Path or str. Path to the .csv file containing test
+            cases.
+        b : int. beam size. Default is 3.
+
+        Returns
+        -------
+        predicted_captions : dict. Dictionary containing all b
+            predictions per image, including the probabilities.
         """
+        test_path = Path(test_path)
+        test_df = pd.read_csv(test_path)
+        predicted_captions = {}
+        images = test_df.loc[:, 'image_id']
+        for image_name in images:
+            image = self.encoded_features[image_name]
+            predictions = self.beam_search(image, b=b)
+            predicted_captions[image_name] = predictions
+        return predicted_captions
+
+    def beam_search(self, image, b=3):
+        """
+        Beam search inference. Keep track on the b most probable
+        captions at any step, until no more predictions can be made.
+
+        Parameters
+        ----------
+        image : Numpy array
+        b : int beam size. Default value is 3.
+
+        Returns
+        -------
+        captions : list. contains b captions.
+        """
+        in_token = ['startseq']
+        captions = [[in_token, 0.0]]
+        for _ in range(self.max_length):
+            # size of tmp_captions is max b^2
+            tmp_captions = []
+            for caption in captions:
+                sequence = [self.wordtoix[w] for w in caption[0]
+                            if w in self.wordtoix]
+                sequence = pad_sequences([sequence], maxlen=self.max_length)
+                # get predictions
+                y_predictions = self.model.predict([image, sequence],
+                                                   verbose=0)
+                # get the b most probable indices
+                words_predicted = np.argsort(y_predictions)[-b:]
+                for word in words_predicted:
+                    new_partial_cap = deepcopy(caption[0])
+                    # add the predicted word to the partial caption
+                    new_partial_cap.append(self.ixtoword[word])
+                    new_partial_cap_prob = caption[1] + y_predictions[word]
+                    # add cap and prob to tmp list
+                    tmp_captions.append([new_partial_cap,
+                                         new_partial_cap_prob])
+            captions = tmp_captions
+            captions.sort(key=lambda l: l[1])
+            captions = captions[-b:]
+
+        return captions
 
     def greedy_search(self, image):
+        """
+        Greedy search inference. Always choose the most probable word as
+        the next in the sequence.
+
+        Parameters
+        ----------
+        image : Numpy array.
+
+        Returns
+        -------
+        caption : str. caption generates given image.
+        """
         # Maximum likelihood estimation
         in_tokens = ['startseq']
         for i in range(self.max_length):
-            sequence = [self.wordtoix[w] for w in in_tokens if w in self.wordtoix]
+            sequence = [self.wordtoix[w] for w in in_tokens
+                        if w in self.wordtoix]
             sequence = pad_sequences([sequence], maxlen=self.max_length)
             y_predicted = self.model.predict([image, sequence], verbose=0)
             y_predicted = np.argmax(y_predicted)
@@ -142,9 +228,9 @@ class CaptionGenerator:
             in_tokens.append(word)
             if word == 'endseq':
                 break
-        final = in_tokens[1:-1]
-        final = ' '.join(final)
-        return final
+        caption = in_tokens[1:-1]
+        caption = ' '.join(caption)
+        return caption
 
 
 class TutorialModel(CaptionGenerator):
