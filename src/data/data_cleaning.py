@@ -11,12 +11,31 @@ UNK_PERCENTAGE = 0.4
 
 def basic_data_cleaning(df_path, save_path, voc_save_path):
     """
-    When we deal with text, we generally perform some basic cleaning
-    like lower-casing all the words (otherwise“hello” and “Hello” will
-    be regarded as two separate words), removing special tokens
-    (like ‘%’, ‘$’, ‘#’, etc.), eliminating words which contain
-    numbers (like ‘hey199’, etc.).
+    Basic data cleaning entails:
+    - Converting to lower.
+    - Removing punctuation.
+    - Converting numbers to number words and removing large numbers.
+    - Removing one letter words that are not 'a'.
+    - Replacing uncommon words with UNK token.
+    - Removing captions with too many UNK tokens.
+    - Removing weired mmmmm mm mmm captions.
+
+    Parameters
+    ----------
+    df_path : Path or str. Where the .csv file containing unprocessed
+        cases is located.
+    save_path : Path or str. Where the new .csv file containing
+        pre-processed cases will be saved.
+    voc_save_path : Path or str. Where the vocabulary will be saved.
+
+    Returns
+    -------
+    Saves cleaned dataset at save_path. saves vocabulary at
+    voc_save_path.
     """
+    df_path = Path(df_path)
+    save_path = Path(save_path)
+    voc_save_path = Path(voc_save_path)
     caption_df = pd.read_csv(df_path)
     # make a new column for the cleaned version of the caption
     # I do this because I want to keep the original version
@@ -48,29 +67,11 @@ def basic_data_cleaning(df_path, save_path, voc_save_path):
         caption_df.at[i, 'clean_caption'] = ' '.join(cap_tokens)
     print("Full vocabulary size:", len(corpus))
 
-    # replace words with less than 3 occurrences with a UNK token
-    replace_corpus = set([key for key in corpus if corpus[key] < THRESHOLD])
-    for i in range(len(caption_df)):
-        cap_tokens = caption_df.loc[i, 'clean_caption'].split()
-        cap_tokens = [word if word not in replace_corpus else 'UNK'
-                      for word in cap_tokens]
-        cap_tokens = ['startseq'] + cap_tokens + ['endseq']
-        caption_df.at[i, 'clean_caption'] = ' '.join(cap_tokens)
+    replace_corpus, caption_df = replace_uncommon_words(caption_df, corpus)
 
     # remove captions with more than 40% UNK tokens in captions
     count_before = len(caption_df)
-    remove_caps = []
-    for i in range(len(caption_df)):
-        caption = caption_df.loc[i, 'clean_caption'].split()
-        length = len(caption)
-        unks = sum([1 if w == 'UNK' else 0 for w in caption])
-        if unks/length > UNK_PERCENTAGE:
-            print("removes too many UNKs")
-            remove_caps.append(caption_df.loc[i, 'caption_id'])
-
-    caption_df = caption_df.loc[
-                 ~caption_df.loc[:, 'caption_id'].isin(remove_caps), :]
-    caption_df = caption_df.reset_index(drop=True)
+    caption_df, remove_caps = remove_too_many_unk(caption_df)
     count_after = len(caption_df)
     if count_after != count_before - len(remove_caps):
         print("Did not remove 40% UNK captions!!"
@@ -78,16 +79,7 @@ def basic_data_cleaning(df_path, save_path, voc_save_path):
 
     # remove bad mm mmmmm mmmm captions if they still exist
     count_before = count_after
-    remove_caps = []
-    for i in range(len(caption_df)):
-        caption = caption_df.loc[i, 'clean_caption'].split()
-        if is_all_one_letter(caption, 'm'):
-            print("adds mmmmm mmmm to remove")
-            remove_caps.append(caption_df.loc[i, 'caption_id'])
-
-    caption_df = caption_df.loc[
-                 ~caption_df.loc[:, 'caption_id'].isin(remove_caps), :]
-    caption_df = caption_df.reset_index(drop=True)
+    caption_df, remove_caps = remove_bad_captions(caption_df)
     count_after = len(caption_df)
     if count_after != count_before - len(remove_caps):
         print("Did not remove bad mmmm captions!!"
@@ -105,6 +97,74 @@ def basic_data_cleaning(df_path, save_path, voc_save_path):
     with open(voc_save_path, 'w') as voc_file:
         for word in vocabulary:
             voc_file.write(word + '\n')
+
+
+def replace_uncommon_words(caption_df, corpus):
+    # replace words with less than THRESHOLD occurrences with an UNK
+    # token
+    replace_corpus = set([key for key in corpus if corpus[key] < THRESHOLD])
+    for i in range(len(caption_df)):
+        cap_tokens = caption_df.loc[i, 'clean_caption'].split()
+        cap_tokens = [word if word not in replace_corpus else 'UNK'
+                      for word in cap_tokens]
+        cap_tokens = ['startseq'] + cap_tokens + ['endseq']
+        caption_df.at[i, 'clean_caption'] = ' '.join(cap_tokens)
+    return replace_corpus, caption_df
+
+
+def remove_too_many_unk(caption_df):
+    """
+    Remove captions with too many UNK tokens in the caption.
+
+    Parameters
+    ----------
+    caption_df : DataFrame. contains pre-processed cases.
+
+    Returns
+    -------
+    caption_df : DataFrame. Where captions with too many UNKs have
+        been removed.
+    remove_caps : list. caption_ids of the captions that were removed.
+    """
+    remove_caps = []
+    for i in range(len(caption_df)):
+        caption = caption_df.loc[i, 'clean_caption'].split()
+        length = len(caption)
+        unks = sum([1 if w == 'UNK' else 0 for w in caption])
+        if unks / length > UNK_PERCENTAGE:
+            print("removes too many UNKs")
+            remove_caps.append(caption_df.loc[i, 'caption_id'])
+    caption_df = caption_df.loc[
+                 ~caption_df.loc[:, 'caption_id'].isin(remove_caps), :]
+    caption_df = caption_df.reset_index(drop=True)
+    return caption_df, remove_caps
+
+
+def remove_bad_captions(caption_df):
+    """
+    Remove objectively bad captions that do not contain real words.
+    Here we only remove captions that only consists of the letter m,
+    since our exploration found that such cases exist in MS COCO.
+
+    Parameters
+    ----------
+    caption_df : DataFrame. contains pre-processed cases.
+
+    Returns
+    -------
+    caption_df : DataFrame. Where bad captions have been removed.
+    remove_caps : list. caption_ids of the captions that were removed.
+    """
+    remove_caps = []
+    for i in range(len(caption_df)):
+        caption = caption_df.loc[i, 'clean_caption'].split()
+        if is_all_one_letter(caption, 'm'):
+            print("adds mmmmm mmmm to remove")
+            remove_caps.append(caption_df.loc[i, 'caption_id'])
+    caption_df = caption_df.loc[
+                 ~caption_df.loc[:, 'caption_id'].isin(remove_caps), :]
+    caption_df = caption_df.reset_index(drop=True)
+    return caption_df, remove_caps
 
 
 def is_all_one_letter(caption, letter):
