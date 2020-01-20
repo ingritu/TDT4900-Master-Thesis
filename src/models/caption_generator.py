@@ -195,9 +195,9 @@ class CaptionGenerator:
                     # skip expanding if caption has an 'endseq' token.
                     tmp_captions.append(caption)
                     continue
-                # if this process proves to be to computationally heavy
+                # if this process proves to be too computationally heavy
                 # then consider trade off with memory, by having extra
-                # variable with both index rep and string rep. 
+                # variable with both index rep and string rep.
                 sequence = [self.wordtoix[w] for w in caption[0]
                             if w in self.wordtoix]
                 sequence = pad_sequences([sequence], maxlen=self.max_length)
