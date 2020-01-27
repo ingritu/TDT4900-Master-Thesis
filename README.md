@@ -3,28 +3,29 @@ Image Captioning
 
 ## Project Structure
 ```
-├── data
-│   ├── raw
-│   ├── interim
-│   ├── processed
+/
+├── data/
+│   ├── raw/
+│   ├── interim/
+│   ├── processed/
 │   └── README.md
-├── docs
+├── docs/
 │   └── README.md
-├── models
+├── models/
 │   └── README.md
-├── notebooks
+├── notebooks/
 │   ├── karpathy_split_exploration.ipynb
 │   ├── README.md
 │   ├── visualize_word_frequency.ipynb
-│   └── visuals
+│   └── visuals/
 ├── README.md
-├── references
+├── references/
 │   └── README.md
-├── reports
+├── reports/
 │   └── README.md
 ├── requirements.txt
-└── src
-    ├── data
+└── src/
+    ├── data/
     │   ├── data_cleaning.py
     │   ├── data_generator.py
     │   ├── handle_karpathy_split.py
@@ -34,16 +35,16 @@ Image Captioning
     │   ├── split_flickr8k.py
     │   ├── subset_splits.py
     │   └── text_to_csv.py
-    ├── features
+    ├── features/
     │   ├── build_features.py
     │   ├── glove_embeddings.py
     │   ├── resize_images.py
     │   └── Resnet_features.py
     ├── __init__.py
-    ├── models
+    ├── models/
     │   ├── caption_generator.py
     │   ├── predict_model.py
     │   └── train_model.py
-    └── visualization
+    └── visualization/
         └── visualize.py
 ```

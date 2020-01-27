@@ -71,17 +71,17 @@ def basic_data_cleaning(df_path, save_path, voc_save_path):
 
     # remove captions with more than 40% UNK tokens in captions
     count_before = len(caption_df)
-    caption_df, remove_caps = remove_too_many_unk(caption_df)
+    caption_df, remove_caps_len = remove_too_many_unk(caption_df)
     count_after = len(caption_df)
-    if count_after != count_before - len(remove_caps):
+    if count_after != count_before - remove_caps_len:
         print("Did not remove 40% UNK captions!!"
               "\nOr something else went wrong.")
 
     # remove bad mm mmmmm mmmm captions if they still exist
     count_before = count_after
-    caption_df, remove_caps = remove_bad_captions(caption_df)
+    caption_df, remove_caps_len = remove_bad_captions(caption_df)
     count_after = len(caption_df)
-    if count_after != count_before - len(remove_caps):
+    if count_after != count_before - remove_caps_len:
         print("Did not remove bad mmmm captions!!"
               "\nOr something else went wrong.")
 
@@ -137,7 +137,7 @@ def remove_too_many_unk(caption_df):
     caption_df = caption_df.loc[
                  ~caption_df.loc[:, 'caption_id'].isin(remove_caps), :]
     caption_df = caption_df.reset_index(drop=True)
-    return caption_df, remove_caps
+    return caption_df, len(remove_caps)
 
 
 def remove_bad_captions(caption_df):
@@ -164,7 +164,7 @@ def remove_bad_captions(caption_df):
     caption_df = caption_df.loc[
                  ~caption_df.loc[:, 'caption_id'].isin(remove_caps), :]
     caption_df = caption_df.reset_index(drop=True)
-    return caption_df, remove_caps
+    return caption_df, len(remove_caps)
 
 
 def is_all_one_letter(caption, letter):
