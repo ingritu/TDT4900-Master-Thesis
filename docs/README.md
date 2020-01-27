@@ -1,3 +1,3 @@
 # Documents
 
-Documents will be saved here.
+A default Sphinx project; see sphinx-doc.org for details

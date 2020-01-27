@@ -1,3 +1,3 @@
 # Reports
 
-Reports.
+Generated analysis as HTML, PDF, LaTeX, etc.
