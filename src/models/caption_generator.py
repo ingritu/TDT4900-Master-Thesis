@@ -116,9 +116,9 @@ class CaptionGenerator:
                                  steps_per_epoch=steps_per_epoch)
         # save model
         date_time_obj = datetime.now()
-        timestamp_str = date_time_obj.strftime("%d-%b-%Y (%H:%M:%S.%f)")
+        timestamp_str = date_time_obj.strftime("%d-%b-%Y_(%H:%M:%S)")
         save_path = self.model_save_path.joinpath(
-            self.model_name + '_' + str(timestamp_str) + '_' + '.h5')
+            self.model_name + '_' + str(timestamp_str) + '.h5')
         self.save_model(save_path)
 
     def predict_greedy(self, test_path):

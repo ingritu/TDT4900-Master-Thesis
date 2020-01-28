@@ -43,6 +43,7 @@ Image Captioning
     ├── __init__.py
     ├── models/
     │   ├── caption_generator.py
+    │   ├── custom_layers.py
     │   ├── predict_model.py
     │   └── train_model.py
     └── visualization/
