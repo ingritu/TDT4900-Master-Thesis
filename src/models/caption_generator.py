@@ -63,17 +63,25 @@ class CaptionGenerator:
         # only intended to be used before compile
         self.max_length = value
 
-    def compile(self, optimizer='adam'):
+    def compile(self, optimizer='adam', loss='categorical_crossentropy'):
         # build and compile the model
         self.build_model()
         self.model.compile(optimizer=optimizer,
-                           loss='categorical_crossentropy')
+                           loss=loss)
 
     def build_model(self, weights=None):
         pass
 
     def load_model(self, load_path):
+        load_path = Path(load_path)
         self.model = load_model(load_path)
+
+    def save_model(self, save_path):
+        save_path = Path(save_path)
+        self.model.save(save_path)
+
+    def get_model(self):
+        return self.model
 
     def train(self,
               train_path,
@@ -109,8 +117,9 @@ class CaptionGenerator:
         # save model
         date_time_obj = datetime.now()
         timestamp_str = date_time_obj.strftime("%d-%b-%Y (%H:%M:%S.%f)")
-        self.model.save(self.model_save_path.joinpath(
-            self.model_name + '_' + str(timestamp_str) + '_' + '.h5'))
+        save_path = self.model_save_path.joinpath(
+            self.model_name + '_' + str(timestamp_str) + '_' + '.h5')
+        self.save_model(save_path)
 
     def predict_greedy(self, test_path):
         """
@@ -284,7 +293,7 @@ class TutorialModel(CaptionGenerator):
     def build_model(self, weights=None):
         if weights is not None:
             # load saved model
-            self.model = load_model(weights)
+            self.load_model(weights)
         else:
             # image feature extractor model
             inputs1 = Input(shape=(1536,))
@@ -358,6 +367,6 @@ class AdaptiveModel(CaptionGenerator):
     def build_model(self, weights=None):
         if weights is not None:
             # load saved model
-            self.model = load_model(weights)
+            self.load_model(weights)
         else:
             pass
