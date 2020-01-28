@@ -63,9 +63,12 @@ class CaptionGenerator:
         # only intended to be used before compile
         self.max_length = value
 
-    def compile(self, optimizer='adam', loss='categorical_crossentropy'):
+    def compile(self,
+                optimizer='adam',
+                loss='categorical_crossentropy',
+                weights=None):
         # build and compile the model
-        self.build_model()
+        self.build_model(weights=weights)
         self.model.compile(optimizer=optimizer,
                            loss=loss)
 
@@ -211,7 +214,7 @@ class CaptionGenerator:
                             if w in self.wordtoix]
                 sequence = pad_sequences([sequence], maxlen=self.max_length)
                 # get predictions
-                y_predictions = self.model.predict([image, sequence],
+                y_predictions = self.model.predict([[image], sequence],
                                                    verbose=0)
                 # get the b most probable indices
                 words_predicted = np.argsort(y_predictions)[-b:]
@@ -248,7 +251,7 @@ class CaptionGenerator:
             sequence = [self.wordtoix[w] for w in in_tokens
                         if w in self.wordtoix]
             sequence = pad_sequences([sequence], maxlen=self.max_length)
-            y_predicted = self.model.predict([image, sequence], verbose=0)
+            y_predicted = self.model.predict([[image], sequence], verbose=0)
             y_predicted = np.argmax(y_predicted)
             word = self.ixtoword[y_predicted]
             in_tokens.append(word)
