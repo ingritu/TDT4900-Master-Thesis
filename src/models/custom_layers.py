@@ -166,10 +166,11 @@ class LSTMWithVisualSentinelCell(Layer):
         else:
             self.bias = None
 
-        self.kernel_i = self.kernel[:, :self.units]
-        self.kernel_f = self.kernel[:, self.units: self.units * 2]
-        self.kernel_c = self.kernel[:, self.units * 2: self.units * 3]
-        self.kernel_o = self.kernel[:, self.units * 3:]
+        self.kernel_i = self.kernel[:, :self.units]  # input
+        self.kernel_f = self.kernel[:, self.units: self.units * 2]  # forget
+        self.kernel_c = self.kernel[:, self.units * 2: self.units * 3]  # cell
+        self.kernel_o = self.kernel[:, self.units * 3:]  # output
+        self.kernel_vs = self.kernel[:, self.units * 3:]  # visual sentinel
 
         self.recurrent_kernel_i = self.recurrent_kernel[:, :self.units]
         self.recurrent_kernel_f = (
@@ -183,11 +184,13 @@ class LSTMWithVisualSentinelCell(Layer):
             self.bias_f = self.bias[self.units: self.units * 2]
             self.bias_c = self.bias[self.units * 2: self.units * 3]
             self.bias_o = self.bias[self.units * 3:]
+            self.bias_vs = self.bias[self.units * 3:]
         else:
             self.bias_i = None
             self.bias_f = None
             self.bias_c = None
             self.bias_o = None
+            self.bias_vs = None
         self.built = True
 
     def call(self, inputs, states, training=None):
