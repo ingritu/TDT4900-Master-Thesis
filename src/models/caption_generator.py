@@ -69,7 +69,7 @@ class CaptionGenerator:
         self.model.compile(optimizer=optimizer,
                            loss='categorical_crossentropy')
 
-    def build_model(self):
+    def build_model(self, weights=None):
         pass
 
     def load_model(self, load_path):
@@ -281,38 +281,83 @@ class TutorialModel(CaptionGenerator):
                          verbose=verbose)
         self.model_name = 'Tutorial'
 
-    def build_model(self):
-        # image feature extractor model
-        inputs1 = Input(shape=(1536,))
-        fe1 = Dropout(0.5)(inputs1)
-        fe2 = Dense(256, activation='relu')(fe1)
+    def build_model(self, weights=None):
+        if weights is not None:
+            # load saved model
+            self.model = load_model(weights)
+        else:
+            # image feature extractor model
+            inputs1 = Input(shape=(1536,))
+            fe1 = Dropout(0.5)(inputs1)
+            fe2 = Dense(256, activation='relu')(fe1)
 
-        # partial caption sequence model
-        inputs2 = Input(shape=(self.max_length,))
-        se1 = Embedding(self.vocab_size,
-                        self.embedding_dim,
-                        mask_zero=True)(inputs2)
-        se2 = Dropout(0.5)(se1)
-        se3 = LSTM(256)(se2)
+            # partial caption sequence model
+            inputs2 = Input(shape=(self.max_length,))
+            se1 = Embedding(self.vocab_size,
+                            self.embedding_dim,
+                            mask_zero=True)(inputs2)
+            se2 = Dropout(0.5)(se1)
+            se3 = LSTM(256)(se2)
 
-        # decoder (feed forward) model
-        decoder1 = add([fe2, se3])
-        decoder2 = Dense(256, activation='relu')(decoder1)
-        outputs = Dense(self.vocab_size, activation='softmax')(decoder2)
+            # decoder (feed forward) model
+            decoder1 = add([fe2, se3])
+            decoder2 = Dense(256, activation='relu')(decoder1)
+            outputs = Dense(self.vocab_size, activation='softmax')(decoder2)
 
-        # merge the two input models
-        self.model = Model(inputs=[inputs1, inputs2], outputs=outputs)
-        # pre-trained embeddings
-        if self.pre_trained_embeddings:
-            # Load gloVe embeddings
-            embeddings_index = load_glove_vectors(self.em_path)
-            embedding_matrix = embeddings_matrix(self.vocab_size,
-                                                 self.wordtoix,
-                                                 embeddings_index,
-                                                 self.embedding_dim)
-            # Attach pre-trained embeddings to embeddings layer
-            self.model.layers[2].set_weights([embedding_matrix])
-            self.model.layers[2].trainable = False
+            # merge the two input models
+            self.model = Model(inputs=[inputs1, inputs2], outputs=outputs)
+
+            # pre-trained embeddings
+            if self.pre_trained_embeddings:
+                # Load gloVe embeddings
+                embeddings_index = load_glove_vectors(self.em_path)
+                embedding_matrix = embeddings_matrix(self.vocab_size,
+                                                     self.wordtoix,
+                                                     embeddings_index,
+                                                     self.embedding_dim)
+                # Attach pre-trained embeddings to embeddings layer
+                self.model.layers[2].set_weights([embedding_matrix])
+                self.model.layers[2].trainable = False
+
         # print summary
         if self.verbose:
             self.model.summary()
+
+
+class AdaptiveModel(CaptionGenerator):
+
+    def __init__(self, max_length,
+                 voc_path=ROOT_PATH.joinpath('data',
+                                             'interim',
+                                             'Flickr8k',
+                                             'Flickr8k_vocabulary.csv'),
+                 embedding_dim=300,
+                 pre_trained_embeddings=True,
+                 em_path=ROOT_PATH.joinpath('data',
+                                            'processed',
+                                            'glove',
+                                            'glove.42B.300d.txt'),
+                 feature_path=ROOT_PATH.joinpath('data',
+                                                 'processed',
+                                                 'Flickr8k',
+                                                 'Images',
+                                                 'encoded_full_images.pkl'),
+                 save_path=ROOT_PATH.joinpath('models'),
+                 verbose=True
+                 ):
+        super().__init__(max_length,
+                         voc_path=voc_path,
+                         embedding_dim=embedding_dim,
+                         pre_trained_embeddings=pre_trained_embeddings,
+                         em_path=em_path,
+                         feature_path=feature_path,
+                         save_path=save_path,
+                         verbose=verbose)
+        self.model_name = 'AdaptiveModel'
+
+    def build_model(self, weights=None):
+        if weights is not None:
+            # load saved model
+            self.model = load_model(weights)
+        else:
+            pass
