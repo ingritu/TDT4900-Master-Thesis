@@ -18,6 +18,9 @@ from keras.models import load_model
 from datetime import datetime
 from copy import deepcopy
 
+from src.models.custom_layers2 import LSTMWithVisualSentinelCell
+from src.models.custom_layers2 import AdaptiveAttention
+
 ROOT_PATH = Path(__file__).absolute().parents[2]
 
 
@@ -372,4 +375,28 @@ class AdaptiveModel(CaptionGenerator):
             # load saved model
             self.load_model(weights)
         else:
-            pass
+            # build model
+            encoder_inputs = Input(shape=(1536,))
+            # resize to global features
+            decoder_inputs = Input(shape=(self.max_length,))
+            special_lstm_layer = LSTMWithVisualSentinelCell(2048)
+
+            attention_layer = AdaptiveAttention()
+
+            decoder_lstm = LSTM(2048)
+
+            # pre-trained embeddings
+            if self.pre_trained_embeddings:
+                # Load gloVe embeddings
+                embeddings_index = load_glove_vectors(self.em_path)
+                embedding_matrix = embeddings_matrix(self.vocab_size,
+                                                     self.wordtoix,
+                                                     embeddings_index,
+                                                     self.embedding_dim)
+                # Attach pre-trained embeddings to embeddings layer
+                self.model.layers[2].set_weights([embedding_matrix])
+                self.model.layers[2].trainable = False
+
+        # print summary
+        if self.verbose:
+            self.model.summary()

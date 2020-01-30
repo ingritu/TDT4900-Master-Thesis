@@ -135,13 +135,13 @@ class LSTMWithVisualSentinelCell(Layer):
 
             self.recurrent_initializer = recurrent_identity
 
-        self.kernel = self.add_weight(shape=(input_dim, self.units * 4),
+        self.kernel = self.add_weight(shape=(input_dim, self.units * 5),
                                       name='kernel',
                                       initializer=self.kernel_initializer,
                                       regularizer=self.kernel_regularizer,
                                       constraint=self.kernel_constraint)
         self.recurrent_kernel = self.add_weight(
-            shape=(self.units, self.units * 4),
+            shape=(self.units, self.units * 5),
             name='recurrent_kernel',
             initializer=self.recurrent_initializer,
             regularizer=self.recurrent_regularizer,
@@ -158,7 +158,7 @@ class LSTMWithVisualSentinelCell(Layer):
                     ])
             else:
                 bias_initializer = self.bias_initializer
-            self.bias = self.add_weight(shape=(self.units * 4,),
+            self.bias = self.add_weight(shape=(self.units * 5,),
                                         name='bias',
                                         initializer=bias_initializer,
                                         regularizer=self.bias_regularizer,
@@ -178,6 +178,7 @@ class LSTMWithVisualSentinelCell(Layer):
         self.recurrent_kernel_c = (
             self.recurrent_kernel[:, self.units * 2: self.units * 3])
         self.recurrent_kernel_o = self.recurrent_kernel[:, self.units * 3:]
+        self.recurrent_kernel_vs = self.recurrent_kernel[:, self.units * 3:]
 
         if self.use_bias:
             self.bias_i = self.bias[:self.units]
