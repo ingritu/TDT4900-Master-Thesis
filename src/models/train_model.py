@@ -1,4 +1,4 @@
-from src.models.caption_generator import TutorialModel
+from src.models.caption_generator import model_switcher
 from src.data.max_length_caption import max_length_caption
 from pathlib import Path
 
@@ -6,6 +6,7 @@ ROOT_PATH = Path(__file__).absolute().parents[2]
 
 
 if __name__ == '__main__':
+    model_str_ = 'TestModel'
     train_path = ROOT_PATH.joinpath('data',
                                     'interim',
                                     'Flickr8k',
@@ -20,8 +21,7 @@ if __name__ == '__main__':
     pre_trained = False
     max_length = max_length_caption(train_path)
 
-    model = TutorialModel(max_length, embedding_dim=em_dim,
-                          pre_trained_embeddings=pre_trained)
+    model = model_switcher(model_str_, max_length)
     model.compile()
 
     model.train(train_path, val_path, batch_size, epochs)

@@ -3,6 +3,7 @@ from keras.layers import Embedding
 from keras.layers import Dense
 from keras.layers import Dropout
 from keras.layers.merge import add
+from keras.layers.merge import concatenate
 from keras.models import Model
 from keras import Input
 from pathlib import Path
@@ -24,6 +25,16 @@ from src.models.custom_layers2 import AdaptiveAttention
 ROOT_PATH = Path(__file__).absolute().parents[2]
 
 
+def model_switcher(model_str, max_len):
+    switcher = {
+        "TestModel": TestModel(max_len),
+        "TutorialModel": TutorialModel(max_len),
+        "AdaptiveModel": AdaptiveModel(max_len),
+        "Default": TestModel(max_len)
+    }
+    return switcher[model_str]
+
+
 class CaptionGenerator:
 
     def __init__(self, max_length,
@@ -32,7 +43,7 @@ class CaptionGenerator:
                                              'Flickr8k',
                                              'Flickr8k_vocabulary.csv'),
                  embedding_dim=300,
-                 pre_trained_embeddings=True,
+                 pre_trained_embeddings=False,
                  em_path=ROOT_PATH.joinpath('data',
                                             'processed',
                                             'glove',
@@ -273,7 +284,7 @@ class TutorialModel(CaptionGenerator):
                                              'Flickr8k',
                                              'Flickr8k_vocabulary.csv'),
                  embedding_dim=300,
-                 pre_trained_embeddings=True,
+                 pre_trained_embeddings=False,
                  em_path=ROOT_PATH.joinpath('data',
                                             'processed',
                                             'glove',
@@ -297,6 +308,7 @@ class TutorialModel(CaptionGenerator):
         self.model_name = 'Tutorial'
 
     def build_model(self, weights=None):
+        # this is run when model.compile() is called
         if weights is not None:
             # load saved model
             self.load_model(weights)
@@ -347,7 +359,7 @@ class AdaptiveModel(CaptionGenerator):
                                              'Flickr8k',
                                              'Flickr8k_vocabulary.csv'),
                  embedding_dim=300,
-                 pre_trained_embeddings=True,
+                 pre_trained_embeddings=False,
                  em_path=ROOT_PATH.joinpath('data',
                                             'processed',
                                             'glove',
@@ -371,6 +383,7 @@ class AdaptiveModel(CaptionGenerator):
         self.model_name = 'AdaptiveModel'
 
     def build_model(self, weights=None):
+        # This is run when model.compile() is called
         if weights is not None:
             # load saved model
             self.load_model(weights)
@@ -378,12 +391,106 @@ class AdaptiveModel(CaptionGenerator):
             # build model
             encoder_inputs = Input(shape=(1536,))
             # resize to global features
+            # TODO
+
             decoder_inputs = Input(shape=(self.max_length,))
-            special_lstm_layer = LSTMWithVisualSentinelCell(2048)
+            # resize word input
 
-            attention_layer = AdaptiveAttention()
+            # TODO merge global visual features and word
 
-            decoder_lstm = LSTM(2048)
+            lstm_layer = LSTMWithVisualSentinelCell(2048)
+
+            # TODO merge visual, s_t and h_t
+
+            attention_layer = AdaptiveAttention(2048, 30)
+
+            # TODO merge z_t and h_t
+
+            # can add more Dense layers for decoding here
+
+            output = Dense(self.vocab_size, activation='softmax')
+
+            self.model = Model(input=[encoder_inputs, decoder_inputs],
+                               output=output)
+
+            # pre-trained embeddings
+            if self.pre_trained_embeddings:
+                # Load gloVe embeddings
+                embeddings_index = load_glove_vectors(self.em_path)
+                embedding_matrix = embeddings_matrix(self.vocab_size,
+                                                     self.wordtoix,
+                                                     embeddings_index,
+                                                     self.embedding_dim)
+                # Attach pre-trained embeddings to embeddings layer
+                self.model.layers[2].set_weights([embedding_matrix])
+                self.model.layers[2].trainable = False
+
+        # print summary
+        if self.verbose:
+            self.model.summary()
+
+
+class TestModel(CaptionGenerator):
+
+    def __init__(self, max_length,
+                 voc_path=ROOT_PATH.joinpath('data',
+                                             'interim',
+                                             'Flickr8k',
+                                             'Flickr8k_vocabulary.csv'),
+                 embedding_dim=300,
+                 pre_trained_embeddings=False,
+                 em_path=ROOT_PATH.joinpath('data',
+                                            'processed',
+                                            'glove',
+                                            'glove.42B.300d.txt'),
+                 feature_path=ROOT_PATH.joinpath('data',
+                                                 'processed',
+                                                 'Flickr8k',
+                                                 'Images',
+                                                 'encoded_full_images.pkl'),
+                 save_path=ROOT_PATH.joinpath('models'),
+                 verbose=True
+                 ):
+        super().__init__(max_length,
+                         voc_path=voc_path,
+                         embedding_dim=embedding_dim,
+                         pre_trained_embeddings=pre_trained_embeddings,
+                         em_path=em_path,
+                         feature_path=feature_path,
+                         save_path=save_path,
+                         verbose=verbose)
+        self.model_name = 'TestModel'
+
+    def build_model(self, weights=None):
+        # This is run when model.compile() is called
+        if weights is not None:
+            # load saved model
+            self.load_model(weights)
+        else:
+            # build model
+            encoder_inputs = Input(shape=(1536,))
+            enc_dr = Dropout(0.5)(encoder_inputs)
+            encoder_fc1 = Dense(124, activation='relu')(enc_dr)
+
+            decoder_inputs = Input(shape=(self.max_length,))
+            dec_dr = Dropout(0.5)(decoder_inputs)
+            dec_fc1 = Dense(124, activation='relu')(dec_dr)
+
+            # merge global visual features and word
+            concat1 = concatenate([encoder_fc1, dec_fc1])
+
+            lstm_layer = LSTMWithVisualSentinelCell(2048)(concat1)
+
+            # probably redundant if custom layer is working
+            concat2 = concatenate([lstm_layer[0], lstm_layer[1]])
+
+            # can add more Dense layers for decoding here
+
+            output = \
+                Dense(self.vocab_size, activation='softmax')(concat2)
+
+            self.model = Model(input=[encoder_inputs, decoder_inputs],
+                               output=output)
 
             # pre-trained embeddings
             if self.pre_trained_embeddings:
