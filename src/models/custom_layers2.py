@@ -15,9 +15,9 @@ class LSTMWithVisualSentinelCell(Layer):
         super(LSTMWithVisualSentinelCell, self).__init__(**kwargs)
 
     def build(self, input_shape):
-        self.lstm_cell = LSTM(input_shape, self.units)
-        self.x_gate = Dense(input_shape, self.units)
-        self.h_gate = Dense(self.units, self.units)
+        self.lstm_cell = LSTM(self.units, input_shape=input_shape)
+        self.x_gate = Dense(self.units, input_shape=input_shape)
+        self.h_gate = Dense(self.units, input_dim=self.units)
         super(LSTMWithVisualSentinelCell, self).build(input_shape)
 
     def call(self, inputs, states, **kwargs):

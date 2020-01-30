@@ -27,12 +27,12 @@ ROOT_PATH = Path(__file__).absolute().parents[2]
 
 def model_switcher(model_str, max_len):
     switcher = {
-        "TestModel": TestModel(max_len),
-        "TutorialModel": TutorialModel(max_len),
-        "AdaptiveModel": AdaptiveModel(max_len),
-        "Default": TestModel(max_len)
+        "TestModel": TestModel,
+        "TutorialModel": TutorialModel,
+        "AdaptiveModel": AdaptiveModel,
+        "Default": TestModel
     }
-    return switcher[model_str]
+    return switcher[model_str](max_len)
 
 
 class CaptionGenerator:
