@@ -1,4 +1,5 @@
 from keras.layers import Layer
+from keras.layers import RNN
 from keras.layers import LSTM
 from keras.layers import Dense
 from keras import backend as K
@@ -20,13 +21,37 @@ class LSTMWithVisualSentinelCell(Layer):
         self.h_gate = Dense(self.units, input_dim=self.units)
         super(LSTMWithVisualSentinelCell, self).build(input_shape)
 
-    def call(self, inputs, states, **kwargs):
+    def call(self, inputs,
+             mask=None,
+             states=None,
+             **kwargs):
         assert isinstance(inputs, list)
         h_old, c_old = states
         ht, ct = self.lstm_cell(inputs, (h_old, c_old))
         sen_gate = K.sigmoid(self.x_gate(inputs) + self.h_gate(h_old))
         st = sen_gate * K.tanh(ct)
         return ht, ct, st
+
+
+class LSTMWithVisualSentinel(RNN):
+
+    def __init__(self, units, **kwargs):
+        self.units = units
+        cell = LSTMWithVisualSentinelCell(self.units, **kwargs)
+        super(LSTMWithVisualSentinel, self).__init__(cell, **kwargs)
+
+    def call(self, inputs,
+             mask=None,
+             training=None,
+             initial_state=None,
+             **kwargs):
+        self.cell._dropout_mask = None
+        self.cell._recurrent_dropout_mask = None
+        return super(LSTMWithVisualSentinel, self).call(
+            inputs,
+            mask=mask,
+            training=training,
+            initial_state=initial_state)
 
 
 class AdaptiveAttention(Layer):

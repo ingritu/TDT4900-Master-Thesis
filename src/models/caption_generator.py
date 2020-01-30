@@ -19,7 +19,7 @@ from keras.models import load_model
 from datetime import datetime
 from copy import deepcopy
 
-from src.models.custom_layers2 import LSTMWithVisualSentinelCell
+from src.models.custom_layers2 import LSTMWithVisualSentinel
 from src.models.custom_layers2 import AdaptiveAttention
 
 ROOT_PATH = Path(__file__).absolute().parents[2]
@@ -398,7 +398,7 @@ class AdaptiveModel(CaptionGenerator):
 
             # TODO merge global visual features and word
 
-            lstm_layer = LSTMWithVisualSentinelCell(2048)
+            lstm_layer = LSTMWithVisualSentinel(2048)
 
             # TODO merge visual, s_t and h_t
 
@@ -479,7 +479,7 @@ class TestModel(CaptionGenerator):
             # merge global visual features and word
             concat1 = concatenate([encoder_fc1, dec_fc1])
 
-            lstm_layer = LSTMWithVisualSentinelCell(2048)(concat1)
+            lstm_layer = LSTMWithVisualSentinel(2048)(concat1)
 
             # probably redundant if custom layer is working
             concat2 = concatenate([lstm_layer[0], lstm_layer[1]])
