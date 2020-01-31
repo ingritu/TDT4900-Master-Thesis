@@ -490,9 +490,11 @@ class TestModel(CaptionGenerator):
 
             print(concat1.shape)
 
-            lstm_layer = SentinelLSTM(512)(concat1)
+            h_t, s_t, states = LSTMWithVisualSentinel(512)(concat1)
 
-            print(lstm_layer.shape)
+            print(h_t.shape)
+            print(s_t.shape)
+            print(states.shape)
 
             # probably redundant if custom layer is working
             #concat2 = concatenate([lstm_layer[0], lstm_layer[1]])
@@ -500,7 +502,7 @@ class TestModel(CaptionGenerator):
             # can add more Dense layers for decoding here
 
             output = \
-                Dense(self.vocab_size, activation='softmax')(lstm_layer)
+                Dense(self.vocab_size, activation='softmax')(h_t)
 
             self.model = Model(input=[encoder_inputs, decoder_inputs],
                                output=output)

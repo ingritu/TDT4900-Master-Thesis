@@ -158,7 +158,7 @@ class SentinelLSTMCell(Layer):
                     return K.concatenate([
                         self.bias_initializer((self.units,), *args, **kwargs),
                         initializers.Ones()((self.units,), *args, **kwargs),
-                        self.bias_initializer((self.units * 2,), *args, **kwargs),
+                        self.bias_initializer((self.units * 3,), *args, **kwargs),
                     ])
             else:
                 bias_initializer = self.bias_initializer
@@ -276,10 +276,13 @@ class SentinelLSTMCell(Layer):
             if 0. < self.dropout < 1.:
                 inputs *= dp_mask[0]
             z = K.dot(inputs, self.kernel)
+            # print('z', z.shape)
             if 0. < self.recurrent_dropout < 1.:
                 h_tm1 *= rec_dp_mask[0]
             z += K.dot(h_tm1, self.recurrent_kernel)
+            # print('z', z.shape)
             if self.use_bias:
+                # print('bias', self.bias.shape)
                 z = K.bias_add(z, self.bias)
 
             z0 = z[:, :self.units]

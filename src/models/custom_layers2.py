@@ -17,7 +17,9 @@ class LSTMWithVisualSentinelCell(Layer):
         super(LSTMWithVisualSentinelCell, self).__init__(**kwargs)
 
     def build(self, input_shape):
-        self.lstm_cell = LSTM(self.units, input_shape=input_shape)
+        self.lstm_cell = LSTM(self.units,
+                              input_shape=input_shape,
+                              return_state=True)
         self.x_gate = Dense(self.units,
                             input_shape=input_shape,
                             activation='sigmoid')
@@ -27,10 +29,10 @@ class LSTMWithVisualSentinelCell(Layer):
         super(LSTMWithVisualSentinelCell, self).build(input_shape)
 
     def call(self, inputs,
+             states,
              mask=None,
-             states=None,
              **kwargs):
-        assert isinstance(inputs, list)
+        print(inputs)
         h_old, c_old = states
         ht, ct = self.lstm_cell(inputs, (h_old, c_old))
         sen_gate = K.sigmoid(self.x_gate(inputs) + self.h_gate(h_old))
