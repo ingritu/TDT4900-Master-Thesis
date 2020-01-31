@@ -18,7 +18,7 @@ from keras import constraints
 import warnings
 
 
-class LSTMWithVisualSentinelCell(Layer):
+class SentinelLSTMCell(Layer):
     """Cell class for the LSTM layer.
 
     # Arguments
@@ -97,7 +97,9 @@ class LSTMWithVisualSentinelCell(Layer):
                  recurrent_dropout=0.,
                  implementation=2,
                  **kwargs):
-        super(LSTMWithVisualSentinelCell, self).__init__(**kwargs)
+        print('entered init')
+        super(SentinelLSTMCell, self).__init__(**kwargs)
+        print('left super init')
         self.units = units
         self.activation = activations.get(activation)
         self.recurrent_activation = activations.get(recurrent_activation)
@@ -125,6 +127,8 @@ class LSTMWithVisualSentinelCell(Layer):
         self._recurrent_dropout_mask = None
 
     def build(self, input_shape):
+        print('entered build')
+        print(input_shape)
         input_dim = input_shape[-1]
 
         if type(self.recurrent_initializer).__name__ == 'Identity':
@@ -169,23 +173,24 @@ class LSTMWithVisualSentinelCell(Layer):
         self.kernel_i = self.kernel[:, :self.units]  # input
         self.kernel_f = self.kernel[:, self.units: self.units * 2]  # forget
         self.kernel_c = self.kernel[:, self.units * 2: self.units * 3]  # cell
-        self.kernel_o = self.kernel[:, self.units * 3:]  # output
-        self.kernel_vs = self.kernel[:, self.units * 3:]  # visual sentinel
+        self.kernel_o = self.kernel[:, self.units * 3: self.units * 4]  # output
+        self.kernel_vs = self.kernel[:, self.units * 4:]  # visual sentinel
 
         self.recurrent_kernel_i = self.recurrent_kernel[:, :self.units]
         self.recurrent_kernel_f = (
             self.recurrent_kernel[:, self.units: self.units * 2])
         self.recurrent_kernel_c = (
             self.recurrent_kernel[:, self.units * 2: self.units * 3])
-        self.recurrent_kernel_o = self.recurrent_kernel[:, self.units * 3:]
-        self.recurrent_kernel_vs = self.recurrent_kernel[:, self.units * 3:]
+        self.recurrent_kernel_o = (
+            self.recurrent_kernel[:, self.units * 3: self.units * 4])
+        self.recurrent_kernel_vs = self.recurrent_kernel[:, self.units * 4:]
 
         if self.use_bias:
             self.bias_i = self.bias[:self.units]
             self.bias_f = self.bias[self.units: self.units * 2]
             self.bias_c = self.bias[self.units * 2: self.units * 3]
-            self.bias_o = self.bias[self.units * 3:]
-            self.bias_vs = self.bias[self.units * 3:]
+            self.bias_o = self.bias[self.units * 3: self.units * 4]
+            self.bias_vs = self.bias[self.units * 4:]
         else:
             self.bias_i = None
             self.bias_f = None
@@ -195,6 +200,8 @@ class LSTMWithVisualSentinelCell(Layer):
         self.built = True
 
     def call(self, inputs, states, training=None):
+        print('entered call')
+        print(inputs)
         if 0 < self.dropout < 1 and self._dropout_mask is None:
             self._dropout_mask = _generate_dropout_mask(
                 K.ones_like(inputs),
@@ -223,31 +230,37 @@ class LSTMWithVisualSentinelCell(Layer):
                 inputs_f = inputs * dp_mask[1]
                 inputs_c = inputs * dp_mask[2]
                 inputs_o = inputs * dp_mask[3]
+                inputs_vs = inputs * dp_mask[4]
             else:
                 inputs_i = inputs
                 inputs_f = inputs
                 inputs_c = inputs
                 inputs_o = inputs
+                inputs_vs = inputs
             x_i = K.dot(inputs_i, self.kernel_i)
             x_f = K.dot(inputs_f, self.kernel_f)
             x_c = K.dot(inputs_c, self.kernel_c)
             x_o = K.dot(inputs_o, self.kernel_o)
+            x_vs = K.dot(inputs_vs, self.kernel_vs)
             if self.use_bias:
                 x_i = K.bias_add(x_i, self.bias_i)
                 x_f = K.bias_add(x_f, self.bias_f)
                 x_c = K.bias_add(x_c, self.bias_c)
                 x_o = K.bias_add(x_o, self.bias_o)
+                x_vs = K.bias_add(x_vs, self.bias_vs)
 
             if 0 < self.recurrent_dropout < 1.:
                 h_tm1_i = h_tm1 * rec_dp_mask[0]
                 h_tm1_f = h_tm1 * rec_dp_mask[1]
                 h_tm1_c = h_tm1 * rec_dp_mask[2]
                 h_tm1_o = h_tm1 * rec_dp_mask[3]
+                h_tm1_vs = h_tm1 * rec_dp_mask[4]
             else:
                 h_tm1_i = h_tm1
                 h_tm1_f = h_tm1
                 h_tm1_c = h_tm1
                 h_tm1_o = h_tm1
+                h_tm1_vs = h_tm1
             i = self.recurrent_activation(x_i + K.dot(h_tm1_i,
                                                       self.recurrent_kernel_i))
             f = self.recurrent_activation(x_f + K.dot(h_tm1_f,
@@ -257,6 +270,8 @@ class LSTMWithVisualSentinelCell(Layer):
                 self.recurrent_kernel_c))
             o = self.recurrent_activation(x_o + K.dot(h_tm1_o,
                                                       self.recurrent_kernel_o))
+            vs = self.recurrent_activation(x_vs + K.dot(
+                h_tm1_vs, self.recurrent_kernel_vs))
         else:
             if 0. < self.dropout < 1.:
                 inputs *= dp_mask[0]
@@ -270,18 +285,21 @@ class LSTMWithVisualSentinelCell(Layer):
             z0 = z[:, :self.units]
             z1 = z[:, self.units: 2 * self.units]
             z2 = z[:, 2 * self.units: 3 * self.units]
-            z3 = z[:, 3 * self.units:]
+            z3 = z[:, 3 * self.units: 4 * self.units]
+            z4 = z[:, 4 * self.units:]
 
             i = self.recurrent_activation(z0)
             f = self.recurrent_activation(z1)
             c = f * c_tm1 + i * self.activation(z2)
             o = self.recurrent_activation(z3)
+            vs = self.recurrent_activation(z4)
 
         h = o * self.activation(c)
+        s_t = vs * self.activation(c)
         if 0 < self.dropout + self.recurrent_dropout:
             if training is None:
                 h._uses_learning_phase = True
-        return h, [h, c]
+        return h, s_t, [h, c]
 
     def get_config(self):
         config = {'units': self.units,
@@ -311,11 +329,11 @@ class LSTMWithVisualSentinelCell(Layer):
                   'dropout': self.dropout,
                   'recurrent_dropout': self.recurrent_dropout,
                   'implementation': self.implementation}
-        base_config = super(LSTMWithVisualSentinelCell, self).get_config()
+        base_config = super(SentinelLSTMCell, self).get_config()
         return dict(list(base_config.items()) + list(config.items()))
 
 
-class LSTMWithVisualSentinel(RNN):
+class SentinelLSTM(RNN):
     """Long Short-Term Memory layer - Hochreiter 1997.
 
         # Arguments
@@ -444,7 +462,7 @@ class LSTMWithVisualSentinel(RNN):
             dropout = 0.
             recurrent_dropout = 0.
 
-        cell = LSTMCell(units,
+        cell = SentinelLSTMCell(units,
                         activation=activation,
                         recurrent_activation=recurrent_activation,
                         use_bias=use_bias,
@@ -461,22 +479,22 @@ class LSTMWithVisualSentinel(RNN):
                         dropout=dropout,
                         recurrent_dropout=recurrent_dropout,
                         implementation=implementation)
-        super(LSTMWithVisualSentinel, self).__init__(cell,
-                                   return_sequences=return_sequences,
-                                   return_state=return_state,
-                                   go_backwards=go_backwards,
-                                   stateful=stateful,
-                                   unroll=unroll,
-                                   **kwargs)
+        super(SentinelLSTM, self).__init__(cell,
+                                           return_sequences=return_sequences,
+                                           return_state=return_state,
+                                           go_backwards=go_backwards,
+                                           stateful=stateful,
+                                           unroll=unroll,
+                                           **kwargs)
         self.activity_regularizer = regularizers.get(activity_regularizer)
 
     def call(self, inputs, mask=None, training=None, initial_state=None):
         self.cell._dropout_mask = None
         self.cell._recurrent_dropout_mask = None
-        return super(LSTMWithVisualSentinel, self).call(inputs,
-                                      mask=mask,
-                                      training=training,
-                                      initial_state=initial_state)
+        return super(SentinelLSTM, self).call(inputs,
+                                              mask=mask,
+                                              training=training,
+                                              initial_state=initial_state)
 
     @property
     def units(self):
@@ -576,7 +594,7 @@ class LSTMWithVisualSentinel(RNN):
                   'dropout': self.dropout,
                   'recurrent_dropout': self.recurrent_dropout,
                   'implementation': self.implementation}
-        base_config = super(LSTMWithVisualSentinel, self).get_config()
+        base_config = super(SentinelLSTM, self).get_config()
         del base_config['cell']
         return dict(list(base_config.items()) + list(config.items()))
 
@@ -600,44 +618,3 @@ def _generate_dropout_mask(ones, rate, training=None, count=1):
         dropped_inputs,
         ones,
         training=training)
-
-
-def _standardize_args(inputs, initial_state, constants, num_constants):
-    """Standardize `__call__` to a single list of tensor inputs.
-
-    When running a model loaded from file, the input tensors
-    `initial_state` and `constants` can be passed to `RNN.__call__` as part
-    of `inputs` instead of by the dedicated keyword arguments. This method
-    makes sure the arguments are separated and that `initial_state` and
-    `constants` are lists of tensors (or None).
-
-    # Arguments
-        inputs: tensor or list/tuple of tensors
-        initial_state: tensor or list of tensors or None
-        constants: tensor or list of tensors or None
-
-    # Returns
-        inputs: tensor
-        initial_state: list of tensors or None
-        constants: list of tensors or None
-    """
-    if isinstance(inputs, list):
-        assert initial_state is None and constants is None
-        if num_constants is not None:
-            constants = inputs[-num_constants:]
-            inputs = inputs[:-num_constants]
-        if len(inputs) > 1:
-            initial_state = inputs[1:]
-        inputs = inputs[0]
-
-    def to_list_or_none(x):
-        if x is None or isinstance(x, list):
-            return x
-        if isinstance(x, tuple):
-            return list(x)
-        return [x]
-
-    initial_state = to_list_or_none(initial_state)
-    constants = to_list_or_none(constants)
-
-    return inputs, initial_state, constants

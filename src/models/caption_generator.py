@@ -6,6 +6,7 @@ from keras.layers.merge import add
 from keras.layers.merge import concatenate
 from keras.models import Model
 from keras import Input
+from keras.layers import RepeatVector
 from pathlib import Path
 from src.features.glove_embeddings import embeddings_matrix
 from src.features.glove_embeddings import load_glove_vectors
@@ -21,6 +22,7 @@ from copy import deepcopy
 
 from src.models.custom_layers2 import LSTMWithVisualSentinel
 from src.models.custom_layers2 import AdaptiveAttention
+from src.models.custom_layers import SentinelLSTM
 
 ROOT_PATH = Path(__file__).absolute().parents[2]
 
@@ -470,24 +472,35 @@ class TestModel(CaptionGenerator):
             # build model
             encoder_inputs = Input(shape=(1536,))
             enc_dr = Dropout(0.5)(encoder_inputs)
-            encoder_fc1 = Dense(124, activation='relu')(enc_dr)
+            encoder_fc1 = Dense(512, activation='relu')(enc_dr)
+
+            encoder_rep = RepeatVector(self.max_length)(encoder_fc1)
 
             decoder_inputs = Input(shape=(self.max_length,))
-            dec_dr = Dropout(0.5)(decoder_inputs)
-            dec_fc1 = Dense(124, activation='relu')(dec_dr)
+            em = Embedding(self.vocab_size,
+                            self.embedding_dim,
+                            mask_zero=True)(decoder_inputs)
+            print(em.shape)
+            dec_dr = Dropout(0.5)(em)
+            dec_fc1 = Dense(512, activation='relu')(dec_dr)
+            print(dec_fc1.shape)
 
             # merge global visual features and word
-            concat1 = concatenate([encoder_fc1, dec_fc1])
+            concat1 = concatenate([encoder_rep, dec_fc1])  # (, 248)
 
-            lstm_layer = LSTMWithVisualSentinel(2048)(concat1)
+            print(concat1.shape)
+
+            lstm_layer = SentinelLSTM(512)(concat1)
+
+            print(lstm_layer.shape)
 
             # probably redundant if custom layer is working
-            concat2 = concatenate([lstm_layer[0], lstm_layer[1]])
+            #concat2 = concatenate([lstm_layer[0], lstm_layer[1]])
 
             # can add more Dense layers for decoding here
 
             output = \
-                Dense(self.vocab_size, activation='softmax')(concat2)
+                Dense(self.vocab_size, activation='softmax')(lstm_layer)
 
             self.model = Model(input=[encoder_inputs, decoder_inputs],
                                output=output)
