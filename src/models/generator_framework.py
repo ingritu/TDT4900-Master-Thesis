@@ -125,6 +125,7 @@ class Generator:
         return self.model
 
     def set_model(self, model):
+        # expects a pytorch model
         self.model = model
 
     def get_model_name(self):

@@ -44,7 +44,9 @@ Image Captioning
     ├── models/
     │   ├── caption_generator.py
     │   ├── custom_layers.py
+    │   ├── generator_framework.py
     │   ├── predict_model.py
+    │   ├── torch_generators.py
     │   └── train_model.py
     └── visualization/
         └── visualize.py
