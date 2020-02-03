@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
-class SentinelLSTM(nn.module):
+class SentinelLSTM(nn.Module):
 
     def __init__(self, input_size, hidden_size):
         super(SentinelLSTM, self).__init__()
