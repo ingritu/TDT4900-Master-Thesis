@@ -3,7 +3,7 @@ from torch import nn as nn
 from torch.nn import functional as F
 
 
-class TutorialModel(nn.module):
+class TutorialModel(nn.Module):
 
     def __init__(self,
                  input_shape,
@@ -48,7 +48,6 @@ class TutorialModel(nn.module):
         output = F.softmax(self.output_layer(fc_output))
 
         # does the next x input have to be the output here???
+        # do not think so since we can do the extra work in predict,
+        # and this is unnecessary for training
         return output
-
-
-
