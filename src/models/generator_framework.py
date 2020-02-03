@@ -109,7 +109,7 @@ class Generator:
         # TODO: implement this function
         pass
 
-    def beam_search(self, beam_size):
+    def beam_search(self, image, beam_size):
         # TODO: implement this function
         pass
 

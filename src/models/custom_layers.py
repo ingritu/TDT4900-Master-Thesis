@@ -7,6 +7,8 @@ class SentinelLSTM(nn.module):
 
     def __init__(self, input_size, hidden_size):
         super(SentinelLSTM, self).__init__()
+        # NB! there is a difference between LSTMCell and LSTM.
+        # LSTM is notably much quicker
         self.lstm_kernel = nn.LSTMCell(input_size, hidden_size)
         self.x_gate = nn.Linear(input_size, hidden_size)
         self.h_gate = nn.Linear(hidden_size, hidden_size)
