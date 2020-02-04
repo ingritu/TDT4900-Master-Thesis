@@ -3,6 +3,13 @@ from torch import nn as nn
 from torch.nn import functional as F
 
 
+def model_switcher(model_str):
+    switcher = {
+        'Tutorial': TutorialModel
+    }
+    return switcher[model_str]
+
+
 class TutorialModel(nn.Module):
 
     def __init__(self,

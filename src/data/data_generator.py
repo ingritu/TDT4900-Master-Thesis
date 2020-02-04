@@ -2,7 +2,6 @@ from pathlib import Path
 import numpy as np
 from sklearn.utils import shuffle
 import random as r
-from src.features.Resnet_features import load_visual_features
 from keras.utils import to_categorical
 from keras.preprocessing.sequence import pad_sequences
 
@@ -14,7 +13,8 @@ def data_generator(data_df, batch_size, steps_per_epoch,
     """
     outputs data in batches
     """
-    # TODO: order data to create batches with captions of roughly the same length
+    # TODO: order data to create batches with captions
+    #  of roughly the same length
     r.seed(seed)
     shuffle_state = r.randint(0, 10000)
 
@@ -47,9 +47,12 @@ def data_generator(data_df, batch_size, steps_per_epoch,
                     # split into input and output pair
                     in_seq, out_seq = seq[:j], seq[j]
                     # pad input sequence
+                    # TODO: fix this to not use keras
                     in_seq = pad_sequences([in_seq], maxlen=max_length)[0]
                     # encode output sequence
-                    out_seq = to_categorical([out_seq], num_classes=vocab_size)[0]
+                    # TODO: fix this to not use keras
+                    out_seq = to_categorical([out_seq],
+                                             num_classes=vocab_size)[0]
                     # store
                     x1.append(image)
                     x2.append(in_seq)
@@ -59,6 +62,7 @@ def data_generator(data_df, batch_size, steps_per_epoch,
             x1 = np.array(x1)
             x2 = np.array(x2)
             y = np.array(y)
+            # TODO: convert to torch tensors not numpy arrays
             yield [[x1, x2], y]
 
 

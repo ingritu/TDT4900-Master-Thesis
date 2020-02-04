@@ -1,7 +1,5 @@
 from pathlib import Path
-from keras.applications.inception_resnet_v2 import InceptionResNetV2
 from keras.applications.inception_resnet_v2 import preprocess_input
-from keras.applications.inception_v3 import InceptionV3
 from keras.models import Model
 from skimage.io import imread
 import numpy as np
@@ -14,6 +12,7 @@ ROOT_PATH = Path(__file__).absolute().parents[2]
 
 
 def load_pre_trained_model():
+    from keras.applications.inception_resnet_v2 import InceptionResNetV2
     model = InceptionResNetV2(weights='imagenet')
     model_new = Model(model.input, model.layers[-2].output)
     model_new.summary()
@@ -21,6 +20,7 @@ def load_pre_trained_model():
 
 
 def load_inception():
+    from keras.applications.inception_v3 import InceptionV3
     model = InceptionV3(weights='imagenet')
     new_model = Model(model.input, model.layers[-2].output)
     new_model.summary()
