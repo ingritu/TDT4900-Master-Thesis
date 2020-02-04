@@ -25,6 +25,7 @@ if __name__ == '__main__':
                                        'Flickr8k',
                                        'Images',
                                        'encoded_full_images.pkl')
+    save_path_ = ROOT_PATH.joinpath('models')
 
     model_name_ = 'Tutorial'
 
@@ -42,6 +43,7 @@ if __name__ == '__main__':
 
     generator = Generator(model_name_, input_shape_,
                           voc_path_, feature_path_,
+                          save_path_,
                           loss_function=loss_function_,
                           optimizer=opt, lr=lr_,
                           embedding_size=em_dim,

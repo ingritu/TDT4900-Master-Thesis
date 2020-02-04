@@ -31,10 +31,10 @@ class TutorialModel(nn.Module):
 
         # add layers here
         self.im_fc1 = nn.Linear(self.img_feature_shape, 256)
-        self.w_em1 = nn.Embedding(self.max_len, self.embedding_size)
+        self.w_em1 = nn.Embedding(self.vocab_size, self.embedding_size)
 
         self.lstm = nn.LSTM(self.embedding_size, 256)
-
+        self.w_fc1 = nn.Linear(9472, 256)
         self.fc1 = nn.Linear(256, 256)
         self.output_layer = nn.Linear(256, self.vocab_size)
 
@@ -42,19 +42,34 @@ class TutorialModel(nn.Module):
         # put everything together here
         # prepare inputs
         im_input = x[0]
+        # print(im_input.size())
         w_input = x[1]
+        # print(w_input.size())
 
-        im_vector = F.relu(self.im_fc1(im_input))
+        global_image = F.relu(self.im_fc1(im_input))
 
         embbedding_vector = self.w_em1(w_input)
-        lstm_vector = self.lstm(embbedding_vector)
+        # print('embedding', embbedding_vector.size())
+        lstm_vector, _ = self.lstm(embbedding_vector)
 
-        sum_vector = im_vector + lstm_vector
+        # print('image', global_image.size())
+        # print('lstm', lstm_vector.size())
+
+        lstm_vector = lstm_vector.view(-1, flatten_features(lstm_vector))
+        lstm_vector = F.relu(self.w_fc1(lstm_vector))
+        # print(lstm_vector.size())
+        sum_vector = lstm_vector + global_image
 
         fc_output = F.relu(self.fc1(sum_vector))
-        output = F.softmax(self.output_layer(fc_output))
+        output = F.softmax(self.output_layer(fc_output), dim=1)
 
-        # does the next x input have to be the output here???
-        # do not think so since we can do the extra work in predict,
-        # and this is unnecessary for training
         return output
+
+
+def flatten_features(x):
+    size = x.size()[1:]
+    num_features = 1
+    for s in size:
+        num_features *= s
+    return num_features
+

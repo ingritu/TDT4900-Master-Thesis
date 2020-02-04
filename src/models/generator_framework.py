@@ -39,6 +39,7 @@ class Generator:
                  input_shape,
                  voc_path,
                  feature_path,
+                 save_path,
                  loss_function='cross_entropy',
                  optimizer='adam',
                  lr=0.0001,
@@ -49,6 +50,7 @@ class Generator:
 
         self.embedding_size = embedding_size
 
+        self.save_path = save_path
         self.random_seed = seed
 
         self.wordtoix, self.ixtoword = load_vocabulary(voc_path)
@@ -61,6 +63,7 @@ class Generator:
                                                 embedding_size=
                                                 self.embedding_size,
                                                 seed=self.random_seed)
+        print(self.model)
         self.model_name = model_name
 
         # initialize loss function
@@ -93,13 +96,15 @@ class Generator:
                                          seed=self.random_seed)
 
         for e in range(epochs):
+            print('Epoch: #' + str(e + 1))
             for s in range(steps_per_epoch):
+                print('Step: #' + str(s + 1) + '/' + str(steps_per_epoch))
                 # zero the gradient buffers
                 self.optimizer.zero_grad()
 
                 # get minibatch from data generator
-                # TODO: modify datagenerator to give right output
                 x, target = next(train_generator)
+
                 # get predictions from network
                 output = self.model(x)
                 # get loss
@@ -112,8 +117,9 @@ class Generator:
         # save model to file
         date_time_obj = datetime.now()
         timestamp_str = date_time_obj.strftime("%d-%b-%Y_(%H:%M:%S)")
-        # TODO: add timestamp to filename
-        self.save_model()
+        path = self.save_path.joinpath(self.model_name + '_' + timestamp_str +
+                                       '.pth')
+        self.save_model(path)
 
     def predict(self, data_df, beam_size):
         # TODO: implement this function
@@ -123,13 +129,17 @@ class Generator:
         # TODO: implement this function
         pass
 
-    def load_model(self):
-        # TODO: implement this function
-        pass
+    def load_model(self, path):
+        self.model = model_switcher(self.model_name)(self.input_shape,
+                                                     self.vocab_size,
+                                                     embedding_size=
+                                                     self.embedding_size,
+                                                     seed=self.random_seed)
+        self.model.load_state_dict(torch.load(path))
+        self.model.eval()
 
-    def save_model(self):
-        # TODO: implement this function
-        pass
+    def save_model(self, path):
+        torch.save(self.model.state_dict(), path)
 
     def get_model(self):
         return self.model

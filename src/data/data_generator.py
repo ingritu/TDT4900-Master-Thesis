@@ -59,11 +59,11 @@ def data_generator(data_df, batch_size, steps_per_epoch,
 
             # encode output sequence
             y = np.array(y)
-            y = to_categorical(y, num_classes=vocab_size)
+            # y = to_categorical(y, num_classes=vocab_size, dtype=np.int_)
 
             x1 = torch.tensor(x1)  # convert to tensor
-            y = torch.from_numpy(y)
-            # TODO: convert to torch tensors not numpy arrays
+            # print(y)
+            y = torch.from_numpy(y)  # convert to tensor
             yield [[x1, x2], y]
 
 
