@@ -48,5 +48,7 @@ if __name__ == '__main__':
                           optimizer=opt, lr=lr_,
                           embedding_size=em_dim,
                           seed=seed_)
+    generator.compile()
 
+    # model is automatically saved after training
     generator.train(train_path, epochs=epochs, batch_size=batch_size)

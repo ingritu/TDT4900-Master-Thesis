@@ -50,9 +50,9 @@ class Generator:
                  seed=222):
         # delete if not used in this class
         self.input_shape = input_shape
+        self.max_length = self.input_shape[1]
 
         self.embedding_size = embedding_size
-        self.max_length = 0  # initialize as 0
 
         self.save_path = save_path
         self.random_seed = seed
@@ -61,13 +61,9 @@ class Generator:
         self.vocab_size = len(self.wordtoix)
         self.encoded_features = load_visual_features(feature_path)
 
-        # initialize model
-        self.model = model_switcher(model_name)(self.input_shape,
-                                                self.vocab_size,
-                                                embedding_size=
-                                                self.embedding_size,
-                                                seed=self.random_seed)
-        print(self.model)
+        # initialize model as None
+        self.model = None
+
         self.model_name = model_name
 
         # initialize loss function
@@ -77,10 +73,19 @@ class Generator:
         self.optimizer_string = optimizer
         self.optimizer = None  # not initialized
         self.lr = lr
-        self.initialize_optimizer()
 
         # misc
         self.framework_name = 'CaptionGeneratorFramework'
+
+    def compile(self):
+        # initialize model
+        self.model = model_switcher(self.model_name)(self.input_shape,
+                                                     self.vocab_size,
+                                                     embedding_size=
+                                                     self.embedding_size,
+                                                     seed=self.random_seed)
+        print(self.model)
+        self.initialize_optimizer()  # initialize optimizer
 
     def initialize_optimizer(self):
         self.optimizer = optimizer_switcher(self.optimizer_string)(
@@ -155,11 +160,10 @@ class Generator:
             predicted_captions[image_name] = predictions
         return predicted_captions
 
-
-    def beam_search(self, image, beam_size):
+    def beam_search(self, image, beam_size=1):
         # TODO: implement this function
         # initialization
-        image = torch.tensor(image)  # convert to tensor
+        image = torch.tensor([image])  # convert to tensor
         in_token = ['startseq']
         captions = [[in_token, 0.0]]
         for _ in range(self.max_length):
@@ -187,10 +191,13 @@ class Generator:
                 sequence = torch.tensor(sequence)  # convert to tensor
                 # pad sequence
                 sequence = pad_sequences([sequence], maxlen=self.max_length)
-                
+
                 # get predictions
-                y_predictions = self.model([[image], sequence])
+                y_predictions = self.model([image, sequence])
                 # get the b most probable indices
+                # first turn predictions into numpy array,
+                # so that we can use np.argsort
+                y_predictions = y_predictions.detach().numpy()[0]
                 words_predicted = np.argsort(y_predictions)[-beam_size:]
                 for word in words_predicted:
                     new_partial_cap = deepcopy(caption[0])
@@ -214,6 +221,10 @@ class Generator:
                                                      seed=self.random_seed)
         self.model.load_state_dict(torch.load(path))
         self.model.eval()
+        print('Loaded model at:', path)
+        print(self.model)
+        # initialize optimizer to optimize new model
+        self.initialize_optimizer()
 
     def save_model(self, path):
         torch.save(self.model.state_dict(), path)
@@ -231,3 +242,10 @@ class Generator:
     def set_model_name(self, string):
         assert isinstance(string, str)
         self.model_name = string
+
+    def get_max_length(self):
+        return self.max_length
+
+    def set_max_length(self, length):
+        assert isinstance(length, int)
+        self.max_length = length
