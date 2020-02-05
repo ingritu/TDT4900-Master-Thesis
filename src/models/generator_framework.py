@@ -17,20 +17,22 @@ ROOT_PATH = Path(__file__).absolute().parents[2]
 
 
 def loss_switcher(loss_string):
+    loss_string = loss_string.lower()
     switcher = {
         'cross_entropy': nn.CrossEntropyLoss,
-        'MSE': nn.MSELoss,
-        'Default': nn.CrossEntropyLoss,
+        'mse': nn.MSELoss,
+        'default': nn.CrossEntropyLoss,
     }
 
     return switcher[loss_string]
 
 
 def optimizer_switcher(optimizer_string):
+    optimizer_string = optimizer_string.lower()
     switcher = {
         'adam': optim.Adam,
-        'SGD': optim.SGD,
-        'Default': optim.SGD
+        'sgd': optim.SGD,
+        'default': optim.SGD
     }
     return switcher[optimizer_string]
 

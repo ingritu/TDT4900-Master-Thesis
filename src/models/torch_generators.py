@@ -4,8 +4,11 @@ from torch.nn import functional as F
 
 
 def model_switcher(model_str):
+    model_str = model_str.lower()
     switcher = {
-        'Tutorial': TutorialModel
+        'Tutorial': TutorialModel,
+        'adaptive': AdaptiveModel,
+        'default': TutorialModel
     }
     return switcher[model_str]
 
@@ -64,6 +67,17 @@ class TutorialModel(nn.Module):
         output = F.softmax(self.output_layer(fc_output), dim=1)
 
         return output
+
+
+class AdaptiveModel(nn.Module):
+
+    def __init__(self):
+        # TODO: implement this
+        super(AdaptiveModel, self).__init__()
+
+    def forward(self, x):
+        # TODO: implement this
+        pass
 
 
 def flatten_features(x):
