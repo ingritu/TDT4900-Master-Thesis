@@ -45,6 +45,9 @@ class AttentionLayer(nn.Module):
         # TODO: implement this
         # x : [V, s_t, h_t]
         # V = [v1, v2, ..., vk]
+        # c_t is context vector: sum of alphas*v
+        # output should be beta*s_t + (1-beta)*c_t
+
         V = x[0]
         s_t = x[1]
         h_t = x[2]
