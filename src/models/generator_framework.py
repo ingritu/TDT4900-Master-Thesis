@@ -4,8 +4,11 @@ from torch import optim
 from pathlib import Path
 import pandas as pd
 from datetime import datetime
+import numpy as np
+from copy import deepcopy
 
 from src.data.data_generator import data_generator
+from src.data.data_generator import pad_sequences
 from src.data.load_vocabulary import load_vocabulary
 from src.features.Resnet_features import load_visual_features
 from src.models.torch_generators import model_switcher
@@ -49,6 +52,7 @@ class Generator:
         self.input_shape = input_shape
 
         self.embedding_size = embedding_size
+        self.max_length = 0  # initialize as 0
 
         self.save_path = save_path
         self.random_seed = seed
@@ -86,6 +90,9 @@ class Generator:
         # TODO: implement early stopping on CIDEr metric
         data_path = Path(data_path)
         train_df = pd.read_csv(data_path)
+        # initialize max_length of training set
+        self.max_length = max([len(c.split())
+                               for c in set(train_df.loc[:, 'clean_caption'])])
 
         steps_per_epoch = len(train_df) // batch_size
 
@@ -121,13 +128,83 @@ class Generator:
                                        '.pth')
         self.save_model(path)
 
-    def predict(self, data_df, beam_size):
-        # TODO: implement this function
-        pass
+    def predict(self, data_path, beam_size=1):
+        """
+        Function to make self.model make predictions given some data.
+
+        Parameters
+        ----------
+        data_path : Path or str.
+            Path to csv file containing the test set.
+        beam_size : int.
+            Default is 1, which is the same as doing greedy inference.
+
+        Returns
+        -------
+        predicted_captions : dict.
+            Dictionary image_name as keys and predicted captions through
+            beam search are the values.
+        """
+        data_path = Path(data_path)
+        data_df = pd.read_csv(data_path)
+        predicted_captions = {}
+        images = data_df.loc[:, 'image_id']
+        for image_name in images:
+            image = self.encoded_features[image_name]
+            predictions = self.beam_search(image, beam_size=beam_size)
+            predicted_captions[image_name] = predictions
+        return predicted_captions
+
 
     def beam_search(self, image, beam_size):
         # TODO: implement this function
-        pass
+        # initialization
+        image = torch.tensor(image)  # convert to tensor
+        in_token = ['startseq']
+        captions = [[in_token, 0.0]]
+        for _ in range(self.max_length):
+            # check if all captions have their endseq token.
+            all_done = True
+            for caption in captions:
+                # check for at least one caption without endseq token.
+                if caption[0][-1] != 'endseq' and all_done:
+                    all_done = False
+            if all_done:
+                break
+
+            # size of tmp_captions is max b^2
+            tmp_captions = []
+            for caption in captions:
+                if caption[0][-1] == 'endseq':
+                    # skip expanding if caption has an 'endseq' token.
+                    tmp_captions.append(caption)
+                    continue
+                # if this process proves to be too computationally heavy
+                # then consider trade off with memory, by having extra
+                # variable with both index rep and string rep.
+                sequence = [self.wordtoix[w] for w in caption[0]
+                            if w in self.wordtoix]
+                sequence = torch.tensor(sequence)  # convert to tensor
+                # pad sequence
+                sequence = pad_sequences([sequence], maxlen=self.max_length)
+                
+                # get predictions
+                y_predictions = self.model([[image], sequence])
+                # get the b most probable indices
+                words_predicted = np.argsort(y_predictions)[-beam_size:]
+                for word in words_predicted:
+                    new_partial_cap = deepcopy(caption[0])
+                    # add the predicted word to the partial caption
+                    new_partial_cap.append(self.ixtoword[word])
+                    new_partial_cap_prob = caption[1] + y_predictions[word]
+                    # add cap and prob to tmp list
+                    tmp_captions.append([new_partial_cap,
+                                         new_partial_cap_prob])
+            captions = tmp_captions
+            captions.sort(key=lambda l: l[1])
+            captions = captions[-beam_size:]
+
+        return captions
 
     def load_model(self, path):
         self.model = model_switcher(self.model_name)(self.input_shape,
