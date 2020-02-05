@@ -23,3 +23,14 @@ class SentinelLSTM(nn.Module):
         sv = F.sigmoid(self.h_gate(h_tm1) + self.x_gate(x))
         s_t = sv * F.tanh(c_t)
         return h_t, c_t, s_t
+
+
+class AttentionLayer(nn.Module):
+
+    def __init__(self):
+        # TODO: implement this
+        super(AttentionLayer, self).__init__()
+
+    def forward(self, x):
+        # TODO: implement this
+        pass
