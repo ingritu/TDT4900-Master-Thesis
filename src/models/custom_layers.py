@@ -27,10 +27,30 @@ class SentinelLSTM(nn.Module):
 
 class AttentionLayer(nn.Module):
 
-    def __init__(self):
+    def __init__(self, input_size):
         # TODO: implement this
         super(AttentionLayer, self).__init__()
+        # input_size [k, d]
+        self.k = input_size[0]
+        self.d = input_size[1]
+
+        self.v_fc = nn.Linear(self.k, self.d)
+        self.s_fc = nn.Linear(self.d, self.d)
+
+        self.g_fc = nn.Linear(self.k, self.d)
+
+        self.h_fc = nn.Linear(self.d, self.k)
 
     def forward(self, x):
         # TODO: implement this
-        pass
+        # x : [V, s_t, h_t]
+        # V = [v1, v2, ..., vk]
+        V = x[0]
+        s_t = x[1]
+        h_t = x[2]
+
+        global_h = self.g_fc(h_t)
+
+        mr = F.tanh(self.v_fc(V) + global_h)
+        z_t = self.h_fc(mr)
+        alphas = F.softmax(z_t)
