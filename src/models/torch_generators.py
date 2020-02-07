@@ -18,11 +18,27 @@ def model_switcher(model_str):
 
 class AdaptiveModel(nn.Module):
 
-    def __init__(self, input_shape):
+    def __init__(self,
+                 input_shape,
+                 hidden_size,
+                 vocab_size,
+                 embedding_size=300,
+                 seed=222):
         super(AdaptiveModel, self).__init__()
         self.input_shape = input_shape
+        self.visual_feature_shape = input_shape[0]
+        self.max_len = input_shape[1]
+        self.hidden_size = hidden_size
+
+        self.vocab_size = vocab_size
+        self.em_size = embedding_size
+        self.random_seed = seed
 
         # layers
+        self.v_affine = nn.Linear(self.visual_feature_shape, self.hidden_size)
+        self.global_affine = nn.Linear(self.visual_feature_shape,
+                                       self.hidden_size)
+
         self.sentinel_lstm = SentinelLSTM(1234, 567)
         self.attention_block = AttentionLayer()
 
@@ -30,6 +46,7 @@ class AdaptiveModel(nn.Module):
 
     def forward(self, x):
         # TODO: implement this
+        # visual features (batch_size, 8 ,8, 1536)
         pass
 
 
