@@ -10,6 +10,7 @@ DIMENSIONS = (299, 299, 3)
 
 if __name__ == '__main__':
     # resize images
+    """""""""
     datasets = ['Flickr8k']
     new_dims_ = (299, 299)
     for dataset_ in datasets:
@@ -18,17 +19,25 @@ if __name__ == '__main__':
         save_path_ = ROOT_PATH.joinpath('data', 'interim', dataset_,
                                         'Images')
         resize_images(image_path_, save_path_, new_dims_)
+    """""""""
 
     # Build visual features
     datasets = ['Flickr8k']
+    # -5 is also a possibility
+    output_layer_dim_ = -3
+    vis_att_ = True
     for dataset_ in datasets:
         image_path_ = ROOT_PATH.joinpath('data', 'interim', dataset_,
                                          'Images', str(DIMENSIONS[0]) + 'x'
                                          + str(DIMENSIONS[1]))
         save_path_ = ROOT_PATH.joinpath('data', 'processed', dataset_,
                                         'Images',
-                                        'encoded_full_images.pkl')
+                                        'encoded_visual_attention_full.pkl')
         split_set_path_ = ROOT_PATH.joinpath('data', 'interim', dataset_,
                                              'Flickr8k_full.csv')
 
-        extract_image_features(image_path_, save_path_, split_set_path_)
+        extract_image_features(image_path_,
+                               save_path_,
+                               split_set_path_,
+                               output_layer_dim_,
+                               vis_att=vis_att_)

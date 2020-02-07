@@ -9,11 +9,11 @@ import pandas as pd
 ROOT_PATH = Path(__file__).absolute().parents[2]
 
 
-def load_pre_trained_model():
+def load_pre_trained_model(output_layer_idx):
     from keras.applications.inception_resnet_v2 import InceptionResNetV2
     from keras.models import Model
     model = InceptionResNetV2(weights='imagenet')
-    model_new = Model(model.input, model.layers[-2].output)
+    model_new = Model(model.input, model.layers[output_layer_idx].output)
     model_new.summary()
     return model_new
 
@@ -40,11 +40,28 @@ def encode(image, model):
     return fea_vec
 
 
-def extract_image_features(image_path, save_path, split_set_path):
+def encode_vis_att(image, model):
+    from keras.applications.inception_resnet_v2 import preprocess_input
+    # add one more dimension
+    image = np.expand_dims(image, axis=0)
+    # preprocess the image
+    image = preprocess_input(image)
+    # Get the encoding vector for the image
+    fea_vec = model.predict(image)
+    # reshape from (1, 8, 8, 1536) to (8, 8, 1536)
+    fea_vec = np.reshape(fea_vec, fea_vec.shape[1:])
+    return fea_vec
+
+
+def extract_image_features(image_path,
+                           save_path,
+                           split_set_path,
+                           output_layer_idx,
+                           vis_att=True):
     # consider splitting the process up in parts and then
     # combining the parts at the end, to reduce the amount of images
     # in memory at any time
-    model = load_pre_trained_model()
+    model = load_pre_trained_model(output_layer_idx)
     data_df = pd.read_csv(split_set_path)
     image_split = set(data_df.loc[:, 'image_id'])
     start = time()
@@ -56,7 +73,11 @@ def extract_image_features(image_path, save_path, split_set_path):
         image_name = str(im_file)[p:]
         if image_name in image_split:
             count += 1
-            encoding_data[image_name] = encode(imread(im_file), model)
+            if vis_att:
+                encoding_data[image_name] = encode_vis_att(imread(im_file),
+                                                           model)
+            else:
+                encoding_data[image_name] = encode(imread(im_file), model)
             print(str(count) + ' / ' + str(n))
     print("Time taken in seconds =", time() - start)
     # Save the bottleneck train features to disk
