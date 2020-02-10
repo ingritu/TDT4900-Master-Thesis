@@ -68,7 +68,7 @@ class MultimodalDecoder(nn.Module):
         self.output_layer = nn.Linear(input_shape, hidden_size)
 
     def forward(self, x):
-        # x: context vector, h_t (batch_size, 2, hidden_size)
+        # x: [context_vector, h_t] (batch_size, 2, hidden_size)
         concat = torch.cat((x[0], x[1]))
         for layer in self.layers:
             y = F.relu(layer(concat))
@@ -132,9 +132,9 @@ class AttentionLayer(nn.Module):
         # multiply with regions
         context_vector = regions * alpha
 
-        context_vector = F.tanh(self.context_proj(context_vector + h_proj))
+        z_t = F.tanh(self.context_proj(context_vector + h_proj))
 
-        return context_vector
+        return z_t
 
 
 

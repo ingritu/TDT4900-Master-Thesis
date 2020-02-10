@@ -4,6 +4,8 @@ from torch.nn import functional as F
 
 from src.models.custom_layers import SentinelLSTM
 from src.models.custom_layers import AttentionLayer
+from src.models.custom_layers import ImageEncoder
+from src.models.custom_layers import MultimodalDecoder
 
 
 def model_switcher(model_str):
@@ -35,25 +37,47 @@ class AdaptiveModel(nn.Module):
         self.random_seed = seed
 
         # layers
-        self.v_affine = nn.Linear(self.visual_feature_shape, self.hidden_size)
-        self.global_affine = nn.Linear(self.visual_feature_shape,
-                                       self.hidden_size)
-
-        self.sentinel_lstm = SentinelLSTM(1234, 567)
-        self.attention_block = AttentionLayer()
-
-
+        self.image_encoder = ImageEncoder(self.visual_feature_shape,
+                                          hidden_size)
+        self.embedding = nn.Embedding(self.vocab_size, self.em_size)
+        self.sentinel_lstm = SentinelLSTM(hidden_size, hidden_size)
+        self.attention_block = AttentionLayer([64, hidden_size])  # (k, d)
+        self.decoder = MultimodalDecoder(hidden_size, vocab_size, n=1)
 
     def forward(self, x):
-        # TODO: implement this
         # visual features (batch_size, 8 ,8, 1536)
-        pass
+        # batch_size is equal to the number of images
+        im_input = x[0]
+        w_input = x[1]
+
+        input_size = x.size()
+        batch_size = input_size[0]
+
+        global_images, encoded_images = self.image_encoder(im_input)
+
+        embedded_w = self.embedding(w_input)
+
+        # concat w_t with v_avg
+        x_t = torch.cat((embedded_w, global_images))
+
+        predictions = torch.zeros(batch_size,
+                                  max(decode_lengths),
+                                  self.vocab_size)
+
+        h_t, c_t, s_t = self.sentinel_lstm(x_t)
+
+        z_t = self.attention_block([encoded_images, s_t, h_t])
+
+        pt = self.decoder([z_t, h_t])
+
+        return pt
 
 
 class TutorialModel(nn.Module):
 
     def __init__(self,
                  input_shape,
+                 hidden,
                  vocab_size,
                  embedding_size=300,
                  seed=222):

@@ -42,6 +42,7 @@ class Generator:
     def __init__(self,
                  model_name,
                  input_shape,
+                 hidden_size,
                  voc_path,
                  feature_path,
                  save_path,
@@ -55,6 +56,7 @@ class Generator:
         self.max_length = self.input_shape[1]
 
         self.embedding_size = embedding_size
+        self.hidden_size = hidden_size
 
         self.save_path = save_path
         self.random_seed = seed
@@ -82,6 +84,7 @@ class Generator:
     def compile(self):
         # initialize model
         self.model = model_switcher(self.model_name)(self.input_shape,
+                                                     self.hidden_size,
                                                      self.vocab_size,
                                                      embedding_size=
                                                      self.embedding_size,

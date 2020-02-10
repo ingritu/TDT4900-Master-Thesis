@@ -24,14 +24,15 @@ if __name__ == '__main__':
                                        'processed',
                                        'Flickr8k',
                                        'Images',
-                                       'encoded_full_images.pkl')
+                                       'encoded_visual_attention_full.pkl')
     save_path_ = ROOT_PATH.joinpath('models')
 
-    model_name_ = 'Tutorial'
+    model_name_ = 'adaptive'
 
     batch_size = 300
     epochs = 1
     em_dim = 300
+    hidden_size_ = 512
     loss_function_ = 'cross_entropy'
     opt = 'adam'
     lr_ = 0.0001
@@ -39,9 +40,9 @@ if __name__ == '__main__':
 
     max_length = max_length_caption(train_path)
 
-    input_shape_ = [1536, max_length]
+    input_shape_ = [[8, 8, 1536], max_length]
 
-    generator = Generator(model_name_, input_shape_,
+    generator = Generator(model_name_, input_shape_, hidden_size_,
                           voc_path_, feature_path_,
                           save_path_,
                           loss_function=loss_function_,
