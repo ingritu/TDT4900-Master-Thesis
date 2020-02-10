@@ -135,6 +135,3 @@ class AttentionLayer(nn.Module):
         z_t = F.tanh(self.context_proj(context_vector + h_proj))
 
         return z_t
-
-
-
