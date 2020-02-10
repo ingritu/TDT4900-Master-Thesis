@@ -79,27 +79,27 @@ class MultimodalDecoder(nn.Module):
         return y
 
 
-
-
-
 class AttentionLayer(nn.Module):
 
     def __init__(self, input_size):
-        # TODO: implement this
         super(AttentionLayer, self).__init__()
         # input_size [k, d] (64, hidden_size)
         self.k = input_size[0]
         self.d = input_size[1]
 
-        self.v_att = nn.Linear(self.k, self.d)
-        self.s_att = nn.Linear(self.d, self.d)
+        self.v_att = nn.Linear(self.d, self.k)
 
-        self.g_att = nn.Linear(self.k, self.d)
+        self.s_proj = nn.Linear(self.d, self.d)
+        self.s_att = nn.Linear(self.d, self.k)
 
+        self.h_proj = nn.Linear(self.d, self.d)
         self.h_att = nn.Linear(self.d, self.k)
 
+        self.alpha_layer = nn.Linear(self.k, 1)
+
+        self.context_proj = nn.Linear(self.d, self.d)
+
     def forward(self, x):
-        # TODO: implement this
         # x : [V, s_t, h_t]
         # V = [v1, v2, ..., vk]
         # c_t is context vector: sum of alphas*v
@@ -109,8 +109,32 @@ class AttentionLayer(nn.Module):
         s_t = x[1]
         h_t = x[2]
 
-        global_h = self.g_fc(h_t)
+        # embed visual features
+        v_embed = F.relu(self.v_att(V))
 
-        mr = F.tanh(self.v_fc(V) + global_h)
-        z_t = self.h_fc(mr)
-        alphas = F.softmax(z_t)
+        # s_t embedding
+        s_proj = F.relu(self.s_proj(s_t))
+        s_att = self.s_att(s_proj)
+
+        # h_t embedding
+        h_proj = F.tanh(self.h_proj(h_t))
+        h_att = self.h_att(h_proj)
+
+        # concatenations
+        regions = torch.cat((V, s_proj))
+        regions_att = torch.cat((v_embed, s_att))
+
+        # add h_t to regions_att
+        alpha_input = F.tanh(regions_att + h_att)
+        # compute alphas + beta
+        alpha = F.softmax(self.alpha_layer(alpha_input))
+
+        # multiply with regions
+        context_vector = regions * alpha
+
+        context_vector = F.tanh(self.context_proj(context_vector + h_proj))
+
+        return context_vector
+
+
+
