@@ -45,6 +45,7 @@ def data_generator(data_df, batch_size, steps_per_epoch,
                 seq = [wordtoix[word] for word in caption.split(' ')
                        if word in wordtoix]
                 caption_lengths.append(len(seq))
+                """""""""
                 # split one sequence into multiple X, y pairs
                 for j in range(1, len(seq)):
                     # split into input and output pair
@@ -55,17 +56,16 @@ def data_generator(data_df, batch_size, steps_per_epoch,
                     x1.append(image)
                     x2.append(in_seq)
                     y.append(out_seq)
+                """""""""
+                x1.append(image)
+                x2.append(torch.tensor(seq))
 
             # pad input sequence
             x2 = pad_sequences(x2, max_length)  # output is a tensor
 
-            # encode output sequence
-            y = np.array(y)
-            # y = to_categorical(y, num_classes=vocab_size, dtype=np.int_)
-
             x1 = torch.tensor(x1)  # convert to tensor
-            # print(y)
-            y = torch.from_numpy(y)  # convert to tensor
+            y = x2[:, 1:]
+            caption_lengths = np.array(caption_lengths)  # convert to array
             yield [[x1, x2], y, caption_lengths]
 
 

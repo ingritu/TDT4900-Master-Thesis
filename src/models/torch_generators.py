@@ -59,6 +59,9 @@ class AdaptiveModel(nn.Module):
         im_input = x[0]
         w_input = x[1]
 
+        decoding_lengths = (caption_lengths - 1)
+        batch_max_length = max(decoding_lengths)
+
         global_images, encoded_images = self.image_encoder(im_input)
         # (batch_size, embedding_size) (batch, 512) global_images
         # (batch_size, region_size, hidden_size) (batch, 64, 512) encoded_imgs
@@ -78,19 +81,21 @@ class AdaptiveModel(nn.Module):
                                   self.vocab_size)
         # initialize h and c
         h_t, c_t = self.initialize_variables(batch_size)
-        decoding_lengths = (caption_lengths - 1)
 
-        for timestep in range(self.max_len):
+        for timestep in range(batch_max_length):
+            batch_size_t = sum([l > timestep for l in decoding_lengths])
+            print('batch_size_t', batch_size_t)
+            print('timestep', timestep)
+            x_t = inputs[:batch_size_t, timestep, :]
+            print('X_T', x_t.size())
 
-            x_t = inputs[:batch_size, timestep, :]
-
-            h_t, c_t, s_t = self.sentinel_lstm(x_t, (h_t[:batch_size],
-                                                     c_t[:batch_size]))
+            h_t, c_t, s_t = self.sentinel_lstm(x_t, (h_t[:batch_size_t],
+                                                     c_t[:batch_size_t]))
 
             z_t = self.attention_block([encoded_images, s_t, h_t])
 
             pt = self.decoder([z_t, h_t])
-            predictions[:batch_size, timestep, :] = pt
+            predictions[:batch_size_t, timestep, :] = pt
 
         return predictions
 

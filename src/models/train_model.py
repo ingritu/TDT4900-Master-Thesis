@@ -31,8 +31,8 @@ if __name__ == '__main__':
 
     batch_size = 300
     epochs = 1
-    em_dim = 512
-    hidden_size_ = 512
+    em_dim = 50
+    hidden_size_ = 50
     loss_function_ = 'cross_entropy'
     opt = 'adam'
     lr_ = 0.0001

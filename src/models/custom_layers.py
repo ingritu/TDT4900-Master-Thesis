@@ -14,14 +14,18 @@ class SentinelLSTM(nn.Module):
         self.h_gate = nn.Linear(hidden_size, hidden_size)
 
     def forward(self, x, states):
+        print('Sentinel LSTM')
         # remember old states
         h_tm1, c_tm1 = states
         # get new states
         h_t, c_t = self.lstm_kernel(x, (h_tm1, c_tm1))
+        print('h_t', h_t.size())
+        print('c_t', c_t.size())
         # compute sentinel vector
         # could either concat h_tm1 with x or have to gates
         sv = F.sigmoid(self.h_gate(h_tm1) + self.x_gate(x))
         s_t = sv * F.tanh(c_t)
+        print('s_t', s_t.size())
         return h_t, c_t, s_t
 
 
@@ -39,14 +43,18 @@ class ImageEncoder(nn.Module):
 
     def forward(self, x):
         # x = V, (batch_size, 8, 8, 1536)
+        print('Image Encoder')
         input_shape = x.size()
         pixels = input_shape[1] * input_shape[2]  # 8x8 = 64
         global_image = self.average_pool(x).view(input_shape[0], -1)
+        print('global a', global_image.size())
         inputs = x.view(input_shape[0], pixels, input_shape[3])
 
         # transform
         global_image = self.global_affine(global_image)
+        print('global v', global_image.size())
         inputs = self.v_affine(inputs)
+        print('image regions', inputs.size())
 
         return global_image, inputs
 
@@ -85,7 +93,8 @@ class AttentionLayer(nn.Module):
 
     def __init__(self, input_size, hidden_size):
         super(AttentionLayer, self).__init__()
-        # input_size [k, d] (64, hidden_size)
+        # input_size 512
+        # hidden_size 512
 
         self.v_att = nn.Linear(input_size, hidden_size)
 
@@ -104,34 +113,54 @@ class AttentionLayer(nn.Module):
         # V = [v1, v2, ..., vk]
         # c_t is context vector: sum of alphas*v
         # output should be beta*s_t + (1-beta)*c_t
-
-        V = x[0]
-        s_t = x[1]
-        h_t = x[2]
+        print('attention layer')
+        V = x[0]  # (batch_size, 8x8, hidden_size)
+        s_t = x[1]  # (batch_size, hidden_size)
+        h_t = x[2]  # (batch_size, hidden_size)
 
         # embed visual features
-        v_embed = F.relu(self.v_att(V))
+        v_embed = F.relu(self.v_att(V))  # (batch_size, 64, hidden_size)
 
         # s_t embedding
-        s_proj = F.relu(self.s_proj(s_t))
-        s_att = self.s_att(s_proj)
+        s_proj = F.relu(self.s_proj(s_t))  # (batch_size, hidden_size)
+        s_att = self.s_att(s_proj)  # (batch_size, hidden_size)
 
         # h_t embedding
-        h_proj = F.tanh(self.h_proj(h_t))
-        h_att = self.h_att(h_proj)
+        h_proj = F.tanh(self.h_proj(h_t))  # (batch_size, hidden_size)
+        h_att = self.h_att(h_proj)  # (batch_size, hidden_size)
+
+        # make s_proj the same dimension as V
+        s_proj = s_proj.unsqueeze(1)  # (batch_size, 1, hidden_size)
+
+        # make s_att the same dimension as v_att
+        s_att = s_att.unsqueeze(1)  # (batch_size, 1, hidden_size)
+
+        # make h_att the same dimension as regions_att
+        h_att = h_att.unsqueeze(1).expand(h_att.size()[0],
+                                          V.size()[1] + 1,
+                                          h_att.size()[1])
+        # (batch_size, 64 + 1, hidden_size)
 
         # concatenations
-        regions = torch.cat((V, s_proj))
-        regions_att = torch.cat((v_embed, s_att))
+        regions = torch.cat((V, s_proj), dim=1)
+        # (batch_size, 64 +1, hidden_size)
+        regions_att = torch.cat((v_embed, s_att), dim=1)
+        # (batch_size, 64 +1, hidden_size)
 
         # add h_t to regions_att
         alpha_input = F.tanh(regions_att + h_att)
+        # (batch_size, 64 +1, hidden_size)
+
         # compute alphas + beta
-        alpha = F.softmax(self.alpha_layer(alpha_input))
+        alpha = F.softmax(self.alpha_layer(alpha_input).squeeze(2), dim=1)
+        # (batch_size, 64 + 1)
+        alpha = alpha.unsqueeze(2)  # (batch_size, 64 +1, 1)
 
         # multiply with regions
-        context_vector = regions * alpha  # the actual z_t
+        context_vector = (alpha * regions).sum(dim=1)  # the actual z_t
+        # (batch_size, hidden_size)
 
         z_t = F.tanh(self.context_proj(context_vector + h_proj))
+        # (batch_size, hidden_size)
 
         return z_t

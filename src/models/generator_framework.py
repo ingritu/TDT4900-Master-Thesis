@@ -1,6 +1,7 @@
 import torch
 from torch import nn
 from torch import optim
+from torch.nn.utils.rnn import pack_padded_sequence
 from pathlib import Path
 import pandas as pd
 from datetime import datetime
@@ -128,11 +129,21 @@ class Generator:
 
                 # get predictions from network
                 output = self.model(x, caption_lengths)
+                output = pack_padded_sequence(output,
+                                              caption_lengths,
+                                              batch_first=True,
+                                              enforce_sorted=False)
+                target = pack_padded_sequence(target,
+                                              caption_lengths,
+                                              batch_first=True,
+                                              enforce_sorted=False)
+
                 # get loss
                 loss = self.criterion(output, target)
                 print('loss', '(' + self.optimizer_string + '):', loss)
-
+                # backpropagate
                 loss.backward()
+                # update weights
                 self.optimizer.step()
         # end of training
         # save model to file
