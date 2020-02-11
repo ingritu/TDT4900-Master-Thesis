@@ -92,9 +92,11 @@ class AdaptiveModel(nn.Module):
             h_t, c_t, s_t = self.sentinel_lstm(x_t, (h_t[:batch_size_t],
                                                      c_t[:batch_size_t]))
 
-            z_t = self.attention_block([encoded_images, s_t, h_t])
+            z_t = self.attention_block([encoded_images[:batch_size_t],
+                                        s_t,
+                                        h_t])
 
-            pt = self.decoder([z_t, h_t])
+            pt = self.decoder(z_t)
             predictions[:batch_size_t, timestep, :] = pt
 
         return predictions

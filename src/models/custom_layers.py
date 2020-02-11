@@ -65,8 +65,8 @@ class MultimodalDecoder(nn.Module):
         super(MultimodalDecoder, self).__init__()
         self.layers = []
         if n:
-            new_input_shape = input_shape + (input_shape // 2)
-            self.layers.append(nn.Linear(input_shape, new_input_shape))
+            new_input_shape = input_shape*2
+            self.layers.append(nn.Linear(input_shape, input_shape))
             input_shape = new_input_shape
         else:
             n = 1
@@ -79,10 +79,11 @@ class MultimodalDecoder(nn.Module):
 
     def forward(self, x):
         # x: context_vector + h_t (batch_size, hidden_size)
+        print('Multimodal Decoder')
         concat = x
         for layer in self.layers:
             y = F.relu(layer(concat))
-            concat = torch.cat((concat, y))
+            concat = torch.cat((concat, y), dim=1)
 
         # softmax on output
         y = F.softmax(self.output_layer(concat))
