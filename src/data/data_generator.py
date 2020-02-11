@@ -33,6 +33,7 @@ def data_generator(data_df, batch_size, steps_per_epoch,
             x1 = []
             x2 = []
             y = []
+            caption_lengths = []
             # Steps per epoch is equal to floor of
             # total_samples/batch_size
             # TODO: make steps per epoch equal to ceiling of
@@ -43,6 +44,7 @@ def data_generator(data_df, batch_size, steps_per_epoch,
                 # create partial captions
                 seq = [wordtoix[word] for word in caption.split(' ')
                        if word in wordtoix]
+                caption_lengths.append(len(seq))
                 # split one sequence into multiple X, y pairs
                 for j in range(1, len(seq)):
                     # split into input and output pair
@@ -64,7 +66,7 @@ def data_generator(data_df, batch_size, steps_per_epoch,
             x1 = torch.tensor(x1)  # convert to tensor
             # print(y)
             y = torch.from_numpy(y)  # convert to tensor
-            yield [[x1, x2], y]
+            yield [[x1, x2], y, caption_lengths]
 
 
 def get_image(visual_features, data_df, i):

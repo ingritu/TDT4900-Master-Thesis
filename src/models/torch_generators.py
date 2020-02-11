@@ -38,39 +38,61 @@ class AdaptiveModel(nn.Module):
 
         # layers
         self.image_encoder = ImageEncoder(self.visual_feature_shape,
-                                          hidden_size)
+                                          self.hidden_size,
+                                          self.em_size)
         self.embedding = nn.Embedding(self.vocab_size, self.em_size)
-        self.sentinel_lstm = SentinelLSTM(hidden_size, hidden_size)
-        self.attention_block = AttentionLayer([64, hidden_size])  # (k, d)
-        self.decoder = MultimodalDecoder(hidden_size, vocab_size, n=1)
+        self.sentinel_lstm = SentinelLSTM(self.em_size * 2, self.hidden_size)
+        self.attention_block = AttentionLayer(self.hidden_size,
+                                              self.hidden_size)
+        self.decoder = MultimodalDecoder(self.hidden_size,
+                                         self.vocab_size, n=1)
 
-    def forward(self, x):
+    def initialize_variables(self, batch_size):
+        # initialize h and c as zeros
+        h_0 = torch.zeros(batch_size, self.hidden_size)
+        c_0 = torch.zeros(batch_size, self.hidden_size)
+        return h_0, c_0
+
+    def forward(self, x, caption_lengths):
         # visual features (batch_size, 8 ,8, 1536)
         # batch_size is equal to the number of images
         im_input = x[0]
         w_input = x[1]
 
-        input_size = x.size()
-        batch_size = input_size[0]
-
         global_images, encoded_images = self.image_encoder(im_input)
+        # (batch_size, embedding_size) (batch, 512) global_images
+        # (batch_size, region_size, hidden_size) (batch, 64, 512) encoded_imgs
 
-        embedded_w = self.embedding(w_input)
+        embedded_w = self.embedding(w_input)  # (batch, max_len, hidden_size)
 
+        batch_size = encoded_images.size()[0]
+
+        # replicate global image
+        global_images = global_images.unsqueeze(1).expand_as(embedded_w)
         # concat w_t with v_avg
-        x_t = torch.cat((embedded_w, global_images))
+        inputs = torch.cat((embedded_w, global_images), dim=2)
+        # (batch_size, max_len, embedding_size * 2)
 
         predictions = torch.zeros(batch_size,
-                                  max(decode_lengths),
+                                  self.max_len,
                                   self.vocab_size)
+        # initialize h and c
+        h_t, c_t = self.initialize_variables(batch_size)
+        decoding_lengths = (caption_lengths - 1)
 
-        h_t, c_t, s_t = self.sentinel_lstm(x_t)
+        for timestep in range(self.max_len):
 
-        z_t = self.attention_block([encoded_images, s_t, h_t])
+            x_t = inputs[:batch_size, timestep, :]
 
-        pt = self.decoder([z_t, h_t])
+            h_t, c_t, s_t = self.sentinel_lstm(x_t, (h_t[:batch_size],
+                                                     c_t[:batch_size]))
 
-        return pt
+            z_t = self.attention_block([encoded_images, s_t, h_t])
+
+            pt = self.decoder([z_t, h_t])
+            predictions[:batch_size, timestep, :] = pt
+
+        return predictions
 
 
 class TutorialModel(nn.Module):

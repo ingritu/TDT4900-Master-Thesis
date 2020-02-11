@@ -90,6 +90,10 @@ class Generator:
                                                      self.embedding_size,
                                                      seed=self.random_seed)
         print(self.model)
+        print('Trainable Parameters:',
+              sum(p.numel() for p in self.model.parameters()
+                  if p.requires_grad),
+              '\n\n\n\n')
         self.initialize_optimizer()  # initialize optimizer
 
     def initialize_optimizer(self):
@@ -120,10 +124,10 @@ class Generator:
                 self.optimizer.zero_grad()
 
                 # get minibatch from data generator
-                x, target = next(train_generator)
+                x, target, caption_lengths = next(train_generator)
 
                 # get predictions from network
-                output = self.model(x)
+                output = self.model(x, caption_lengths)
                 # get loss
                 loss = self.criterion(output, target)
                 print('loss', '(' + self.optimizer_string + '):', loss)
@@ -217,6 +221,10 @@ class Generator:
             captions = captions[-beam_size:]
 
         return captions
+
+    def evaluate(self):
+        # TODO: implement model evaluation
+        pass
 
     def load_model(self, path):
         self.model = model_switcher(self.model_name)(self.input_shape,

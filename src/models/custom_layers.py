@@ -27,13 +27,15 @@ class SentinelLSTM(nn.Module):
 
 class ImageEncoder(nn.Module):
 
-    def __init__(self, input_shape, hidden_size, pool_size=8):
+    def __init__(self, input_shape, hidden_size, embedding_size):
         super(ImageEncoder, self).__init__()
-        self.average_pool = nn.AvgPool2d(pool_size)
+        print('input shape', input_shape)
+        print('hidden_size', hidden_size)
+        self.average_pool = nn.AvgPool2d(input_shape[0])
         # affine transformation of attention features
-        self.v_affine = nn.Linear(input_shape, hidden_size)
+        self.v_affine = nn.Linear(input_shape[2], hidden_size)
         # affine transformation of global image features
-        self.global_affine = nn.Linear(input_shape, hidden_size)
+        self.global_affine = nn.Linear(input_shape[2], embedding_size)
 
     def forward(self, x):
         # x = V, (batch_size, 8, 8, 1536)
@@ -68,8 +70,8 @@ class MultimodalDecoder(nn.Module):
         self.output_layer = nn.Linear(input_shape, hidden_size)
 
     def forward(self, x):
-        # x: [context_vector, h_t] (batch_size, 2, hidden_size)
-        concat = torch.cat((x[0], x[1]))
+        # x: context_vector + h_t (batch_size, hidden_size)
+        concat = x
         for layer in self.layers:
             y = F.relu(layer(concat))
             concat = torch.cat((concat, y))
@@ -81,23 +83,21 @@ class MultimodalDecoder(nn.Module):
 
 class AttentionLayer(nn.Module):
 
-    def __init__(self, input_size):
+    def __init__(self, input_size, hidden_size):
         super(AttentionLayer, self).__init__()
         # input_size [k, d] (64, hidden_size)
-        self.k = input_size[0]
-        self.d = input_size[1]
 
-        self.v_att = nn.Linear(self.d, self.k)
+        self.v_att = nn.Linear(input_size, hidden_size)
 
-        self.s_proj = nn.Linear(self.d, self.d)
-        self.s_att = nn.Linear(self.d, self.k)
+        self.s_proj = nn.Linear(input_size, input_size)
+        self.s_att = nn.Linear(input_size, hidden_size)
 
-        self.h_proj = nn.Linear(self.d, self.d)
-        self.h_att = nn.Linear(self.d, self.k)
+        self.h_proj = nn.Linear(input_size, input_size)
+        self.h_att = nn.Linear(input_size, hidden_size)
 
-        self.alpha_layer = nn.Linear(self.k, 1)
-
-        self.context_proj = nn.Linear(self.d, self.d)
+        self.alpha_layer = nn.Linear(hidden_size, 1)
+        # might move this outside
+        self.context_proj = nn.Linear(input_size, input_size)
 
     def forward(self, x):
         # x : [V, s_t, h_t]
@@ -130,7 +130,7 @@ class AttentionLayer(nn.Module):
         alpha = F.softmax(self.alpha_layer(alpha_input))
 
         # multiply with regions
-        context_vector = regions * alpha
+        context_vector = regions * alpha  # the actual z_t
 
         z_t = F.tanh(self.context_proj(context_vector + h_proj))
 
