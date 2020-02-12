@@ -138,7 +138,7 @@ class Generator:
 
                 # get loss
                 loss = self.criterion(output, target)
-                print('loss', '(' + self.optimizer_string + '):', loss[0])
+                print('loss', '(' + self.optimizer_string + '):', loss.item())
                 # backpropagate
                 loss.backward()
                 # update weights
