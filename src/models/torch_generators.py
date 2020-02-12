@@ -24,6 +24,7 @@ class AdaptiveModel(nn.Module):
                  input_shape,
                  hidden_size,
                  vocab_size,
+                 num_lstms=0,
                  embedding_size=300,
                  seed=222):
         super(AdaptiveModel, self).__init__()
@@ -34,6 +35,7 @@ class AdaptiveModel(nn.Module):
 
         self.vocab_size = vocab_size
         self.em_size = embedding_size
+        self.num_lstms = num_lstms
         self.random_seed = seed
 
         # layers
@@ -41,7 +43,9 @@ class AdaptiveModel(nn.Module):
                                           self.hidden_size,
                                           self.em_size)
         self.embedding = nn.Embedding(self.vocab_size, self.em_size)
-        self.sentinel_lstm = SentinelLSTM(self.em_size * 2, self.hidden_size)
+        self.sentinel_lstm = SentinelLSTM(self.em_size * 2,
+                                          self.hidden_size,
+                                          n=self.num_lstms)
         self.attention_block = AttentionLayer(self.hidden_size,
                                               self.hidden_size)
         self.decoder = MultimodalDecoder(self.hidden_size,
@@ -49,9 +53,9 @@ class AdaptiveModel(nn.Module):
 
     def initialize_variables(self, batch_size):
         # initialize h and c as zeros
-        h_0 = torch.zeros(batch_size, self.hidden_size)
-        c_0 = torch.zeros(batch_size, self.hidden_size)
-        return h_0, c_0
+        hs = torch.zeros(self.num_lstms + 1, batch_size, self.hidden_size)
+        cs = torch.zeros(self.num_lstms + 1, batch_size, self.hidden_size)
+        return hs, cs
 
     def forward(self, x, caption_lengths):
         # visual features (batch_size, 8 ,8, 1536)
@@ -65,6 +69,16 @@ class AdaptiveModel(nn.Module):
         global_images, encoded_images = self.image_encoder(im_input)
         # (batch_size, embedding_size) (batch, 512) global_images
         # (batch_size, region_size, hidden_size) (batch, 64, 512) encoded_imgs
+
+        # sort batches by caption length descending, this way the whole
+        # batch_size_t will be correct
+        # convert to tensor
+        caption_lengths = torch.from_numpy(caption_lengths)
+        caption_lengths, sort_idx = caption_lengths.sort(dim=0,
+                                                         descending=True)
+        w_input = w_input[sort_idx]  # (batch_size, max_len)
+        global_images = global_images[sort_idx]  # (batch_size, embedding_size)
+        encoded_images = encoded_images[sort_idx]  # (batch_size, 64, 1536)
 
         embedded_w = self.embedding(w_input)  # (batch, max_len, hidden_size)
 
@@ -84,22 +98,21 @@ class AdaptiveModel(nn.Module):
 
         for timestep in range(batch_max_length):
             batch_size_t = sum([l > timestep for l in decoding_lengths])
-            print('batch_size_t', batch_size_t)
-            print('timestep', timestep)
             x_t = inputs[:batch_size_t, timestep, :]
-            print('X_T', x_t.size())
 
-            h_t, c_t, s_t = self.sentinel_lstm(x_t, (h_t[:batch_size_t],
-                                                     c_t[:batch_size_t]))
+            h_t, c_t, h_top, s_t = self.sentinel_lstm(
+                                                    x_t,
+                                                    (h_t[:, :batch_size_t, :],
+                                                     c_t[:, :batch_size_t, :]))
 
             z_t = self.attention_block([encoded_images[:batch_size_t],
                                         s_t,
-                                        h_t])
+                                        h_top])
 
             pt = self.decoder(z_t)
             predictions[:batch_size_t, timestep, :] = pt
 
-        return predictions
+        return predictions, caption_lengths
 
 
 class TutorialModel(nn.Module):

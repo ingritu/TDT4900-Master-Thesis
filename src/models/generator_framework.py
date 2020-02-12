@@ -128,19 +128,17 @@ class Generator:
                 x, target, caption_lengths = next(train_generator)
 
                 # get predictions from network
-                output = self.model(x, caption_lengths)
+                output, caption_lengths = self.model(x, caption_lengths)
                 output = pack_padded_sequence(output,
                                               caption_lengths,
-                                              batch_first=True,
-                                              enforce_sorted=False)
+                                              batch_first=True)[0]
                 target = pack_padded_sequence(target,
                                               caption_lengths,
-                                              batch_first=True,
-                                              enforce_sorted=False)
+                                              batch_first=True)[0]
 
                 # get loss
                 loss = self.criterion(output, target)
-                print('loss', '(' + self.optimizer_string + '):', loss)
+                print('loss', '(' + self.optimizer_string + '):', loss[0])
                 # backpropagate
                 loss.backward()
                 # update weights
