@@ -175,7 +175,7 @@ class Generator:
 
         training_history['model_save_path'] = str(path)
         train_path = self.save_path.joinpath(self.model_name + '_' +
-                                             timestamp_str + '.txt')
+                                             timestamp_str + '_log.txt')
         self.save_model(path)
         self.save_training_log(train_path, training_history)
 
@@ -322,9 +322,6 @@ class Generator:
             # Lastly write the training log
             for loss in training_history['history']:
                 train_log.write(str(round(loss, 5)) + '\n')
-
-
-
 
     def get_model(self):
         return self.model
