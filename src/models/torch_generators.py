@@ -63,8 +63,7 @@ class AdaptiveModel(nn.Module):
         im_input = x[0]
         w_input = x[1]
 
-        decoding_lengths = (caption_lengths - 1)
-        batch_max_length = max(decoding_lengths)
+
 
         global_images, encoded_images = self.image_encoder(im_input)
         # (batch_size, embedding_size) (batch, 512) global_images
@@ -83,6 +82,9 @@ class AdaptiveModel(nn.Module):
         embedded_w = self.embedding(w_input)  # (batch, max_len, hidden_size)
 
         batch_size = encoded_images.size()[0]
+
+        decoding_lengths = (caption_lengths - 1)
+        batch_max_length = max(decoding_lengths)
 
         # replicate global image
         global_images = global_images.unsqueeze(1).expand_as(embedded_w)
@@ -112,7 +114,7 @@ class AdaptiveModel(nn.Module):
             pt = self.decoder(z_t)
             predictions[:batch_size_t, timestep, :] = pt
 
-        return predictions, caption_lengths
+        return predictions, decoding_lengths
 
 
 class TutorialModel(nn.Module):

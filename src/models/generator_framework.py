@@ -63,16 +63,20 @@ class Generator:
         self.random_seed = seed
 
         self.wordtoix, self.ixtoword = load_vocabulary(voc_path)
+        self.vocab_path = voc_path
         self.vocab_size = len(self.wordtoix)
+        self.feature_path = feature_path
         self.encoded_features = load_visual_features(feature_path)
 
         # initialize model as None
         self.model = None
+        self.train_params = 0
 
         self.model_name = model_name
 
         # initialize loss function
-        self.criterion = loss_switcher(loss_function)()
+        self.loss_string = loss_function
+        self.criterion = loss_switcher(self.loss_string)()
 
         # set up optimizer
         self.optimizer_string = optimizer
@@ -91,10 +95,9 @@ class Generator:
                                                      self.embedding_size,
                                                      seed=self.random_seed)
         print(self.model)
-        print('Trainable Parameters:',
-              sum(p.numel() for p in self.model.parameters()
-                  if p.requires_grad),
-              '\n\n\n\n')
+        self.train_params = sum(p.numel() for p in self.model.parameters()
+                                if p.requires_grad)
+        print('Trainable Parameters:', self.train_params, '\n\n\n\n')
         self.initialize_optimizer()  # initialize optimizer
 
     def initialize_optimizer(self):
@@ -105,9 +108,23 @@ class Generator:
         # TODO: implement early stopping on CIDEr metric
         data_path = Path(data_path)
         train_df = pd.read_csv(data_path)
-        # initialize max_length of training set
-        self.max_length = max([len(c.split())
-                               for c in set(train_df.loc[:, 'clean_caption'])])
+
+        training_history = {
+            'network': str(self.model),
+            'trainable_parameters': str(self.train_params),
+            'lr': str(self.lr),
+            'optimizer': self.optimizer_string,
+            'loss': self.loss_string,
+            'model_name': self.model_name,
+            'history': [],
+            'voc_size': str(self.vocab_size),
+            'voc_path': str(self.vocab_path),
+            'feature_path': str(self.feature_path),
+            'train_path': str(data_path),
+            'epochs': str(epochs),
+            'batch_size': str(batch_size),
+            'model_save_path': ''
+        }
 
         steps_per_epoch = len(train_df) // batch_size
 
@@ -119,6 +136,7 @@ class Generator:
 
         for e in range(epochs):
             print('Epoch: #' + str(e + 1))
+            batch_history = []
             for s in range(steps_per_epoch):
                 print('Step: #' + str(s + 1) + '/' + str(steps_per_epoch))
                 # zero the gradient buffers
@@ -138,18 +156,28 @@ class Generator:
 
                 # get loss
                 loss = self.criterion(output, target)
-                print('loss', '(' + self.optimizer_string + '):', loss.item())
+                loss_num = loss.item()
+                batch_history.append(loss_num)
+                print('loss', '(' + self.optimizer_string + '):', loss_num)
                 # backpropagate
                 loss.backward()
                 # update weights
                 self.optimizer.step()
+            # add the mean loss of the epoch to the training history
+            training_history['history'].append(np.mean(
+                np.array(batch_history)))
         # end of training
         # save model to file
         date_time_obj = datetime.now()
         timestamp_str = date_time_obj.strftime("%d-%b-%Y_(%H:%M:%S)")
         path = self.save_path.joinpath(self.model_name + '_' + timestamp_str +
                                        '.pth')
+
+        training_history['model_save_path'] = str(path)
+        train_path = self.save_path.joinpath(self.model_name + '_' +
+                                             timestamp_str + '.txt')
         self.save_model(path)
+        self.save_training_log(train_path, training_history)
 
     def predict(self, data_path, beam_size=1):
         """
@@ -250,6 +278,53 @@ class Generator:
 
     def save_model(self, path):
         torch.save(self.model.state_dict(), path)
+
+    def save_training_log(self, path, training_history):
+        # I do not care that the function is static
+        with open(path, 'w') as train_log:
+            train_log.write('################# '
+                            'LOG FILE '
+                            '#################\n\n')
+            train_log.write('DATA and FEATURES\n')
+            train_log.write('Training data path: ' +
+                            training_history['train_path'] + '\n')
+            train_log.write('Feature path: ' + training_history['feature_path']
+                            + '\n')
+            train_log.write('Vocabulary path: ' + training_history['voc_path']
+                            + '\n')
+            train_log.write('Vocabulary size: ' + training_history['voc_size']
+                            + '\n\n')
+
+            train_log.write('## CONFIGS / HYPERPARAMETERS ##\n')
+            train_log.write('Optimizer: ' + training_history['optimizer'] +
+                            '\n')
+            train_log.write('Learning rate: ' + training_history['lr']
+                            + '\n\n')
+
+            train_log.write('####### '
+                            'MODEL '
+                            '#######\n')
+            train_log.write('Model name: ' + training_history['model_name']
+                            + '\n\n')
+            train_log.write(training_history['network'] + '\n')
+            train_log.write('Trainable parameters: ' +
+                            training_history['trainable_parameters'] + '\n')
+            train_log.write('Model save path: ' +
+                            training_history['model_save_path'] + '\n\n')
+
+            train_log.write('## Training Configs ##\n')
+            train_log.write('Epochs: ' + training_history['epochs'] + '\n')
+            train_log.write('Batch size: ' + training_history['batch_size']
+                            + '\n')
+            train_log.write('Loss function: ' + training_history['loss']
+                            + '\n\n')
+            train_log.write('## Train log!\n')
+            # Lastly write the training log
+            for loss in training_history['history']:
+                train_log.write(str(round(loss, 5)) + '\n')
+
+
+
 
     def get_model(self):
         return self.model

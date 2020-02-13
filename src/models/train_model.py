@@ -29,7 +29,7 @@ if __name__ == '__main__':
 
     model_name_ = 'adaptive'
 
-    batch_size = 300
+    batch_size = 3000  # number of captions in a batch, not images
     epochs = 1
     em_dim = 50
     hidden_size_ = 50
