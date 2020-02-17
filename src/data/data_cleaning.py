@@ -87,13 +87,24 @@ def basic_data_cleaning(df_path, save_path, voc_save_path):
 
     print('vocabulary size that will be used:',
           len(corpus) - len(replace_corpus))
+
+    # check save path
+    if not save_path.parent.is_dir():
+        save_path.parent.mkdir(parents=True)
+
     # save captions
     caption_df.to_csv(save_path)
 
     # vocabulary stuff
     vocabulary = [key for key in corpus.keys() if corpus[key] >= THRESHOLD]
-    vocabulary.insert(0, 'startseq')
-    vocabulary.insert(1, 'endseq')
+    vocabulary.append('endseq')
+    # add startseq last so that we can remove it easily from models vocabulary
+    vocabulary.append('startseq')
+
+    # check voc save path
+    if not voc_save_path.parent.is_dir():
+        voc_save_path.parent.mkdir(parents=True)
+
     with open(voc_save_path, 'w') as voc_file:
         for word in vocabulary:
             voc_file.write(word + '\n')

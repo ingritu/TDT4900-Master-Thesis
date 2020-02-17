@@ -6,6 +6,17 @@ Image Captioning
 /
 ├── data/
 │   ├── raw/
+│   │   ├── Flick8k/
+│   │   ├── Flickr30k/
+│   │   ├── karpathy_split/
+│   │   │   ├── datase_coco.json
+│   │   │   ├── datase_flickr8k.json
+│   │   │   └── datase_flickr30k.json
+│   │   └── MSCOCO/
+│   │       ├── annotations/
+│   │       ├── test2014/
+│   │       ├── train2014/
+│   │       └── val2014/
 │   ├── interim/
 │   ├── processed/
 │   └── README.md
@@ -20,7 +31,9 @@ Image Captioning
 │   └── visuals/
 ├── README.md
 ├── references/
-│   └── README.md
+│   ├── logs_and_checkpoints.txt
+│   ├── README.md
+│   └── run_notes.txt
 ├── reports/
 │   └── README.md
 ├── requirements.txt
