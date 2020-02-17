@@ -39,3 +39,51 @@ def save_checkpoint(directory,
         torch.save(state, filename)
         return filename
     return None
+
+
+def save_training_log(path, training_history):
+    # I do not care that the function is static
+    with open(path, 'w') as train_log:
+        train_log.write('################# '
+                        'LOG FILE '
+                        '#################\n\n')
+        train_log.write('DATA and FEATURES\n')
+        train_log.write('Training data path: ' +
+                        training_history['train_path'] + '\n')
+        train_log.write('Feature path: ' + training_history['feature_path']
+                        + '\n')
+        train_log.write('Vocabulary path: ' + training_history['voc_path']
+                        + '\n')
+        train_log.write('Vocabulary size: ' + training_history['voc_size']
+                        + '\n\n')
+
+        train_log.write('## CONFIGS / HYPERPARAMETERS ##\n')
+        train_log.write('Optimizer: ' + training_history['optimizer'] +
+                        '\n')
+        train_log.write('Learning rate: ' + training_history['lr']
+                        + '\n\n')
+
+        train_log.write('####### '
+                        'MODEL '
+                        '#######\n')
+        train_log.write('Model name: ' + training_history['model_name']
+                        + '\n\n')
+        train_log.write(training_history['network'] + '\n')
+        train_log.write('Trainable parameters: ' +
+                        training_history['trainable_parameters'] + '\n')
+        train_log.write('Model save path: ' +
+                        training_history['model_save_path'] + '\n\n')
+
+        train_log.write('## Training Configs ##\n')
+        train_log.write('Epochs: ' + training_history['epochs'] + '\n')
+        train_log.write('Batch size: ' + training_history['batch_size']
+                        + '\n')
+        train_log.write('Training time: ' +
+                        training_history['training_time'] + '\n')
+        train_log.write('Loss function: ' + training_history['loss']
+                        + '\n\n')
+        train_log.write('## Train log!\n')
+        # Lastly write the training log
+        for loss in training_history['history']:
+            # TODO: add val score.... izip?
+            train_log.write(str(round(loss, 5)) + '\n')

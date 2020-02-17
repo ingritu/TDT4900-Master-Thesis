@@ -19,7 +19,6 @@ def data_generator(data_df, batch_size, steps_per_epoch,
     # load visual features
     max_length = max([len(c.split())
                       for c in set(data_df.loc[:, 'clean_caption'])])
-    vocab_size = len(wordtoix)
     # infinite loop
     while True:
         # new Epoch have started
@@ -32,7 +31,6 @@ def data_generator(data_df, batch_size, steps_per_epoch,
             # create a new batch
             x1 = []
             x2 = []
-            y = []
             caption_lengths = []
             # Steps per epoch is equal to floor of
             # total_samples/batch_size
@@ -41,7 +39,7 @@ def data_generator(data_df, batch_size, steps_per_epoch,
             for i in range(batch_size * step, batch_size * (step + 1)):
                 image = get_image(features, data_df, i)
                 caption = get_caption(data_df, i)
-                # create partial captions
+                # create caption number sequence
                 seq = [wordtoix[word] for word in caption.split(' ')
                        if word in wordtoix]
                 caption_lengths.append(len(seq))

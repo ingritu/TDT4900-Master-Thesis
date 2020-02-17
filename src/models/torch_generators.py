@@ -1,6 +1,7 @@
 import torch
 from torch import nn as nn
 from torch.nn import functional as F
+import numpy as np
 
 from src.models.custom_layers import SentinelLSTM
 from src.models.custom_layers import AttentionLayer
@@ -57,13 +58,11 @@ class AdaptiveModel(nn.Module):
         cs = torch.zeros(self.num_lstms + 1, batch_size, self.hidden_size)
         return hs, cs
 
-    def forward(self, x, caption_lengths):
+    def forward(self, x, caption_lengths, has_end_seq_token=True):
         # visual features (batch_size, 8 ,8, 1536)
         # batch_size is equal to the number of images
         im_input = x[0]
         w_input = x[1]
-
-
 
         global_images, encoded_images = self.image_encoder(im_input)
         # (batch_size, embedding_size) (batch, 512) global_images
@@ -83,7 +82,9 @@ class AdaptiveModel(nn.Module):
 
         batch_size = encoded_images.size()[0]
 
-        decoding_lengths = (caption_lengths - 1)
+        decoding_lengths = np.copy(caption_lengths)
+        if has_end_seq_token:
+            decoding_lengths = (decoding_lengths - 1)
         batch_max_length = max(decoding_lengths)
 
         # replicate global image

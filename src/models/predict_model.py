@@ -1,5 +1,5 @@
 from pathlib import Path
-from src.data.max_length_caption import max_length_caption
+from src.data.utils import max_length_caption
 from src.models.generator_framework import Generator
 
 ROOT_PATH = Path(__file__).absolute().parents[2]
@@ -23,9 +23,11 @@ if __name__ == '__main__':
                                        'processed',
                                        'Flickr8k',
                                        'Images',
-                                       'encoded_full_images.pkl')
+                                       'encoded_visual_attention_full.pkl')
     saved_model_path_ = ROOT_PATH.joinpath(
-        'models', 'adaptive_13-Feb-2020_(15:03:41).pth')
+        'models',
+        'adaptive_17-Feb-2020_(15:50:13)',
+        'BEST_checkpoint_1.pth.tar')
 
     save_path_ = ROOT_PATH.joinpath('models')
 

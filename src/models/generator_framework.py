@@ -16,6 +16,7 @@ from src.data.load_vocabulary import load_vocabulary
 from src.features.Resnet_features import load_visual_features
 from src.models.torch_generators import model_switcher
 from src.models.utils import save_checkpoint
+from src.models.utils import save_training_log
 
 ROOT_PATH = Path(__file__).absolute().parents[2]
 
@@ -172,12 +173,12 @@ class Generator:
                 x, target, caption_lengths = next(train_generator)
 
                 # get predictions from network
-                output, caption_lengths = self.model(x, caption_lengths)
+                output, decoding_lengths = self.model(x, caption_lengths)
                 output = pack_padded_sequence(output,
-                                              caption_lengths,
+                                              decoding_lengths,
                                               batch_first=True)[0]
                 target = pack_padded_sequence(target,
-                                              caption_lengths,
+                                              decoding_lengths,
                                               batch_first=True)[0]
 
                 # get loss
@@ -217,12 +218,12 @@ class Generator:
         d = datetime(1, 1, 1) + training_time
         training_time = "%d:%d:%d:%d" % (d.day-1, d.hour, d.minute, d.second)
         training_history['training_time'] = str(training_time)
-        # save model to file
-
         training_history['model_save_path'] = str(best_path)
         train_path = directory.joinpath(self.model_name + '_log.txt')
+        # save model to file
         self.save_model(directory)
-        self.save_training_log(train_path, training_history)
+        # save log to file
+        save_training_log(train_path, training_history)
 
     def predict(self, data_path, beam_size=1):
         """
@@ -283,15 +284,24 @@ class Generator:
                 sequence = [self.wordtoix[w] for w in caption[0]
                             if w in self.wordtoix]
                 sequence = torch.tensor(sequence)  # convert to tensor
+                caption_lengths = np.array([sequence.size()[0]])
                 # pad sequence
                 sequence = pad_sequences([sequence], maxlen=self.max_length)
 
                 # get predictions
-                y_predictions = self.model([image, sequence])
+                x = [image, sequence]
+                y_predictions, decoding_lengths = self.model(x,
+                                                             caption_lengths,
+                                                             has_end_seq_token=
+                                                             False)
+                # pack padded sequence
+                y_predictions = pack_padded_sequence(y_predictions,
+                                                     decoding_lengths,
+                                                     batch_first=True)[0]
                 # get the b most probable indices
                 # first turn predictions into numpy array,
                 # so that we can use np.argsort
-                y_predictions = y_predictions.detach().numpy()[0]
+                y_predictions = y_predictions.detach().numpy()[-1]
                 words_predicted = np.argsort(y_predictions)[-beam_size:]
                 for word in words_predicted:
                     new_partial_cap = deepcopy(caption[0])
@@ -312,69 +322,17 @@ class Generator:
         pass
 
     def load_model(self, path):
-        self.model = model_switcher(self.model_name)(self.input_shape,
-                                                     self.hidden_size,
-                                                     self.vocab_size,
-                                                     embedding_size=
-                                                     self.embedding_size,
-                                                     seed=self.random_seed)
-        self.model.load_state_dict(torch.load(path))
+        checkpoint = torch.load(path)
+        self.model = checkpoint['model']
+        self.optimizer = checkpoint['optimizer']
         self.model.eval()
-        print('Loaded model at:', path)
+        print('Loaded checkpoint at:', path)
         print(self.model)
-        # initialize optimizer to optimize new model
-        self.initialize_optimizer()
 
     def save_model(self, path):
-        path. joinpath(self.model_name + '_model.pth')
+        assert path.is_dir()
+        path = path.joinpath(self.model_name + '_model.pth')
         torch.save(self.model.state_dict(), path)
-
-    def save_training_log(self, path, training_history):
-        # I do not care that the function is static
-        with open(path, 'w') as train_log:
-            train_log.write('################# '
-                            'LOG FILE '
-                            '#################\n\n')
-            train_log.write('DATA and FEATURES\n')
-            train_log.write('Training data path: ' +
-                            training_history['train_path'] + '\n')
-            train_log.write('Feature path: ' + training_history['feature_path']
-                            + '\n')
-            train_log.write('Vocabulary path: ' + training_history['voc_path']
-                            + '\n')
-            train_log.write('Vocabulary size: ' + training_history['voc_size']
-                            + '\n\n')
-
-            train_log.write('## CONFIGS / HYPERPARAMETERS ##\n')
-            train_log.write('Optimizer: ' + training_history['optimizer'] +
-                            '\n')
-            train_log.write('Learning rate: ' + training_history['lr']
-                            + '\n\n')
-
-            train_log.write('####### '
-                            'MODEL '
-                            '#######\n')
-            train_log.write('Model name: ' + training_history['model_name']
-                            + '\n\n')
-            train_log.write(training_history['network'] + '\n')
-            train_log.write('Trainable parameters: ' +
-                            training_history['trainable_parameters'] + '\n')
-            train_log.write('Model save path: ' +
-                            training_history['model_save_path'] + '\n\n')
-
-            train_log.write('## Training Configs ##\n')
-            train_log.write('Epochs: ' + training_history['epochs'] + '\n')
-            train_log.write('Batch size: ' + training_history['batch_size']
-                            + '\n')
-            train_log.write('Training time: ' +
-                            training_history['training_time'] + '\n')
-            train_log.write('Loss function: ' + training_history['loss']
-                            + '\n\n')
-            train_log.write('## Train log!\n')
-            # Lastly write the training log
-            for loss in training_history['history']:
-                # TODO: add val score.... izip?
-                train_log.write(str(round(loss, 5)) + '\n')
 
     def get_model(self):
         return self.model
