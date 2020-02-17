@@ -61,6 +61,12 @@ def extract_image_features(image_path,
     # consider splitting the process up in parts and then
     # combining the parts at the end, to reduce the amount of images
     # in memory at any time
+    image_path = Path(image_path)
+    save_path = Path(save_path)
+
+    if not save_path.is_dir():
+        save_path.mkdir(parents=True)
+
     model = load_pre_trained_model(output_layer_idx)
     data_df = pd.read_csv(split_set_path)
     image_split = set(data_df.loc[:, 'image_id'])
@@ -70,7 +76,8 @@ def extract_image_features(image_path,
     count = 0
     for im_file in image_path.glob('*.jpg'):
         p = len(str(im_file.parent)) + 1
-        image_name = str(im_file)[p:]
+        im_file = str(im_file)
+        image_name = im_file[p:]
         if image_name in image_split:
             count += 1
             if vis_att:

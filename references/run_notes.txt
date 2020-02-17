@@ -1,0 +1,9 @@
+Notes:
+
+Run make_dataset first, then build_features.
+
+
+After they are run you should have all you need to run train_model,
+and eventually predict_model.
+
+

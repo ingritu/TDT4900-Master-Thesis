@@ -49,6 +49,10 @@ def order_raw_data_and_move_to_interim(data_path, dataset):
     val_df = pd.DataFrame(val_dict, columns=columns)
 
     save_path = ROOT_PATH.joinpath('data', 'interim', 'karpathy_split')
+    if not save_path.is_dir():
+        # if dir does not exist create dir
+        # create parents if they do not exist either
+        save_path.mkdir(parents=True)
 
     train_file = save_path.joinpath(dataset + '_train.csv')
     test_file = save_path.joinpath(dataset + '_test.csv')

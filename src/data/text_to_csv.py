@@ -16,8 +16,12 @@ file for that.
 
 def text_to_csv(file_path, save_path):
     """
-    convert info from txt fil to csv.
+    convert info from txt fil to csv. .csv file should be saved in
+    data/interim folder.
     """
+    file_path = Path(file_path)
+    save_path = Path(save_path)
+
     # set up caption dictionary
     captions = {}
     labels = ['image_id', 'caption_id', 'caption']
@@ -45,6 +49,12 @@ def text_to_csv(file_path, save_path):
         captions['image_id'].append(image_id)
         captions['caption_id'].append(caption_id)
         captions['caption'].append(caption)
+
+    parent = save_path.parent
+    if not parent.is_dir():
+        # if the directory of the save path is not a directory
+        # then make it a directory along with any of its parents
+        parent.mkdir(parents=True)
 
     # convert dict to DataFrame
     cap_df = pd.DataFrame(data=captions, columns=labels)
