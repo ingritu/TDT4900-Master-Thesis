@@ -1,0 +1,24 @@
+Checkpoints:
+Contains a state, which is a dictionary containing the model, the optimizer,
+the epoch number it was on, how long it has been since improvement on the model,
+and the cider score it got on the validation set.
+
+2 types of checkpoints:
+1. the most recent checkpoint, which we keep in case something goes wrong mid training,
+or we want to continue training on this model.
+
+2. the BEST checkpoint. the checkpoint where the model got the highest
+cider score on the validation set. This contains the best model so far during training,
+or the best model we can get with the set training parameters.
+
+
+Logs:
+For now all we do is after successful training we will then write a log file (*.txt)
+which will specify all hyperparameters used, which model, where the best is located etc.
+And lastly we write the training loss output.
+
+could be useful to look into saving this more frequently in case something were
+to go wrong during training and then we would have no log.
+
+
+
