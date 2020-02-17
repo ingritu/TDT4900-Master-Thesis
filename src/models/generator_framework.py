@@ -92,12 +92,12 @@ class Generator:
 
     def compile(self):
         # initialize model
-        self.model = model_switcher(self.model_name)(self.input_shape,
-                                                     self.hidden_size,
-                                                     self.vocab_size,
-                                                     embedding_size=
-                                                     self.embedding_size,
-                                                     seed=self.random_seed)
+        self.model = model_switcher(self.model_name)(
+            self.input_shape,
+            self.hidden_size,
+            self.vocab_size,
+            embedding_size=self.embedding_size,
+            seed=self.random_seed)
         print(self.model)
         self.train_params = sum(p.numel() for p in self.model.parameters()
                                 if p.requires_grad)
@@ -109,7 +109,6 @@ class Generator:
             self.model.parameters(), self.lr)
 
     def train(self, data_path, epochs, batch_size, early_stopping_freq=6):
-        # TODO: implement early stopping on CIDEr metric
         data_path = Path(data_path)
         train_df = pd.read_csv(data_path)
 
@@ -195,7 +194,7 @@ class Generator:
                 np.array(batch_history)))
             # TODO: do validation here
             cider_score = 0
-            # TODO: save model checkpoint
+            # save model checkpoint
             is_best = cider_score > best_cider
             best_cider = max(cider_score, best_cider)
             tmp_model_path = save_checkpoint(directory,
@@ -256,7 +255,6 @@ class Generator:
         return predicted_captions
 
     def beam_search(self, image, beam_size=1):
-        # TODO: implement this function
         # initialization
         image = torch.tensor([image])  # convert to tensor
         in_token = ['startseq']
@@ -290,10 +288,8 @@ class Generator:
 
                 # get predictions
                 x = [image, sequence]
-                y_predictions, decoding_lengths = self.model(x,
-                                                             caption_lengths,
-                                                             has_end_seq_token=
-                                                             False)
+                y_predictions, decoding_lengths = \
+                    self.model(x, caption_lengths, has_end_seq_token=False)
                 # pack padded sequence
                 y_predictions = pack_padded_sequence(y_predictions,
                                                      decoding_lengths,
