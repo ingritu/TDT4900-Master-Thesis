@@ -5,6 +5,7 @@ from src.models.generator_framework import Generator
 ROOT_PATH = Path(__file__).absolute().parents[2]
 
 if __name__ == '__main__':
+    # TODO: argparsing
     train_path = ROOT_PATH.joinpath('data',
                                     'interim',
                                     'Flickr8k',
@@ -24,11 +25,11 @@ if __name__ == '__main__':
                                        'Images',
                                        'encoded_full_images.pkl')
     saved_model_path_ = ROOT_PATH.joinpath(
-        'models', 'Tutorial_05-Feb-2020_(14:53:43).pth')
+        'models', 'adaptive_13-Feb-2020_(15:03:41).pth')
 
     save_path_ = ROOT_PATH.joinpath('models')
 
-    model_name_ = 'Tutorial'
+    model_name_ = 'adaptive'
 
     em_dim = 300
     loss_function_ = 'cross_entropy'
@@ -38,9 +39,10 @@ if __name__ == '__main__':
 
     max_length = max_length_caption(train_path)
 
-    input_shape_ = [1536, max_length]
+    input_shape_ = [[8, 8, 1536], max_length]
+    hidden_shape_ = 50
 
-    generator = Generator(model_name_, input_shape_,
+    generator = Generator(model_name_, input_shape_, hidden_shape_,
                           voc_path_, feature_path_,
                           save_path_,
                           loss_function=loss_function_,

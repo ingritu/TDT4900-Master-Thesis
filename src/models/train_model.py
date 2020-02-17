@@ -1,4 +1,4 @@
-from src.data.max_length_caption import max_length_caption
+from src.data.utils import max_length_caption
 from src.models.generator_framework import Generator
 
 from pathlib import Path
@@ -7,6 +7,8 @@ ROOT_PATH = Path(__file__).absolute().parents[2]
 
 
 if __name__ == '__main__':
+    # TODO: argparsing
+
     train_path = ROOT_PATH.joinpath('data',
                                     'interim',
                                     'Flickr8k',

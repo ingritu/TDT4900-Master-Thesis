@@ -5,14 +5,17 @@ from torch.nn.utils.rnn import pack_padded_sequence
 from pathlib import Path
 import pandas as pd
 from datetime import datetime
+from datetime import timedelta
 import numpy as np
 from copy import deepcopy
+from time import time
 
 from src.data.data_generator import data_generator
 from src.data.data_generator import pad_sequences
 from src.data.load_vocabulary import load_vocabulary
 from src.features.Resnet_features import load_visual_features
 from src.models.torch_generators import model_switcher
+from src.models.utils import save_checkpoint
 
 ROOT_PATH = Path(__file__).absolute().parents[2]
 
@@ -123,6 +126,7 @@ class Generator:
             'train_path': str(data_path),
             'epochs': str(epochs),
             'batch_size': str(batch_size),
+            'training_time': str(0),
             'model_save_path': ''
         }
 
@@ -133,6 +137,8 @@ class Generator:
                                          self.wordtoix,
                                          self.encoded_features,
                                          seed=self.random_seed)
+
+        start_time = time()
 
         for e in range(epochs):
             print('Epoch: #' + str(e + 1))
@@ -167,11 +173,18 @@ class Generator:
             training_history['history'].append(np.mean(
                 np.array(batch_history)))
         # end of training
+        training_time = timedelta(seconds=int(time() - start_time))  # seconds
+        d = datetime(1, 1, 1) + training_time
+        training_time = "%d:%d:%d:%d" % (d.day-1, d.hour, d.minute, d.second)
+        training_history['training_time'] = str(training_time)
         # save model to file
         date_time_obj = datetime.now()
         timestamp_str = date_time_obj.strftime("%d-%b-%Y_(%H:%M:%S)")
-        path = self.save_path.joinpath(self.model_name + '_' + timestamp_str +
-                                       '.pth')
+        directory = self.save_path.joinpath(self.model_name + '_'
+                                            + timestamp_str)
+        path = self.save_path.joinpath('checkpoint_' + str(epochs) + '_' +
+                                       self.model_name + '_' + timestamp_str +
+                                       '.pth.tar')
 
         training_history['model_save_path'] = str(path)
         train_path = self.save_path.joinpath(self.model_name + '_' +
@@ -265,6 +278,7 @@ class Generator:
 
     def load_model(self, path):
         self.model = model_switcher(self.model_name)(self.input_shape,
+                                                     self.hidden_size,
                                                      self.vocab_size,
                                                      embedding_size=
                                                      self.embedding_size,
@@ -316,11 +330,14 @@ class Generator:
             train_log.write('Epochs: ' + training_history['epochs'] + '\n')
             train_log.write('Batch size: ' + training_history['batch_size']
                             + '\n')
+            train_log.write('Training time: ' +
+                            training_history['training_time'] + '\n')
             train_log.write('Loss function: ' + training_history['loss']
                             + '\n\n')
             train_log.write('## Train log!\n')
             # Lastly write the training log
             for loss in training_history['history']:
+                # TODO: add val score.... izip?
                 train_log.write(str(round(loss, 5)) + '\n')
 
     def get_model(self):
