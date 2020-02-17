@@ -12,9 +12,6 @@ def save_checkpoint(directory,
                     cider,
                     is_best):
     directory = Path(directory)
-    # check that directory is a Directory if not make it one
-    if not directory.is_dir():
-        directory.mkdir()
 
     # remove worse checkpoints
     for file in directory.glob('checkpoint_*'):
@@ -40,3 +37,5 @@ def save_checkpoint(directory,
         filename = directory.joinpath('BEST_checkpoint_' + str(epoch)
                                       + '.pth.tar')
         torch.save(state, filename)
+        return filename
+    return None

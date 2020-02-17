@@ -107,7 +107,7 @@ class Generator:
         self.optimizer = optimizer_switcher(self.optimizer_string)(
             self.model.parameters(), self.lr)
 
-    def train(self, data_path, epochs, batch_size):
+    def train(self, data_path, epochs, batch_size, early_stopping_freq=6):
         # TODO: implement early stopping on CIDEr metric
         data_path = Path(data_path)
         train_df = pd.read_csv(data_path)
@@ -140,11 +140,31 @@ class Generator:
 
         start_time = time()
 
-        for e in range(epochs):
-            print('Epoch: #' + str(e + 1))
+        date_time_obj = datetime.now()
+        timestamp_str = date_time_obj.strftime("%d-%b-%Y_(%H:%M:%S)")
+        directory = self.save_path.joinpath(self.model_name + '_'
+                                            + timestamp_str)
+        # check that directory is a Directory if not make it one
+        if not directory.is_dir():
+            directory.mkdir()
+
+        best_cider = -1
+        best_path = None
+        epochs_since_improvement = 0
+
+        for e in range(1, epochs + 1):
+            # early stopping
+            if epochs_since_improvement == early_stopping_freq:
+                print('Training TERMINATED!\nNo Improvements for '
+                      + str(early_stopping_freq) + ' epochs.')
+                break
+
+            self.model.train()  # put model in train mode
+
+            print('Epoch: #' + str(e))
             batch_history = []
-            for s in range(steps_per_epoch):
-                print('Step: #' + str(s + 1) + '/' + str(steps_per_epoch))
+            for s in range(1, steps_per_epoch + 1):
+                print('Step: #' + str(s) + '/' + str(steps_per_epoch))
                 # zero the gradient buffers
                 self.optimizer.zero_grad()
 
@@ -172,24 +192,36 @@ class Generator:
             # add the mean loss of the epoch to the training history
             training_history['history'].append(np.mean(
                 np.array(batch_history)))
+            # TODO: do validation here
+            cider_score = 0
+            # TODO: save model checkpoint
+            is_best = cider_score > best_cider
+            best_cider = max(cider_score, best_cider)
+            tmp_model_path = save_checkpoint(directory,
+                                             epoch=e,
+                                             epochs_since_improvement=0,
+                                             model=self.model,
+                                             optimizer=self.optimizer,
+                                             cider=cider_score,
+                                             is_best=is_best)
+            if tmp_model_path:
+                best_path = tmp_model_path
+
+            if is_best:
+                epochs_since_improvement = 0
+            else:
+                epochs_since_improvement += 1
+
         # end of training
         training_time = timedelta(seconds=int(time() - start_time))  # seconds
         d = datetime(1, 1, 1) + training_time
         training_time = "%d:%d:%d:%d" % (d.day-1, d.hour, d.minute, d.second)
         training_history['training_time'] = str(training_time)
         # save model to file
-        date_time_obj = datetime.now()
-        timestamp_str = date_time_obj.strftime("%d-%b-%Y_(%H:%M:%S)")
-        directory = self.save_path.joinpath(self.model_name + '_'
-                                            + timestamp_str)
-        path = self.save_path.joinpath('checkpoint_' + str(epochs) + '_' +
-                                       self.model_name + '_' + timestamp_str +
-                                       '.pth.tar')
 
-        training_history['model_save_path'] = str(path)
-        train_path = self.save_path.joinpath(self.model_name + '_' +
-                                             timestamp_str + '_log.txt')
-        self.save_model(path)
+        training_history['model_save_path'] = str(best_path)
+        train_path = directory.joinpath(self.model_name + '_log.txt')
+        self.save_model(directory)
         self.save_training_log(train_path, training_history)
 
     def predict(self, data_path, beam_size=1):
@@ -210,6 +242,9 @@ class Generator:
             beam search are the values.
         """
         data_path = Path(data_path)
+
+        self.model.eval()  # put model in evaluation mode
+
         data_df = pd.read_csv(data_path)
         predicted_captions = {}
         images = data_df.loc[:, 'image_id']
@@ -291,6 +326,7 @@ class Generator:
         self.initialize_optimizer()
 
     def save_model(self, path):
+        path. joinpath(self.model_name + '_model.pth')
         torch.save(self.model.state_dict(), path)
 
     def save_training_log(self, path, training_history):
