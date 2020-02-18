@@ -121,8 +121,43 @@ class Generator:
               early_stopping_freq=6,
               beam_size=1,
               validation_metric='CIDEr'):
+        """
+        Method for training the model.
+
+        Parameters
+        ----------
+        data_path : Path or str.
+            Path to trainingset file (*.csv).
+        validation_path : Path or str.
+            Path to validationset file (*.csv).
+        ann_path : Path or str.
+            Path to the validation annotation file (*.json)
+        res_path : Path or str.
+            Path to the directory where result (*.json) and eval (*.csv)
+            files will be written
+        epochs : int.
+            Max number of epochs to continue training the model for.
+        batch_size : int.
+            Mini batch size.
+        early_stopping_freq : int.
+            If no improvements over this number of epochs then stop training.
+        beam_size : int.
+            Beam size for validation. Default is 1.
+        validation_metric : str.
+            Which automatic text evaluation metric to use for validation.
+            Metrics = {'CIDEr', 'METEOR', 'SPICE', 'ROUGE_L',
+            'Bleu_1', 'Bleu_2', 'Bleu_3', 'Bleu_4'}.
+            Defualt value is 'CIDEr'.
+
+        Returns
+        -------
+        Saves the model and checkpoints to its own folder. Then writes a log
+        with all necessary information about the model and training.
+        """
         data_path = Path(data_path)
         validation_path = Path(validation_path)
+        ann_path = Path(ann_path)
+        res_path = Path(res_path)
         train_df = pd.read_csv(data_path)
 
         training_history = {
