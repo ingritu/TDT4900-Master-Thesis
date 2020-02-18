@@ -20,5 +20,6 @@ And lastly we write the training loss output.
 could be useful to look into saving this more frequently in case something were
 to go wrong during training and then we would have no log.
 
-
+Both logs and checkpoints are saved in a subdirectory of the models directory. 
+The subdirectory is unique for any specific model. It is created at train time. 
 
