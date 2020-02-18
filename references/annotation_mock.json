@@ -1,0 +1,30 @@
+{
+  "info": {
+    "description": "",
+    "url": "www",
+    "version": 1.0,
+    "year": 2014,
+    "contributor": "Microsoft COCO group",
+    "date_created": "yyyy-mm-dd hh:mm:ss.ssssss"
+  },
+  "images": [{
+    "license": 3,
+    "url": "www",
+    "file_name": ".jpg",
+    "id": 345903,
+    "width": 640,
+    "height": 240,
+    "date_captured": "yyyy-mm-dd hh:mm:ss"
+  }, {}],
+  "licenses": [{
+    "url": "www",
+    "id": 1,
+    "name": "something"
+  }, {}],
+  "type": "caption",
+  "annotations": [{
+    "image_id": 203564,
+    "id": 37,
+    "caption": "A bicycle replica with a clock as the front wheel."
+  }, {}]
+}
