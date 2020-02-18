@@ -18,6 +18,9 @@ from src.models.torch_generators import model_switcher
 from src.models.utils import save_checkpoint
 from src.models.utils import save_training_log
 
+from cococaption.pycocoevalcap.eval import COCOEvalCap
+from cococaption.pycocotools.coco import COCO
+
 ROOT_PATH = Path(__file__).absolute().parents[2]
 
 
@@ -108,8 +111,18 @@ class Generator:
         self.optimizer = optimizer_switcher(self.optimizer_string)(
             self.model.parameters(), self.lr)
 
-    def train(self, data_path, epochs, batch_size, early_stopping_freq=6):
+    def train(self,
+              data_path,
+              validation_path,
+              ann_path,
+              res_path,
+              epochs,
+              batch_size,
+              early_stopping_freq=6,
+              beam_size=1,
+              validation_metric='CIDEr'):
         data_path = Path(data_path)
+        validation_path = Path(validation_path)
         train_df = pd.read_csv(data_path)
 
         training_history = {
@@ -192,8 +205,16 @@ class Generator:
             # add the mean loss of the epoch to the training history
             training_history['history'].append(np.mean(
                 np.array(batch_history)))
-            # TODO: do validation here
-            cider_score = 0
+
+            # validation here
+            eval_path = res_path.joinpath('captions_eval_' + str(e) + '.csv')
+            res_path = res_path.joinpath('captions_result_' + str(e) + '.json')
+            cider_score = self.evaluate(validation_path,
+                                        ann_path,
+                                        res_path,
+                                        eval_path,
+                                        beam_size=beam_size,
+                                        metric=validation_metric)
             # save model checkpoint
             is_best = cider_score > best_cider
             best_cider = max(cider_score, best_cider)
@@ -255,6 +276,8 @@ class Generator:
         return predicted_captions
 
     def beam_search(self, image, beam_size=1):
+        # consider if it is possible to handle more than one sample at a time
+        # for instance more images, and/or predict on the entire beam
         # initialization
         image = torch.tensor([image])  # convert to tensor
         in_token = ['startseq']
@@ -313,9 +336,23 @@ class Generator:
 
         return captions
 
-    def evaluate(self):
+    def evaluate(self, data_path, ann_path, res_path, eval_path,
+                 beam_size=1, metric='CIDEr'):
         # TODO: implement model evaluation
-        pass
+        # get models predictions
+        predictions = self.predict(data_path, beam_size=beam_size)
+
+        # TODO: save predictions to res_path which is .json
+
+        coco = COCO(ann_path)
+        coco_res = coco.loadRes(res_path)
+        coco_eval = COCOEvalCap(coco, coco_res)
+        coco_eval.params['image_id'] = coco_res.getImgIds()
+        coco_eval.evaluate()
+
+        # TODO: save evaluations to eval_path
+
+        return coco_eval.eval[metric]
 
     def load_model(self, path):
         checkpoint = torch.load(path)

@@ -27,6 +27,11 @@ if __name__ == '__main__':
                                        'Flickr8k',
                                        'Images',
                                        'encoded_visual_attention_full.pkl')
+    # annotation file
+    annFile = ROOT_PATH.joinpath('cococaption',
+                                 'annotations',
+                                 'captions_val2014.json')
+
     save_path_ = ROOT_PATH.joinpath('models')
 
     model_name_ = 'adaptive'
