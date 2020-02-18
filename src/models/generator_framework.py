@@ -333,8 +333,9 @@ class Generator:
             captions = tmp_captions
             captions.sort(key=lambda l: l[1])
             captions = captions[-beam_size:]
-
-        return captions
+        most_prob_cap = captions.sort(key=lambda l: l[1])[0][0]
+        most_prob_cap = ' '.join(most_prob_cap)
+        return most_prob_cap.strip()
 
     def evaluate(self, data_path, ann_path, res_path, eval_path,
                  beam_size=1, metric='CIDEr'):
@@ -350,7 +351,7 @@ class Generator:
         coco_eval.params['image_id'] = coco_res.getImgIds()
         coco_eval.evaluate()
 
-        # TODO: save evaluations to eval_path
+        # TODO: save evaluations to eval_path which is .csv
 
         return coco_eval.eval[metric]
 
@@ -363,6 +364,7 @@ class Generator:
         print(self.model)
 
     def save_model(self, path):
+        path = Path(path)
         assert path.is_dir()
         path = path.joinpath(self.model_name + '_model.pth')
         torch.save(self.model.state_dict(), path)
