@@ -1,0 +1,17 @@
+{
+  "images": [{
+    "sentids": [25, 26, 27, 28, 29],
+    "imgid": 5,
+    "sentences": [{
+      "tokens": ["a", "cyclist", "wearing", "a", "red", "helmet", "is", "riding", "on", "the", "pavement"],
+      "raw": "A cyclist wearing a red helmet is riding on the pavement .",
+      "imgid": 5,
+      "sentid": 25
+    }, {}],
+    "split": "train",
+    "filename": ".jpg",
+    "filepath": "val2014 this and cocoid is only in coco, cocoid is related to filename",
+    "cocoid": 391895
+  }, {}],
+  "dataset": "flickr8k"
+}
