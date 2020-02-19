@@ -21,9 +21,9 @@ def make_train_val_test_split(df_path, split_paths, save_path):
     with open(test_path, 'r') as test_file:
         test_images = [im_id.strip() for im_id in test_file.readlines()
                        if len(im_id) > 0]
-    train_df = cap_df.loc[cap_df.loc[:, 'image_id'].isin(train_images), :]
-    val_df = cap_df.loc[cap_df.loc[:, 'image_id'].isin(val_images), :]
-    test_df = cap_df.loc[cap_df.loc[:, 'image_id'].isin(test_images), :]
+    train_df = cap_df.loc[cap_df.loc[:, 'image_name'].isin(train_images), :]
+    val_df = cap_df.loc[cap_df.loc[:, 'image_name'].isin(val_images), :]
+    test_df = cap_df.loc[cap_df.loc[:, 'image_name'].isin(test_images), :]
     # make a merged version
     full_df = train_df.copy()
     full_df = full_df.append(val_df)

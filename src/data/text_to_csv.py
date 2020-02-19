@@ -24,9 +24,12 @@ def text_to_csv(file_path, save_path):
 
     # set up caption dictionary
     captions = {}
-    labels = ['image_id', 'caption_id', 'caption']
+    labels = ['image_id', 'image_name', 'caption_id', 'caption']
     for l in labels:
         captions[l] = []
+
+    image_name2ids = {}
+    counter = 0
 
     # read txt file an extract info
     with open(file_path, 'r') as file:
@@ -40,13 +43,18 @@ def text_to_csv(file_path, save_path):
         caption_id, caption_tokens = tokens[0], tokens[1:]
 
         # extract .jpg filename from image id
-        image_id = caption_id.split('#')[0]
+        image_name = caption_id.split('#')[0]
+
+        if image_name not in image_name2ids:
+            image_name2ids[image_name] = counter
+            counter += 1
 
         # convert description tokens back to string
         caption = ' '.join(caption_tokens)
 
         # add all info to the caption dictionary
-        captions['image_id'].append(image_id)
+        captions['image_id'].append(image_name2ids[image_name])
+        captions['image_name'].append(image_name)
         captions['caption_id'].append(caption_id)
         captions['caption'].append(caption)
 

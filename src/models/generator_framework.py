@@ -9,6 +9,7 @@ from datetime import timedelta
 import numpy as np
 from copy import deepcopy
 from time import time
+import json
 
 from src.data.data_generator import data_generator
 from src.data.data_generator import pad_sequences
@@ -115,7 +116,6 @@ class Generator:
               data_path,
               validation_path,
               ann_path,
-              res_path,
               epochs,
               batch_size,
               early_stopping_freq=6,
@@ -132,9 +132,6 @@ class Generator:
             Path to validationset file (*.csv).
         ann_path : Path or str.
             Path to the validation annotation file (*.json)
-        res_path : Path or str.
-            Path to the directory where result (*.json) and eval (*.csv)
-            files will be written
         epochs : int.
             Max number of epochs to continue training the model for.
         batch_size : int.
@@ -157,7 +154,6 @@ class Generator:
         data_path = Path(data_path)
         validation_path = Path(validation_path)
         ann_path = Path(ann_path)
-        res_path = Path(res_path)
         train_df = pd.read_csv(data_path)
 
         training_history = {
@@ -196,7 +192,7 @@ class Generator:
         if not directory.is_dir():
             directory.mkdir()
 
-        best_cider = -1
+        best_val_score = -1  # all metric give positive scores
         best_path = None
         epochs_since_improvement = 0
 
@@ -242,23 +238,24 @@ class Generator:
                 np.array(batch_history)))
 
             # validation here
-            eval_path = res_path.joinpath('captions_eval_' + str(e) + '.csv')
-            res_path = res_path.joinpath('captions_result_' + str(e) + '.json')
-            cider_score = self.evaluate(validation_path,
-                                        ann_path,
-                                        res_path,
-                                        eval_path,
-                                        beam_size=beam_size,
-                                        metric=validation_metric)
+            eval_path = directory.joinpath('captions_eval_' + str(e) + '.json')
+            res_path = directory.joinpath('captions_result_' + str(e)
+                                          + '.json')
+            metric_score = self.evaluate(validation_path,
+                                         ann_path,
+                                         res_path,
+                                         eval_path,
+                                         beam_size=beam_size,
+                                         metric=validation_metric)
             # save model checkpoint
-            is_best = cider_score > best_cider
-            best_cider = max(cider_score, best_cider)
+            is_best = metric_score > best_val_score
+            best_val_score = max(metric_score, best_val_score)
             tmp_model_path = save_checkpoint(directory,
                                              epoch=e,
                                              epochs_since_improvement=0,
                                              model=self.model,
                                              optimizer=self.optimizer,
-                                             cider=cider_score,
+                                             cider=metric_score,
                                              is_best=is_best)
             if tmp_model_path:
                 best_path = tmp_model_path
@@ -302,12 +299,17 @@ class Generator:
         self.model.eval()  # put model in evaluation mode
 
         data_df = pd.read_csv(data_path)
-        predicted_captions = {}
+        predicted_captions = []
         images = data_df.loc[:, 'image_id']
-        for image_name in images:
+        for i, image_name in enumerate(images):
+            index = i + 1
+            pred_dict = {
+                "image_id": image_name
+            }
             image = self.encoded_features[image_name]
-            predictions = self.beam_search(image, beam_size=beam_size)
-            predicted_captions[image_name] = predictions
+            pred_dict["caption"] = self.beam_search(image, beam_size=beam_size)
+            predicted_captions.append(pred_dict)
+            print('image # %d  \r' % index, end='')
         return predicted_captions
 
     def beam_search(self, image, beam_size=1):
@@ -368,17 +370,19 @@ class Generator:
             captions = tmp_captions
             captions.sort(key=lambda l: l[1])
             captions = captions[-beam_size:]
-        most_prob_cap = captions.sort(key=lambda l: l[1])[0][0]
+        most_prob_cap = captions[-1][0]
         most_prob_cap = ' '.join(most_prob_cap)
         return most_prob_cap.strip()
 
     def evaluate(self, data_path, ann_path, res_path, eval_path,
                  beam_size=1, metric='CIDEr'):
-        # TODO: implement model evaluation
+        print("Evaluating model ...")
         # get models predictions
         predictions = self.predict(data_path, beam_size=beam_size)
-
-        # TODO: save predictions to res_path which is .json
+        print("Finished predicting")
+        # save predictions to res_path which is .json
+        with open(res_path, 'w') as res_file:
+            json.dump(predictions, res_file)
 
         coco = COCO(ann_path)
         coco_res = coco.loadRes(res_path)
@@ -386,7 +390,9 @@ class Generator:
         coco_eval.params['image_id'] = coco_res.getImgIds()
         coco_eval.evaluate()
 
-        # TODO: save evaluations to eval_path which is .csv
+        # save evaluations to eval_path which is .json
+        with open(eval_path, 'w') as eval_file:
+            json.dump(coco_eval.eval, eval_file)
 
         return coco_eval.eval[metric]
 

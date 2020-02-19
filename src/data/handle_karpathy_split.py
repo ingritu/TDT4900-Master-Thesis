@@ -16,7 +16,7 @@ def order_raw_data_and_move_to_interim(data_path, dataset, ann_path):
     test_dict = {}
     val_dict = {}
 
-    columns = ['image_id', 'caption_id', 'caption']
+    columns = ['image_id', 'image_name', 'caption_id', 'caption']
 
     for col in columns:
         train_dict[col] = []
@@ -71,12 +71,12 @@ def order_raw_data_and_move_to_interim(data_path, dataset, ann_path):
         }
 
         # get image name
-        image_id = image['filename']
-        image_num = image['imgid']
+        image_name = image['filename']
+        image_id = image['imgid']
 
         # add info to ann_image_obj
-        ann_image_obj['file_name'] = image_id
-        ann_image_obj['id'] = image_num
+        ann_image_obj['file_name'] = image_name
+        ann_image_obj['id'] = image_id
 
         # get split
         split = image['split']
@@ -89,15 +89,16 @@ def order_raw_data_and_move_to_interim(data_path, dataset, ann_path):
         for sentid, caption in zip(sentids, captions):
             ann_cap_obj = {
                 "id": sentid,
-                "image_id": image_num,
+                "image_id": image_id,
                 "caption": caption
             }
 
             raw_caption = caption['raw']
-            caption_id = image_id[:-4] + '#' + str(sentid)
+            caption_id = image_name[:-4] + '#' + str(sentid)
             # add info to dicts
             if split != 'restval':
                 full_dict[split]['image_id'].append(image_id)
+                full_dict[split]['image_name'].append(image_name)
                 full_dict[split]['caption_id'].append(caption_id)
                 full_dict[split]['caption'].append(raw_caption)
                 # save ann_cap_obj
@@ -105,6 +106,7 @@ def order_raw_data_and_move_to_interim(data_path, dataset, ann_path):
             else:
                 # supplement training dataset with restval
                 full_dict['train']['image_id'].append(image_id)
+                full_dict['train']['image_name'].append(image_name)
                 full_dict['train']['caption_id'].append(caption_id)
                 full_dict['train']['caption'].append(raw_caption)
                 # save ann_cap_obj

@@ -12,11 +12,11 @@ if __name__ == '__main__':
     train_path = ROOT_PATH.joinpath('data',
                                     'interim',
                                     'Flickr8k',
-                                    'Flickr8k_train_clean.csv')
+                                    'Flickr8k_mini_train.csv')
     val_path = ROOT_PATH.joinpath('data',
                                   'interim',
                                   'Flickr8k',
-                                  'Flickr8k_val.csv')
+                                  'Flickr8k_mini_test.csv')
 
     voc_path_ = ROOT_PATH.joinpath('data',
                                    'interim',
@@ -28,16 +28,17 @@ if __name__ == '__main__':
                                        'Images',
                                        'encoded_visual_attention_full.pkl')
     # annotation file
-    annFile = ROOT_PATH.joinpath('cococaption',
+    annFile = ROOT_PATH.joinpath('data',
+                                 'processed',
                                  'annotations',
-                                 'captions_val2014.json')
+                                 'flickr8k_val.json')
 
     save_path_ = ROOT_PATH.joinpath('models')
 
     model_name_ = 'adaptive'
 
-    batch_size = 3000  # number of captions in a batch, not images
-    epochs = 1
+    batch_size = 2  # number of captions in a batch, not images
+    epochs = 2
     em_dim = 50
     hidden_size_ = 50
     loss_function_ = 'cross_entropy'
@@ -59,4 +60,7 @@ if __name__ == '__main__':
     generator.compile()
 
     # model is automatically saved after training
-    generator.train(train_path, epochs=epochs, batch_size=batch_size)
+    generator.train(train_path,
+                    val_path,
+                    annFile,
+                    epochs=epochs, batch_size=batch_size)

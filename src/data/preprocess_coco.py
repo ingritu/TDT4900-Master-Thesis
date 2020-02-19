@@ -27,6 +27,7 @@ def make_dataframe(data_path):
 
     out_dict = {
         'image_id': [],
+        'image_name': [],
         'caption_id': [],
         'caption': []
     }
@@ -35,13 +36,15 @@ def make_dataframe(data_path):
     captions = data_dict['annotations']
     cap_counter = 0
     for imgobj in images:
-        im_id = imgobj['file_name']
+        im_id = imgobj['id']
+        im_name = imgobj['file_name']
         cap_ids, caps = find_captions(captions, imgobj['id'])
         for c in range(len(cap_ids)):
-            cap_id = im_id + "#" + str(cap_ids[c])
+            cap_id = im_name + "#" + str(cap_ids[c])
             caption = caps[c]
             out_dict['image_id'].append(im_id)
-            out_dict['caption_id'].append(im_id + "#" + cap_id)
+            out_dict['image_name'].append(im_name)
+            out_dict['caption_id'].append(im_name + "#" + cap_id)
             out_dict['caption'].append(caption)
             cap_counter += 1
             if cap_counter % 1000 == 0:
