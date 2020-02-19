@@ -12,41 +12,9 @@ def order_raw_data_and_move_to_interim(data_path, dataset, ann_path):
     with open(data_path, 'r') as json_file:
         data_dict = json.load(json_file)
 
-    train_dict = {}
-    test_dict = {}
-    val_dict = {}
+    full_dict, columns, test_columns = initialize_full_dict()
 
-    columns = ['image_id', 'image_name', 'caption_id', 'caption']
-
-    for col in columns:
-        train_dict[col] = []
-        test_dict[col] = []
-        val_dict[col] = []
-    full_dict = {'train': train_dict, 'val': val_dict, 'test': test_dict}
-
-    init_dict = {
-        "info": {
-            "description": "description",
-            "url": "www",
-            "version": 1.0,
-            "year": 2020,
-            "contributor": "contributor",
-            "date_created": "yyyy-mm-dd hh:mm:ss"
-            },
-        "images": [],
-        "licenses": [],
-        "type": "caption",
-        "annotations": []
-    }
-
-    ann_dict = {
-        "test": {},
-        "val": {},
-        "train": {}
-    }
-
-    for key in ann_dict:
-        ann_dict[key] = deepcopy(init_dict)
+    ann_dict = initialize_ann_dict()
 
     ann_images = {
         "test": [],
@@ -80,9 +48,13 @@ def order_raw_data_and_move_to_interim(data_path, dataset, ann_path):
 
         # get split
         split = image['split']
-        # save ann_image_obj
+
         if split in {"test", "val"}:
+            # save ann_image_obj
             ann_images[split].append(ann_image_obj)
+            # save image info to .csv files
+            full_dict[split]['image_id'].append(image_id)
+            full_dict[split]['image_name'].append(image_name)
         # go through captions and add them to dict split
         captions = image['sentences']
         sentids = image['sentids']
@@ -96,21 +68,16 @@ def order_raw_data_and_move_to_interim(data_path, dataset, ann_path):
             raw_caption = caption['raw']
             caption_id = image_name[:-4] + '#' + str(sentid)
             # add info to dicts
-            if split != 'restval':
-                full_dict[split]['image_id'].append(image_id)
-                full_dict[split]['image_name'].append(image_name)
-                full_dict[split]['caption_id'].append(caption_id)
-                full_dict[split]['caption'].append(raw_caption)
-                # save ann_cap_obj
-                ann_annotations[split].append(ann_cap_obj)
-            else:
-                # supplement training dataset with restval
+            if split in {'restval', 'train'}:
                 full_dict['train']['image_id'].append(image_id)
                 full_dict['train']['image_name'].append(image_name)
                 full_dict['train']['caption_id'].append(caption_id)
                 full_dict['train']['caption'].append(raw_caption)
                 # save ann_cap_obj
                 ann_annotations['train'].append(ann_cap_obj)
+            else:
+                # save ann_cap_obj
+                ann_annotations[split].append(ann_cap_obj)
 
     if not ann_path.is_dir():
         # if this is not a directory then make it, including every
@@ -125,9 +92,9 @@ def order_raw_data_and_move_to_interim(data_path, dataset, ann_path):
                 as ann_file:
             json.dump(ann_dict[s], ann_file)
 
-    train_df = pd.DataFrame(train_dict, columns=columns)
-    test_df = pd.DataFrame(test_dict, columns=columns)
-    val_df = pd.DataFrame(val_dict, columns=columns)
+    train_df = pd.DataFrame(full_dict['train'], columns=columns)
+    test_df = pd.DataFrame(full_dict['test'], columns=test_columns)
+    val_df = pd.DataFrame(full_dict['val'], columns=test_columns)
 
     save_path = ROOT_PATH.joinpath('data', 'interim', 'karpathy_split')
     if not save_path.is_dir():
@@ -143,3 +110,47 @@ def order_raw_data_and_move_to_interim(data_path, dataset, ann_path):
     test_df.to_csv(test_file)
     val_df.to_csv(val_file)
     print("finished job!!")
+
+
+def initialize_full_dict():
+    train_dict = {}
+    # val and test does not need caption_id nor caption columns
+    test_dict = {
+        'image_id': [],
+        'image_name': [],
+    }
+    val_dict = {
+        'image_id': [],
+        'image_name': [],
+    }
+    columns = ['image_id', 'image_name', 'caption_id', 'caption']
+    test_columns = columns[:2]
+    for col in columns:
+        train_dict[col] = []
+    full_dict = {'train': train_dict, 'val': val_dict, 'test': test_dict}
+    return full_dict, columns, test_columns
+
+
+def initialize_ann_dict():
+    init_dict = {
+        "info": {
+            "description": "description",
+            "url": "www",
+            "version": 1.0,
+            "year": 2020,
+            "contributor": "contributor",
+            "date_created": "yyyy-mm-dd hh:mm:ss"
+        },
+        "images": [],
+        "licenses": [],
+        "type": "caption",
+        "annotations": []
+    }
+    ann_dict = {
+        "test": {},
+        "val": {},
+        "train": {}
+    }
+    for key in ann_dict:
+        ann_dict[key] = deepcopy(init_dict)
+    return ann_dict

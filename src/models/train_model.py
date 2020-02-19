@@ -11,27 +11,26 @@ if __name__ == '__main__':
 
     train_path = ROOT_PATH.joinpath('data',
                                     'interim',
-                                    'Flickr8k',
-                                    'Flickr8k_mini_train.csv')
+                                    'karpathy_split',
+                                    'flickr8k_mini_train.csv')
     val_path = ROOT_PATH.joinpath('data',
                                   'interim',
-                                  'Flickr8k',
-                                  'Flickr8k_mini_test.csv')
+                                  'karpathy_split',
+                                  'flickr8k_mini_val.csv')
 
     voc_path_ = ROOT_PATH.joinpath('data',
                                    'interim',
-                                   'Flickr8k',
-                                   'Flickr8k_vocabulary.csv')
+                                   'karpathy_split',
+                                   'flickr8k_vocabulary.csv')
     feature_path_ = ROOT_PATH.joinpath('data',
                                        'processed',
                                        'Flickr8k',
                                        'Images',
                                        'encoded_visual_attention_full.pkl')
     # annotation file
-    annFile = ROOT_PATH.joinpath('data',
-                                 'processed',
+    annFile = ROOT_PATH.joinpath('cococaption',
                                  'annotations',
-                                 'flickr8k_val.json')
+                                 'captions_val2014.json')
 
     save_path_ = ROOT_PATH.joinpath('models')
 

@@ -22,5 +22,5 @@ if __name__ == '__main__':
     save_path_ = ROOT_PATH.joinpath('data', 'interim', 'karpathy_split',
                                     'flickr8k_train_clean.csv')
     voc_save_path_ = ROOT_PATH.joinpath('data', 'interim', 'karpathy_split',
-                                        'Flickr8k_vocabulary.csv')
+                                        'flickr8k_vocabulary.csv')
     basic_data_cleaning(df_path_, save_path_, voc_save_path_)

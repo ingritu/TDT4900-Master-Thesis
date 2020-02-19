@@ -1,3 +1,4 @@
+pycocotools
 torch
 scikit-learn
 keras

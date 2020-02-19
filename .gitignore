@@ -9,6 +9,7 @@ models/*
 !README.md
 notebooks/visuals
 cococaption/*
+coco-caption/*
 src/test.py
 
 # Created by https://www.gitignore.io/api/pycharm,jupyternotebooks

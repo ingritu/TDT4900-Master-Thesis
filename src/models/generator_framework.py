@@ -19,8 +19,8 @@ from src.models.torch_generators import model_switcher
 from src.models.utils import save_checkpoint
 from src.models.utils import save_training_log
 
-from cococaption.pycocoevalcap.eval import COCOEvalCap
-from cococaption.pycocotools.coco import COCO
+from pycocoevalcap.eval import COCOEvalCap
+from pycocotools.coco import COCO
 
 ROOT_PATH = Path(__file__).absolute().parents[2]
 
@@ -300,14 +300,20 @@ class Generator:
 
         data_df = pd.read_csv(data_path)
         predicted_captions = []
-        images = data_df.loc[:, 'image_id']
-        for i, image_name in enumerate(images):
+        for i in range(len(data_df)):
+            image_id = int(data_df.loc[i, 'image_id'])
+            image_name = data_df.loc[i, 'image_name']
             index = i + 1
             pred_dict = {
-                "image_id": image_name
+                "image_id": image_id
             }
             image = self.encoded_features[image_name]
-            pred_dict["caption"] = self.beam_search(image, beam_size=beam_size)
+            prediction = self.beam_search(image, beam_size=beam_size)
+            # remove startseq and endseq token from sequence
+            prediction = prediction.replace('startseq', '')
+            prediction = prediction.replace('endseq', '')
+            prediction = prediction.strip()
+            pred_dict["caption"] = prediction
             predicted_captions.append(pred_dict)
             print('image # %d  \r' % index, end='')
         return predicted_captions
@@ -384,8 +390,8 @@ class Generator:
         with open(res_path, 'w') as res_file:
             json.dump(predictions, res_file)
 
-        coco = COCO(ann_path)
-        coco_res = coco.loadRes(res_path)
+        coco = COCO(str(ann_path))
+        coco_res = coco.loadRes(str(res_path))
         coco_eval = COCOEvalCap(coco, coco_res)
         coco_eval.params['image_id'] = coco_res.getImgIds()
         coco_eval.evaluate()
