@@ -277,7 +277,7 @@ class Generator:
         # save log to file
         save_training_log(train_path, training_history)
 
-    def predict(self, data_path, beam_size=1):
+    def predict(self, data_path, batch_size=1, beam_size=1):
         """
         Function to make self.model make predictions given some data.
 
@@ -285,6 +285,8 @@ class Generator:
         ----------
         data_path : Path or str.
             Path to csv file containing the test set.
+        batch_size : int.
+            The number of images to predict on simultaneously. Default 1.
         beam_size : int.
             Default is 1, which is the same as doing greedy inference.
 
@@ -295,30 +297,64 @@ class Generator:
             beam search are the values.
         """
         data_path = Path(data_path)
-
         self.model.eval()  # put model in evaluation mode
 
         data_df = pd.read_csv(data_path)
+
         predicted_captions = []
+
         print_idx = 10
-        for i in range(len(data_df)):
-            image_id = int(data_df.loc[i, 'image_id'])
-            image_name = data_df.loc[i, 'image_name']
+        num_images = len(data_df)
+        if batch_size > num_images:
+            batch_size = num_images
+        steps = np.ceil(num_images / batch_size)
+        prev_batch_idx = 0
+        for i in range(steps):
+            # create input batch
+            end_batch_idx = min(prev_batch_idx + batch_size, num_images)
+            image_ids = data_df.loc[prev_batch_idx: end_batch_idx,
+                                    'image_id']
+            image_names = data_df.loc[prev_batch_idx: end_batch_idx,
+                                      'image_name']
+            enc_images = []
+            for image_id, image_name in zip(image_ids, image_names):
+                # get encoded features for this batch
+                pred_dict = {
+                    "image_id": image_id
+                }
+                predicted_captions.append(pred_dict)
+                enc_images.append(self.encoded_features[image_name])
+
+            # get full sentence predictions from beam_search algorithm
+            predictions = self.beam_search(enc_images, beam_size=beam_size)
+            predictions = self.post_process_predictions(predictions)
+
+            # put predictions in the right pred_dict
+            counter = 0
+            for idx in range(prev_batch_idx, end_batch_idx):
+                predicted_captions[idx]["caption"] = predictions[counter]
+                counter += 1
+
+            # verbose
             index = i + 1
-            pred_dict = {
-                "image_id": image_id
-            }
-            image = self.encoded_features[image_name]
-            prediction = self.beam_search(image, beam_size=beam_size)
-            # remove startseq and endseq token from sequence
+            if index % print_idx == 0:
+                print('image',  index)
+            # update prev_batch_idx
+            prev_batch_idx = end_batch_idx
+
+        return predicted_captions
+
+    @staticmethod
+    def post_process_predictions(predictions):
+        # helper function, consider moving to utils
+        # remove startseq and endseq token from sequence
+        processed = []
+        for prediction in predictions:
             prediction = prediction.replace('startseq', '')
             prediction = prediction.replace('endseq', '')
             prediction = prediction.strip()
-            pred_dict["caption"] = prediction
-            predicted_captions.append(pred_dict)
-            if index % print_idx == 0:
-                print('image',  index)
-        return predicted_captions
+            processed.append(prediction)
+        return processed
 
     def beam_search(self, image, beam_size=1):
         # consider if it is possible to handle more than one sample at a time
