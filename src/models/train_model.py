@@ -37,7 +37,7 @@ if __name__ == '__main__':
     model_name_ = 'adaptive'
 
     batch_size = 2  # number of captions in a batch, not images
-    epochs = 2
+    epochs = 10
     em_dim = 50
     hidden_size_ = 50
     loss_function_ = 'cross_entropy'

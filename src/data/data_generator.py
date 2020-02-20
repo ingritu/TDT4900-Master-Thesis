@@ -26,7 +26,7 @@ def data_generator(data_df, batch_size, steps_per_epoch,
         shuffle_state = r.randint(0, 10000)
         # shuffle df
         data_df = shuffle(data_df, random_state=shuffle_state)
-        data_df = data_df.reset_index()
+        data_df = data_df.reset_index(drop=True)
         for step in range(steps_per_epoch):
             # create a new batch
             x1 = []
