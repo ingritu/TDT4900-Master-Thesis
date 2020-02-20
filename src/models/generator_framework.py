@@ -300,6 +300,7 @@ class Generator:
 
         data_df = pd.read_csv(data_path)
         predicted_captions = []
+        print_idx = 10
         for i in range(len(data_df)):
             image_id = int(data_df.loc[i, 'image_id'])
             image_name = data_df.loc[i, 'image_name']
@@ -315,7 +316,8 @@ class Generator:
             prediction = prediction.strip()
             pred_dict["caption"] = prediction
             predicted_captions.append(pred_dict)
-            print('image # %d  \r' % index, end='')
+            if index % print_idx == 0:
+                print('image',  index)
         return predicted_captions
 
     def beam_search(self, image, beam_size=1):
