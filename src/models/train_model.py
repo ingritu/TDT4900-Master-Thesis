@@ -28,9 +28,10 @@ if __name__ == '__main__':
                                        'Images',
                                        'encoded_visual_attention_full.pkl')
     # annotation file
-    annFile = ROOT_PATH.joinpath('cococaption',
+    annFile = ROOT_PATH.joinpath('data',
+                                 'processed',
                                  'annotations',
-                                 'captions_val2014.json')
+                                 'flickr8k_val.json')
 
     save_path_ = ROOT_PATH.joinpath('models')
 

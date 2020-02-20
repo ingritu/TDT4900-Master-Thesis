@@ -62,7 +62,7 @@ def order_raw_data_and_move_to_interim(data_path, dataset, ann_path):
             ann_cap_obj = {
                 "id": sentid,
                 "image_id": image_id,
-                "caption": caption
+                "caption": caption['raw']
             }
 
             raw_caption = caption['raw']
@@ -143,7 +143,7 @@ def initialize_ann_dict():
         },
         "images": [],
         "licenses": [],
-        "type": "caption",
+        "type": "captions",
         "annotations": []
     }
     ann_dict = {
