@@ -6,6 +6,7 @@ from pathlib import Path
 import pandas as pd
 from datetime import datetime
 from datetime import timedelta
+from collections import defaultdict
 import numpy as np
 from copy import deepcopy
 from time import time
@@ -338,7 +339,7 @@ class Generator:
             # verbose
             index = i + 1
             if index % print_idx == 0:
-                print('image',  index)
+                print('Batch step',  index)
             # update prev_batch_idx
             prev_batch_idx = end_batch_idx
 
@@ -356,30 +357,40 @@ class Generator:
             processed.append(prediction)
         return processed
 
-    def beam_search(self, image, beam_size=1):
+    def beam_search(self, batch, beam_size=1):
         # consider if it is possible to handle more than one sample at a time
         # for instance more images, and/or predict on the entire beam
         # initialization
-        image = torch.tensor([image])  # convert to tensor
-        in_token = ['startseq']
-        captions = [[in_token, 0.0]]
-        for _ in range(self.max_length):
-            # check if all captions have their endseq token.
-            all_done = True
-            for caption in captions:
-                # check for at least one caption without endseq token.
-                if caption[0][-1] != 'endseq' and all_done:
-                    all_done = False
-            if all_done:
-                break
+        batch_size = len(batch)
+        # init all image_seqs with sartseq and 0.0 prob
+        in_token = [self.wordtoix['startseq']]
+        captions = [[in_token, 0.0] for _ in range(batch_size)]
 
+        # overhead
+        batch_beam_size = [beam_size for _ in range(batch_size)]
+        # initialize beams as containing 1 caption
+        # need beams to keep track of original indices
+        beams = [[[in_token, 0.0]] for _ in range(batch_size)]
+
+        images = torch.tensor(batch)  # convert to tensor (bs, 64, 1536)
+        predictions = defaultdict(str)  # key: batch index, val: caption
+
+        while True:
             # size of tmp_captions is max b^2
+            # find current batch_size
+            batch_size_t = sum(bs > 0 for bs in batch_beam_size)
+
+            sequences = [cap[0] for cap in captions]
+
+            caption_lengths = np.array([len(s) for s in sequences])
+
+
+
+
+            # TODO: remove the old under here when finished
+
             tmp_captions = []
             for caption in captions:
-                if caption[0][-1] == 'endseq':
-                    # skip expanding if caption has an 'endseq' token.
-                    tmp_captions.append(caption)
-                    continue
                 # if this process proves to be too computationally heavy
                 # then consider trade off with memory, by having extra
                 # variable with both index rep and string rep.
@@ -416,6 +427,11 @@ class Generator:
             captions = captions[-beam_size:]
         most_prob_cap = captions[-1][0]
         most_prob_cap = ' '.join(most_prob_cap)
+
+        # should be removed when finished
+        assert len(predictions) == batch_size, "The number of predictions " \
+                                               "does not match the number " \
+                                               "of images"
         return most_prob_cap.strip()
 
     def evaluate(self, data_path, ann_path, res_path, eval_path,
