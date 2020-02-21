@@ -17,6 +17,7 @@ from src.data.data_generator import pad_sequences
 from src.data.load_vocabulary import load_vocabulary
 from src.features.Resnet_features import load_visual_features
 from src.models.torch_generators import model_switcher
+from src.models.beam import Beam
 from src.models.utils import save_checkpoint
 from src.models.utils import save_training_log
 
@@ -350,7 +351,7 @@ class Generator:
         # helper function, consider moving to utils
         # remove startseq and endseq token from sequence
         processed = []
-        for prediction in predictions:
+        for prediction in predictions.values():
             prediction = prediction.replace('startseq', '')
             prediction = prediction.replace('endseq', '')
             prediction = prediction.strip()
@@ -362,77 +363,70 @@ class Generator:
         # for instance more images, and/or predict on the entire beam
         # initialization
         batch_size = len(batch)
-        # init all image_seqs with sartseq and 0.0 prob
-        in_token = [self.wordtoix['startseq']]
-        captions = [[in_token, 0.0] for _ in range(batch_size)]
 
-        # overhead
-        batch_beam_size = [beam_size for _ in range(batch_size)]
         # initialize beams as containing 1 caption
         # need beams to keep track of original indices
-        beams = [[[in_token, 0.0]] for _ in range(batch_size)]
+        beams = [Beam(batch[i],
+                      beam_size=beam_size,
+                      input_token=[self.wordtoix['startseq']],
+                      eos=self.wordtoix['endseq'],
+                      max_len=self.max_length)
+                 for i in range(batch_size)]
+        working_beams_idx = [i for i in range(batch_size)]
 
-        images = torch.tensor(batch)  # convert to tensor (bs, 64, 1536)
         predictions = defaultdict(str)  # key: batch index, val: caption
 
         while True:
-            # size of tmp_captions is max b^2
-            # find current batch_size
-            batch_size_t = sum(bs > 0 for bs in batch_beam_size)
+            # find current batch_size aka number of beams
+            batch_size_t = sum(b.num_unfinished > 0 for b in beams)
+            if batch_size_t == 0:
+                # all beams are done
+                break
 
-            sequences = [cap[0] for cap in captions]
+            # [[images, seqs, caplens], ...]
+            items = [b.get_items() for b in beams
+                     if b.num_unfinished > 0]
 
-            caption_lengths = np.array([len(s) for s in sequences])
+            images, sequences, caplens = [], [], []
+            for item in items:
+                images += item[0]
+                sequences += item[1]
+                caplens += item[2]
 
+            caplens = np.array(caplens)
+            # pad sequence
+            sequences = pad_sequences(sequences, maxlen=self.max_length)
+            images = torch.tensor(images)  # convert to tensor (M*N, 64, 1536)
 
+            # get predictions
+            x = [images, sequences]
+            y_predictions, decoding_lengths = \
+                self.model(x, caplens, has_end_seq_token=False)
 
-
-            # TODO: remove the old under here when finished
-
-            tmp_captions = []
-            for caption in captions:
-                # if this process proves to be too computationally heavy
-                # then consider trade off with memory, by having extra
-                # variable with both index rep and string rep.
-                sequence = [self.wordtoix[w] for w in caption[0]
-                            if w in self.wordtoix]
-                sequence = torch.tensor(sequence)  # convert to tensor
-                caption_lengths = np.array([sequence.size()[0]])
-                # pad sequence
-                sequence = pad_sequences([sequence], maxlen=self.max_length)
-
-                # get predictions
-                x = [image, sequence]
-                y_predictions, decoding_lengths = \
-                    self.model(x, caption_lengths, has_end_seq_token=False)
-                # pack padded sequence
-                y_predictions = pack_padded_sequence(y_predictions,
-                                                     decoding_lengths,
-                                                     batch_first=True)[0]
-                # get the b most probable indices
-                # first turn predictions into numpy array,
-                # so that we can use np.argsort
-                y_predictions = y_predictions.detach().numpy()[-1]
-                words_predicted = np.argsort(y_predictions)[-beam_size:]
-                for word in words_predicted:
-                    new_partial_cap = deepcopy(caption[0])
-                    # add the predicted word to the partial caption
-                    new_partial_cap.append(self.ixtoword[word])
-                    new_partial_cap_prob = caption[1] + y_predictions[word]
-                    # add cap and prob to tmp list
-                    tmp_captions.append([new_partial_cap,
-                                         new_partial_cap_prob])
-            captions = tmp_captions
-            captions.sort(key=lambda l: l[1])
-            captions = captions[-beam_size:]
-        most_prob_cap = captions[-1][0]
-        most_prob_cap = ' '.join(most_prob_cap)
+            start_idx = 0
+            remove_idx = set()
+            for idx in working_beams_idx:
+                # feed right predictions to right beams
+                b = beams[idx]
+                end_idx = start_idx + b.num_unfinished
+                preds = y_predictions[start_idx: end_idx]
+                dec_lens = decoding_lengths[start_idx:, end_idx]
+                b.update(preds, dec_lens)
+                start_idx = end_idx
+                if b.has_best_sequence():
+                    # add to finished predictions
+                    predictions[idx] = \
+                        ' '.join([self.ixtoword[w]
+                                  for w in b.get_best_sequence()])
+                    remove_idx.add(idx)
+            # remove idx of finished beams
+            working_beams_idx = [idx for idx in working_beams_idx
+                                 if idx not in remove_idx]
 
         # should be removed when finished
-        assert len(predictions) == batch_size, "The number of predictions " \
-                                               "does not match the number " \
-                                               "of images"
-        return most_prob_cap.strip()
+        assert len(predictions) == batch_size, \
+            "The number of predictions does not match the number of images"
+        return predictions
 
     def evaluate(self, data_path, ann_path, res_path, eval_path,
                  beam_size=1, metric='CIDEr'):
