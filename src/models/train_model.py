@@ -39,7 +39,7 @@ if __name__ == '__main__':
 
     batch_size = 2  # number of captions in a batch, not images
     # number of images in a batch, not captions during val
-    val_batch_size = 1
+    val_batch_size = 2
     beam_size = 2
 
     epochs = 10

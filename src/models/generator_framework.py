@@ -317,7 +317,6 @@ class Generator:
         data_df = data_df.reset_index(drop=True)
 
         predicted_captions = []
-        print('output', predicted_captions)
 
         num_images = len(data_df)
         if batch_size > num_images:
@@ -327,21 +326,19 @@ class Generator:
         for i in range(steps):
             # create input batch
             end_batch_idx = min(prev_batch_idx + batch_size, num_images)
-            image_ids = data_df.loc[prev_batch_idx: end_batch_idx,
-                                    'image_id']
-            print(image_ids)
-            image_names = data_df.loc[prev_batch_idx: end_batch_idx,
-                                      'image_name']
+            image_ids = data_df.iloc[prev_batch_idx: end_batch_idx, :]
+            image_ids = image_ids.loc[:, 'image_id'].to_numpy()
+            image_names = data_df.iloc[prev_batch_idx: end_batch_idx, :]
+            image_names = image_names.loc[:, 'image_name'].to_numpy()
+
             enc_images = []
             for image_id, image_name in zip(image_ids, image_names):
-                print((image_id, image_name))
                 # get encoded features for this batch
                 pred_dict = {
-                    "image_id": image_id,
+                    "image_id": int(image_id),
                     "caption": ""
                 }
                 predicted_captions.append(deepcopy(pred_dict))
-                print('output', predicted_captions)
                 enc_images.append(self.encoded_features[image_name])
 
             # get full sentence predictions from beam_search algorithm
@@ -352,7 +349,6 @@ class Generator:
             counter = 0
             for idx in range(prev_batch_idx, end_batch_idx):
                 predicted_captions[idx]["caption"] = predictions[counter]
-                print('output', predicted_captions)
                 counter += 1
 
             # verbose
@@ -360,7 +356,6 @@ class Generator:
             # update prev_batch_idx
             prev_batch_idx = end_batch_idx
 
-        print('output', predicted_captions)
         return predicted_captions
 
     @staticmethod
