@@ -38,9 +38,13 @@ if __name__ == '__main__':
     model_name_ = 'adaptive'
 
     batch_size = 300  # number of captions in a batch, not images
+    # number of images in a batch, not captions during val
+    val_batch_size = 30
+    beam_size = 2
+
     epochs = 10
-    em_dim = 512
-    hidden_size_ = 512
+    em_dim = 50
+    hidden_size_ = 50
     loss_function_ = 'cross_entropy'
     opt = 'adam'
     lr_ = 0.0001
@@ -63,4 +67,7 @@ if __name__ == '__main__':
     generator.train(train_path,
                     val_path,
                     annFile,
-                    epochs=epochs, batch_size=batch_size)
+                    epochs=epochs,
+                    batch_size=batch_size,
+                    beam_size=beam_size,
+                    val_batch_size=val_batch_size)
