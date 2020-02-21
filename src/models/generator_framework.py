@@ -7,8 +7,8 @@ import pandas as pd
 from datetime import datetime
 from datetime import timedelta
 from collections import defaultdict
-import numpy as np
 from copy import deepcopy
+import numpy as np
 from time import time
 import json
 
@@ -97,6 +97,9 @@ class Generator:
         self.framework_name = 'CaptionGeneratorFramework'
 
     def compile(self):
+        """
+        Builds the model.
+        """
         # initialize model
         self.model = model_switcher(self.model_name)(
             self.input_shape,
@@ -111,6 +114,10 @@ class Generator:
         self.initialize_optimizer()  # initialize optimizer
 
     def initialize_optimizer(self):
+        """
+        Initializes the optimizer.
+        After this is called, optimizer will no longer be None.
+        """
         self.optimizer = optimizer_switcher(self.optimizer_string)(
             self.model.parameters(), self.lr)
 
@@ -121,6 +128,7 @@ class Generator:
               epochs,
               batch_size,
               early_stopping_freq=6,
+              val_batch_size=1,
               beam_size=1,
               validation_metric='CIDEr'):
         """
@@ -140,6 +148,9 @@ class Generator:
             Mini batch size.
         early_stopping_freq : int.
             If no improvements over this number of epochs then stop training.
+        val_batch_size : int.
+            The number of images to do inference on simultaneously.
+            Default is 1.
         beam_size : int.
             Beam size for validation. Default is 1.
         validation_metric : str.
@@ -247,6 +258,7 @@ class Generator:
                                          ann_path,
                                          res_path,
                                          eval_path,
+                                         batch_size=val_batch_size,
                                          beam_size=beam_size,
                                          metric=validation_metric)
             # save model checkpoint
@@ -294,7 +306,7 @@ class Generator:
 
         Returns
         -------
-        predicted_captions : dict.
+        predicted_captions : list.
             Dictionary image_name as keys and predicted captions through
             beam search are the values.
         """
@@ -302,29 +314,34 @@ class Generator:
         self.model.eval()  # put model in evaluation mode
 
         data_df = pd.read_csv(data_path)
+        data_df = data_df.reset_index(drop=True)
 
         predicted_captions = []
+        print('output', predicted_captions)
 
-        print_idx = 10
         num_images = len(data_df)
         if batch_size > num_images:
             batch_size = num_images
-        steps = np.ceil(num_images / batch_size)
+        steps = int(np.ceil(num_images / batch_size))
         prev_batch_idx = 0
         for i in range(steps):
             # create input batch
             end_batch_idx = min(prev_batch_idx + batch_size, num_images)
             image_ids = data_df.loc[prev_batch_idx: end_batch_idx,
                                     'image_id']
+            print(image_ids)
             image_names = data_df.loc[prev_batch_idx: end_batch_idx,
                                       'image_name']
             enc_images = []
             for image_id, image_name in zip(image_ids, image_names):
+                print((image_id, image_name))
                 # get encoded features for this batch
                 pred_dict = {
-                    "image_id": image_id
+                    "image_id": image_id,
+                    "caption": ""
                 }
-                predicted_captions.append(pred_dict)
+                predicted_captions.append(deepcopy(pred_dict))
+                print('output', predicted_captions)
                 enc_images.append(self.encoded_features[image_name])
 
             # get full sentence predictions from beam_search algorithm
@@ -335,15 +352,15 @@ class Generator:
             counter = 0
             for idx in range(prev_batch_idx, end_batch_idx):
                 predicted_captions[idx]["caption"] = predictions[counter]
+                print('output', predicted_captions)
                 counter += 1
 
             # verbose
-            index = i + 1
-            if index % print_idx == 0:
-                print('Batch step',  index)
+            print('Batch step', i + 1)
             # update prev_batch_idx
             prev_batch_idx = end_batch_idx
 
+        print('output', predicted_captions)
         return predicted_captions
 
     @staticmethod
@@ -359,6 +376,21 @@ class Generator:
         return processed
 
     def beam_search(self, batch, beam_size=1):
+        """
+        Preform the beam search algorithm on a batch of images.
+
+        Parameters
+        ----------
+        batch : list.
+            List of encoded images.
+        beam_size : int.
+            Size of beam. Default is 1.
+
+        Returns
+        -------
+        predictions : dict.
+            key: image index, value: predicted caption.
+        """
         # consider if it is possible to handle more than one sample at a time
         # for instance more images, and/or predict on the entire beam
         # initialization
@@ -370,12 +402,12 @@ class Generator:
                       beam_size=beam_size,
                       input_token=[self.wordtoix['startseq']],
                       eos=self.wordtoix['endseq'],
-                      max_len=self.max_length)
+                      max_len=self.max_length,
+                      beam_id=i)
                  for i in range(batch_size)]
         working_beams_idx = [i for i in range(batch_size)]
 
         predictions = defaultdict(str)  # key: batch index, val: caption
-
         while True:
             # find current batch_size aka number of beams
             batch_size_t = sum(b.num_unfinished > 0 for b in beams)
@@ -402,6 +434,8 @@ class Generator:
             x = [images, sequences]
             y_predictions, decoding_lengths = \
                 self.model(x, caplens, has_end_seq_token=False)
+            # y_predictions (M*N, maxlen, voc_size)
+            # decoding lengths np.array (N*M)
 
             start_idx = 0
             remove_idx = set()
@@ -410,7 +444,8 @@ class Generator:
                 b = beams[idx]
                 end_idx = start_idx + b.num_unfinished
                 preds = y_predictions[start_idx: end_idx]
-                dec_lens = decoding_lengths[start_idx:, end_idx]
+                dec_lens = decoding_lengths[start_idx: end_idx]
+                # update beam with predictions
                 b.update(preds, dec_lens)
                 start_idx = end_idx
                 if b.has_best_sequence():
@@ -428,11 +463,43 @@ class Generator:
             "The number of predictions does not match the number of images"
         return predictions
 
-    def evaluate(self, data_path, ann_path, res_path, eval_path,
+    def evaluate(self, data_path, ann_path, res_path, eval_path, batch_size=1,
                  beam_size=1, metric='CIDEr'):
+        """
+        Function to evaluate model on data from data_path
+        using evaluation metric metric.
+
+        Parameters
+        ----------
+        data_path : Path or str.
+
+        ann_path : Path or str.
+
+        res_path : Path or str.
+
+        eval_path : Path or str.
+
+        batch_size : int.
+            The number of images to perform inference on simultaneously.
+        beam_size : int.
+            Size of beam.
+        metric : str.
+            Automatic evaluation metric. Compatible metrics are
+            {Bleu_1, Bleu2, Bleu_3, Bleu_4, METEOR, ROUGE_L, CIDEr, SPICE}
+
+        Returns
+        -------
+        Automatic evaluation score.
+        """
+        data_path = Path(data_path)
+        ann_path = Path(ann_path)
+        res_path = Path(res_path)
+        eval_path = Path(eval_path)
         print("Evaluating model ...")
         # get models predictions
-        predictions = self.predict(data_path, beam_size=beam_size)
+        predictions = self.predict(data_path,
+                                   batch_size=batch_size,
+                                   beam_size=beam_size)
         print("Finished predicting")
         # save predictions to res_path which is .json
         with open(res_path, 'w') as res_file:

@@ -20,7 +20,9 @@ class Beam:
         self.EOS = eos
         self.max_len = max_len
         # initialize captions in beam
-        self.captions = [[input_token, 0.0]]  # unfinished
+        # unfinished captions
+        self.captions = [[input_token, 0.0] for _ in range(beam_size)]
+        # finished captions
         self.finished_caps = []
         self.caption_lengths = [len(c[0]) for c in self.captions]
 
@@ -30,7 +32,6 @@ class Beam:
         if self.num_unfinished == 0:
             # Do nothing
             return
-
         # pack padded sequences to get them down to real length
         predictions = pack_padded_sequence(predictions,
                                            decoding_lengths,
@@ -39,11 +40,12 @@ class Beam:
         for caption, preds in zip(self.captions, predictions):
             # idx is the caption index of a caption without endseq
             # expand each caption
-            preds = preds.detach().numpy()[-1]
+            preds = preds.detach().numpy()  # (vocab_size,)
             words_predicted = np.argsort(preds)[-self.beam_size:]
 
             for word in words_predicted:
                 new_partial_cap = deepcopy(caption[0])
+                new_partial_cap.append(word)
                 new_partial_cap_prob = caption[1] + preds[word]
 
                 if word == self.EOS:
@@ -62,6 +64,7 @@ class Beam:
         self.captions = self.captions[-self.num_unfinished:]
         # update caption_lengths
         self.caption_lengths = [len(c[0]) for c in self.captions]
+        #print(self.caption_lengths)
 
         # move captions to finished if length too long
         if self.caption_lengths[0] >= self.max_len:
@@ -93,4 +96,5 @@ class Beam:
     def get_best_sequence(self):
         assert self.has_best_sequence(), "Beam search incomplete"
         self.finished_caps.sort(key=lambda l: l[1])
-        return self.finished_caps[-1]
+        out = self.finished_caps[-1][0]
+        return out
