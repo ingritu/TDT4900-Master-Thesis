@@ -1,6 +1,26 @@
 # TDT4900-Master-Thesis
 Image Captioning
 
+## Installations
+
+First go to https://github.com/salaniz/pycocoevalcap to install pycocoevalcap and pycocotools.
+We need these packages to evaluate the model, and this is copatible with python 3.
+
+It is possible that you will get an error saying "No module named Cython" 
+while you are trying to install the packages. If you get this error just install
+Cython by entering this into the terminal:
+
+```
+pip install cython
+```
+
+Once cython is installed you should be able to install pycocoevalcap and pycocotools.
+
+Then install the rest of the requirements by running:
+```
+pip install -r requirements.txt
+```
+
 ## Project Structure
 ```
 /
