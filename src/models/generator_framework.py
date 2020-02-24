@@ -7,7 +7,6 @@ import pandas as pd
 from datetime import datetime
 from datetime import timedelta
 from collections import defaultdict
-from copy import deepcopy
 import numpy as np
 from time import time
 import json
@@ -337,7 +336,7 @@ class Generator:
                     "image_id": int(image_id),
                     "caption": ""
                 }
-                predicted_captions.append(deepcopy(pred_dict))
+                predicted_captions.append(pred_dict)
                 enc_images.append(self.encoded_features[image_name])
 
             # get full sentence predictions from beam_search algorithm
