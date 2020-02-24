@@ -326,10 +326,9 @@ class Generator:
         for i in range(steps):
             # create input batch
             end_batch_idx = min(prev_batch_idx + batch_size, num_images)
-            image_ids = data_df.iloc[prev_batch_idx: end_batch_idx, :]
-            image_ids = image_ids.loc[:, 'image_id'].to_numpy()
-            image_names = data_df.iloc[prev_batch_idx: end_batch_idx, :]
-            image_names = image_names.loc[:, 'image_name'].to_numpy()
+            batch_df = data_df.iloc[prev_batch_idx: end_batch_idx, :]
+            image_ids = batch_df.loc[:, 'image_id'].to_numpy()
+            image_names = batch_df.loc[:, 'image_name'].to_numpy()
 
             enc_images = []
             for image_id, image_name in zip(image_ids, image_names):
