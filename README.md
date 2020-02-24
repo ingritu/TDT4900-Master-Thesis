@@ -45,12 +45,15 @@ pip install -r requirements.txt
 ├── models/
 │   └── README.md
 ├── notebooks/
+│   ├── annotation_file_exploration.ipynb
 │   ├── karpathy_split_exploration.ipynb
 │   ├── README.md
 │   ├── visualize_word_frequency.ipynb
 │   └── visuals/
 ├── README.md
 ├── references/
+│   ├── annotation_mock.json
+│   ├── karpathy_dataset_mock.json
 │   ├── logs_and_checkpoints.txt
 │   ├── README.md
 │   └── run_notes.txt
@@ -64,10 +67,10 @@ pip install -r requirements.txt
     │   ├── handle_karpathy_split.py
     │   ├── load_vocabulary.py
     │   ├── make_dataset.py
-    │   ├── max_length_caption.py
     │   ├── split_flickr8k.py
     │   ├── subset_splits.py
-    │   └── text_to_csv.py
+    │   ├── text_to_csv.py
+    │   └── utils.py
     ├── features/
     │   ├── build_features.py
     │   ├── glove_embeddings.py
@@ -75,11 +78,13 @@ pip install -r requirements.txt
     │   └── Resnet_features.py
     ├── __init__.py
     ├── models/
+    │   ├── beam.py
     │   ├── custom_layers.py
     │   ├── generator_framework.py
     │   ├── predict_model.py
     │   ├── torch_generators.py
-    │   └── train_model.py
+    │   ├── train_model.py
+    │   └── utils.py
     └── visualization/
         └── visualize.py
 ```
