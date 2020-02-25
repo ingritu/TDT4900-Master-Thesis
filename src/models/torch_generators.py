@@ -120,3 +120,58 @@ class AdaptiveModel(nn.Module):
             predictions[:batch_size_t, timestep, :] = pt
 
         return predictions, decoding_lengths
+
+
+class AdaptiveDecoder(nn.Module):
+
+    """
+    Adaptive Decoder.
+
+    This class will not do any encoding of the images, but expects an
+    encoded image as input. This generator does not output full sequences,
+    instead it only outputs the predictions at a timestep.
+    """
+
+    def __init__(self,
+                 input_shape,
+                 hidden_size,
+                 vocab_size,
+                 device,
+                 num_lstms=0,
+                 embedding_size=300,
+                 seed=222):
+        super(AdaptiveDecoder, self).__init__()
+
+        self.input_shape = input_shape
+        self.visual_feature_shape = input_shape[0]
+        self.max_len = input_shape[1]
+        self.hidden_size = hidden_size
+
+        self.vocab_size = vocab_size
+        self.em_size = embedding_size
+        self.num_lstms = num_lstms
+        self.random_seed = seed
+
+        self.device = device
+
+        # layers
+        self.embedding = nn.Embedding(self.vocab_size, self.em_size)
+        self.sentinel_lstm = SentinelLSTM(self.em_size * 2,
+                                          self.hidden_size,
+                                          n=self.num_lstms)
+        self.attention_block = AttentionLayer(self.hidden_size,
+                                              self.hidden_size)
+        self.decoder = MultimodalDecoder(self.hidden_size,
+                                         self.vocab_size, n=1)
+
+    def forward(self, x, states):
+        # unpack input
+        input_img, input_w = x
+        global_image, encoded_image = input_img
+
+        # get states
+        h_tm1, c_tm1 = states
+
+
+
+
