@@ -12,7 +12,7 @@ def model_switcher(model_str):
     model_str = model_str.lower()
     switcher = {
         'adaptive': AdaptiveModel,
-        'adaptive_decoder': AdaptiveDecoder
+        'adaptive_decoder': [AdaptiveDecoder, ImageEncoder]
     }
     return switcher.get(model_str, AdaptiveModel)
 
@@ -64,7 +64,7 @@ class AdaptiveModel(nn.Module):
 
     def forward(self, x, caption_lengths, has_end_seq_token=True):
         # visual features (batch_size, 8 ,8, 1536)
-        # batch_size is equal to the number of images
+        # batch_size is equal to the number of captions
         im_input = x[0].to(self.device)
         w_input = x[1].to(self.device)
 
@@ -166,7 +166,7 @@ class AdaptiveDecoder(nn.Module):
         # (batch_size, embedding_size)
 
         # cat input w with v_avg
-        x_t = torch.cat((embedded_w, global_image), dim=1)  # wrong dim?
+        x_t = torch.cat((embedded_w, global_image), dim=1)
         # (batch_size, embedding_size*2)
 
         # get states

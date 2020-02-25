@@ -7,8 +7,10 @@ ROOT_PATH = Path(__file__).absolute().parents[2]
 def save_checkpoint(directory,
                     epoch,
                     epochs_since_improvement,
-                    model,
-                    optimizer,
+                    encoder,
+                    decoder,
+                    enc_optimizer,
+                    dec_optimizer,
                     cider,
                     is_best):
     directory = Path(directory)
@@ -21,8 +23,10 @@ def save_checkpoint(directory,
         'epoch': epoch,
         'epochs_since_improvement': epochs_since_improvement,
         'cider': cider,
-        'model': model,
-        'optimizer': optimizer,
+        'encoder': encoder,
+        'decoder': decoder,
+        'enc_optimizer': enc_optimizer,
+        'dec_optimizer': dec_optimizer
     }
 
     filename = directory.joinpath('checkpoint_' + str(epoch) + '.pth.tar')
@@ -68,7 +72,8 @@ def save_training_log(path, training_history):
                         '#######\n')
         train_log.write('Model name: ' + training_history['model_name']
                         + '\n\n')
-        train_log.write(training_history['network'] + '\n')
+        train_log.write(training_history['encoder'] + '\n')
+        train_log.write(training_history['decoder'] + '\n')
         train_log.write('Trainable parameters: ' +
                         training_history['trainable_parameters'] + '\n')
         train_log.write('Model save path: ' +
@@ -85,5 +90,5 @@ def save_training_log(path, training_history):
         train_log.write('## Train log!\n')
         # Lastly write the training log
         for loss in training_history['history']:
-            # TODO: add val score.... izip?
+            # TODO: add val score.... zip?
             train_log.write(str(round(loss, 5)) + '\n')

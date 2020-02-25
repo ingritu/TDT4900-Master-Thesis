@@ -35,7 +35,7 @@ if __name__ == '__main__':
 
     save_path_ = ROOT_PATH.joinpath('models')
 
-    model_name_ = 'adaptive'
+    model_name_ = 'adaptive_decoder'
 
     batch_size = 300  # number of captions in a batch, not images
     # number of images in a batch, not captions during val

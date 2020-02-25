@@ -30,21 +30,19 @@ def loss_switcher(loss_string):
     loss_string = loss_string.lower()
     switcher = {
         'cross_entropy': nn.CrossEntropyLoss,
-        'mse': nn.MSELoss,
-        'default': nn.CrossEntropyLoss,
+        'mse': nn.MSELoss
     }
 
-    return switcher[loss_string]
+    return switcher.get(loss_string, nn.CrossEntropyLoss)
 
 
 def optimizer_switcher(optimizer_string):
     optimizer_string = optimizer_string.lower()
     switcher = {
         'adam': optim.Adam,
-        'sgd': optim.SGD,
-        'default': optim.SGD
+        'sgd': optim.SGD
     }
-    return switcher[optimizer_string]
+    return switcher.get(optimizer_string, optim.SGD)
 
 
 class Generator:
@@ -78,7 +76,8 @@ class Generator:
         self.encoded_features = load_visual_features(feature_path)
 
         # initialize model as None
-        self.model = None
+        self.encoder = None
+        self.decoder = None
         self.train_params = 0
 
         self.model_name = model_name
@@ -89,7 +88,8 @@ class Generator:
 
         # set up optimizer
         self.optimizer_string = optimizer
-        self.optimizer = None  # not initialized
+        self.encoder_optimizer = None  # not initialized
+        self.decoder_optimizer = None
         self.lr = lr
 
         # misc
@@ -104,17 +104,24 @@ class Generator:
         Builds the model.
         """
         # initialize model
-        self.model = model_switcher(self.model_name)(
-            self.input_shape,
-            self.hidden_size,
-            self.vocab_size,
-            self.device,
-            embedding_size=self.embedding_size,
-            seed=self.random_seed)
-        print(self.model)
-        self.train_params = sum(p.numel() for p in self.model.parameters()
-                                if p.requires_grad)
-        self.model.to(self.device)
+        self.decoder, self.encoder = model_switcher(self.model_name)
+        self.encoder = self.encoder(self.input_shape[0],
+                                    self.hidden_size,
+                                    self.embedding_size)
+        self.decoder = self.decoder(self.input_shape,
+                                    self.hidden_size,
+                                    self.vocab_size,
+                                    self.device,
+                                    embedding_size=self.embedding_size,
+                                    seed=self.random_seed)
+        print(self.encoder)
+        print(self.decoder)
+        self.train_params += sum(p.numel() for p in self.decoder.parameters()
+                                 if p.requires_grad)
+        self.train_params += sum(p.numel() for p in self.encoder.parameters()
+                                 if p.requires_grad)
+        self.encoder.to(self.device)
+        self.decoder.to(self.device)
         print('Trainable Parameters:', self.train_params, '\n\n\n\n')
         self.initialize_optimizer()  # initialize optimizer
 
@@ -123,8 +130,10 @@ class Generator:
         Initializes the optimizer.
         After this is called, optimizer will no longer be None.
         """
-        self.optimizer = optimizer_switcher(self.optimizer_string)(
-            self.model.parameters(), self.lr)
+        self.encoder_optimizer = optimizer_switcher(self.optimizer_string)(
+            self.encoder.parameters(), self.lr)
+        self.decoder_optimizer = optimizer_switcher(self.optimizer_string)(
+            self.decoder.parameters(), self.lr)
 
     def train(self,
               data_path,
@@ -175,7 +184,8 @@ class Generator:
         train_df = pd.read_csv(data_path)
 
         training_history = {
-            'network': str(self.model),
+            'encoder': str(self.encoder),
+            'decoder': str(self.decoder),
             'trainable_parameters': str(self.train_params),
             'lr': str(self.lr),
             'optimizer': self.optimizer_string,
@@ -221,36 +231,23 @@ class Generator:
                       + str(early_stopping_freq) + ' epochs.')
                 break
 
-            self.model.train()  # put model in train mode
+            self.encoder.train()  # put model in train mode
+            self.decoder.train()
 
             print('Epoch: #' + str(e))
             batch_history = []
             for s in range(1, steps_per_epoch + 1):
                 print('Step: #' + str(s) + '/' + str(steps_per_epoch))
                 # zero the gradient buffers
-                self.optimizer.zero_grad()
+                self.encoder_optimizer.zero_grad()
+                self.decoder_optimizer.zero_grad()
 
                 # get minibatch from data generator
-                x, target, caption_lengths = next(train_generator)
+                x, caption_lengths = next(train_generator)
 
-                # get predictions from network
-                output, decoding_lengths = self.model(x, caption_lengths)
-                output = pack_padded_sequence(output,
-                                              decoding_lengths,
-                                              batch_first=True)[0]
-                target = pack_padded_sequence(target.to(self.device),
-                                              decoding_lengths,
-                                              batch_first=True)[0]
-
-                # get loss
-                loss = self.criterion(output, target)
-                loss_num = loss.item()
+                loss_num = self.train_on_batch(x, caption_lengths)
                 batch_history.append(loss_num)
-                print('loss', '(' + self.optimizer_string + '):', loss_num)
-                # backpropagate
-                loss.backward()
-                # update weights
-                self.optimizer.step()
+
             # add the mean loss of the epoch to the training history
             training_history['history'].append(np.mean(
                 np.array(batch_history)))
@@ -271,9 +268,14 @@ class Generator:
             best_val_score = max(metric_score, best_val_score)
             tmp_model_path = save_checkpoint(directory,
                                              epoch=e,
-                                             epochs_since_improvement=0,
-                                             model=self.model,
-                                             optimizer=self.optimizer,
+                                             epochs_since_improvement=
+                                             epochs_since_improvement,
+                                             encoder=self.encoder,
+                                             decoder=self.decoder,
+                                             enc_optimizer=
+                                             self.encoder_optimizer,
+                                             dec_optimizer=
+                                             self.decoder_optimizer,
                                              cider=metric_score,
                                              is_best=is_best)
             if tmp_model_path:
@@ -296,6 +298,94 @@ class Generator:
         # save log to file
         save_training_log(train_path, training_history)
 
+    def train_on_batch(self, x, caption_lengths):
+        """
+
+        Parameters
+        ----------
+        x : list.
+            batch of images and captions.
+        target : tensor.
+
+        caption_lengths
+
+        Returns
+        -------
+
+        """
+        # unpack batch
+        input_img, input_w = x
+        # move to device
+        input_img = input_img.to(self.device)
+        input_w = input_w.to(self.device)
+
+        # encode images
+        global_images, enc_images = self.encoder(input_img)
+        # (batch_size, embedding_size) (batch, 512) global_images
+        # (batch_size, region_size, hidden_size) (batch, 64, 512) encoded_imgs
+
+        # sort batches by caption length descending, this way the whole
+        # batch_size_t will be correct
+        # convert to tensor
+        caption_lengths = torch.from_numpy(caption_lengths)
+        caption_lengths, sort_idx = caption_lengths.sort(dim=0,
+                                                         descending=True)
+        input_w = input_w[sort_idx]  # (batch_size, max_len)
+        global_images = global_images[sort_idx]  # (batch_size, embedding_size)
+        enc_images = enc_images[sort_idx]  # (batch_size, 64, 1536)
+
+        target = input_w[:, 1:]  # sorted targets
+        target = target.to(self.device)
+
+        batch_size = enc_images.size()[0]
+
+        # we do not want to predict the last endseq token
+        decoding_lengths = np.copy(caption_lengths)
+        decoding_lengths = (decoding_lengths - 1)
+        max_batch_length = max(decoding_lengths)
+
+        predictions = torch.zeros(batch_size,
+                                  self.max_length,
+                                  self.vocab_size)
+
+        h_t, c_t = self.decoder.initialize_variables(batch_size)
+
+        for timestep in range(max_batch_length):
+            batch_size_t = sum([lens > timestep for lens in decoding_lengths])
+            # x: [input_img, input_w]
+            # input_img: [global_image, encoded_image]
+            # image features does not vary over time
+            input_image_t = [global_images[:batch_size_t],
+                             enc_images[:batch_size_t]]
+            x_t = [input_image_t, input_w[:batch_size_t, timestep]]
+
+            pt, h_t, c_t = self.decoder(x_t,
+                                        (h_t[:, :batch_size_t],
+                                         c_t[:, :batch_size_t]))
+            predictions[:batch_size_t, timestep, :] = pt
+
+        # loop finished
+        # pack padded sequences
+        output = pack_padded_sequence(predictions,
+                                      decoding_lengths,
+                                      batch_first=True)[0]
+        target = pack_padded_sequence(target,
+                                      decoding_lengths,
+                                      batch_first=True)[0]
+
+        # get loss
+        loss = self.criterion(output, target)
+        loss_num = loss.item()
+        print('loss', '(' + self.optimizer_string + '):', loss_num)
+
+        # backpropagate
+        loss.backward()
+        # update weights
+        self.encoder_optimizer.step()
+        self.decoder_optimizer.step()
+
+        return loss_num
+
     def predict(self, data_path, batch_size=1, beam_size=1):
         """
         Function to make self.model make predictions given some data.
@@ -316,7 +406,8 @@ class Generator:
             beam search are the values.
         """
         data_path = Path(data_path)
-        self.model.eval()  # put model in evaluation mode
+        self.encoder.eval()  # put model in evaluation mode
+        self.decoder.eval()
 
         data_df = pd.read_csv(data_path)
         data_df = data_df.reset_index(drop=True)
@@ -518,35 +609,20 @@ class Generator:
 
     def load_model(self, path):
         checkpoint = torch.load(path)
-        self.model = checkpoint['model']
-        self.optimizer = checkpoint['optimizer']
-        self.model.eval()
+        self.encoder = checkpoint['encoder']
+        self.decoder = checkpoint['decoder']
+        self.encoder_optimizer = checkpoint['enc_optimizer']
+        self.decoder_optimizer = checkpoint['dec_optimizer']
+        self.encoder.eval()
+        self.decoder.eval()
         print('Loaded checkpoint at:', path)
-        print(self.model)
+        print(self.encoder)
+        print(self.decoder)
 
     def save_model(self, path):
         path = Path(path)
         assert path.is_dir()
-        path = path.joinpath(self.model_name + '_model.pth')
-        torch.save(self.model.state_dict(), path)
-
-    def get_model(self):
-        return self.model
-
-    def set_model(self, model):
-        # expects a pytorch model
-        self.model = model
-
-    def get_model_name(self):
-        return self.model_name
-
-    def set_model_name(self, string):
-        assert isinstance(string, str)
-        self.model_name = string
-
-    def get_max_length(self):
-        return self.max_length
-
-    def set_max_length(self, length):
-        assert isinstance(length, int)
-        self.max_length = length
+        path1 = path.joinpath(self.model_name + '_decoder.pth')
+        torch.save(self.decoder.state_dict(), path1)
+        path2 = path.joinpath(self.model_name + '_encoder.pth')
+        torch.save(self.encoder.state_dict(), path2)
