@@ -39,10 +39,10 @@ if __name__ == '__main__':
 
     batch_size = 300  # number of captions in a batch, not images
     # number of images in a batch, not captions during val
-    val_batch_size = 30
-    beam_size = 2
+    val_batch_size = 100
+    beam_size = 3
 
-    epochs = 10
+    epochs = 1
     em_dim = 50
     hidden_size_ = 50
     loss_function_ = 'cross_entropy'

@@ -94,6 +94,10 @@ class Generator:
 
         # misc
         self.framework_name = 'CaptionGeneratorFramework'
+        # gpu
+        self.device = torch.device("cuda:0"
+                                   if torch.cuda.is_available() else "cpu")
+        print('Device:', self.device)
 
     def compile(self):
         """
@@ -104,11 +108,13 @@ class Generator:
             self.input_shape,
             self.hidden_size,
             self.vocab_size,
+            self.device,
             embedding_size=self.embedding_size,
             seed=self.random_seed)
         print(self.model)
         self.train_params = sum(p.numel() for p in self.model.parameters()
                                 if p.requires_grad)
+        self.model.to(self.device)
         print('Trainable Parameters:', self.train_params, '\n\n\n\n')
         self.initialize_optimizer()  # initialize optimizer
 
@@ -232,7 +238,7 @@ class Generator:
                 output = pack_padded_sequence(output,
                                               decoding_lengths,
                                               batch_first=True)[0]
-                target = pack_padded_sequence(target,
+                target = pack_padded_sequence(target.to(self.device),
                                               decoding_lengths,
                                               batch_first=True)[0]
 
