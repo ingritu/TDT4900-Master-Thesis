@@ -485,10 +485,11 @@ class Generator:
         # for instance more images, and/or predict on the entire beam
         # initialization
         batch_size = len(batch)
+        batch = torch.tensor(batch).to(self.device)
 
         # initialize beams as containing 1 caption
         # need beams to keep track of original indices
-        beams = [Beam(batch[i],
+        beams = [Beam(self.encoder(batch[i]),
                       beam_size=beam_size,
                       input_token=[self.wordtoix['startseq']],
                       eos=self.wordtoix['endseq'],
@@ -498,6 +499,20 @@ class Generator:
         working_beams_idx = [i for i in range(batch_size)]
 
         predictions = defaultdict(str)  # key: batch index, val: caption
+
+        # get images
+        global_images, encoded_images = [], []
+        for b in beams:
+            g_image, enc_image = b.get_image_features()
+            global_images += g_image
+            encoded_images += enc_image
+        global_images = torch.stack(global_images)
+        encoded_images = torch.stack(encoded_images)
+
+        images = [global_images, encoded_images]
+
+        h_t, c_t = self.decoder.initialize_variables(batch_size)
+
         while True:
             # find current batch_size aka number of beams
             batch_size_t = sum(b.num_unfinished > 0 for b in beams)
@@ -505,26 +520,20 @@ class Generator:
                 # all beams are done
                 break
 
-            # [[images, seqs, caplens], ...]
-            items = [b.get_items() for b in beams
-                     if b.num_unfinished > 0]
-
-            images, sequences, caplens = [], [], []
-            for item in items:
-                images += item[0]
-                sequences += item[1]
-                caplens += item[2]
-
-            caplens = np.array(caplens)
-            # pad sequence
-            sequences = pad_sequences(sequences, maxlen=self.max_length)
-            images = torch.tensor(images)  # convert to tensor (M*N, 64, 1536)
+            sequences, caplens = [], []
+            # do not think caplens are necessary anymore
+            for b in beams:
+                # needs to be fetched in the correct sequence, it cannot
+                # be done in parallel because we then risk that the
+                # indexing is no longer correct
+                seqs, caplengths = b.get_sequences(), b.get_sequence_lengths()
+                sequences += seqs
+                caplens += caplengths
 
             # get predictions
             x = [images, sequences]
-            y_predictions, decoding_lengths = \
-                self.model(x, caplens, has_end_seq_token=False)
-            # y_predictions (M*N, maxlen, voc_size)
+            y_predictions, h_t, c_t = self.decoder(x, (h_t, c_t))
+            # y_predictions (M*N, voc_size)
             # decoding lengths np.array (N*M)
 
             start_idx = 0
@@ -534,7 +543,7 @@ class Generator:
                 b = beams[idx]
                 end_idx = start_idx + b.num_unfinished
                 preds = y_predictions[start_idx: end_idx]
-                dec_lens = decoding_lengths[start_idx: end_idx]
+                dec_lens = caplens[start_idx: end_idx]
                 # update beam with predictions
                 b.update(preds, dec_lens)
                 start_idx = end_idx

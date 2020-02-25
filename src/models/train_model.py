@@ -12,11 +12,11 @@ if __name__ == '__main__':
     train_path = ROOT_PATH.joinpath('data',
                                     'interim',
                                     'karpathy_split',
-                                    'flickr8k_train_clean.csv')
+                                    'flickr8k_mini_train.csv')
     val_path = ROOT_PATH.joinpath('data',
                                   'interim',
                                   'karpathy_split',
-                                  'flickr8k_val.csv')
+                                  'flickr8k_mini_val.csv')
 
     voc_path_ = ROOT_PATH.joinpath('data',
                                    'interim',

@@ -14,17 +14,18 @@ class Beam:
                  max_len,
                  beam_id=-1):
         self.id = beam_id
-        self.encoded_image = image
+        self.global_image, self.encoded_image = image
         self.beam_size = beam_size
         self.num_unfinished = beam_size
         self.EOS = eos
         self.max_len = max_len
         # initialize captions in beam
         # unfinished captions
-        self.captions = [[input_token, 0.0] for _ in range(beam_size)]
+        self.captions = [[torch.tensor(input_token), 0.0]
+                         for _ in range(beam_size)]
         # finished captions
         self.finished_caps = []
-        self.caption_lengths = [len(c[0]) for c in self.captions]
+        self.caption_lengths = [c[0].size() for c in self.captions]
 
     def update(self, predictions, decoding_lengths):
         # preds (num_unfinished, maxlen, vocab_size)
@@ -63,7 +64,7 @@ class Beam:
         self.captions.sort(key=lambda l: l[1])
         self.captions = self.captions[-self.num_unfinished:]
         # update caption_lengths
-        self.caption_lengths = [len(c[0]) for c in self.captions]
+        self.caption_lengths = [c[0].size() for c in self.captions]
         #print(self.caption_lengths)
 
         # move captions to finished if length too long
@@ -73,19 +74,28 @@ class Beam:
             self.num_unfinished = 0
 
     def get_sequences(self):
-        # only return unfinished, caps without endseq token
-        return [torch.tensor(c[0]) for c in self.captions]
+        # only return unfinished, and add zeroes for finished captions
+        return [c[0] for c in self.captions] + \
+               ([torch.zeros(self.caption_lengths[0])] *
+                (self.beam_size - self.num_unfinished))
 
     def get_encoded_image(self):
         return self.encoded_image
 
+    def get_global_image(self):
+        return self.global_image
+
+    def get_image_features(self):
+        # consider just keeping this in memory to avoid extra computation
+        enc_images = [self.encoded_image for _ in range(self.beam_size)]
+        global_images = [self.global_image for _ in range(self.beam_size)]
+        return global_images, enc_images
+
     def get_items(self):
         seqs = self.get_sequences()
-        images = [self.get_encoded_image() for _ in range(len(seqs))]
+        global_images, enc_images = self.get_image_features()
         cap_lens = self.get_sequence_lengths()
-        assert len(seqs) == len(images) and len(images) == len(cap_lens), \
-            "Something is wrong. Output sizes does not match"
-        return images, seqs, cap_lens
+        return global_images, enc_images, seqs, cap_lens
 
     def get_sequence_lengths(self):
         return self.caption_lengths
