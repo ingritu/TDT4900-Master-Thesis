@@ -12,6 +12,7 @@ class Beam:
                  input_token,
                  eos,
                  max_len,
+                 device,
                  beam_id=-1):
         self.id = beam_id
         self.global_image, self.encoded_image = image
@@ -19,32 +20,55 @@ class Beam:
         self.num_unfinished = beam_size
         self.EOS = eos
         self.max_len = max_len
+        self.device = device
         # initialize captions in beam
         # unfinished captions
-        self.captions = [[torch.tensor(input_token), 0.0]
-                         for _ in range(beam_size)]
+        self.captions = torch.tensor(input_token).to(self.device)
+        self.captions = self.captions.unsqueeze(0).expand(self.beam_size, -1)
+        self.previous_words = torch.tensor(input_token).to(self.device)
+        self.previous_words = \
+            self.previous_words.unsqueeze(0).expand(self.beam_size, -1)
+
+        self.select_index = torch.zeros(self.beam_size).to(self.device)
+        self.top_scores = torch.zeros(self.beam_size, 1).to(self.device)
         # finished captions
         self.finished_caps = []
-        self.caption_lengths = [c[0].size() for c in self.captions]
+        self.finished_caps_scores = []
+        self.longest_length = max([c[0].size() for c in self.captions])
 
-    def update(self, predictions, decoding_lengths):
-        # preds (num_unfinished, maxlen, vocab_size)
-        # decoding_lengths (num_unfinished, 1)
+    def update(self, predictions, h, c):
+        # h, c: (n, num_unfinished, hidden_size)
+        # predictions (num_unfinished, vocab_size)
         if self.num_unfinished == 0:
             # Do nothing
             return
-        # pack padded sequences to get them down to real length
-        predictions = pack_padded_sequence(predictions,
-                                           decoding_lengths,
-                                           batch_first=True)[0]
+
+        top_probs, top_words = predictions.view(-1).topk(self.num_unfinished,
+                                                         dim=0,
+                                                         largest=True,
+                                                         sorted=True)
+        print('probs', top_probs.size())
+        print('words', top_words.size())
+
+
+
+
+
+
+
+
+
+
+
+
+
         tmp_caps = []
         for caption, preds in zip(self.captions, predictions):
-            # idx is the caption index of a caption without endseq
+            # preds (vocab_size)
             # expand each caption
-            preds = preds.detach().numpy()  # (vocab_size,)
-            words_predicted = np.argsort(preds)[-self.beam_size:]
 
-            for word in words_predicted:
+
+            for word, prob in zip(top_words, top_probs):
                 new_partial_cap = deepcopy(caption[0])
                 new_partial_cap.append(word)
                 new_partial_cap_prob = caption[1] + preds[word]
@@ -74,10 +98,15 @@ class Beam:
             self.num_unfinished = 0
 
     def get_sequences(self):
+        """
+        Returns
+        -------
+        list of the most recently predicted words. word is EOS
+        if the caption is technically finished.
+        """
         # only return unfinished, and add zeroes for finished captions
-        return [c[0] for c in self.captions] + \
-               ([torch.zeros(self.caption_lengths[0])] *
-                (self.beam_size - self.num_unfinished))
+        print('get_sequence', self.previous_words.size())
+        return self.previous_words.squeeze(1)
 
     def get_encoded_image(self):
         return self.encoded_image

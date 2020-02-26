@@ -487,16 +487,21 @@ class Generator:
         batch_size = len(batch)
         batch = torch.tensor(batch).to(self.device)
 
+        global_images, encoded_images = self.encoder(batch)
+
         # initialize beams as containing 1 caption
         # need beams to keep track of original indices
-        beams = [Beam(self.encoder(batch[i]),
+        beams = [Beam([g_image, enc_image],
                       beam_size=beam_size,
                       input_token=[self.wordtoix['startseq']],
                       eos=self.wordtoix['endseq'],
                       max_len=self.max_length,
+                      device=self.device,
                       beam_id=i)
-                 for i in range(batch_size)]
-        working_beams_idx = [i for i in range(batch_size)]
+                 for i, (g_image, enc_image) in
+                 enumerate(zip(global_images, encoded_images))]
+
+        working_beams_idx = set([i for i in range(batch_size)])
 
         predictions = defaultdict(str)  # key: batch index, val: caption
 
@@ -520,42 +525,37 @@ class Generator:
                 # all beams are done
                 break
 
-            sequences, caplens = [], []
-            # do not think caplens are necessary anymore
-            for b in beams:
-                # needs to be fetched in the correct sequence, it cannot
-                # be done in parallel because we then risk that the
-                # indexing is no longer correct
-                seqs, caplengths = b.get_sequences(), b.get_sequence_lengths()
-                sequences += seqs
-                caplens += caplengths
+            sequences = [b.get_sequences() for b in beams]
+            sequences = torch.cat(sequences, dim=0)
 
             # get predictions
             x = [images, sequences]
             y_predictions, h_t, c_t = self.decoder(x, (h_t, c_t))
             # y_predictions (M*N, voc_size)
-            # decoding lengths np.array (N*M)
+            y_predictions = torch.log_softmax(y_predictions, dim=1)
 
-            start_idx = 0
             remove_idx = set()
-            for idx in working_beams_idx:
-                # feed right predictions to right beams
-                b = beams[idx]
-                end_idx = start_idx + b.num_unfinished
-                preds = y_predictions[start_idx: end_idx]
-                dec_lens = caplens[start_idx: end_idx]
-                # update beam with predictions
-                b.update(preds, dec_lens)
-                start_idx = end_idx
-                if b.has_best_sequence():
-                    # add to finished predictions
-                    predictions[idx] = \
-                        ' '.join([self.ixtoword[w]
-                                  for w in b.get_best_sequence()])
-                    remove_idx.add(idx)
+            for i in range(batch_size):
+                start_idx = i * beam_size
+                if i in working_beams_idx:
+                    # feed right predictions to right beams
+                    b = beams[i]
+                    end_idx = start_idx + b.num_unfinished
+                    preds = y_predictions[start_idx: end_idx]
+                    # update beam with predictions
+                    b.update(preds,
+                             h_t[:, start_idx: end_idx],
+                             c_t[:, start_idx: end_idx])
+
+                    if b.has_best_sequence():
+                        # add to finished predictions
+                        predictions[i] = \
+                            ' '.join([self.ixtoword[w]
+                                      for w in b.get_best_sequence()])
+                        remove_idx.add(i)
             # remove idx of finished beams
-            working_beams_idx = [idx for idx in working_beams_idx
-                                 if idx not in remove_idx]
+            working_beams_idx = set([idx for idx in working_beams_idx
+                                     if idx not in remove_idx])
 
         # should be removed when finished
         assert len(predictions) == batch_size, \

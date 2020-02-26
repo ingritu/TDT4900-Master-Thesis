@@ -30,23 +30,21 @@ class SentinelLSTM(nn.Module):
         # remember old states
         h_tm1, c_tm1 = states
         # new states lists
-        hs = []
-        cs = []
+        hs = torch.zeros(h_tm1.size())
+        cs = torch.zeros(c_tm1.size())
         inputs = x
         for i in range(self.n):
             # feed layers the correct h and c states
             h, c = self.lstm_cells[i](inputs, (h_tm1[i], c_tm1[i]))
-            hs.append(h)
-            cs.append(c)
+            hs[i] = h
+            cs[i] = c
             # add residual
             inputs = h + inputs
 
         # get new states
         h_t, c_t = self.lstm_kernel(inputs, (h_tm1[-1], c_tm1[-1]))
-        hs.append(h_t)
-        cs.append(c_t)
-        hs = torch.stack(hs)
-        cs = torch.stack(cs)
+        hs[-1] = h_t
+        cs[-1] = c_t
 
         # compute sentinel vector
         # could either concat h_tm1 with x or have to gates

@@ -157,6 +157,7 @@ class AdaptiveDecoder(nn.Module):
     def forward(self, x, states):
         # unpack input
         input_img, input_w = x
+        print('input_w', input_w.size())
         global_image, encoded_images = input_img
         # global (batch_size, embedding_size)
         # encoded (batch_size, 64, hidden_size)
@@ -166,6 +167,8 @@ class AdaptiveDecoder(nn.Module):
         # (batch_size, embedding_size)
 
         # cat input w with v_avg
+        print('w_em', embedded_w.size())
+        print('g_img', global_image.size())
         x_t = torch.cat((embedded_w, global_image), dim=1)
         # (batch_size, embedding_size*2)
 
