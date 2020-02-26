@@ -1,6 +1,4 @@
-from torch.nn.utils.rnn import pack_padded_sequence
 from copy import deepcopy
-import numpy as np
 import torch
 
 
@@ -12,6 +10,7 @@ class Beam:
                  input_token,
                  eos,
                  max_len,
+                 vocab_size,
                  device,
                  beam_id=-1):
         self.id = beam_id
@@ -20,6 +19,7 @@ class Beam:
         self.num_unfinished = beam_size
         self.EOS = eos
         self.max_len = max_len
+        self.vocab_size = vocab_size
         self.device = device
         # initialize captions in beam
         # unfinished captions
@@ -34,68 +34,57 @@ class Beam:
         # finished captions
         self.finished_caps = []
         self.finished_caps_scores = []
-        self.longest_length = max([c[0].size() for c in self.captions])
+        # Early stopping
+        self.optimality_certificate = False
 
     def update(self, predictions, h, c):
+        # TODO: implement early stopping on optimality certificate achieved
         # h, c: (n, num_unfinished, hidden_size)
         # predictions (num_unfinished, vocab_size)
-        if self.num_unfinished == 0:
+        if self.num_unfinished == 0 or self.optimality_certificate:
             # Do nothing
             return
+
+        # add probabilities
+        predictions = self.top_scores.expand_as(predictions) + predictions
 
         top_probs, top_words = predictions.view(-1).topk(self.num_unfinished,
                                                          dim=0,
                                                          largest=True,
                                                          sorted=True)
-        print('probs', top_probs.size())
-        print('words', top_words.size())
+        # top_probs, top_words: (num_unfinished)
+        prev_word_idx = top_words / self.vocab_size  # previous index
+        next_word_idx = top_words % self.vocab_size  # word predicted
 
+        # add predicted words to caption
+        self.captions = torch.cat([self.captions[prev_word_idx],
+                                   next_word_idx.unsqueeze(1)],
+                                  dim=1)
+        unfinished_idx = [idx for idx, next_word in enumerate(next_word_idx)
+                          if next_word != self.EOS]
+        finished_idx = [set(range(len(next_word_idx))) - set(unfinished_idx)]
 
+        beam_reduce_num = min(len(finished_idx), self.num_unfinished)
+        if beam_reduce_num > 0:
+            # add finished captions to finished
+            self.finished_caps.extend(self.captions[finished_idx].tolist())
+            self.finished_caps_scores.extend(top_probs[finished_idx])
+            self.num_unfinished -= beam_reduce_num
 
-
-
-
-
-
-
-
-
-
-
-        tmp_caps = []
-        for caption, preds in zip(self.captions, predictions):
-            # preds (vocab_size)
-            # expand each caption
-
-
-            for word, prob in zip(top_words, top_probs):
-                new_partial_cap = deepcopy(caption[0])
-                new_partial_cap.append(word)
-                new_partial_cap_prob = caption[1] + preds[word]
-
-                if word == self.EOS:
-                    # add to finished if en token
-                    self.finished_caps.append([new_partial_cap,
-                                               new_partial_cap_prob])
-                    self.num_unfinished -= 1
-                else:
-                    # add cap and prob to tmp list
-                    tmp_caps.append([new_partial_cap,
-                                     new_partial_cap_prob])
-
-        # update unfinished captions
-        self.captions = tmp_caps
-        self.captions.sort(key=lambda l: l[1])
-        self.captions = self.captions[-self.num_unfinished:]
-        # update caption_lengths
-        self.caption_lengths = [c[0].size() for c in self.captions]
-        #print(self.caption_lengths)
+        # sort captions, h, c, top_scores, previous_words
+        self.captions = self.captions[unfinished_idx]
+        h = h[:, prev_word_idx[unfinished_idx]]
+        c = c[:, prev_word_idx[unfinished_idx]]
+        self.top_scores = self.top_scores[unfinished_idx].unsqueeze(1)
+        self.previous_words = next_word_idx[unfinished_idx].unsqueeze(1)
 
         # move captions to finished if length too long
-        if self.caption_lengths[0] >= self.max_len:
+        if max(map(len, self.captions)) >= self.max_len:
             self.finished_caps = self.finished_caps + self.captions
             self.captions = []
             self.num_unfinished = 0
+
+        return h, c
 
     def get_sequences(self):
         """
@@ -105,7 +94,6 @@ class Beam:
         if the caption is technically finished.
         """
         # only return unfinished, and add zeroes for finished captions
-        print('get_sequence', self.previous_words.size())
         return self.previous_words.squeeze(1)
 
     def get_encoded_image(self):

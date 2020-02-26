@@ -496,6 +496,7 @@ class Generator:
                       input_token=[self.wordtoix['startseq']],
                       eos=self.wordtoix['endseq'],
                       max_len=self.max_length,
+                      vocab_size=self.vocab_size,
                       device=self.device,
                       beam_id=i)
                  for i, (g_image, enc_image) in
@@ -516,7 +517,7 @@ class Generator:
 
         images = [global_images, encoded_images]
 
-        h_t, c_t = self.decoder.initialize_variables(batch_size)
+        h_t, c_t = self.decoder.initialize_variables(batch_size*beam_size)
 
         while True:
             # find current batch_size aka number of beams
@@ -533,6 +534,7 @@ class Generator:
             y_predictions, h_t, c_t = self.decoder(x, (h_t, c_t))
             # y_predictions (M*N, voc_size)
             y_predictions = torch.log_softmax(y_predictions, dim=1)
+            # higher log_prob --> higher pob
 
             remove_idx = set()
             for i in range(batch_size):
