@@ -1,6 +1,8 @@
 # TDT4900-Master-Thesis
 Image Captioning
 
+This is an older version of the repository that I want to keep just in case.
+
 ## Installations
 
 First go to https://github.com/salaniz/pycocoevalcap to install pycocoevalcap and pycocotools.
