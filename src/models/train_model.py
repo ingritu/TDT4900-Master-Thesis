@@ -35,14 +35,14 @@ if __name__ == '__main__':
 
     save_path_ = ROOT_PATH.joinpath('models')
 
-    model_name_ = 'adaptive'
+    model_name_ = 'adaptive_decoder'
 
     batch_size = 300  # number of captions in a batch, not images
     # number of images in a batch, not captions during val
-    val_batch_size = 100
+    val_batch_size = 250
     beam_size = 3
 
-    epochs = 1
+    epochs = 10
     em_dim = 50
     hidden_size_ = 50
     loss_function_ = 'cross_entropy'

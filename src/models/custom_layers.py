@@ -30,28 +30,26 @@ class SentinelLSTM(nn.Module):
         # remember old states
         h_tm1, c_tm1 = states
         # new states lists
-        hs = []
-        cs = []
+        hs = torch.zeros(h_tm1.size())
+        cs = torch.zeros(c_tm1.size())
         inputs = x
         for i in range(self.n):
             # feed layers the correct h and c states
             h, c = self.lstm_cells[i](inputs, (h_tm1[i], c_tm1[i]))
-            hs.append(h)
-            cs.append(c)
+            hs[i] = h
+            cs[i] = c
             # add residual
             inputs = h + inputs
 
         # get new states
         h_t, c_t = self.lstm_kernel(inputs, (h_tm1[-1], c_tm1[-1]))
-        hs.append(h_t)
-        cs.append(c_t)
-        hs = torch.stack(hs)
-        cs = torch.stack(cs)
+        hs[-1] = h_t
+        cs[-1] = c_t
 
         # compute sentinel vector
         # could either concat h_tm1 with x or have to gates
-        sv = F.sigmoid(self.h_gate(h_tm1[-1]) + self.x_gate(inputs))
-        s_t = sv * F.tanh(c_t)
+        sv = torch.sigmoid(self.h_gate(h_tm1[-1]) + self.x_gate(inputs))
+        s_t = sv * torch.tanh(c_t)
         return hs, cs, h_t, s_t
 
 
@@ -148,7 +146,7 @@ class AttentionLayer(nn.Module):
         s_att = self.s_att(s_proj)  # (batch_size, hidden_size)
 
         # h_t embedding
-        h_proj = F.tanh(self.h_proj(h_t))  # (batch_size, hidden_size)
+        h_proj = torch.tanh(self.h_proj(h_t))  # (batch_size, hidden_size)
         h_att = self.h_att(h_proj)  # (batch_size, hidden_size)
 
         # make s_proj the same dimension as V
@@ -182,7 +180,7 @@ class AttentionLayer(nn.Module):
         context_vector = (alpha * regions).sum(dim=1)  # the actual z_t
         # (batch_size, hidden_size)
 
-        z_t = F.tanh(self.context_proj(context_vector + h_proj))
+        z_t = torch.tanh(self.context_proj(context_vector + h_proj))
         # (batch_size, hidden_size)
 
         return z_t

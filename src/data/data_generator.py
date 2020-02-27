@@ -51,9 +51,8 @@ def data_generator(data_df, batch_size, steps_per_epoch,
             x2 = pad_sequences(x2, max_length)  # output is a tensor
 
             x1 = torch.tensor(x1)  # convert to tensor
-            y = x2[:, 1:]
             caption_lengths = np.array(caption_lengths)  # convert to array
-            yield [[x1, x2], y, caption_lengths]
+            yield [[x1, x2], caption_lengths]
 
 
 def get_image(visual_features, data_df, i):
