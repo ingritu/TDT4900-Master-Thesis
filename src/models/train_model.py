@@ -12,11 +12,11 @@ if __name__ == '__main__':
     train_path = ROOT_PATH.joinpath('data',
                                     'interim',
                                     'karpathy_split',
-                                    'flickr8k_mini_train.csv')
+                                    'flickr8k_train_clean.csv')
     val_path = ROOT_PATH.joinpath('data',
                                   'interim',
                                   'karpathy_split',
-                                  'flickr8k_mini_val.csv')
+                                  'flickr8k_val.csv')
 
     voc_path_ = ROOT_PATH.joinpath('data',
                                    'interim',
@@ -37,12 +37,12 @@ if __name__ == '__main__':
 
     model_name_ = 'adaptive_decoder'
 
-    batch_size = 2  # number of captions in a batch, not images
+    batch_size = 300  # number of captions in a batch, not images
     # number of images in a batch, not captions during val
-    val_batch_size = 1
-    beam_size = 2
+    val_batch_size = 250
+    beam_size = 3
 
-    epochs = 1
+    epochs = 10
     em_dim = 50
     hidden_size_ = 50
     loss_function_ = 'cross_entropy'

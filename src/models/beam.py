@@ -72,7 +72,7 @@ class Beam:
         # only keep the unfinished ones
         self.h = h[:, prev_word_idx[unfinished_idx]]
         self.c = c[:, prev_word_idx[unfinished_idx]]
-        self.top_scores = top_probs[unfinished_idx]
+        self.top_scores = top_probs[unfinished_idx].unsqueeze(1)
         self.previous_words = next_word_idx[unfinished_idx]
 
         # update finished captions
@@ -86,9 +86,13 @@ class Beam:
             # find best complete caption
             best_fin_idx = self.find_best_comlpete_sequence()
             # check whether optimality certificate is achieved
-            best_unfin_prob, _ = self.top_scores.topk(1, dim=0)
-            self.optimality_certificate = \
-                self.finished_caps_scores[best_fin_idx] > best_unfin_prob
+            if len(self.finished_caps) < self.beam_size:
+                # only check if there still are unfinished caps left
+                # if there are none in unfinished then there is no
+                # point to check whether the optimality certificate is obtained
+                best_unfin_prob, _ = self.top_scores.topk(1, dim=0)
+                self.optimality_certificate = \
+                    self.finished_caps_scores[best_fin_idx] > best_unfin_prob
 
             if self.optimality_certificate:
                 # no need for further calculations
@@ -98,11 +102,14 @@ class Beam:
         # could not do this until after finished was updated
         self.captions = self.captions[unfinished_idx]
 
-        # move captions to finished if length too long
-        if max(map(len, self.captions)) >= self.max_len:
-            self.finished_caps.extend(self.captions.tolist())
-            self.captions = []
-            self.num_unfinished = 0
+        if self.captions.size(0):
+            # there are still more captions left
+            # move captions to finished if length too long
+            if self.captions.size(1) >= self.max_len:
+                self.finished_caps.extend(self.captions.tolist())
+                self.finished_caps_scores.extend(self.top_scores)
+                self.captions = torch.empty(self.beam_size)
+                self.num_unfinished = 0
 
     def find_best_comlpete_sequence(self):
         probs = torch.tensor(self.finished_caps_scores).to(self.device)
