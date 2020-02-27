@@ -489,9 +489,13 @@ class Generator:
 
         global_images, encoded_images = self.encoder(batch)
 
+        h_t, c_t = self.decoder.initialize_variables(batch_size * beam_size)
+
         # initialize beams as containing 1 caption
         # need beams to keep track of original indices
         beams = [Beam([g_image, enc_image],
+                      states=[h_t[:, i*beam_size: (i+1)*beam_size],
+                              c_t[:, i*beam_size: (i+1)*beam_size]],
                       beam_size=beam_size,
                       input_token=[self.wordtoix['startseq']],
                       eos=self.wordtoix['endseq'],
@@ -506,28 +510,25 @@ class Generator:
 
         predictions = defaultdict(str)  # key: batch index, val: caption
 
-        # get images
-        global_images, encoded_images = [], []
-        for b in beams:
-            g_image, enc_image = b.get_image_features()
-            global_images += g_image
-            encoded_images += enc_image
-        global_images = torch.stack(global_images)
-        encoded_images = torch.stack(encoded_images)
-
-        images = [global_images, encoded_images]
-
-        h_t, c_t = self.decoder.initialize_variables(batch_size*beam_size)
-
         while True:
             # find current batch_size aka number of beams
+            # counts unfinished beams
             batch_size_t = sum(b.num_unfinished > 0 for b in beams)
             if batch_size_t == 0:
                 # all beams are done
                 break
 
-            sequences = [b.get_sequences() for b in beams]
-            sequences = torch.cat(sequences, dim=0)
+            # get sequences
+            sequences = torch.cat([b.get_sequences() for b in beams], dim=0)
+            # get images
+            global_images = torch.cat([b.get_global_image() for b in beams],
+                                      dim=0)
+            encoded_images = torch.cat([b.get_encoded_image() for b in beams],
+                                       dim=0)
+            images = [global_images, encoded_images]
+            # get states
+            h_t = torch.cat([b.get_hidden_states() for b in beams], dim=1)
+            c_t = torch.cat([b.get_cell_states() for b in beams], dim=1)
 
             # get predictions
             x = [images, sequences]
@@ -556,8 +557,8 @@ class Generator:
                                       for w in b.get_best_sequence()])
                         remove_idx.add(i)
             # remove idx of finished beams
-            working_beams_idx = set([idx for idx in working_beams_idx
-                                     if idx not in remove_idx])
+            working_beams_idx = set(idx for idx in working_beams_idx
+                                    if idx not in remove_idx)
 
         # should be removed when finished
         assert len(predictions) == batch_size, \

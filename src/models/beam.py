@@ -1,4 +1,3 @@
-from copy import deepcopy
 import torch
 
 
@@ -6,6 +5,7 @@ class Beam:
 
     def __init__(self,
                  image,
+                 states,
                  beam_size,
                  input_token,
                  eos,
@@ -13,8 +13,10 @@ class Beam:
                  vocab_size,
                  device,
                  beam_id=-1):
+        # misc
         self.id = beam_id
         self.global_image, self.encoded_image = image
+        self.h, self.c = states
         self.beam_size = beam_size
         self.num_unfinished = beam_size
         self.EOS = eos
@@ -23,22 +25,19 @@ class Beam:
         self.device = device
         # initialize captions in beam
         # unfinished captions
-        self.captions = torch.tensor(input_token).to(self.device)
-        self.captions = self.captions.unsqueeze(0).expand(self.beam_size, -1)
-        self.previous_words = torch.tensor(input_token).to(self.device)
-        self.previous_words = \
-            self.previous_words.unsqueeze(0).expand(self.beam_size, -1)
-
-        self.select_index = torch.zeros(self.beam_size).to(self.device)
+        init_cap = torch.tensor(input_token).to(self.device)
+        self.captions = init_cap.unsqueeze(0).expand(self.beam_size, -1)
+        init_prev_w = torch.tensor(input_token).to(self.device)
+        init_prev_w = init_prev_w.unsqueeze(0).expand(self.beam_size, -1)
+        self.previous_words = init_prev_w.squeeze(1)
         self.top_scores = torch.zeros(self.beam_size, 1).to(self.device)
         # finished captions
-        self.finished_caps = []
-        self.finished_caps_scores = []
+        self.finished_caps = []  # these will never be sorted
+        self.finished_caps_scores = []  # will never be sorted
         # Early stopping
         self.optimality_certificate = False
 
     def update(self, predictions, h, c):
-        # TODO: implement early stopping on optimality certificate achieved
         # h, c: (n, num_unfinished, hidden_size)
         # predictions (num_unfinished, vocab_size)
         if self.num_unfinished == 0 or self.optimality_certificate:
@@ -46,8 +45,12 @@ class Beam:
             return
 
         # add probabilities
-        predictions = self.top_scores.expand_as(predictions) + predictions
+        # (beam_size, 1) --> (beam_size, vocab_size)
+        scores = self.top_scores.expand_as(predictions)
+        # (beam_size, v) + (num_unfinished, v) --> (num_unfinished, v)
+        predictions = scores + predictions
 
+        # flatten predictions and find top k
         top_probs, top_words = predictions.view(-1).topk(self.num_unfinished,
                                                          dim=0,
                                                          largest=True,
@@ -62,8 +65,17 @@ class Beam:
                                   dim=1)
         unfinished_idx = [idx for idx, next_word in enumerate(next_word_idx)
                           if next_word != self.EOS]
-        finished_idx = [set(range(len(next_word_idx))) - set(unfinished_idx)]
+        finished_idx = list(set(range(len(next_word_idx))) -
+                            set(unfinished_idx))
 
+        # sort h, c, top_scores, previous_words
+        # only keep the unfinished ones
+        self.h = h[:, prev_word_idx[unfinished_idx]]
+        self.c = c[:, prev_word_idx[unfinished_idx]]
+        self.top_scores = top_probs[unfinished_idx]
+        self.previous_words = next_word_idx[unfinished_idx]
+
+        # update finished captions
         beam_reduce_num = min(len(finished_idx), self.num_unfinished)
         if beam_reduce_num > 0:
             # add finished captions to finished
@@ -71,57 +83,59 @@ class Beam:
             self.finished_caps_scores.extend(top_probs[finished_idx])
             self.num_unfinished -= beam_reduce_num
 
-        # sort captions, h, c, top_scores, previous_words
+            # find best complete caption
+            best_fin_idx = self.find_best_comlpete_sequence()
+            # check whether optimality certificate is achieved
+            best_unfin_prob, _ = self.top_scores.topk(1, dim=0)
+            self.optimality_certificate = \
+                self.finished_caps_scores[best_fin_idx] > best_unfin_prob
+
+            if self.optimality_certificate:
+                # no need for further calculations
+                self.num_unfinished = 0
+
+        # sort captions, only keep the unfinished ones
+        # could not do this until after finished was updated
         self.captions = self.captions[unfinished_idx]
-        h = h[:, prev_word_idx[unfinished_idx]]
-        c = c[:, prev_word_idx[unfinished_idx]]
-        self.top_scores = self.top_scores[unfinished_idx].unsqueeze(1)
-        self.previous_words = next_word_idx[unfinished_idx].unsqueeze(1)
 
         # move captions to finished if length too long
         if max(map(len, self.captions)) >= self.max_len:
-            self.finished_caps = self.finished_caps + self.captions
+            self.finished_caps.extend(self.captions.tolist())
             self.captions = []
             self.num_unfinished = 0
 
-        return h, c
+    def find_best_comlpete_sequence(self):
+        probs = torch.tensor(self.finished_caps_scores).to(self.device)
+        _, idx = probs.topk(1, dim=0)
+        return int(idx)
 
     def get_sequences(self):
+        # only return unfinished
+        return self.previous_words
+
+    def get_encoded_image(self):
+        return self.encoded_image.unsqueeze(0).expand(self.num_unfinished,
+                                                      -1, -1)
+
+    def get_global_image(self):
+        return self.global_image.unsqueeze(0).expand(self.num_unfinished, -1)
+
+    def get_hidden_states(self):
+        return self.h
+
+    def get_cell_states(self):
+        return self.c
+
+    def has_best_sequence(self):
+        return len(self.finished_caps) == self.beam_size or \
+               self.optimality_certificate
+
+    def get_best_sequence(self):
         """
         Returns
         -------
-        list of the most recently predicted words. word is EOS
-        if the caption is technically finished.
+        A list of sequence tokens.
         """
-        # only return unfinished, and add zeroes for finished captions
-        return self.previous_words.squeeze(1)
-
-    def get_encoded_image(self):
-        return self.encoded_image
-
-    def get_global_image(self):
-        return self.global_image
-
-    def get_image_features(self):
-        # consider just keeping this in memory to avoid extra computation
-        enc_images = [self.encoded_image for _ in range(self.beam_size)]
-        global_images = [self.global_image for _ in range(self.beam_size)]
-        return global_images, enc_images
-
-    def get_items(self):
-        seqs = self.get_sequences()
-        global_images, enc_images = self.get_image_features()
-        cap_lens = self.get_sequence_lengths()
-        return global_images, enc_images, seqs, cap_lens
-
-    def get_sequence_lengths(self):
-        return self.caption_lengths
-
-    def has_best_sequence(self):
-        return len(self.finished_caps) == self.beam_size
-
-    def get_best_sequence(self):
         assert self.has_best_sequence(), "Beam search incomplete"
-        self.finished_caps.sort(key=lambda l: l[1])
-        out = self.finished_caps[-1][0]
-        return out
+        idx = self.find_best_comlpete_sequence()
+        return self.finished_caps[idx]
