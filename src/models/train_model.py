@@ -50,34 +50,28 @@ if __name__ == '__main__':
                         help='Dataset to train on. The options are '
                              '{flickr8k, flickr30k, coco}.')
     parser.add_argument('--image_feature_size', type=int,
-                        choices=range(2048), nargs='+',
+                        choices=range(2049), nargs='+',
                         help='List integers. Should be something like '
                              '--image_feature_size 8 8 1536.')
+    # there still are more customizable parameters to set,
+    # add these later
     args = vars(parser.parse_args())  # access args as dictionary
 
-    train_path = ROOT_PATH.joinpath('data',
-                                    'interim',
-                                    'karpathy_split',
-                                    'flickr8k_train_clean.csv')
-    val_path = ROOT_PATH.joinpath('data',
-                                  'interim',
-                                  'karpathy_split',
-                                  'flickr8k_val.csv')
-
-    voc_path_ = ROOT_PATH.joinpath('data',
-                                   'interim',
-                                   'karpathy_split',
-                                   'flickr8k_vocabulary.csv')
-    feature_path_ = ROOT_PATH.joinpath('data',
-                                       'processed',
-                                       'Flickr8k',
-                                       'Images',
-                                       'encoded_visual_attention_full.pkl')
+    interim_path = ROOT_PATH.joinpath('data',
+                                      'interim')
+    processed_path = ROOT_PATH.joinpath('data',
+                                        'processed')
+    if args['karpathy']:
+        interim_path = interim_path.joinpath('karpathy_split')
+    dataset = args['dataset']
+    train_path = interim_path.joinpath(dataset + '_train_clean.csv')
+    val_path = interim_path.joinpath(dataset + '_val.csv')
+    voc_path_ = interim_path.joinpath(dataset + '_vocabulary.csv')
+    feature_path_ = processed_path.joinpath(
+        dataset, 'Images', 'encoded_visual_attention_full.pkl')
     # annotation file
-    annFile = ROOT_PATH.joinpath('data',
-                                 'processed',
-                                 'annotations',
-                                 'flickr8k_val.json')
+    annFile = processed_path.joinpath('annotations',
+                                      dataset + '_val.json')
 
     save_path_ = ROOT_PATH.joinpath('models')
 

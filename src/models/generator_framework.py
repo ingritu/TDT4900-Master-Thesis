@@ -12,8 +12,7 @@ from time import time
 import json
 
 from src.data.data_generator import data_generator
-from src.data.data_generator import pad_sequences
-from src.data.load_vocabulary import load_vocabulary
+from src.data.utils import load_vocabulary
 from src.features.Resnet_features import load_visual_features
 from src.models.torch_generators import model_switcher
 from src.models.beam import Beam

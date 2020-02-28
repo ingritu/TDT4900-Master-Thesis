@@ -16,7 +16,7 @@ if __name__ == '__main__':
         order_raw_data_and_move_to_interim(data_path_, dataset_, ann_path_)
 
     # ################ DATA CLEANING ######################### #
-    print("Cleaning Flickr8k!")
+    print("Cleaning flickr8k!")
     df_path_ = ROOT_PATH.joinpath('data', 'interim', 'karpathy_split',
                                   'flickr8k_train.csv')
     save_path_ = ROOT_PATH.joinpath('data', 'interim', 'karpathy_split',

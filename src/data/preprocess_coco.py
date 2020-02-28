@@ -62,7 +62,7 @@ def preprocess_coco(data_path, output_path, splits):
 
 
 if __name__ == '__main__':
-    dataset = "MSCOCO"
+    dataset = "coco"
     data_path_ = ROOT_PATH.joinpath('data',
                                     'raw',
                                     dataset,

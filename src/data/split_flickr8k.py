@@ -30,9 +30,9 @@ def make_train_val_test_split(df_path, split_paths, save_path):
     full_df = full_df.append(test_df)
 
     # save splits
-    train_df.to_csv(save_path.joinpath('Flickr8k_train.csv'))
-    val_df.to_csv(save_path.joinpath('Flickr8k_val.csv'))
-    test_df.to_csv(save_path.joinpath('Flickr8k_test.csv'))
+    train_df.to_csv(save_path.joinpath('flickr8k_train.csv'))
+    val_df.to_csv(save_path.joinpath('flickr8k_val.csv'))
+    test_df.to_csv(save_path.joinpath('flickr8k_test.csv'))
     # save full set
-    full_df.to_csv(save_path.joinpath('Flickr8k_full.csv'))
+    full_df.to_csv(save_path.joinpath('flickr8k_full.csv'))
     print("Finished making splits!")

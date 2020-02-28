@@ -8,20 +8,20 @@ if __name__ == '__main__':
     # TODO: argparsing
     train_path = ROOT_PATH.joinpath('data',
                                     'interim',
-                                    'Flickr8k',
-                                    'Flickr8k_train_clean.csv')
+                                    'flickr8k',
+                                    'flickr8k_train_clean.csv')
     val_path = ROOT_PATH.joinpath('data',
                                   'interim',
-                                  'Flickr8k',
-                                  'Flickr8k_mini_test.csv')
+                                  'flickr8k',
+                                  'flickr8k_mini_test.csv')
 
     voc_path_ = ROOT_PATH.joinpath('data',
                                    'interim',
-                                   'Flickr8k',
-                                   'Flickr8k_vocabulary.csv')
+                                   'flickr8k',
+                                   'flickr8k_vocabulary.csv')
     feature_path_ = ROOT_PATH.joinpath('data',
                                        'processed',
-                                       'Flickr8k',
+                                       'flickr8k',
                                        'Images',
                                        'encoded_visual_attention_full.pkl')
     saved_model_path_ = ROOT_PATH.joinpath(
