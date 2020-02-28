@@ -9,6 +9,10 @@ ROOT_PATH = Path(__file__).absolute().parents[2]
 
 
 if __name__ == '__main__':
+    """
+    To run script in terminal:
+    python3 -m src.data.make_dataset
+    """
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset', type=str, default='coco',
                         help='Dataset to train on. The options are '

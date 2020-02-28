@@ -7,6 +7,10 @@ import argparse
 ROOT_PATH = Path(__file__).absolute().parents[2]
 
 if __name__ == '__main__':
+    """
+    To run script in terminal:
+    python3 -m src.models.predict_model
+    """
     parser = argparse.ArgumentParser()
     parser.add_argument('--karpathy', type=bool, default=True,
                         help='Boolean used to decide whether to train on '

@@ -11,12 +11,16 @@ ROOT_PATH = Path(__file__).absolute().parents[2]
 DIMENSIONS = (299, 299, 3)
 
 if __name__ == '__main__':
+    """
+    To run script in terminal:
+    python3 -m src.features.build_features
+    """
     # resize images
     parser = argparse.ArgumentParser()
     parser.add_argument('--resize_images', type=bool, default=False,
                         help='Boolean to decide whether to resize the images '
                              'before building the actual features.')
-    parser.add_argument('--new_image_size', type=int, choices=range(300),
+    parser.add_argument('--new_image_size', type=int,
                         nargs='+',
                         help='List new image dimensions. should be something '
                              'like 299 299.')

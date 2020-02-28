@@ -9,7 +9,7 @@ ROOT_PATH = Path(__file__).absolute().parents[2]
 
 if __name__ == '__main__':
     """
-    To run script in terminal.
+    To run script in terminal:
     python3 -m src.models.train_model --args
     """
     # All default values are the values used in the knowing when to look paper
@@ -50,7 +50,7 @@ if __name__ == '__main__':
                         help='Dataset to train on. The options are '
                              '{flickr8k, flickr30k, coco}.')
     parser.add_argument('--image_feature_size', type=int,
-                        choices=range(2049), nargs='+', required=True,
+                        nargs='+', required=True,
                         help='List integers. Should be something like '
                              '--image_feature_size 8 8 1536.')
     # there still are more customizable parameters to set,
