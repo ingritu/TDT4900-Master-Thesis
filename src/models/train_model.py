@@ -50,7 +50,7 @@ if __name__ == '__main__':
                         help='Dataset to train on. The options are '
                              '{flickr8k, flickr30k, coco}.')
     parser.add_argument('--image_feature_size', type=int,
-                        choices=range(2049), nargs='+',
+                        choices=range(2049), nargs='+', required=True,
                         help='List integers. Should be something like '
                              '--image_feature_size 8 8 1536.')
     # there still are more customizable parameters to set,
@@ -61,17 +61,19 @@ if __name__ == '__main__':
                                       'interim')
     processed_path = ROOT_PATH.joinpath('data',
                                         'processed')
+    dataset = args['dataset']
     if args['karpathy']:
         interim_path = interim_path.joinpath('karpathy_split')
-    dataset = args['dataset']
+        # annotation file
+        annFile = processed_path.joinpath('annotations',
+                                          'karpathy_split',
+                                          dataset + '_val.json')
+
     train_path = interim_path.joinpath(dataset + '_train_clean.csv')
     val_path = interim_path.joinpath(dataset + '_val.csv')
     voc_path_ = interim_path.joinpath(dataset + '_vocabulary.csv')
     feature_path_ = processed_path.joinpath(
         dataset, 'Images', 'encoded_visual_attention_full.pkl')
-    # annotation file
-    annFile = processed_path.joinpath('annotations',
-                                      dataset + '_val.json')
 
     save_path_ = ROOT_PATH.joinpath('models')
 

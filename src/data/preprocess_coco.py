@@ -55,23 +55,10 @@ def make_dataframe(data_path):
 
 
 def preprocess_coco(data_path, output_path, splits):
+    # TODO: modify to create annotation files too
     for split in splits:
         d_path = data_path.joinpath('captions_' + split + '2014.json')
         split_df = make_dataframe(d_path)
         split_df.to_csv(output_path.joinpath('coco_' + split + '.csv'))
-
-
-if __name__ == '__main__':
-    dataset = "coco"
-    data_path_ = ROOT_PATH.joinpath('data',
-                                    'raw',
-                                    dataset,
-                                    'annotations')
-    output_path_ = ROOT_PATH.joinpath('data',
-                                      'interim',
-                                      dataset)
-    splits_ = ['train', 'val']
-    preprocess_coco(data_path_, output_path_, splits_)
-
 
 

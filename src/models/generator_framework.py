@@ -573,20 +573,20 @@ class Generator:
         Parameters
         ----------
         data_path : Path or str.
-
+            Validation or test set.
         ann_path : Path or str.
-
+            Location of annotation file corresponding to val or test set.
         res_path : Path or str.
-
+            File that the results will be saved in.
         eval_path : Path or str.
-
+            File where all metric scores will be saved in.
         batch_size : int.
             The number of images to perform inference on simultaneously.
         beam_size : int.
             Size of beam.
         metric : str.
             Automatic evaluation metric. Compatible metrics are
-            {Bleu_1, Bleu2, Bleu_3, Bleu_4, METEOR, ROUGE_L, CIDEr, SPICE}
+            {Bleu_1, Bleu2, Bleu_3, Bleu_4, METEOR, ROUGE_L, CIDEr, SPICE}.
 
         Returns
         -------

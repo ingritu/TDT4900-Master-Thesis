@@ -38,8 +38,7 @@ def save_checkpoint(directory,
         for file in directory.glob('BEST_*'):
             file.unlink()
 
-        filename = directory.joinpath('BEST_checkpoint_' + str(epoch)
-                                      + '.pth.tar')
+        filename = directory.joinpath('BEST_checkpoint.pth.tar')
         torch.save(state, filename)
         return filename
     return None

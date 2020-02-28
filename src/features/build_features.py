@@ -21,7 +21,9 @@ if __name__ == '__main__':
                         help='List new image dimensions. should be something '
                              'like 299 299.')
     parser.add_argument('--dataset', type=str, default='coco',
-                        help='Which dataset to create image features for.')
+                        help='Which dataset to create image features for. '
+                             'The options are '
+                             '{flickr8k, flickr30k, coco}.')
     parser.add_argument('--visual_attention', type=bool, default=True,
                         help='Boolean for deciding whether to extract visual '
                              'features that are usable for models that use '
