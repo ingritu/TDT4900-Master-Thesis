@@ -2,12 +2,29 @@ from src.data.utils import max_length_caption
 from src.models.generator_framework import Generator
 
 from pathlib import Path
+import argparse
 
 ROOT_PATH = Path(__file__).absolute().parents[2]
 
 
 if __name__ == '__main__':
     # TODO: argparsing
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('--batch_size', type=int, default=256,
+                        help='Training batch size. '
+                             'The number of captions in a batch.')
+    parser.add_argument('--val_batch_size', type=int, default=250,
+                        help='Validation batch size. '
+                             'The number of images in a batch. '
+                             'The actual batch size is val_batch_size * '
+                             'beam_size.')
+    parser.add_argument('--beam_size', type=int, default=3,
+                        help='Beam size to use in beam search '
+                             'inference algorithm. '
+                             'Bigger beam size yields higher performance.')
+
+    args = parser.parse_args()
 
     train_path = ROOT_PATH.joinpath('data',
                                     'interim',
