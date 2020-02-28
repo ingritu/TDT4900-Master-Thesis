@@ -252,6 +252,7 @@ class Generator:
                 np.array(batch_history)))
 
             # validation here
+            # consider just overwriting the same file
             eval_path = directory.joinpath('captions_eval_' + str(e) + '.json')
             res_path = directory.joinpath('captions_result_' + str(e)
                                           + '.json')

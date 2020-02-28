@@ -14,6 +14,9 @@ if __name__ == '__main__':
     parser.add_argument('--dataset', type=str, default='coco',
                         help='Dataset to test model on. The options are '
                              '{flickr8k, flickr30k, coco}.')
+    parser.add_argument('--split', type=str, default='val',
+                        help='Dataset split to evaluate. '
+                             'Acceptable values are {train, val, test}.')
     parser.add_argument('--model_name', type=str, default='adaptive_decoder',
                         help='Model type.')
     parser.add_argument('--model', type=str, required=True,
@@ -33,14 +36,22 @@ if __name__ == '__main__':
 
     interim_path = ROOT_PATH.joinpath('data', 'interim')
     processed_path = ROOT_PATH.joinpath('data', 'processed')
+    ann_path = processed_path.joinpath('annotations')
     models_path = ROOT_PATH.joinpath('models')
     model_dir = models_path.joinpath(args['model'])
+    split_ = args['split']
+
+    assert model_dir.is_dir(), str(model_dir) + " is not a valid directory."
+    assert split_ in {'train', 'val', 'test', 'mini_val'}, \
+        "Unexpected split. Split must be either train, val or test."
 
     dataset_ = args['dataset']
     if args['karpathy']:
         interim_path = interim_path.joinpath('karpathy_split')
+        ann_path = ann_path.joinpath('karpathy_split')
     train_path = interim_path.joinpath(dataset_, dataset_ + '_train_clean.csv')
-    val_path = interim_path.joinpath(dataset_, dataset_ + '_mini_test.csv')
+    test_path = interim_path.joinpath(dataset_,
+                                      dataset_ + '_' + split_ + '.csv')
     voc_path_ = interim_path.joinpath(dataset_, dataset_ + '_vocabulary.csv')
     feature_path_ = processed_path.joinpath(
         dataset_, 'Images', 'encoded_visual_attention_full.pkl')
@@ -71,20 +82,23 @@ if __name__ == '__main__':
 
     generator.load_model(saved_model_path_)
 
-    print('Making predictions!')
     beam_size_ = args['beam_size']
     val_batch_size = args['val_batch_size']
     print('Using beam Size =', beam_size_, 'and batch size =', val_batch_size)
-    
 
+    res_file = model_dir.joinpath('TEST_' + split_ + '_result.json')
+    eval_file = model_dir.joinpath('TEST_' + split_ + '_eval.json')
+    if split_ == 'mini_val':
+        # did not bother making a mini_val annotation file
+        split_ = 'val'
+    annFile = ann_path.joinpath(dataset_ + '_' + split_ + '.json')
 
-
-    result = generator.evaluate(val_path,
+    # everything is saved to file pluss it is all printed
+    result = generator.evaluate(test_path,
+                                annFile,
+                                res_file,
+                                eval_file,
                                 batch_size=val_batch_size,
                                 beam_size=beam_size_)
 
-    print(result)
-
-
-
-
+    print('CIDEr:', result)
