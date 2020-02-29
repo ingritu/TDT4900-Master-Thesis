@@ -1,0 +1,312 @@
+\hypertarget{classtorch__generators_1_1_adaptive_decoder}{}\doxysection{torch\+\_\+generators.\+Adaptive\+Decoder Class Reference}
+\label{classtorch__generators_1_1_adaptive_decoder}\index{torch\_generators.AdaptiveDecoder@{torch\_generators.AdaptiveDecoder}}
+Inheritance diagram for torch\+\_\+generators.\+Adaptive\+Decoder\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classtorch__generators_1_1_adaptive_decoder}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{classtorch__generators_1_1_adaptive_decoder_a4e0b46e3427547d688a1ce8932db9517}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, \mbox{\hyperlink{classtorch__generators_1_1_adaptive_decoder_ad8a60710bb035623570164d5169b43db}{input\+\_\+shape}}, \mbox{\hyperlink{classtorch__generators_1_1_adaptive_decoder_a207d8437db504d6205484beab7ed81f8}{hidden\+\_\+size}}, \mbox{\hyperlink{classtorch__generators_1_1_adaptive_decoder_addaac97a77d1b33006019f37a524f656}{vocab\+\_\+size}}, \mbox{\hyperlink{classtorch__generators_1_1_adaptive_decoder_a9ee4c14b8565fdb876770253d7cde17e}{device}}, \mbox{\hyperlink{classtorch__generators_1_1_adaptive_decoder_abf0de661f437aab9dd3b8561bb1acbb3}{num\+\_\+lstms}}=0, embedding\+\_\+size=300, seed=222)
+\item 
+def \mbox{\hyperlink{classtorch__generators_1_1_adaptive_decoder_a9177b60b63d1f28f617dfc61319b931d}{forward}} (self, x, states)
+\item 
+def \mbox{\hyperlink{classtorch__generators_1_1_adaptive_decoder_afc0f2a25e789028cb95f6dea0a1a6bd1}{initialize\+\_\+variables}} (self, batch\+\_\+size)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classtorch__generators_1_1_adaptive_decoder_ad8a60710bb035623570164d5169b43db}{input\+\_\+shape}}
+\item 
+\mbox{\hyperlink{classtorch__generators_1_1_adaptive_decoder_aca77ac57f7561b0213fe4df36a25cd0e}{visual\+\_\+feature\+\_\+shape}}
+\item 
+\mbox{\hyperlink{classtorch__generators_1_1_adaptive_decoder_a85ad0b51b7dfaff5c7cc3a5bac749a30}{max\+\_\+len}}
+\item 
+\mbox{\hyperlink{classtorch__generators_1_1_adaptive_decoder_a207d8437db504d6205484beab7ed81f8}{hidden\+\_\+size}}
+\item 
+\mbox{\hyperlink{classtorch__generators_1_1_adaptive_decoder_addaac97a77d1b33006019f37a524f656}{vocab\+\_\+size}}
+\item 
+\mbox{\hyperlink{classtorch__generators_1_1_adaptive_decoder_a273c238437ec9a6023974d8d4686ddb1}{em\+\_\+size}}
+\item 
+\mbox{\hyperlink{classtorch__generators_1_1_adaptive_decoder_abf0de661f437aab9dd3b8561bb1acbb3}{num\+\_\+lstms}}
+\item 
+\mbox{\hyperlink{classtorch__generators_1_1_adaptive_decoder_ace25668f6d45c15047f0c0042cdbc522}{random\+\_\+seed}}
+\item 
+\mbox{\hyperlink{classtorch__generators_1_1_adaptive_decoder_a9ee4c14b8565fdb876770253d7cde17e}{device}}
+\item 
+\mbox{\hyperlink{classtorch__generators_1_1_adaptive_decoder_a8bfa4d06b09932db0ad5f67954a542f6}{embedding}}
+\item 
+\mbox{\hyperlink{classtorch__generators_1_1_adaptive_decoder_ad9a2fc6beadc3776dd09bc55061c0969}{sentinel\+\_\+lstm}}
+\item 
+\mbox{\hyperlink{classtorch__generators_1_1_adaptive_decoder_a32d32b55b311ffbc6313515202bed913}{attention\+\_\+block}}
+\item 
+\mbox{\hyperlink{classtorch__generators_1_1_adaptive_decoder_a5809a92fd4fcf554abc54193ee88bcd9}{decoder}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Adaptive Decoder.
+
+This class will not do any encoding of the images, but expects an
+encoded image as input. This generator does not output full sequences,
+instead it only outputs the predictions at a timestep.
+\end{DoxyVerb}
+ 
+
+Definition at line 115 of file torch\+\_\+generators.\+py.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classtorch__generators_1_1_adaptive_decoder_a4e0b46e3427547d688a1ce8932db9517}\label{classtorch__generators_1_1_adaptive_decoder_a4e0b46e3427547d688a1ce8932db9517}} 
+\index{torch\_generators.AdaptiveDecoder@{torch\_generators.AdaptiveDecoder}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!torch\_generators.AdaptiveDecoder@{torch\_generators.AdaptiveDecoder}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily def torch\+\_\+generators.\+Adaptive\+Decoder.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{input\+\_\+shape,  }\item[{}]{hidden\+\_\+size,  }\item[{}]{vocab\+\_\+size,  }\item[{}]{device,  }\item[{}]{num\+\_\+lstms = {\ttfamily 0},  }\item[{}]{embedding\+\_\+size = {\ttfamily 300},  }\item[{}]{seed = {\ttfamily 222} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 125 of file torch\+\_\+generators.\+py.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{125     \textcolor{keyword}{def }\_\_init\_\_(self,}
+\DoxyCodeLine{126                  input\_shape,}
+\DoxyCodeLine{127                  hidden\_size,}
+\DoxyCodeLine{128                  vocab\_size,}
+\DoxyCodeLine{129                  device,}
+\DoxyCodeLine{130                  num\_lstms=0,}
+\DoxyCodeLine{131                  embedding\_size=300,}
+\DoxyCodeLine{132                  seed=222):}
+\DoxyCodeLine{133         super(AdaptiveDecoder, self).\_\_init\_\_()}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135         self.input\_shape = input\_shape}
+\DoxyCodeLine{136         self.visual\_feature\_shape = input\_shape[0]}
+\DoxyCodeLine{137         self.max\_len = input\_shape[1]}
+\DoxyCodeLine{138         self.hidden\_size = hidden\_size}
+\DoxyCodeLine{139 }
+\DoxyCodeLine{140         self.vocab\_size = vocab\_size}
+\DoxyCodeLine{141         self.em\_size = embedding\_size}
+\DoxyCodeLine{142         self.num\_lstms = num\_lstms}
+\DoxyCodeLine{143         self.random\_seed = seed}
+\DoxyCodeLine{144 }
+\DoxyCodeLine{145         self.device = device}
+\DoxyCodeLine{146 }
+\DoxyCodeLine{147         \textcolor{comment}{\# layers}}
+\DoxyCodeLine{148         self.embedding = nn.Embedding(self.vocab\_size, self.em\_size)}
+\DoxyCodeLine{149         self.sentinel\_lstm = SentinelLSTM(self.em\_size * 2,}
+\DoxyCodeLine{150                                           self.hidden\_size,}
+\DoxyCodeLine{151                                           n=self.num\_lstms)}
+\DoxyCodeLine{152         self.attention\_block = AttentionLayer(self.hidden\_size,}
+\DoxyCodeLine{153                                               self.hidden\_size)}
+\DoxyCodeLine{154         self.decoder = MultimodalDecoder(self.hidden\_size,}
+\DoxyCodeLine{155                                          self.vocab\_size, n=1)}
+\DoxyCodeLine{156 }
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classtorch__generators_1_1_adaptive_decoder_a9177b60b63d1f28f617dfc61319b931d}\label{classtorch__generators_1_1_adaptive_decoder_a9177b60b63d1f28f617dfc61319b931d}} 
+\index{torch\_generators.AdaptiveDecoder@{torch\_generators.AdaptiveDecoder}!forward@{forward}}
+\index{forward@{forward}!torch\_generators.AdaptiveDecoder@{torch\_generators.AdaptiveDecoder}}
+\doxysubsubsection{\texorpdfstring{forward()}{forward()}}
+{\footnotesize\ttfamily def torch\+\_\+generators.\+Adaptive\+Decoder.\+forward (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{x,  }\item[{}]{states }\end{DoxyParamCaption})}
+
+
+
+Definition at line 157 of file torch\+\_\+generators.\+py.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{157     \textcolor{keyword}{def }forward(self, x, states):}
+\DoxyCodeLine{158         \textcolor{comment}{\# unpack input}}
+\DoxyCodeLine{159         input\_img, input\_w = x}
+\DoxyCodeLine{160         global\_image, encoded\_images = input\_img}
+\DoxyCodeLine{161         \textcolor{comment}{\# global (batch\_size, embedding\_size)}}
+\DoxyCodeLine{162         \textcolor{comment}{\# encoded (batch\_size, 64, hidden\_size)}}
+\DoxyCodeLine{163 }
+\DoxyCodeLine{164         \textcolor{comment}{\# embed word}}
+\DoxyCodeLine{165         embedded\_w = self.embedding(input\_w)}
+\DoxyCodeLine{166         \textcolor{comment}{\# (batch\_size, embedding\_size)}}
+\DoxyCodeLine{167 }
+\DoxyCodeLine{168         \textcolor{comment}{\# cat input w with v\_avg}}
+\DoxyCodeLine{169         x\_t = torch.cat((embedded\_w, global\_image), dim=1)}
+\DoxyCodeLine{170         \textcolor{comment}{\# (batch\_size, embedding\_size*2)}}
+\DoxyCodeLine{171 }
+\DoxyCodeLine{172         \textcolor{comment}{\# get states}}
+\DoxyCodeLine{173         h\_tm1, c\_tm1 = states}
+\DoxyCodeLine{174 }
+\DoxyCodeLine{175         \textcolor{comment}{\# decoding}}
+\DoxyCodeLine{176         h\_t, c\_t, h\_top, s\_t = self.sentinel\_lstm(x\_t, (h\_tm1, c\_tm1))}
+\DoxyCodeLine{177         z\_t = self.attention\_block([encoded\_images, s\_t, h\_top])}
+\DoxyCodeLine{178         pt = self.decoder(z\_t)}
+\DoxyCodeLine{179 }
+\DoxyCodeLine{180         \textcolor{keywordflow}{return} pt, h\_t, c\_t}
+\DoxyCodeLine{181 }
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classtorch__generators_1_1_adaptive_decoder_afc0f2a25e789028cb95f6dea0a1a6bd1}\label{classtorch__generators_1_1_adaptive_decoder_afc0f2a25e789028cb95f6dea0a1a6bd1}} 
+\index{torch\_generators.AdaptiveDecoder@{torch\_generators.AdaptiveDecoder}!initialize\_variables@{initialize\_variables}}
+\index{initialize\_variables@{initialize\_variables}!torch\_generators.AdaptiveDecoder@{torch\_generators.AdaptiveDecoder}}
+\doxysubsubsection{\texorpdfstring{initialize\_variables()}{initialize\_variables()}}
+{\footnotesize\ttfamily def torch\+\_\+generators.\+Adaptive\+Decoder.\+initialize\+\_\+variables (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{batch\+\_\+size }\end{DoxyParamCaption})}
+
+
+
+Definition at line 182 of file torch\+\_\+generators.\+py.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{182     \textcolor{keyword}{def }initialize\_variables(self, batch\_size):}
+\DoxyCodeLine{183         \textcolor{comment}{\# initialize h and c as zeros}}
+\DoxyCodeLine{184         hs = torch.zeros(self.num\_lstms + 1, batch\_size, self.hidden\_size) \(\backslash\)}
+\DoxyCodeLine{185             .to(self.device)}
+\DoxyCodeLine{186         cs = torch.zeros(self.num\_lstms + 1, batch\_size, self.hidden\_size) \(\backslash\)}
+\DoxyCodeLine{187             .to(self.device)}
+\DoxyCodeLine{188         \textcolor{keywordflow}{return} hs, cs}
+\DoxyCodeLine{189 }
+\DoxyCodeLine{190 }
+\DoxyCodeLine{191 }
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classtorch__generators_1_1_adaptive_decoder_a32d32b55b311ffbc6313515202bed913}\label{classtorch__generators_1_1_adaptive_decoder_a32d32b55b311ffbc6313515202bed913}} 
+\index{torch\_generators.AdaptiveDecoder@{torch\_generators.AdaptiveDecoder}!attention\_block@{attention\_block}}
+\index{attention\_block@{attention\_block}!torch\_generators.AdaptiveDecoder@{torch\_generators.AdaptiveDecoder}}
+\doxysubsubsection{\texorpdfstring{attention\_block}{attention\_block}}
+{\footnotesize\ttfamily torch\+\_\+generators.\+Adaptive\+Decoder.\+attention\+\_\+block}
+
+
+
+Definition at line 145 of file torch\+\_\+generators.\+py.
+
+\mbox{\Hypertarget{classtorch__generators_1_1_adaptive_decoder_a5809a92fd4fcf554abc54193ee88bcd9}\label{classtorch__generators_1_1_adaptive_decoder_a5809a92fd4fcf554abc54193ee88bcd9}} 
+\index{torch\_generators.AdaptiveDecoder@{torch\_generators.AdaptiveDecoder}!decoder@{decoder}}
+\index{decoder@{decoder}!torch\_generators.AdaptiveDecoder@{torch\_generators.AdaptiveDecoder}}
+\doxysubsubsection{\texorpdfstring{decoder}{decoder}}
+{\footnotesize\ttfamily torch\+\_\+generators.\+Adaptive\+Decoder.\+decoder}
+
+
+
+Definition at line 147 of file torch\+\_\+generators.\+py.
+
+\mbox{\Hypertarget{classtorch__generators_1_1_adaptive_decoder_a9ee4c14b8565fdb876770253d7cde17e}\label{classtorch__generators_1_1_adaptive_decoder_a9ee4c14b8565fdb876770253d7cde17e}} 
+\index{torch\_generators.AdaptiveDecoder@{torch\_generators.AdaptiveDecoder}!device@{device}}
+\index{device@{device}!torch\_generators.AdaptiveDecoder@{torch\_generators.AdaptiveDecoder}}
+\doxysubsubsection{\texorpdfstring{device}{device}}
+{\footnotesize\ttfamily torch\+\_\+generators.\+Adaptive\+Decoder.\+device}
+
+
+
+Definition at line 138 of file torch\+\_\+generators.\+py.
+
+\mbox{\Hypertarget{classtorch__generators_1_1_adaptive_decoder_a273c238437ec9a6023974d8d4686ddb1}\label{classtorch__generators_1_1_adaptive_decoder_a273c238437ec9a6023974d8d4686ddb1}} 
+\index{torch\_generators.AdaptiveDecoder@{torch\_generators.AdaptiveDecoder}!em\_size@{em\_size}}
+\index{em\_size@{em\_size}!torch\_generators.AdaptiveDecoder@{torch\_generators.AdaptiveDecoder}}
+\doxysubsubsection{\texorpdfstring{em\_size}{em\_size}}
+{\footnotesize\ttfamily torch\+\_\+generators.\+Adaptive\+Decoder.\+em\+\_\+size}
+
+
+
+Definition at line 134 of file torch\+\_\+generators.\+py.
+
+\mbox{\Hypertarget{classtorch__generators_1_1_adaptive_decoder_a8bfa4d06b09932db0ad5f67954a542f6}\label{classtorch__generators_1_1_adaptive_decoder_a8bfa4d06b09932db0ad5f67954a542f6}} 
+\index{torch\_generators.AdaptiveDecoder@{torch\_generators.AdaptiveDecoder}!embedding@{embedding}}
+\index{embedding@{embedding}!torch\_generators.AdaptiveDecoder@{torch\_generators.AdaptiveDecoder}}
+\doxysubsubsection{\texorpdfstring{embedding}{embedding}}
+{\footnotesize\ttfamily torch\+\_\+generators.\+Adaptive\+Decoder.\+embedding}
+
+
+
+Definition at line 141 of file torch\+\_\+generators.\+py.
+
+\mbox{\Hypertarget{classtorch__generators_1_1_adaptive_decoder_a207d8437db504d6205484beab7ed81f8}\label{classtorch__generators_1_1_adaptive_decoder_a207d8437db504d6205484beab7ed81f8}} 
+\index{torch\_generators.AdaptiveDecoder@{torch\_generators.AdaptiveDecoder}!hidden\_size@{hidden\_size}}
+\index{hidden\_size@{hidden\_size}!torch\_generators.AdaptiveDecoder@{torch\_generators.AdaptiveDecoder}}
+\doxysubsubsection{\texorpdfstring{hidden\_size}{hidden\_size}}
+{\footnotesize\ttfamily torch\+\_\+generators.\+Adaptive\+Decoder.\+hidden\+\_\+size}
+
+
+
+Definition at line 131 of file torch\+\_\+generators.\+py.
+
+\mbox{\Hypertarget{classtorch__generators_1_1_adaptive_decoder_ad8a60710bb035623570164d5169b43db}\label{classtorch__generators_1_1_adaptive_decoder_ad8a60710bb035623570164d5169b43db}} 
+\index{torch\_generators.AdaptiveDecoder@{torch\_generators.AdaptiveDecoder}!input\_shape@{input\_shape}}
+\index{input\_shape@{input\_shape}!torch\_generators.AdaptiveDecoder@{torch\_generators.AdaptiveDecoder}}
+\doxysubsubsection{\texorpdfstring{input\_shape}{input\_shape}}
+{\footnotesize\ttfamily torch\+\_\+generators.\+Adaptive\+Decoder.\+input\+\_\+shape}
+
+
+
+Definition at line 128 of file torch\+\_\+generators.\+py.
+
+\mbox{\Hypertarget{classtorch__generators_1_1_adaptive_decoder_a85ad0b51b7dfaff5c7cc3a5bac749a30}\label{classtorch__generators_1_1_adaptive_decoder_a85ad0b51b7dfaff5c7cc3a5bac749a30}} 
+\index{torch\_generators.AdaptiveDecoder@{torch\_generators.AdaptiveDecoder}!max\_len@{max\_len}}
+\index{max\_len@{max\_len}!torch\_generators.AdaptiveDecoder@{torch\_generators.AdaptiveDecoder}}
+\doxysubsubsection{\texorpdfstring{max\_len}{max\_len}}
+{\footnotesize\ttfamily torch\+\_\+generators.\+Adaptive\+Decoder.\+max\+\_\+len}
+
+
+
+Definition at line 130 of file torch\+\_\+generators.\+py.
+
+\mbox{\Hypertarget{classtorch__generators_1_1_adaptive_decoder_abf0de661f437aab9dd3b8561bb1acbb3}\label{classtorch__generators_1_1_adaptive_decoder_abf0de661f437aab9dd3b8561bb1acbb3}} 
+\index{torch\_generators.AdaptiveDecoder@{torch\_generators.AdaptiveDecoder}!num\_lstms@{num\_lstms}}
+\index{num\_lstms@{num\_lstms}!torch\_generators.AdaptiveDecoder@{torch\_generators.AdaptiveDecoder}}
+\doxysubsubsection{\texorpdfstring{num\_lstms}{num\_lstms}}
+{\footnotesize\ttfamily torch\+\_\+generators.\+Adaptive\+Decoder.\+num\+\_\+lstms}
+
+
+
+Definition at line 135 of file torch\+\_\+generators.\+py.
+
+\mbox{\Hypertarget{classtorch__generators_1_1_adaptive_decoder_ace25668f6d45c15047f0c0042cdbc522}\label{classtorch__generators_1_1_adaptive_decoder_ace25668f6d45c15047f0c0042cdbc522}} 
+\index{torch\_generators.AdaptiveDecoder@{torch\_generators.AdaptiveDecoder}!random\_seed@{random\_seed}}
+\index{random\_seed@{random\_seed}!torch\_generators.AdaptiveDecoder@{torch\_generators.AdaptiveDecoder}}
+\doxysubsubsection{\texorpdfstring{random\_seed}{random\_seed}}
+{\footnotesize\ttfamily torch\+\_\+generators.\+Adaptive\+Decoder.\+random\+\_\+seed}
+
+
+
+Definition at line 136 of file torch\+\_\+generators.\+py.
+
+\mbox{\Hypertarget{classtorch__generators_1_1_adaptive_decoder_ad9a2fc6beadc3776dd09bc55061c0969}\label{classtorch__generators_1_1_adaptive_decoder_ad9a2fc6beadc3776dd09bc55061c0969}} 
+\index{torch\_generators.AdaptiveDecoder@{torch\_generators.AdaptiveDecoder}!sentinel\_lstm@{sentinel\_lstm}}
+\index{sentinel\_lstm@{sentinel\_lstm}!torch\_generators.AdaptiveDecoder@{torch\_generators.AdaptiveDecoder}}
+\doxysubsubsection{\texorpdfstring{sentinel\_lstm}{sentinel\_lstm}}
+{\footnotesize\ttfamily torch\+\_\+generators.\+Adaptive\+Decoder.\+sentinel\+\_\+lstm}
+
+
+
+Definition at line 142 of file torch\+\_\+generators.\+py.
+
+\mbox{\Hypertarget{classtorch__generators_1_1_adaptive_decoder_aca77ac57f7561b0213fe4df36a25cd0e}\label{classtorch__generators_1_1_adaptive_decoder_aca77ac57f7561b0213fe4df36a25cd0e}} 
+\index{torch\_generators.AdaptiveDecoder@{torch\_generators.AdaptiveDecoder}!visual\_feature\_shape@{visual\_feature\_shape}}
+\index{visual\_feature\_shape@{visual\_feature\_shape}!torch\_generators.AdaptiveDecoder@{torch\_generators.AdaptiveDecoder}}
+\doxysubsubsection{\texorpdfstring{visual\_feature\_shape}{visual\_feature\_shape}}
+{\footnotesize\ttfamily torch\+\_\+generators.\+Adaptive\+Decoder.\+visual\+\_\+feature\+\_\+shape}
+
+
+
+Definition at line 129 of file torch\+\_\+generators.\+py.
+
+\mbox{\Hypertarget{classtorch__generators_1_1_adaptive_decoder_addaac97a77d1b33006019f37a524f656}\label{classtorch__generators_1_1_adaptive_decoder_addaac97a77d1b33006019f37a524f656}} 
+\index{torch\_generators.AdaptiveDecoder@{torch\_generators.AdaptiveDecoder}!vocab\_size@{vocab\_size}}
+\index{vocab\_size@{vocab\_size}!torch\_generators.AdaptiveDecoder@{torch\_generators.AdaptiveDecoder}}
+\doxysubsubsection{\texorpdfstring{vocab\_size}{vocab\_size}}
+{\footnotesize\ttfamily torch\+\_\+generators.\+Adaptive\+Decoder.\+vocab\+\_\+size}
+
+
+
+Definition at line 133 of file torch\+\_\+generators.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/models/\mbox{\hyperlink{torch__generators_8py}{torch\+\_\+generators.\+py}}\end{DoxyCompactItemize}

@@ -1,0 +1,56 @@
+\hypertarget{build__features_8py}{}\doxysection{src/features/build\+\_\+features.py File Reference}
+\label{build__features_8py}\index{src/features/build\_features.py@{src/features/build\_features.py}}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespacebuild__features}{build\+\_\+features}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespacebuild__features_a503907aa288ba141bc6cfa317bb86713}{build\+\_\+features.\+R\+O\+O\+T\+\_\+\+P\+A\+TH}} = Path(\+\_\+\+\_\+file\+\_\+\+\_\+).absolute().parents\mbox{[}2\mbox{]}
+\item 
+tuple \mbox{\hyperlink{namespacebuild__features_aaa0c2ed19651f3c9ae10c8cfbbd72729}{build\+\_\+features.\+D\+I\+M\+E\+N\+S\+I\+O\+NS}} = (299, 299, 3)
+\item 
+\mbox{\hyperlink{namespacebuild__features_a34448d79ea0d5d6972586803629c1bfb}{build\+\_\+features.\+parser}} = argparse.\+Argument\+Parser()
+\item 
+\mbox{\hyperlink{namespacebuild__features_a82c6b60aa422c26df5a1bf57263a4cb3}{build\+\_\+features.\+type}}
+\item 
+\mbox{\hyperlink{namespacebuild__features_a97cb0578a5afa2f54ab41c13c5ac49c2}{build\+\_\+features.\+bool}}
+\item 
+\mbox{\hyperlink{namespacebuild__features_aad43a617dd7adda8e1efd1ee7b9770a0}{build\+\_\+features.\+default}}
+\item 
+\mbox{\hyperlink{namespacebuild__features_a1289fbe404528095bb3ee47f836323fc}{build\+\_\+features.\+help}}
+\item 
+\mbox{\hyperlink{namespacebuild__features_a1c5aef25fd77d6e5b75a9987b19c36a7}{build\+\_\+features.\+nargs}}
+\item 
+\mbox{\hyperlink{namespacebuild__features_a57e122f7b8ed6a5c2492b60f6c749b29}{build\+\_\+features.\+str}}
+\item 
+\mbox{\hyperlink{namespacebuild__features_a5c052b50d2be4e00ebf695da3bdac576}{build\+\_\+features.\+int}}
+\item 
+\mbox{\hyperlink{namespacebuild__features_ac863d94cc07ddaab08a76bcdc5c7891b}{build\+\_\+features.\+args}} = vars(parser.\+parse\+\_\+args())
+\item 
+\mbox{\hyperlink{namespacebuild__features_a1f91b3c2623aef5b8a98c59325d7bd52}{build\+\_\+features.\+dataset\+\_\+}} = args\mbox{[}\textquotesingle{}dataset\textquotesingle{}\mbox{]}
+\item 
+\mbox{\hyperlink{namespacebuild__features_a1173c446977d416deaa4d09b3e798dc4}{build\+\_\+features.\+new\+\_\+dims\+\_\+}} = args\mbox{[}\textquotesingle{}new\+\_\+image\+\_\+size\textquotesingle{}\mbox{]}
+\item 
+tuple \mbox{\hyperlink{namespacebuild__features_a851bfbb85b2c7ca1774ffe52dfc07da2}{build\+\_\+features.\+dims}} = D\+I\+M\+E\+N\+S\+I\+O\+NS\mbox{[}\+:2\mbox{]}
+\item 
+\mbox{\hyperlink{namespacebuild__features_a9d05d6cfb8e34f6f065b06cc5b4ab666}{build\+\_\+features.\+raw\+\_\+path}} = R\+O\+O\+T\+\_\+\+P\+A\+T\+H.\+joinpath(\textquotesingle{}data\textquotesingle{}, \textquotesingle{}raw\textquotesingle{})
+\item 
+\mbox{\hyperlink{namespacebuild__features_a16eefc649977c187da6450ce5dd08cc5}{build\+\_\+features.\+interim\+\_\+path}} = R\+O\+O\+T\+\_\+\+P\+A\+T\+H.\+joinpath(\textquotesingle{}data\textquotesingle{}, \textquotesingle{}interim\textquotesingle{})
+\item 
+\mbox{\hyperlink{namespacebuild__features_a0e5635116f6f7e9453d9ab54d87f5089}{build\+\_\+features.\+processed\+\_\+path}} = R\+O\+O\+T\+\_\+\+P\+A\+T\+H.\+joinpath(\textquotesingle{}data\textquotesingle{}, \textquotesingle{}processed\textquotesingle{})
+\item 
+\mbox{\hyperlink{namespacebuild__features_a00f53c62cc19a2db76855bd46f674dc4}{build\+\_\+features.\+image\+\_\+path\+\_\+}} = raw\+\_\+path.\+joinpath(dataset\+\_\+, \textquotesingle{}Images\textquotesingle{})
+\item 
+\mbox{\hyperlink{namespacebuild__features_ada62677029ed21ee1516877a553c7343}{build\+\_\+features.\+save\+\_\+path\+\_\+}} = interim\+\_\+path.\+joinpath(dataset\+\_\+, \textquotesingle{}Images\textquotesingle{})
+\item 
+\mbox{\hyperlink{namespacebuild__features_ae3f74cdc5a8f0840a747c0d11f17182f}{build\+\_\+features.\+output\+\_\+layer\+\_\+dim\+\_\+}} = args\mbox{[}\textquotesingle{}output\+\_\+layer\+\_\+idx\textquotesingle{}\mbox{]}
+\item 
+\mbox{\hyperlink{namespacebuild__features_a63534648861d8473324bedda6b49f62c}{build\+\_\+features.\+vis\+\_\+att\+\_\+}} = args\mbox{[}\textquotesingle{}visual\+\_\+attention\textquotesingle{}\mbox{]}
+\item 
+\mbox{\hyperlink{namespacebuild__features_a4176b2755c31fe24ef7ca2abddef02f3}{build\+\_\+features.\+split\+\_\+set\+\_\+path\+\_\+}} = interim\+\_\+path.\+joinpath(dataset\+\_\+, dataset\+\_\+ + \textquotesingle{}\+\_\+full.\+csv\textquotesingle{})
+\item 
+\mbox{\hyperlink{namespacebuild__features_a6a906f4fe86c4b389c00cdf6ce116ab5}{build\+\_\+features.\+vis\+\_\+att}}
+\end{DoxyCompactItemize}

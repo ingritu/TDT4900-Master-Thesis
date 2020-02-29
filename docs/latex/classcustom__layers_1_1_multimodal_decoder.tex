@@ -1,0 +1,120 @@
+\hypertarget{classcustom__layers_1_1_multimodal_decoder}{}\doxysection{custom\+\_\+layers.\+Multimodal\+Decoder Class Reference}
+\label{classcustom__layers_1_1_multimodal_decoder}\index{custom\_layers.MultimodalDecoder@{custom\_layers.MultimodalDecoder}}
+Inheritance diagram for custom\+\_\+layers.\+Multimodal\+Decoder\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classcustom__layers_1_1_multimodal_decoder}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{classcustom__layers_1_1_multimodal_decoder_af09b64bd0fc78150ae056434399da8cc}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, input\+\_\+shape, hidden\+\_\+size, n=0)
+\item 
+def \mbox{\hyperlink{classcustom__layers_1_1_multimodal_decoder_abb615fd0004695ddabfd214a93db1d88}{forward}} (self, x)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classcustom__layers_1_1_multimodal_decoder_a0fabcea08a6396df964b7f675897834b}{layers}}
+\item 
+\mbox{\hyperlink{classcustom__layers_1_1_multimodal_decoder_a504511fd8a59814db641b725a819e369}{output\+\_\+layer}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line 81 of file custom\+\_\+layers.\+py.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classcustom__layers_1_1_multimodal_decoder_af09b64bd0fc78150ae056434399da8cc}\label{classcustom__layers_1_1_multimodal_decoder_af09b64bd0fc78150ae056434399da8cc}} 
+\index{custom\_layers.MultimodalDecoder@{custom\_layers.MultimodalDecoder}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!custom\_layers.MultimodalDecoder@{custom\_layers.MultimodalDecoder}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily def custom\+\_\+layers.\+Multimodal\+Decoder.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{input\+\_\+shape,  }\item[{}]{hidden\+\_\+size,  }\item[{}]{n = {\ttfamily 0} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 83 of file custom\+\_\+layers.\+py.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{83     \textcolor{keyword}{def }\_\_init\_\_(self, input\_shape, hidden\_size, n=0):}
+\DoxyCodeLine{84         super(MultimodalDecoder, self).\_\_init\_\_()}
+\DoxyCodeLine{85         self.layers = []}
+\DoxyCodeLine{86         \textcolor{keywordflow}{if} n:}
+\DoxyCodeLine{87             new\_input\_shape = input\_shape*2}
+\DoxyCodeLine{88             self.layers.append(nn.Linear(input\_shape, input\_shape))}
+\DoxyCodeLine{89             input\_shape = new\_input\_shape}
+\DoxyCodeLine{90         \textcolor{keywordflow}{else}:}
+\DoxyCodeLine{91             n = 1}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93         \textcolor{keywordflow}{for} \_ \textcolor{keywordflow}{in} range(n -\/ 1):}
+\DoxyCodeLine{94             self.layers.append(nn.Linear(input\_shape, input\_shape))}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96         \textcolor{comment}{\# output layer, this is the only layer if n=0}}
+\DoxyCodeLine{97         self.output\_layer = nn.Linear(input\_shape, hidden\_size)}
+\DoxyCodeLine{98 }
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classcustom__layers_1_1_multimodal_decoder_abb615fd0004695ddabfd214a93db1d88}\label{classcustom__layers_1_1_multimodal_decoder_abb615fd0004695ddabfd214a93db1d88}} 
+\index{custom\_layers.MultimodalDecoder@{custom\_layers.MultimodalDecoder}!forward@{forward}}
+\index{forward@{forward}!custom\_layers.MultimodalDecoder@{custom\_layers.MultimodalDecoder}}
+\doxysubsubsection{\texorpdfstring{forward()}{forward()}}
+{\footnotesize\ttfamily def custom\+\_\+layers.\+Multimodal\+Decoder.\+forward (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{x }\end{DoxyParamCaption})}
+
+
+
+Definition at line 99 of file custom\+\_\+layers.\+py.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{99     \textcolor{keyword}{def }forward(self, x):}
+\DoxyCodeLine{100         \textcolor{comment}{\# x: context\_vector + h\_t (batch\_size, hidden\_size)}}
+\DoxyCodeLine{101         \textcolor{comment}{\# print('Multimodal Decoder')}}
+\DoxyCodeLine{102         concat = x}
+\DoxyCodeLine{103         \textcolor{keywordflow}{for} layer \textcolor{keywordflow}{in} self.layers:}
+\DoxyCodeLine{104             y = F.relu(layer(concat))}
+\DoxyCodeLine{105             concat = torch.cat((concat, y), dim=1)}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107         \textcolor{comment}{\# softmax on output}}
+\DoxyCodeLine{108         y = F.softmax(self.output\_layer(concat))}
+\DoxyCodeLine{109         \textcolor{keywordflow}{return} y}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{111 }
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classcustom__layers_1_1_multimodal_decoder_a0fabcea08a6396df964b7f675897834b}\label{classcustom__layers_1_1_multimodal_decoder_a0fabcea08a6396df964b7f675897834b}} 
+\index{custom\_layers.MultimodalDecoder@{custom\_layers.MultimodalDecoder}!layers@{layers}}
+\index{layers@{layers}!custom\_layers.MultimodalDecoder@{custom\_layers.MultimodalDecoder}}
+\doxysubsubsection{\texorpdfstring{layers}{layers}}
+{\footnotesize\ttfamily custom\+\_\+layers.\+Multimodal\+Decoder.\+layers}
+
+
+
+Definition at line 85 of file custom\+\_\+layers.\+py.
+
+\mbox{\Hypertarget{classcustom__layers_1_1_multimodal_decoder_a504511fd8a59814db641b725a819e369}\label{classcustom__layers_1_1_multimodal_decoder_a504511fd8a59814db641b725a819e369}} 
+\index{custom\_layers.MultimodalDecoder@{custom\_layers.MultimodalDecoder}!output\_layer@{output\_layer}}
+\index{output\_layer@{output\_layer}!custom\_layers.MultimodalDecoder@{custom\_layers.MultimodalDecoder}}
+\doxysubsubsection{\texorpdfstring{output\_layer}{output\_layer}}
+{\footnotesize\ttfamily custom\+\_\+layers.\+Multimodal\+Decoder.\+output\+\_\+layer}
+
+
+
+Definition at line 97 of file custom\+\_\+layers.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/models/\mbox{\hyperlink{custom__layers_8py}{custom\+\_\+layers.\+py}}\end{DoxyCompactItemize}

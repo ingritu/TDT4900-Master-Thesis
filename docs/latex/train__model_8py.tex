@@ -1,0 +1,82 @@
+\hypertarget{train__model_8py}{}\doxysection{src/models/train\+\_\+model.py File Reference}
+\label{train__model_8py}\index{src/models/train\_model.py@{src/models/train\_model.py}}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespacetrain__model}{train\+\_\+model}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespacetrain__model_a7a1be5017e9e93e03e6870833ca18d7c}{train\+\_\+model.\+R\+O\+O\+T\+\_\+\+P\+A\+TH}} = Path(\+\_\+\+\_\+file\+\_\+\+\_\+).absolute().parents\mbox{[}2\mbox{]}
+\item 
+\mbox{\hyperlink{namespacetrain__model_ab036cc629f61c94d93f79d9071e25e62}{train\+\_\+model.\+parser}} = argparse.\+Argument\+Parser()
+\item 
+\mbox{\hyperlink{namespacetrain__model_a811367f9f38625c961dc3d40f9d85667}{train\+\_\+model.\+type}}
+\item 
+\mbox{\hyperlink{namespacetrain__model_a36fe43ec1b00f331c7f374e1478b7e4d}{train\+\_\+model.\+int}}
+\item 
+\mbox{\hyperlink{namespacetrain__model_a2e6a15112d288000ce033774ee614eb1}{train\+\_\+model.\+default}}
+\item 
+\mbox{\hyperlink{namespacetrain__model_ab647249722f7523248fb1c7a80465dac}{train\+\_\+model.\+help}}
+\item 
+\mbox{\hyperlink{namespacetrain__model_af1334e726c4782724a0e5b8f9e031e01}{train\+\_\+model.\+str}}
+\item 
+\mbox{\hyperlink{namespacetrain__model_a40afd8753c060f776ba1ca0fe0ac81de}{train\+\_\+model.\+float}}
+\item 
+\mbox{\hyperlink{namespacetrain__model_a5cc629a7b03bc775aca5fb69e1c03cd3}{train\+\_\+model.\+bool}}
+\item 
+\mbox{\hyperlink{namespacetrain__model_a1d4694ea6213e154a3dc6a89af3a463c}{train\+\_\+model.\+nargs}}
+\item 
+\mbox{\hyperlink{namespacetrain__model_a78097f4983ca52246205967b04985462}{train\+\_\+model.\+required}}
+\item 
+\mbox{\hyperlink{namespacetrain__model_aa9f4deb9546d64e0a5aa98193cd1775b}{train\+\_\+model.\+args}} = vars(parser.\+parse\+\_\+args())
+\item 
+\mbox{\hyperlink{namespacetrain__model_ad12d22f2e3118f67990b23a671a35657}{train\+\_\+model.\+interim\+\_\+path}}
+\item 
+\mbox{\hyperlink{namespacetrain__model_a820476078bbbd44762a5156d04f8037d}{train\+\_\+model.\+processed\+\_\+path}}
+\item 
+\mbox{\hyperlink{namespacetrain__model_adc1b5e9769dad1474d894846641140a1}{train\+\_\+model.\+dataset}} = args\mbox{[}\textquotesingle{}dataset\textquotesingle{}\mbox{]}
+\item 
+\mbox{\hyperlink{namespacetrain__model_a4e873363d71a0c66547566a88a903482}{train\+\_\+model.\+ann\+File}}
+\item 
+\mbox{\hyperlink{namespacetrain__model_a1f059ba3a993b395f45393f95da1e2d4}{train\+\_\+model.\+train\+\_\+path}} = interim\+\_\+path.\+joinpath(dataset + \textquotesingle{}\+\_\+train\+\_\+clean.\+csv\textquotesingle{})
+\item 
+\mbox{\hyperlink{namespacetrain__model_a0440fa2ff3cec6d9b88f0681c7a08bab}{train\+\_\+model.\+val\+\_\+path}} = interim\+\_\+path.\+joinpath(dataset + \textquotesingle{}\+\_\+val.\+csv\textquotesingle{})
+\item 
+\mbox{\hyperlink{namespacetrain__model_a027c92176448d0f35c3e99a6e04e3c3c}{train\+\_\+model.\+voc\+\_\+path\+\_\+}} = interim\+\_\+path.\+joinpath(dataset + \textquotesingle{}\+\_\+vocabulary.\+csv\textquotesingle{})
+\item 
+\mbox{\hyperlink{namespacetrain__model_a82ee6920bcf4ba3038a1ad2fb0b9397a}{train\+\_\+model.\+feature\+\_\+path\+\_\+}}
+\item 
+\mbox{\hyperlink{namespacetrain__model_a070a2f766971526a95c32c5264f4dbaa}{train\+\_\+model.\+save\+\_\+path\+\_\+}} = R\+O\+O\+T\+\_\+\+P\+A\+T\+H.\+joinpath(\textquotesingle{}models\textquotesingle{})
+\item 
+\mbox{\hyperlink{namespacetrain__model_a9c865955d47b2762f8d349d6bcf5fac4}{train\+\_\+model.\+model\+\_\+name\+\_\+}} = args\mbox{[}\textquotesingle{}model\textquotesingle{}\mbox{]}
+\item 
+\mbox{\hyperlink{namespacetrain__model_ae109db1a8787787ffe9ecaecb4a45877}{train\+\_\+model.\+batch\+\_\+size}} = args\mbox{[}\textquotesingle{}batch\+\_\+size\textquotesingle{}\mbox{]}
+\item 
+\mbox{\hyperlink{namespacetrain__model_a390a3b9a867b5c38149a221f11225af9}{train\+\_\+model.\+val\+\_\+batch\+\_\+size}} = args\mbox{[}\textquotesingle{}val\+\_\+batch\+\_\+size\textquotesingle{}\mbox{]}
+\item 
+\mbox{\hyperlink{namespacetrain__model_ae34c0fd4701cd18f412deb279c8ba513}{train\+\_\+model.\+beam\+\_\+size}} = args\mbox{[}\textquotesingle{}beam\+\_\+size\textquotesingle{}\mbox{]}
+\item 
+\mbox{\hyperlink{namespacetrain__model_a250c7963fae7727675db05c424360729}{train\+\_\+model.\+epochs}} = args\mbox{[}\textquotesingle{}epochs\textquotesingle{}\mbox{]}
+\item 
+\mbox{\hyperlink{namespacetrain__model_ad369462d9f4570460b578b7380e13c31}{train\+\_\+model.\+em\+\_\+dim}} = args\mbox{[}\textquotesingle{}embedding\+\_\+size\textquotesingle{}\mbox{]}
+\item 
+\mbox{\hyperlink{namespacetrain__model_ad9bf2732dc9eaa5d3c238c8ddcb82c89}{train\+\_\+model.\+hidden\+\_\+size\+\_\+}} = args\mbox{[}\textquotesingle{}hidden\+\_\+size\textquotesingle{}\mbox{]}
+\item 
+\mbox{\hyperlink{namespacetrain__model_a0f3392f523468818302729bad9c72b14}{train\+\_\+model.\+loss\+\_\+function\+\_\+}} = args\mbox{[}\textquotesingle{}loss\+\_\+function\textquotesingle{}\mbox{]}
+\item 
+\mbox{\hyperlink{namespacetrain__model_a81a7509e6c032fb47a5d28990039557a}{train\+\_\+model.\+opt}} = args\mbox{[}\textquotesingle{}optimizer\textquotesingle{}\mbox{]}
+\item 
+\mbox{\hyperlink{namespacetrain__model_aeff6d7bb2f0b80576b10e76823ab58b7}{train\+\_\+model.\+lr\+\_\+}} = args\mbox{[}\textquotesingle{}lr\textquotesingle{}\mbox{]}
+\item 
+\mbox{\hyperlink{namespacetrain__model_aba3dc629d343efbea6cc98b22cd467fa}{train\+\_\+model.\+seed\+\_\+}} = args\mbox{[}\textquotesingle{}seed\textquotesingle{}\mbox{]}
+\item 
+\mbox{\hyperlink{namespacetrain__model_aa8ce9e42a37d57ff604cc2feba40f40b}{train\+\_\+model.\+max\+\_\+length}} = max\+\_\+length\+\_\+caption(train\+\_\+path)
+\item 
+\mbox{\hyperlink{namespacetrain__model_a427c8698963d6db09ba36ec320b8696c}{train\+\_\+model.\+image\+\_\+feature\+\_\+size}} = args\mbox{[}\textquotesingle{}image\+\_\+feature\+\_\+size\textquotesingle{}\mbox{]}
+\item 
+list \mbox{\hyperlink{namespacetrain__model_aff6f5d4ccfa825e66627ffb0178d8093}{train\+\_\+model.\+input\+\_\+shape\+\_\+}} = \mbox{[}image\+\_\+feature\+\_\+size, max\+\_\+length\mbox{]}
+\item 
+\mbox{\hyperlink{namespacetrain__model_a83229a3672788289f72784c042c4573b}{train\+\_\+model.\+generator}}
+\end{DoxyCompactItemize}

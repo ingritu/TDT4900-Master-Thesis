@@ -1,0 +1,40 @@
+\hypertarget{namespacetorch__generators}{}\doxysection{torch\+\_\+generators Namespace Reference}
+\label{namespacetorch__generators}\index{torch\_generators@{torch\_generators}}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classtorch__generators_1_1_adaptive_decoder}{Adaptive\+Decoder}}
+\item 
+class \mbox{\hyperlink{classtorch__generators_1_1_adaptive_model}{Adaptive\+Model}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{namespacetorch__generators_ac0ec8010cb02b9434a70662b2213c66c}{model\+\_\+switcher}} (model\+\_\+str)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacetorch__generators_ac0ec8010cb02b9434a70662b2213c66c}\label{namespacetorch__generators_ac0ec8010cb02b9434a70662b2213c66c}} 
+\index{torch\_generators@{torch\_generators}!model\_switcher@{model\_switcher}}
+\index{model\_switcher@{model\_switcher}!torch\_generators@{torch\_generators}}
+\doxysubsubsection{\texorpdfstring{model\_switcher()}{model\_switcher()}}
+{\footnotesize\ttfamily def torch\+\_\+generators.\+model\+\_\+switcher (\begin{DoxyParamCaption}\item[{}]{model\+\_\+str }\end{DoxyParamCaption})}
+
+
+
+Definition at line 11 of file torch\+\_\+generators.\+py.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{11 \textcolor{keyword}{def }\mbox{\hyperlink{namespacetorch__generators_ac0ec8010cb02b9434a70662b2213c66c}{model\_switcher}}(model\_str):}
+\DoxyCodeLine{12     model\_str = model\_str.lower()}
+\DoxyCodeLine{13     switcher = \{}
+\DoxyCodeLine{14         \textcolor{stringliteral}{'adaptive'}: AdaptiveModel,}
+\DoxyCodeLine{15         \textcolor{stringliteral}{'adaptive\_decoder'}: [AdaptiveDecoder, ImageEncoder]}
+\DoxyCodeLine{16     \}}
+\DoxyCodeLine{17     \textcolor{keywordflow}{return} switcher.get(model\_str, AdaptiveModel)}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 }
+
+\end{DoxyCode}

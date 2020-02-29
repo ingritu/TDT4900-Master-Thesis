@@ -1,0 +1,1178 @@
+\hypertarget{classgenerator__framework_1_1_generator}{}\doxysection{generator\+\_\+framework.\+Generator Class Reference}
+\label{classgenerator__framework_1_1_generator}\index{generator\_framework.Generator@{generator\_framework.Generator}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{classgenerator__framework_1_1_generator_ab64c5b77f8d6a7e7d0a1b5f1bc30e139}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, \mbox{\hyperlink{classgenerator__framework_1_1_generator_aa3a39cb2d05673f32d5c8d0b574d3f27}{model\+\_\+name}}, \mbox{\hyperlink{classgenerator__framework_1_1_generator_a97c277a5cb67a6b34cab4914ddfd3039}{input\+\_\+shape}}, \mbox{\hyperlink{classgenerator__framework_1_1_generator_a92f35ab68330cee26aac3684b0e8140c}{hidden\+\_\+size}}, voc\+\_\+path, \mbox{\hyperlink{classgenerator__framework_1_1_generator_ac965711739f28198a8e04c8f00bcd7c2}{feature\+\_\+path}}, \mbox{\hyperlink{classgenerator__framework_1_1_generator_ace49af445407bd87413a6318b13542ed}{save\+\_\+path}}, loss\+\_\+function=\textquotesingle{}cross\+\_\+entropy\textquotesingle{}, optimizer=\textquotesingle{}adam\textquotesingle{}, \mbox{\hyperlink{classgenerator__framework_1_1_generator_a33043bad9b3ed64472718d713e6cb03e}{lr}}=0.\+0001, \mbox{\hyperlink{classgenerator__framework_1_1_generator_a9acb4e0d1acd68c22988393517097484}{embedding\+\_\+size}}=300, seed=222)
+\item 
+def \mbox{\hyperlink{classgenerator__framework_1_1_generator_a058745c15fd446d73c5f26bc25a6694e}{compile}} (self)
+\item 
+def \mbox{\hyperlink{classgenerator__framework_1_1_generator_a37f7c37e64996b672fb4f8b90aa6ef33}{initialize\+\_\+optimizer}} (self)
+\item 
+def \mbox{\hyperlink{classgenerator__framework_1_1_generator_ab9274ef015b73ccdc764355d838fcfc3}{train}} (self, data\+\_\+path, validation\+\_\+path, ann\+\_\+path, epochs, batch\+\_\+size, early\+\_\+stopping\+\_\+freq=6, val\+\_\+batch\+\_\+size=1, beam\+\_\+size=1, validation\+\_\+metric=\textquotesingle{}C\+I\+D\+Er\textquotesingle{})
+\item 
+def \mbox{\hyperlink{classgenerator__framework_1_1_generator_aceb27420cb70446bb00d469ad091ffb8}{train\+\_\+on\+\_\+batch}} (self, x, caption\+\_\+lengths)
+\item 
+def \mbox{\hyperlink{classgenerator__framework_1_1_generator_ad39e69a7c12e17191a3261f04650bc36}{predict}} (self, data\+\_\+path, batch\+\_\+size=1, beam\+\_\+size=1)
+\item 
+def \mbox{\hyperlink{classgenerator__framework_1_1_generator_abf8e56c1ddfca17f9477d92097da9839}{beam\+\_\+search}} (self, batch, beam\+\_\+size=1)
+\item 
+def \mbox{\hyperlink{classgenerator__framework_1_1_generator_a06e103fa21c5b1117269aeabfb0dd5a5}{evaluate}} (self, data\+\_\+path, ann\+\_\+path, res\+\_\+path, eval\+\_\+path, batch\+\_\+size=1, beam\+\_\+size=1, metric=\textquotesingle{}C\+I\+D\+Er\textquotesingle{})
+\item 
+def \mbox{\hyperlink{classgenerator__framework_1_1_generator_a7e29a4f06534b5125c46090a1f921933}{load\+\_\+model}} (self, path)
+\item 
+def \mbox{\hyperlink{classgenerator__framework_1_1_generator_a9eeeba57b8a90ab1315bc1613e9e3e47}{save\+\_\+model}} (self, path)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{classgenerator__framework_1_1_generator_a6fcc0b67444e14165eef5fed29ef3b96}{post\+\_\+process\+\_\+predictions}} (predictions)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classgenerator__framework_1_1_generator_a97c277a5cb67a6b34cab4914ddfd3039}{input\+\_\+shape}}
+\item 
+\mbox{\hyperlink{classgenerator__framework_1_1_generator_a5897831cdb92d7b30faa60ed5ac2a8b1}{max\+\_\+length}}
+\item 
+\mbox{\hyperlink{classgenerator__framework_1_1_generator_a9acb4e0d1acd68c22988393517097484}{embedding\+\_\+size}}
+\item 
+\mbox{\hyperlink{classgenerator__framework_1_1_generator_a92f35ab68330cee26aac3684b0e8140c}{hidden\+\_\+size}}
+\item 
+\mbox{\hyperlink{classgenerator__framework_1_1_generator_ace49af445407bd87413a6318b13542ed}{save\+\_\+path}}
+\item 
+\mbox{\hyperlink{classgenerator__framework_1_1_generator_aa38966ce2a3649528d9aaf7a7086bded}{random\+\_\+seed}}
+\item 
+\mbox{\hyperlink{classgenerator__framework_1_1_generator_a056a9f8a3162e02bb7c8ac874eeda862}{ixtoword}}
+\item 
+\mbox{\hyperlink{classgenerator__framework_1_1_generator_a150b9cde4d959c1666813fb47393fa43}{vocab\+\_\+path}}
+\item 
+\mbox{\hyperlink{classgenerator__framework_1_1_generator_a501827024aa9fcb467662593eeead308}{vocab\+\_\+size}}
+\item 
+\mbox{\hyperlink{classgenerator__framework_1_1_generator_ac965711739f28198a8e04c8f00bcd7c2}{feature\+\_\+path}}
+\item 
+\mbox{\hyperlink{classgenerator__framework_1_1_generator_abd28ced5360b0637bd594dc437abcf81}{encoded\+\_\+features}}
+\item 
+\mbox{\hyperlink{classgenerator__framework_1_1_generator_a6208d47c1e55fceef96e7eac092e4cb9}{encoder}}
+\item 
+\mbox{\hyperlink{classgenerator__framework_1_1_generator_ac5ea8c1541002a90e9f19abeadbd2520}{decoder}}
+\item 
+\mbox{\hyperlink{classgenerator__framework_1_1_generator_addb797c1bd7dbba849fae35e85513b52}{train\+\_\+params}}
+\item 
+\mbox{\hyperlink{classgenerator__framework_1_1_generator_aa3a39cb2d05673f32d5c8d0b574d3f27}{model\+\_\+name}}
+\item 
+\mbox{\hyperlink{classgenerator__framework_1_1_generator_ade1643944d85905b727f6279e31c4d86}{loss\+\_\+string}}
+\item 
+\mbox{\hyperlink{classgenerator__framework_1_1_generator_ab0ef2e33e9121097c2c8eb4c3f4d6602}{criterion}}
+\item 
+\mbox{\hyperlink{classgenerator__framework_1_1_generator_a2fe550fdb232ca76830f1fd3bddd06a7}{optimizer\+\_\+string}}
+\item 
+\mbox{\hyperlink{classgenerator__framework_1_1_generator_afa53b48dfe8009c37fc308026c66ea37}{encoder\+\_\+optimizer}}
+\item 
+\mbox{\hyperlink{classgenerator__framework_1_1_generator_a0fddd4b6df64aa752d2527fbc359d20e}{decoder\+\_\+optimizer}}
+\item 
+\mbox{\hyperlink{classgenerator__framework_1_1_generator_a33043bad9b3ed64472718d713e6cb03e}{lr}}
+\item 
+\mbox{\hyperlink{classgenerator__framework_1_1_generator_a1288e6c1bb61bb743c458bf044cf1f6c}{framework\+\_\+name}}
+\item 
+\mbox{\hyperlink{classgenerator__framework_1_1_generator_a2ae2f47ff20de5b7595277bd243bb1e4}{device}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line 47 of file generator\+\_\+framework.\+py.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classgenerator__framework_1_1_generator_ab64c5b77f8d6a7e7d0a1b5f1bc30e139}\label{classgenerator__framework_1_1_generator_ab64c5b77f8d6a7e7d0a1b5f1bc30e139}} 
+\index{generator\_framework.Generator@{generator\_framework.Generator}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!generator\_framework.Generator@{generator\_framework.Generator}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily def generator\+\_\+framework.\+Generator.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{model\+\_\+name,  }\item[{}]{input\+\_\+shape,  }\item[{}]{hidden\+\_\+size,  }\item[{}]{voc\+\_\+path,  }\item[{}]{feature\+\_\+path,  }\item[{}]{save\+\_\+path,  }\item[{}]{loss\+\_\+function = {\ttfamily \textquotesingle{}cross\+\_\+entropy\textquotesingle{}},  }\item[{}]{optimizer = {\ttfamily \textquotesingle{}adam\textquotesingle{}},  }\item[{}]{lr = {\ttfamily 0.0001},  }\item[{}]{embedding\+\_\+size = {\ttfamily 300},  }\item[{}]{seed = {\ttfamily 222} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 49 of file generator\+\_\+framework.\+py.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{49     \textcolor{keyword}{def }\_\_init\_\_(self,}
+\DoxyCodeLine{50                  model\_name,}
+\DoxyCodeLine{51                  input\_shape,}
+\DoxyCodeLine{52                  hidden\_size,}
+\DoxyCodeLine{53                  voc\_path,}
+\DoxyCodeLine{54                  feature\_path,}
+\DoxyCodeLine{55                  save\_path,}
+\DoxyCodeLine{56                  loss\_function='cross\_entropy',}
+\DoxyCodeLine{57                  optimizer='adam',}
+\DoxyCodeLine{58                  lr=0.0001,}
+\DoxyCodeLine{59                  embedding\_size=300,}
+\DoxyCodeLine{60                  seed=222):}
+\DoxyCodeLine{61         \textcolor{comment}{\# delete if not used in this class}}
+\DoxyCodeLine{62         self.input\_shape = input\_shape}
+\DoxyCodeLine{63         self.max\_length = self.input\_shape[1]}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65         self.embedding\_size = embedding\_size}
+\DoxyCodeLine{66         self.hidden\_size = hidden\_size}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68         self.save\_path = save\_path}
+\DoxyCodeLine{69         self.random\_seed = seed}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71         self.wordtoix, self.ixtoword = \mbox{\hyperlink{namespaceutils_a01b6292fae634a5f6da3a66c96d574d6}{load\_vocabulary}}(voc\_path)}
+\DoxyCodeLine{72         self.vocab\_path = voc\_path}
+\DoxyCodeLine{73         self.vocab\_size = len(self.wordtoix)}
+\DoxyCodeLine{74         self.feature\_path = feature\_path}
+\DoxyCodeLine{75         self.encoded\_features = \mbox{\hyperlink{namespace_resnet__features_ad88130cec5722ee72d64f68b692036d1}{load\_visual\_features}}(feature\_path)}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77         \textcolor{comment}{\# initialize model as None}}
+\DoxyCodeLine{78         self.encoder = \textcolor{keywordtype}{None}}
+\DoxyCodeLine{79         self.decoder = \textcolor{keywordtype}{None}}
+\DoxyCodeLine{80         self.train\_params = 0}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82         self.model\_name = model\_name}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84         \textcolor{comment}{\# initialize loss function}}
+\DoxyCodeLine{85         self.loss\_string = loss\_function}
+\DoxyCodeLine{86         self.criterion = \mbox{\hyperlink{namespacegenerator__framework_a5baca364da101e189f3854994b076c63}{loss\_switcher}}(self.loss\_string)()}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88         \textcolor{comment}{\# set up optimizer}}
+\DoxyCodeLine{89         self.optimizer\_string = optimizer}
+\DoxyCodeLine{90         self.encoder\_optimizer = \textcolor{keywordtype}{None}  \textcolor{comment}{\# not initialized}}
+\DoxyCodeLine{91         self.decoder\_optimizer = \textcolor{keywordtype}{None}}
+\DoxyCodeLine{92         self.lr = lr}
+\DoxyCodeLine{93 }
+\DoxyCodeLine{94         \textcolor{comment}{\# misc}}
+\DoxyCodeLine{95         self.framework\_name = \textcolor{stringliteral}{'CaptionGeneratorFramework'}}
+\DoxyCodeLine{96         \textcolor{comment}{\# gpu}}
+\DoxyCodeLine{97         self.device = torch.device(\textcolor{stringliteral}{"cuda:0"}}
+\DoxyCodeLine{98                                    \textcolor{keywordflow}{if} torch.cuda.is\_available() \textcolor{keywordflow}{else} \textcolor{stringliteral}{"cpu"})}
+\DoxyCodeLine{99         print(\textcolor{stringliteral}{'Device:'}, self.device)}
+\DoxyCodeLine{100 }
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classgenerator__framework_1_1_generator_abf8e56c1ddfca17f9477d92097da9839}\label{classgenerator__framework_1_1_generator_abf8e56c1ddfca17f9477d92097da9839}} 
+\index{generator\_framework.Generator@{generator\_framework.Generator}!beam\_search@{beam\_search}}
+\index{beam\_search@{beam\_search}!generator\_framework.Generator@{generator\_framework.Generator}}
+\doxysubsubsection{\texorpdfstring{beam\_search()}{beam\_search()}}
+{\footnotesize\ttfamily def generator\+\_\+framework.\+Generator.\+beam\+\_\+search (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{batch,  }\item[{}]{beam\+\_\+size = {\ttfamily 1} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Preform the beam search algorithm on a batch of images.
+
+Parameters
+----------
+batch : list.
+    List of encoded images.
+beam_size : int.
+    Size of beam. Default is 1.
+
+Returns
+-------
+predictions : dict.
+    key: image index, value: predicted caption.
+\end{DoxyVerb}
+ 
+
+Definition at line 468 of file generator\+\_\+framework.\+py.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{468     \textcolor{keyword}{def }beam\_search(self, batch, beam\_size=1):}
+\DoxyCodeLine{469         \textcolor{stringliteral}{"""}}
+\DoxyCodeLine{470 \textcolor{stringliteral}{        Preform the beam search algorithm on a batch of images.}}
+\DoxyCodeLine{471 \textcolor{stringliteral}{}}
+\DoxyCodeLine{472 \textcolor{stringliteral}{        Parameters}}
+\DoxyCodeLine{473 \textcolor{stringliteral}{        -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{474 \textcolor{stringliteral}{        batch : list.}}
+\DoxyCodeLine{475 \textcolor{stringliteral}{            List of encoded images.}}
+\DoxyCodeLine{476 \textcolor{stringliteral}{        beam\_size : int.}}
+\DoxyCodeLine{477 \textcolor{stringliteral}{            Size of beam. Default is 1.}}
+\DoxyCodeLine{478 \textcolor{stringliteral}{}}
+\DoxyCodeLine{479 \textcolor{stringliteral}{        Returns}}
+\DoxyCodeLine{480 \textcolor{stringliteral}{        -\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{481 \textcolor{stringliteral}{        predictions : dict.}}
+\DoxyCodeLine{482 \textcolor{stringliteral}{            key: image index, value: predicted caption.}}
+\DoxyCodeLine{483 \textcolor{stringliteral}{        """}}
+\DoxyCodeLine{484         \textcolor{comment}{\# consider if it is possible to handle more than one sample at a time}}
+\DoxyCodeLine{485         \textcolor{comment}{\# for instance more images, and/or predict on the entire beam}}
+\DoxyCodeLine{486         \textcolor{comment}{\# initialization}}
+\DoxyCodeLine{487         batch\_size = len(batch)}
+\DoxyCodeLine{488         batch = torch.tensor(batch).to(self.device)}
+\DoxyCodeLine{489 }
+\DoxyCodeLine{490         global\_images, encoded\_images = self.encoder(batch)}
+\DoxyCodeLine{491 }
+\DoxyCodeLine{492         h\_t, c\_t = self.decoder.initialize\_variables(batch\_size * beam\_size)}
+\DoxyCodeLine{493 }
+\DoxyCodeLine{494         \textcolor{comment}{\# initialize beams as containing 1 caption}}
+\DoxyCodeLine{495         \textcolor{comment}{\# need beams to keep track of original indices}}
+\DoxyCodeLine{496         beams = [Beam([g\_image, enc\_image],}
+\DoxyCodeLine{497                       states=[h\_t[:, i*beam\_size: (i+1)*beam\_size],}
+\DoxyCodeLine{498                               c\_t[:, i*beam\_size: (i+1)*beam\_size]],}
+\DoxyCodeLine{499                       beam\_size=beam\_size,}
+\DoxyCodeLine{500                       input\_token=[self.wordtoix[\textcolor{stringliteral}{'startseq'}]],}
+\DoxyCodeLine{501                       eos=self.wordtoix[\textcolor{stringliteral}{'endseq'}],}
+\DoxyCodeLine{502                       max\_len=self.max\_length,}
+\DoxyCodeLine{503                       vocab\_size=self.vocab\_size,}
+\DoxyCodeLine{504                       device=self.device,}
+\DoxyCodeLine{505                       beam\_id=i)}
+\DoxyCodeLine{506                  \textcolor{keywordflow}{for} i, (g\_image, enc\_image) \textcolor{keywordflow}{in}}
+\DoxyCodeLine{507                  enumerate(zip(global\_images, encoded\_images))]}
+\DoxyCodeLine{508 }
+\DoxyCodeLine{509         working\_beams\_idx = set([i \textcolor{keywordflow}{for} i \textcolor{keywordflow}{in} range(batch\_size)])}
+\DoxyCodeLine{510 }
+\DoxyCodeLine{511         predictions = defaultdict(str)  \textcolor{comment}{\# key: batch index, val: caption}}
+\DoxyCodeLine{512 }
+\DoxyCodeLine{513         \textcolor{keywordflow}{while} \textcolor{keyword}{True}:}
+\DoxyCodeLine{514             \textcolor{comment}{\# find current batch\_size aka number of beams}}
+\DoxyCodeLine{515             \textcolor{comment}{\# counts unfinished beams}}
+\DoxyCodeLine{516             batch\_size\_t = sum(b.num\_unfinished > 0 \textcolor{keywordflow}{for} b \textcolor{keywordflow}{in} beams)}
+\DoxyCodeLine{517             \textcolor{keywordflow}{if} batch\_size\_t == 0:}
+\DoxyCodeLine{518                 \textcolor{comment}{\# all beams are done}}
+\DoxyCodeLine{519                 \textcolor{keywordflow}{break}}
+\DoxyCodeLine{520 }
+\DoxyCodeLine{521             \textcolor{comment}{\# get sequences}}
+\DoxyCodeLine{522             sequences = torch.cat([b.get\_sequences() \textcolor{keywordflow}{for} b \textcolor{keywordflow}{in} beams], dim=0)}
+\DoxyCodeLine{523             \textcolor{comment}{\# get images}}
+\DoxyCodeLine{524             global\_images = torch.cat([b.get\_global\_image() \textcolor{keywordflow}{for} b \textcolor{keywordflow}{in} beams],}
+\DoxyCodeLine{525                                       dim=0)}
+\DoxyCodeLine{526             encoded\_images = torch.cat([b.get\_encoded\_image() \textcolor{keywordflow}{for} b \textcolor{keywordflow}{in} beams],}
+\DoxyCodeLine{527                                        dim=0)}
+\DoxyCodeLine{528             images = [global\_images, encoded\_images]}
+\DoxyCodeLine{529             \textcolor{comment}{\# get states}}
+\DoxyCodeLine{530             h\_t = torch.cat([b.get\_hidden\_states() \textcolor{keywordflow}{for} b \textcolor{keywordflow}{in} beams], dim=1)}
+\DoxyCodeLine{531             c\_t = torch.cat([b.get\_cell\_states() \textcolor{keywordflow}{for} b \textcolor{keywordflow}{in} beams], dim=1)}
+\DoxyCodeLine{532 }
+\DoxyCodeLine{533             \textcolor{comment}{\# get predictions}}
+\DoxyCodeLine{534             x = [images, sequences]}
+\DoxyCodeLine{535             y\_predictions, h\_t, c\_t = self.decoder(x, (h\_t, c\_t))}
+\DoxyCodeLine{536             \textcolor{comment}{\# y\_predictions (M*N, voc\_size)}}
+\DoxyCodeLine{537             y\_predictions = torch.log\_softmax(y\_predictions, dim=1)}
+\DoxyCodeLine{538             \textcolor{comment}{\# higher log\_prob -\/-\/> higher pob}}
+\DoxyCodeLine{539 }
+\DoxyCodeLine{540             remove\_idx = set()}
+\DoxyCodeLine{541             \textcolor{keywordflow}{for} i \textcolor{keywordflow}{in} range(batch\_size):}
+\DoxyCodeLine{542                 start\_idx = i * beam\_size}
+\DoxyCodeLine{543                 \textcolor{keywordflow}{if} i \textcolor{keywordflow}{in} working\_beams\_idx:}
+\DoxyCodeLine{544                     \textcolor{comment}{\# feed right predictions to right beams}}
+\DoxyCodeLine{545                     b = beams[i]}
+\DoxyCodeLine{546                     end\_idx = start\_idx + b.num\_unfinished}
+\DoxyCodeLine{547                     preds = y\_predictions[start\_idx: end\_idx]}
+\DoxyCodeLine{548                     \textcolor{comment}{\# update beam with predictions}}
+\DoxyCodeLine{549                     b.update(preds,}
+\DoxyCodeLine{550                              h\_t[:, start\_idx: end\_idx],}
+\DoxyCodeLine{551                              c\_t[:, start\_idx: end\_idx])}
+\DoxyCodeLine{552 }
+\DoxyCodeLine{553                     \textcolor{keywordflow}{if} b.has\_best\_sequence():}
+\DoxyCodeLine{554                         \textcolor{comment}{\# add to finished predictions}}
+\DoxyCodeLine{555                         predictions[i] = \(\backslash\)}
+\DoxyCodeLine{556                             \textcolor{stringliteral}{' '}.join([self.ixtoword[w]}
+\DoxyCodeLine{557                                       \textcolor{keywordflow}{for} w \textcolor{keywordflow}{in} b.get\_best\_sequence()])}
+\DoxyCodeLine{558                         remove\_idx.add(i)}
+\DoxyCodeLine{559             \textcolor{comment}{\# remove idx of finished beams}}
+\DoxyCodeLine{560             working\_beams\_idx = set(idx \textcolor{keywordflow}{for} idx \textcolor{keywordflow}{in} working\_beams\_idx}
+\DoxyCodeLine{561                                     \textcolor{keywordflow}{if} idx \textcolor{keywordflow}{not} \textcolor{keywordflow}{in} remove\_idx)}
+\DoxyCodeLine{562 }
+\DoxyCodeLine{563         \textcolor{comment}{\# should be removed when finished}}
+\DoxyCodeLine{564         \textcolor{keyword}{assert} len(predictions) == batch\_size, \(\backslash\)}
+\DoxyCodeLine{565             \textcolor{stringliteral}{"The number of predictions does not match the number of images"}}
+\DoxyCodeLine{566         \textcolor{keywordflow}{return} predictions}
+\DoxyCodeLine{567 }
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classgenerator__framework_1_1_generator_a058745c15fd446d73c5f26bc25a6694e}\label{classgenerator__framework_1_1_generator_a058745c15fd446d73c5f26bc25a6694e}} 
+\index{generator\_framework.Generator@{generator\_framework.Generator}!compile@{compile}}
+\index{compile@{compile}!generator\_framework.Generator@{generator\_framework.Generator}}
+\doxysubsubsection{\texorpdfstring{compile()}{compile()}}
+{\footnotesize\ttfamily def generator\+\_\+framework.\+Generator.\+compile (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Builds the model.
+\end{DoxyVerb}
+ 
+
+Definition at line 101 of file generator\+\_\+framework.\+py.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{101     \textcolor{keyword}{def }compile(self):}
+\DoxyCodeLine{102         \textcolor{stringliteral}{"""}}
+\DoxyCodeLine{103 \textcolor{stringliteral}{        Builds the model.}}
+\DoxyCodeLine{104 \textcolor{stringliteral}{        """}}
+\DoxyCodeLine{105         \textcolor{comment}{\# initialize model}}
+\DoxyCodeLine{106         self.decoder, self.encoder = \mbox{\hyperlink{namespacetorch__generators_ac0ec8010cb02b9434a70662b2213c66c}{model\_switcher}}(self.model\_name)}
+\DoxyCodeLine{107         self.encoder = self.encoder(self.input\_shape[0],}
+\DoxyCodeLine{108                                     self.hidden\_size,}
+\DoxyCodeLine{109                                     self.embedding\_size)}
+\DoxyCodeLine{110         self.decoder = self.decoder(self.input\_shape,}
+\DoxyCodeLine{111                                     self.hidden\_size,}
+\DoxyCodeLine{112                                     self.vocab\_size,}
+\DoxyCodeLine{113                                     self.device,}
+\DoxyCodeLine{114                                     embedding\_size=self.embedding\_size,}
+\DoxyCodeLine{115                                     seed=self.random\_seed)}
+\DoxyCodeLine{116         print(self.encoder)}
+\DoxyCodeLine{117         print(self.decoder)}
+\DoxyCodeLine{118         self.train\_params += sum(p.numel() \textcolor{keywordflow}{for} p \textcolor{keywordflow}{in} self.decoder.parameters()}
+\DoxyCodeLine{119                                  \textcolor{keywordflow}{if} p.requires\_grad)}
+\DoxyCodeLine{120         self.train\_params += sum(p.numel() \textcolor{keywordflow}{for} p \textcolor{keywordflow}{in} self.encoder.parameters()}
+\DoxyCodeLine{121                                  \textcolor{keywordflow}{if} p.requires\_grad)}
+\DoxyCodeLine{122         self.encoder.to(self.device)}
+\DoxyCodeLine{123         self.decoder.to(self.device)}
+\DoxyCodeLine{124         print(\textcolor{stringliteral}{'Trainable Parameters:'}, self.train\_params, \textcolor{stringliteral}{'\(\backslash\)n\(\backslash\)n\(\backslash\)n\(\backslash\)n'})}
+\DoxyCodeLine{125         self.initialize\_optimizer()  \textcolor{comment}{\# initialize optimizer}}
+\DoxyCodeLine{126 }
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classgenerator__framework_1_1_generator_a06e103fa21c5b1117269aeabfb0dd5a5}\label{classgenerator__framework_1_1_generator_a06e103fa21c5b1117269aeabfb0dd5a5}} 
+\index{generator\_framework.Generator@{generator\_framework.Generator}!evaluate@{evaluate}}
+\index{evaluate@{evaluate}!generator\_framework.Generator@{generator\_framework.Generator}}
+\doxysubsubsection{\texorpdfstring{evaluate()}{evaluate()}}
+{\footnotesize\ttfamily def generator\+\_\+framework.\+Generator.\+evaluate (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{data\+\_\+path,  }\item[{}]{ann\+\_\+path,  }\item[{}]{res\+\_\+path,  }\item[{}]{eval\+\_\+path,  }\item[{}]{batch\+\_\+size = {\ttfamily 1},  }\item[{}]{beam\+\_\+size = {\ttfamily 1},  }\item[{}]{metric = {\ttfamily \textquotesingle{}CIDEr\textquotesingle{}} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Function to evaluate model on data from data_path
+using evaluation metric metric.
+
+Parameters
+----------
+data_path : Path or str.
+    Validation or test set.
+ann_path : Path or str.
+    Location of annotation file corresponding to val or test set.
+res_path : Path or str.
+    File that the results will be saved in.
+eval_path : Path or str.
+    File where all metric scores will be saved in.
+batch_size : int.
+    The number of images to perform inference on simultaneously.
+beam_size : int.
+    Size of beam.
+metric : str.
+    Automatic evaluation metric. Compatible metrics are
+    {Bleu_1, Bleu2, Bleu_3, Bleu_4, METEOR, ROUGE_L, CIDEr, SPICE}.
+
+Returns
+-------
+Automatic evaluation score.
+\end{DoxyVerb}
+ 
+
+Definition at line 568 of file generator\+\_\+framework.\+py.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{568     \textcolor{keyword}{def }evaluate(self, data\_path, ann\_path, res\_path, eval\_path, batch\_size=1,}
+\DoxyCodeLine{569                  beam\_size=1, metric='CIDEr'):}
+\DoxyCodeLine{570         \textcolor{stringliteral}{"""}}
+\DoxyCodeLine{571 \textcolor{stringliteral}{        Function to evaluate model on data from data\_path}}
+\DoxyCodeLine{572 \textcolor{stringliteral}{        using evaluation metric metric.}}
+\DoxyCodeLine{573 \textcolor{stringliteral}{}}
+\DoxyCodeLine{574 \textcolor{stringliteral}{        Parameters}}
+\DoxyCodeLine{575 \textcolor{stringliteral}{        -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{576 \textcolor{stringliteral}{        data\_path : Path or str.}}
+\DoxyCodeLine{577 \textcolor{stringliteral}{            Validation or test set.}}
+\DoxyCodeLine{578 \textcolor{stringliteral}{        ann\_path : Path or str.}}
+\DoxyCodeLine{579 \textcolor{stringliteral}{            Location of annotation file corresponding to val or test set.}}
+\DoxyCodeLine{580 \textcolor{stringliteral}{        res\_path : Path or str.}}
+\DoxyCodeLine{581 \textcolor{stringliteral}{            File that the results will be saved in.}}
+\DoxyCodeLine{582 \textcolor{stringliteral}{        eval\_path : Path or str.}}
+\DoxyCodeLine{583 \textcolor{stringliteral}{            File where all metric scores will be saved in.}}
+\DoxyCodeLine{584 \textcolor{stringliteral}{        batch\_size : int.}}
+\DoxyCodeLine{585 \textcolor{stringliteral}{            The number of images to perform inference on simultaneously.}}
+\DoxyCodeLine{586 \textcolor{stringliteral}{        beam\_size : int.}}
+\DoxyCodeLine{587 \textcolor{stringliteral}{            Size of beam.}}
+\DoxyCodeLine{588 \textcolor{stringliteral}{        metric : str.}}
+\DoxyCodeLine{589 \textcolor{stringliteral}{            Automatic evaluation metric. Compatible metrics are}}
+\DoxyCodeLine{590 \textcolor{stringliteral}{            \{Bleu\_1, Bleu2, Bleu\_3, Bleu\_4, METEOR, ROUGE\_L, CIDEr, SPICE\}.}}
+\DoxyCodeLine{591 \textcolor{stringliteral}{}}
+\DoxyCodeLine{592 \textcolor{stringliteral}{        Returns}}
+\DoxyCodeLine{593 \textcolor{stringliteral}{        -\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{594 \textcolor{stringliteral}{        Automatic evaluation score.}}
+\DoxyCodeLine{595 \textcolor{stringliteral}{        """}}
+\DoxyCodeLine{596         data\_path = Path(data\_path)}
+\DoxyCodeLine{597         ann\_path = Path(ann\_path)}
+\DoxyCodeLine{598         res\_path = Path(res\_path)}
+\DoxyCodeLine{599         eval\_path = Path(eval\_path)}
+\DoxyCodeLine{600         print(\textcolor{stringliteral}{"Evaluating model ..."})}
+\DoxyCodeLine{601         \textcolor{comment}{\# get models predictions}}
+\DoxyCodeLine{602         predictions = self.predict(data\_path,}
+\DoxyCodeLine{603                                    batch\_size=batch\_size,}
+\DoxyCodeLine{604                                    beam\_size=beam\_size)}
+\DoxyCodeLine{605         print(\textcolor{stringliteral}{"Finished predicting"})}
+\DoxyCodeLine{606         \textcolor{comment}{\# save predictions to res\_path which is .json}}
+\DoxyCodeLine{607         \textcolor{keyword}{with} open(res\_path, \textcolor{stringliteral}{'w'}) \textcolor{keyword}{as} res\_file:}
+\DoxyCodeLine{608             json.dump(predictions, res\_file)}
+\DoxyCodeLine{609 }
+\DoxyCodeLine{610         coco = COCO(\mbox{\hyperlink{namespacetrain__model_af1334e726c4782724a0e5b8f9e031e01}{str}}(ann\_path))}
+\DoxyCodeLine{611         coco\_res = coco.loadRes(\mbox{\hyperlink{namespacetrain__model_af1334e726c4782724a0e5b8f9e031e01}{str}}(res\_path))}
+\DoxyCodeLine{612         coco\_eval = COCOEvalCap(coco, coco\_res)}
+\DoxyCodeLine{613         coco\_eval.params[\textcolor{stringliteral}{'image\_id'}] = coco\_res.getImgIds()}
+\DoxyCodeLine{614         coco\_eval.evaluate()}
+\DoxyCodeLine{615 }
+\DoxyCodeLine{616         \textcolor{comment}{\# save evaluations to eval\_path which is .json}}
+\DoxyCodeLine{617         \textcolor{keyword}{with} open(eval\_path, \textcolor{stringliteral}{'w'}) \textcolor{keyword}{as} eval\_file:}
+\DoxyCodeLine{618             json.dump(coco\_eval.eval, eval\_file)}
+\DoxyCodeLine{619 }
+\DoxyCodeLine{620         \textcolor{keywordflow}{return} coco\_eval.eval[metric]}
+\DoxyCodeLine{621 }
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classgenerator__framework_1_1_generator_a37f7c37e64996b672fb4f8b90aa6ef33}\label{classgenerator__framework_1_1_generator_a37f7c37e64996b672fb4f8b90aa6ef33}} 
+\index{generator\_framework.Generator@{generator\_framework.Generator}!initialize\_optimizer@{initialize\_optimizer}}
+\index{initialize\_optimizer@{initialize\_optimizer}!generator\_framework.Generator@{generator\_framework.Generator}}
+\doxysubsubsection{\texorpdfstring{initialize\_optimizer()}{initialize\_optimizer()}}
+{\footnotesize\ttfamily def generator\+\_\+framework.\+Generator.\+initialize\+\_\+optimizer (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Initializes the optimizer.
+After this is called, optimizer will no longer be None.
+\end{DoxyVerb}
+ 
+
+Definition at line 127 of file generator\+\_\+framework.\+py.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{127     \textcolor{keyword}{def }initialize\_optimizer(self):}
+\DoxyCodeLine{128         \textcolor{stringliteral}{"""}}
+\DoxyCodeLine{129 \textcolor{stringliteral}{        Initializes the optimizer.}}
+\DoxyCodeLine{130 \textcolor{stringliteral}{        After this is called, optimizer will no longer be None.}}
+\DoxyCodeLine{131 \textcolor{stringliteral}{        """}}
+\DoxyCodeLine{132         self.encoder\_optimizer = \mbox{\hyperlink{namespacegenerator__framework_ab3a4fb1d5c10113f60082cf493dbdda8}{optimizer\_switcher}}(self.optimizer\_string)(}
+\DoxyCodeLine{133             self.encoder.parameters(), self.lr)}
+\DoxyCodeLine{134         self.decoder\_optimizer = \mbox{\hyperlink{namespacegenerator__framework_ab3a4fb1d5c10113f60082cf493dbdda8}{optimizer\_switcher}}(self.optimizer\_string)(}
+\DoxyCodeLine{135             self.decoder.parameters(), self.lr)}
+\DoxyCodeLine{136 }
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classgenerator__framework_1_1_generator_a7e29a4f06534b5125c46090a1f921933}\label{classgenerator__framework_1_1_generator_a7e29a4f06534b5125c46090a1f921933}} 
+\index{generator\_framework.Generator@{generator\_framework.Generator}!load\_model@{load\_model}}
+\index{load\_model@{load\_model}!generator\_framework.Generator@{generator\_framework.Generator}}
+\doxysubsubsection{\texorpdfstring{load\_model()}{load\_model()}}
+{\footnotesize\ttfamily def generator\+\_\+framework.\+Generator.\+load\+\_\+model (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{path }\end{DoxyParamCaption})}
+
+
+
+Definition at line 622 of file generator\+\_\+framework.\+py.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{622     \textcolor{keyword}{def }load\_model(self, path):}
+\DoxyCodeLine{623         checkpoint = torch.load(path)}
+\DoxyCodeLine{624         self.encoder = checkpoint[\textcolor{stringliteral}{'encoder'}]}
+\DoxyCodeLine{625         self.decoder = checkpoint[\textcolor{stringliteral}{'decoder'}]}
+\DoxyCodeLine{626         self.encoder\_optimizer = checkpoint[\textcolor{stringliteral}{'enc\_optimizer'}]}
+\DoxyCodeLine{627         self.decoder\_optimizer = checkpoint[\textcolor{stringliteral}{'dec\_optimizer'}]}
+\DoxyCodeLine{628         self.encoder.eval()}
+\DoxyCodeLine{629         self.decoder.eval()}
+\DoxyCodeLine{630         print(\textcolor{stringliteral}{'Loaded checkpoint at:'}, path)}
+\DoxyCodeLine{631         print(self.encoder)}
+\DoxyCodeLine{632         print(self.decoder)}
+\DoxyCodeLine{633 }
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classgenerator__framework_1_1_generator_a6fcc0b67444e14165eef5fed29ef3b96}\label{classgenerator__framework_1_1_generator_a6fcc0b67444e14165eef5fed29ef3b96}} 
+\index{generator\_framework.Generator@{generator\_framework.Generator}!post\_process\_predictions@{post\_process\_predictions}}
+\index{post\_process\_predictions@{post\_process\_predictions}!generator\_framework.Generator@{generator\_framework.Generator}}
+\doxysubsubsection{\texorpdfstring{post\_process\_predictions()}{post\_process\_predictions()}}
+{\footnotesize\ttfamily def generator\+\_\+framework.\+Generator.\+post\+\_\+process\+\_\+predictions (\begin{DoxyParamCaption}\item[{}]{predictions }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line 457 of file generator\+\_\+framework.\+py.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{457     \textcolor{keyword}{def }post\_process\_predictions(predictions):}
+\DoxyCodeLine{458         \textcolor{comment}{\# helper function, consider moving to utils}}
+\DoxyCodeLine{459         \textcolor{comment}{\# remove startseq and endseq token from sequence}}
+\DoxyCodeLine{460         processed = []}
+\DoxyCodeLine{461         \textcolor{keywordflow}{for} prediction \textcolor{keywordflow}{in} predictions.values():}
+\DoxyCodeLine{462             prediction = prediction.replace(\textcolor{stringliteral}{'startseq'}, \textcolor{stringliteral}{''})}
+\DoxyCodeLine{463             prediction = prediction.replace(\textcolor{stringliteral}{'endseq'}, \textcolor{stringliteral}{''})}
+\DoxyCodeLine{464             prediction = prediction.strip()}
+\DoxyCodeLine{465             processed.append(prediction)}
+\DoxyCodeLine{466         \textcolor{keywordflow}{return} processed}
+\DoxyCodeLine{467 }
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classgenerator__framework_1_1_generator_ad39e69a7c12e17191a3261f04650bc36}\label{classgenerator__framework_1_1_generator_ad39e69a7c12e17191a3261f04650bc36}} 
+\index{generator\_framework.Generator@{generator\_framework.Generator}!predict@{predict}}
+\index{predict@{predict}!generator\_framework.Generator@{generator\_framework.Generator}}
+\doxysubsubsection{\texorpdfstring{predict()}{predict()}}
+{\footnotesize\ttfamily def generator\+\_\+framework.\+Generator.\+predict (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{data\+\_\+path,  }\item[{}]{batch\+\_\+size = {\ttfamily 1},  }\item[{}]{beam\+\_\+size = {\ttfamily 1} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Function to make self.model make predictions given some data.
+
+Parameters
+----------
+data_path : Path or str.
+    Path to csv file containing the test set.
+batch_size : int.
+    The number of images to predict on simultaneously. Default 1.
+beam_size : int.
+    Default is 1, which is the same as doing greedy inference.
+
+Returns
+-------
+predicted_captions : list.
+    Dictionary image_name as keys and predicted captions through
+    beam search are the values.
+\end{DoxyVerb}
+ 
+
+Definition at line 389 of file generator\+\_\+framework.\+py.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{389     \textcolor{keyword}{def }predict(self, data\_path, batch\_size=1, beam\_size=1):}
+\DoxyCodeLine{390         \textcolor{stringliteral}{"""}}
+\DoxyCodeLine{391 \textcolor{stringliteral}{        Function to make self.model make predictions given some data.}}
+\DoxyCodeLine{392 \textcolor{stringliteral}{}}
+\DoxyCodeLine{393 \textcolor{stringliteral}{        Parameters}}
+\DoxyCodeLine{394 \textcolor{stringliteral}{        -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{395 \textcolor{stringliteral}{        data\_path : Path or str.}}
+\DoxyCodeLine{396 \textcolor{stringliteral}{            Path to csv file containing the test set.}}
+\DoxyCodeLine{397 \textcolor{stringliteral}{        batch\_size : int.}}
+\DoxyCodeLine{398 \textcolor{stringliteral}{            The number of images to predict on simultaneously. Default 1.}}
+\DoxyCodeLine{399 \textcolor{stringliteral}{        beam\_size : int.}}
+\DoxyCodeLine{400 \textcolor{stringliteral}{            Default is 1, which is the same as doing greedy inference.}}
+\DoxyCodeLine{401 \textcolor{stringliteral}{}}
+\DoxyCodeLine{402 \textcolor{stringliteral}{        Returns}}
+\DoxyCodeLine{403 \textcolor{stringliteral}{        -\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{404 \textcolor{stringliteral}{        predicted\_captions : list.}}
+\DoxyCodeLine{405 \textcolor{stringliteral}{            Dictionary image\_name as keys and predicted captions through}}
+\DoxyCodeLine{406 \textcolor{stringliteral}{            beam search are the values.}}
+\DoxyCodeLine{407 \textcolor{stringliteral}{        """}}
+\DoxyCodeLine{408         data\_path = Path(data\_path)}
+\DoxyCodeLine{409         self.encoder.eval()  \textcolor{comment}{\# put model in evaluation mode}}
+\DoxyCodeLine{410         self.decoder.eval()}
+\DoxyCodeLine{411 }
+\DoxyCodeLine{412         data\_df = pd.read\_csv(data\_path)}
+\DoxyCodeLine{413         data\_df = data\_df.reset\_index(drop=\textcolor{keyword}{True})}
+\DoxyCodeLine{414 }
+\DoxyCodeLine{415         predicted\_captions = []}
+\DoxyCodeLine{416 }
+\DoxyCodeLine{417         num\_images = len(data\_df)}
+\DoxyCodeLine{418         \textcolor{keywordflow}{if} batch\_size > num\_images:}
+\DoxyCodeLine{419             batch\_size = num\_images}
+\DoxyCodeLine{420         steps = \mbox{\hyperlink{namespacetrain__model_a36fe43ec1b00f331c7f374e1478b7e4d}{int}}(np.ceil(num\_images / batch\_size))}
+\DoxyCodeLine{421         prev\_batch\_idx = 0}
+\DoxyCodeLine{422         \textcolor{keywordflow}{for} i \textcolor{keywordflow}{in} range(steps):}
+\DoxyCodeLine{423             \textcolor{comment}{\# create input batch}}
+\DoxyCodeLine{424             end\_batch\_idx = min(prev\_batch\_idx + batch\_size, num\_images)}
+\DoxyCodeLine{425             batch\_df = data\_df.iloc[prev\_batch\_idx: end\_batch\_idx, :]}
+\DoxyCodeLine{426             image\_ids = batch\_df.loc[:, \textcolor{stringliteral}{'image\_id'}].to\_numpy()}
+\DoxyCodeLine{427             image\_names = batch\_df.loc[:, \textcolor{stringliteral}{'image\_name'}].to\_numpy()}
+\DoxyCodeLine{428 }
+\DoxyCodeLine{429             enc\_images = []}
+\DoxyCodeLine{430             \textcolor{keywordflow}{for} image\_id, image\_name \textcolor{keywordflow}{in} zip(image\_ids, image\_names):}
+\DoxyCodeLine{431                 \textcolor{comment}{\# get encoded features for this batch}}
+\DoxyCodeLine{432                 pred\_dict = \{}
+\DoxyCodeLine{433                     \textcolor{stringliteral}{"image\_id"}: \mbox{\hyperlink{namespacetrain__model_a36fe43ec1b00f331c7f374e1478b7e4d}{int}}(image\_id),}
+\DoxyCodeLine{434                     \textcolor{stringliteral}{"caption"}: \textcolor{stringliteral}{""}}
+\DoxyCodeLine{435                 \}}
+\DoxyCodeLine{436                 predicted\_captions.append(pred\_dict)}
+\DoxyCodeLine{437                 enc\_images.append(self.encoded\_features[image\_name])}
+\DoxyCodeLine{438 }
+\DoxyCodeLine{439             \textcolor{comment}{\# get full sentence predictions from beam\_search algorithm}}
+\DoxyCodeLine{440             predictions = self.beam\_search(enc\_images, beam\_size=beam\_size)}
+\DoxyCodeLine{441             predictions = self.post\_process\_predictions(predictions)}
+\DoxyCodeLine{442 }
+\DoxyCodeLine{443             \textcolor{comment}{\# put predictions in the right pred\_dict}}
+\DoxyCodeLine{444             counter = 0}
+\DoxyCodeLine{445             \textcolor{keywordflow}{for} idx \textcolor{keywordflow}{in} range(prev\_batch\_idx, end\_batch\_idx):}
+\DoxyCodeLine{446                 predicted\_captions[idx][\textcolor{stringliteral}{"caption"}] = predictions[counter]}
+\DoxyCodeLine{447                 counter += 1}
+\DoxyCodeLine{448 }
+\DoxyCodeLine{449             \textcolor{comment}{\# verbose}}
+\DoxyCodeLine{450             print(\textcolor{stringliteral}{'Batch step'}, i + 1)}
+\DoxyCodeLine{451             \textcolor{comment}{\# update prev\_batch\_idx}}
+\DoxyCodeLine{452             prev\_batch\_idx = end\_batch\_idx}
+\DoxyCodeLine{453 }
+\DoxyCodeLine{454         \textcolor{keywordflow}{return} predicted\_captions}
+\DoxyCodeLine{455 }
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classgenerator__framework_1_1_generator_a9eeeba57b8a90ab1315bc1613e9e3e47}\label{classgenerator__framework_1_1_generator_a9eeeba57b8a90ab1315bc1613e9e3e47}} 
+\index{generator\_framework.Generator@{generator\_framework.Generator}!save\_model@{save\_model}}
+\index{save\_model@{save\_model}!generator\_framework.Generator@{generator\_framework.Generator}}
+\doxysubsubsection{\texorpdfstring{save\_model()}{save\_model()}}
+{\footnotesize\ttfamily def generator\+\_\+framework.\+Generator.\+save\+\_\+model (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{path }\end{DoxyParamCaption})}
+
+
+
+Definition at line 634 of file generator\+\_\+framework.\+py.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{634     \textcolor{keyword}{def }save\_model(self, path):}
+\DoxyCodeLine{635         path = Path(path)}
+\DoxyCodeLine{636         \textcolor{keyword}{assert} path.is\_dir()}
+\DoxyCodeLine{637         path1 = path.joinpath(self.model\_name + \textcolor{stringliteral}{'\_decoder.pth'})}
+\DoxyCodeLine{638         torch.save(self.decoder.state\_dict(), path1)}
+\DoxyCodeLine{639         path2 = path.joinpath(self.model\_name + \textcolor{stringliteral}{'\_encoder.pth'})}
+\DoxyCodeLine{640         torch.save(self.encoder.state\_dict(), path2)}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classgenerator__framework_1_1_generator_ab9274ef015b73ccdc764355d838fcfc3}\label{classgenerator__framework_1_1_generator_ab9274ef015b73ccdc764355d838fcfc3}} 
+\index{generator\_framework.Generator@{generator\_framework.Generator}!train@{train}}
+\index{train@{train}!generator\_framework.Generator@{generator\_framework.Generator}}
+\doxysubsubsection{\texorpdfstring{train()}{train()}}
+{\footnotesize\ttfamily def generator\+\_\+framework.\+Generator.\+train (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{data\+\_\+path,  }\item[{}]{validation\+\_\+path,  }\item[{}]{ann\+\_\+path,  }\item[{}]{epochs,  }\item[{}]{batch\+\_\+size,  }\item[{}]{early\+\_\+stopping\+\_\+freq = {\ttfamily 6},  }\item[{}]{val\+\_\+batch\+\_\+size = {\ttfamily 1},  }\item[{}]{beam\+\_\+size = {\ttfamily 1},  }\item[{}]{validation\+\_\+metric = {\ttfamily \textquotesingle{}CIDEr\textquotesingle{}} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Method for training the model.
+
+Parameters
+----------
+data_path : Path or str.
+    Path to trainingset file (*.csv).
+validation_path : Path or str.
+    Path to validationset file (*.csv).
+ann_path : Path or str.
+    Path to the validation annotation file (*.json)
+epochs : int.
+    Max number of epochs to continue training the model for.
+batch_size : int.
+    Mini batch size.
+early_stopping_freq : int.
+    If no improvements over this number of epochs then stop training.
+val_batch_size : int.
+    The number of images to do inference on simultaneously.
+    Default is 1.
+beam_size : int.
+    Beam size for validation. Default is 1.
+validation_metric : str.
+    Which automatic text evaluation metric to use for validation.
+    Metrics = {'CIDEr', 'METEOR', 'SPICE', 'ROUGE_L',
+    'Bleu_1', 'Bleu_2', 'Bleu_3', 'Bleu_4'}.
+    Defualt value is 'CIDEr'.
+
+Returns
+-------
+Saves the model and checkpoints to its own folder. Then writes a log
+with all necessary information about the model and training.
+\end{DoxyVerb}
+ 
+
+Definition at line 137 of file generator\+\_\+framework.\+py.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{137     \textcolor{keyword}{def }train(self,}
+\DoxyCodeLine{138               data\_path,}
+\DoxyCodeLine{139               validation\_path,}
+\DoxyCodeLine{140               ann\_path,}
+\DoxyCodeLine{141               epochs,}
+\DoxyCodeLine{142               batch\_size,}
+\DoxyCodeLine{143               early\_stopping\_freq=6,}
+\DoxyCodeLine{144               val\_batch\_size=1,}
+\DoxyCodeLine{145               beam\_size=1,}
+\DoxyCodeLine{146               validation\_metric='CIDEr'):}
+\DoxyCodeLine{147         \textcolor{stringliteral}{"""}}
+\DoxyCodeLine{148 \textcolor{stringliteral}{        Method for training the model.}}
+\DoxyCodeLine{149 \textcolor{stringliteral}{}}
+\DoxyCodeLine{150 \textcolor{stringliteral}{        Parameters}}
+\DoxyCodeLine{151 \textcolor{stringliteral}{        -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{152 \textcolor{stringliteral}{        data\_path : Path or str.}}
+\DoxyCodeLine{153 \textcolor{stringliteral}{            Path to trainingset file (*.csv).}}
+\DoxyCodeLine{154 \textcolor{stringliteral}{        validation\_path : Path or str.}}
+\DoxyCodeLine{155 \textcolor{stringliteral}{            Path to validationset file (*.csv).}}
+\DoxyCodeLine{156 \textcolor{stringliteral}{        ann\_path : Path or str.}}
+\DoxyCodeLine{157 \textcolor{stringliteral}{            Path to the validation annotation file (*.json)}}
+\DoxyCodeLine{158 \textcolor{stringliteral}{        epochs : int.}}
+\DoxyCodeLine{159 \textcolor{stringliteral}{            Max number of epochs to continue training the model for.}}
+\DoxyCodeLine{160 \textcolor{stringliteral}{        batch\_size : int.}}
+\DoxyCodeLine{161 \textcolor{stringliteral}{            Mini batch size.}}
+\DoxyCodeLine{162 \textcolor{stringliteral}{        early\_stopping\_freq : int.}}
+\DoxyCodeLine{163 \textcolor{stringliteral}{            If no improvements over this number of epochs then stop training.}}
+\DoxyCodeLine{164 \textcolor{stringliteral}{        val\_batch\_size : int.}}
+\DoxyCodeLine{165 \textcolor{stringliteral}{            The number of images to do inference on simultaneously.}}
+\DoxyCodeLine{166 \textcolor{stringliteral}{            Default is 1.}}
+\DoxyCodeLine{167 \textcolor{stringliteral}{        beam\_size : int.}}
+\DoxyCodeLine{168 \textcolor{stringliteral}{            Beam size for validation. Default is 1.}}
+\DoxyCodeLine{169 \textcolor{stringliteral}{        validation\_metric : str.}}
+\DoxyCodeLine{170 \textcolor{stringliteral}{            Which automatic text evaluation metric to use for validation.}}
+\DoxyCodeLine{171 \textcolor{stringliteral}{            Metrics = \{'CIDEr', 'METEOR', 'SPICE', 'ROUGE\_L',}}
+\DoxyCodeLine{172 \textcolor{stringliteral}{            'Bleu\_1', 'Bleu\_2', 'Bleu\_3', 'Bleu\_4'\}.}}
+\DoxyCodeLine{173 \textcolor{stringliteral}{            Defualt value is 'CIDEr'.}}
+\DoxyCodeLine{174 \textcolor{stringliteral}{}}
+\DoxyCodeLine{175 \textcolor{stringliteral}{        Returns}}
+\DoxyCodeLine{176 \textcolor{stringliteral}{        -\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{177 \textcolor{stringliteral}{        Saves the model and checkpoints to its own folder. Then writes a log}}
+\DoxyCodeLine{178 \textcolor{stringliteral}{        with all necessary information about the model and training.}}
+\DoxyCodeLine{179 \textcolor{stringliteral}{        """}}
+\DoxyCodeLine{180         data\_path = Path(data\_path)}
+\DoxyCodeLine{181         validation\_path = Path(validation\_path)}
+\DoxyCodeLine{182         ann\_path = Path(ann\_path)}
+\DoxyCodeLine{183         train\_df = pd.read\_csv(data\_path)}
+\DoxyCodeLine{184 }
+\DoxyCodeLine{185         training\_history = \{}
+\DoxyCodeLine{186             \textcolor{stringliteral}{'encoder'}: \mbox{\hyperlink{namespacetrain__model_af1334e726c4782724a0e5b8f9e031e01}{str}}(self.encoder),}
+\DoxyCodeLine{187             \textcolor{stringliteral}{'decoder'}: \mbox{\hyperlink{namespacetrain__model_af1334e726c4782724a0e5b8f9e031e01}{str}}(self.decoder),}
+\DoxyCodeLine{188             \textcolor{stringliteral}{'trainable\_parameters'}: \mbox{\hyperlink{namespacetrain__model_af1334e726c4782724a0e5b8f9e031e01}{str}}(self.train\_params),}
+\DoxyCodeLine{189             \textcolor{stringliteral}{'lr'}: \mbox{\hyperlink{namespacetrain__model_af1334e726c4782724a0e5b8f9e031e01}{str}}(self.lr),}
+\DoxyCodeLine{190             \textcolor{stringliteral}{'optimizer'}: self.optimizer\_string,}
+\DoxyCodeLine{191             \textcolor{stringliteral}{'loss'}: self.loss\_string,}
+\DoxyCodeLine{192             \textcolor{stringliteral}{'model\_name'}: self.model\_name,}
+\DoxyCodeLine{193             \textcolor{stringliteral}{'history'}: [],}
+\DoxyCodeLine{194             \textcolor{stringliteral}{'voc\_size'}: \mbox{\hyperlink{namespacetrain__model_af1334e726c4782724a0e5b8f9e031e01}{str}}(self.vocab\_size),}
+\DoxyCodeLine{195             \textcolor{stringliteral}{'voc\_path'}: \mbox{\hyperlink{namespacetrain__model_af1334e726c4782724a0e5b8f9e031e01}{str}}(self.vocab\_path),}
+\DoxyCodeLine{196             \textcolor{stringliteral}{'feature\_path'}: \mbox{\hyperlink{namespacetrain__model_af1334e726c4782724a0e5b8f9e031e01}{str}}(self.feature\_path),}
+\DoxyCodeLine{197             \textcolor{stringliteral}{'train\_path'}: \mbox{\hyperlink{namespacetrain__model_af1334e726c4782724a0e5b8f9e031e01}{str}}(data\_path),}
+\DoxyCodeLine{198             \textcolor{stringliteral}{'epochs'}: \mbox{\hyperlink{namespacetrain__model_af1334e726c4782724a0e5b8f9e031e01}{str}}(epochs),}
+\DoxyCodeLine{199             \textcolor{stringliteral}{'batch\_size'}: \mbox{\hyperlink{namespacetrain__model_af1334e726c4782724a0e5b8f9e031e01}{str}}(batch\_size),}
+\DoxyCodeLine{200             \textcolor{stringliteral}{'training\_time'}: \mbox{\hyperlink{namespacetrain__model_af1334e726c4782724a0e5b8f9e031e01}{str}}(0),}
+\DoxyCodeLine{201             \textcolor{stringliteral}{'model\_save\_path'}: \textcolor{stringliteral}{''}}
+\DoxyCodeLine{202         \}}
+\DoxyCodeLine{203 }
+\DoxyCodeLine{204         steps\_per\_epoch = len(train\_df) // batch\_size}
+\DoxyCodeLine{205 }
+\DoxyCodeLine{206         train\_generator = \mbox{\hyperlink{namespacedata__generator}{data\_generator}}(train\_df, batch\_size,}
+\DoxyCodeLine{207                                          steps\_per\_epoch,}
+\DoxyCodeLine{208                                          self.wordtoix,}
+\DoxyCodeLine{209                                          self.encoded\_features,}
+\DoxyCodeLine{210                                          seed=self.random\_seed)}
+\DoxyCodeLine{211 }
+\DoxyCodeLine{212         start\_time = time()}
+\DoxyCodeLine{213 }
+\DoxyCodeLine{214         date\_time\_obj = datetime.now()}
+\DoxyCodeLine{215         timestamp\_str = date\_time\_obj.strftime(\textcolor{stringliteral}{"\%d-\/\%b-\/\%Y\_(\%H:\%M:\%S)"})}
+\DoxyCodeLine{216         directory = self.save\_path.joinpath(self.model\_name + \textcolor{stringliteral}{'\_'}}
+\DoxyCodeLine{217                                             + timestamp\_str)}
+\DoxyCodeLine{218         \textcolor{comment}{\# check that directory is a Directory if not make it one}}
+\DoxyCodeLine{219         \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} directory.is\_dir():}
+\DoxyCodeLine{220             directory.mkdir()}
+\DoxyCodeLine{221 }
+\DoxyCodeLine{222         best\_val\_score = -\/1  \textcolor{comment}{\# all metric give positive scores}}
+\DoxyCodeLine{223         best\_path = \textcolor{keywordtype}{None}}
+\DoxyCodeLine{224         epochs\_since\_improvement = 0}
+\DoxyCodeLine{225 }
+\DoxyCodeLine{226         \textcolor{keywordflow}{for} e \textcolor{keywordflow}{in} range(1, epochs + 1):}
+\DoxyCodeLine{227             \textcolor{comment}{\# early stopping}}
+\DoxyCodeLine{228             \textcolor{keywordflow}{if} epochs\_since\_improvement == early\_stopping\_freq:}
+\DoxyCodeLine{229                 print(\textcolor{stringliteral}{'Training TERMINATED!\(\backslash\)nNo Improvements for '}}
+\DoxyCodeLine{230                       + \mbox{\hyperlink{namespacetrain__model_af1334e726c4782724a0e5b8f9e031e01}{str}}(early\_stopping\_freq) + \textcolor{stringliteral}{' epochs.'})}
+\DoxyCodeLine{231                 \textcolor{keywordflow}{break}}
+\DoxyCodeLine{232 }
+\DoxyCodeLine{233             self.encoder.train()  \textcolor{comment}{\# put model in train mode}}
+\DoxyCodeLine{234             self.decoder.train()}
+\DoxyCodeLine{235 }
+\DoxyCodeLine{236             print(\textcolor{stringliteral}{'Epoch: \#'} + \mbox{\hyperlink{namespacetrain__model_af1334e726c4782724a0e5b8f9e031e01}{str}}(e))}
+\DoxyCodeLine{237             batch\_history = []}
+\DoxyCodeLine{238             \textcolor{keywordflow}{for} s \textcolor{keywordflow}{in} range(1, steps\_per\_epoch + 1):}
+\DoxyCodeLine{239                 print(\textcolor{stringliteral}{'Step: \#'} + \mbox{\hyperlink{namespacetrain__model_af1334e726c4782724a0e5b8f9e031e01}{str}}(s) + \textcolor{stringliteral}{'/'} + \mbox{\hyperlink{namespacetrain__model_af1334e726c4782724a0e5b8f9e031e01}{str}}(steps\_per\_epoch))}
+\DoxyCodeLine{240                 \textcolor{comment}{\# zero the gradient buffers}}
+\DoxyCodeLine{241                 self.encoder\_optimizer.zero\_grad()}
+\DoxyCodeLine{242                 self.decoder\_optimizer.zero\_grad()}
+\DoxyCodeLine{243 }
+\DoxyCodeLine{244                 \textcolor{comment}{\# get minibatch from data generator}}
+\DoxyCodeLine{245                 x, caption\_lengths = next(train\_generator)}
+\DoxyCodeLine{246 }
+\DoxyCodeLine{247                 loss\_num = self.train\_on\_batch(x, caption\_lengths)}
+\DoxyCodeLine{248                 batch\_history.append(loss\_num)}
+\DoxyCodeLine{249 }
+\DoxyCodeLine{250             \textcolor{comment}{\# add the mean loss of the epoch to the training history}}
+\DoxyCodeLine{251             training\_history[\textcolor{stringliteral}{'history'}].append(np.mean(}
+\DoxyCodeLine{252                 np.array(batch\_history)))}
+\DoxyCodeLine{253 }
+\DoxyCodeLine{254             \textcolor{comment}{\# validation here}}
+\DoxyCodeLine{255             \textcolor{comment}{\# consider just overwriting the same file}}
+\DoxyCodeLine{256             eval\_path = directory.joinpath(\textcolor{stringliteral}{'captions\_eval\_'} + \mbox{\hyperlink{namespacetrain__model_af1334e726c4782724a0e5b8f9e031e01}{str}}(e) + \textcolor{stringliteral}{'.json'})}
+\DoxyCodeLine{257             res\_path = directory.joinpath(\textcolor{stringliteral}{'captions\_result\_'} + \mbox{\hyperlink{namespacetrain__model_af1334e726c4782724a0e5b8f9e031e01}{str}}(e)}
+\DoxyCodeLine{258                                           + \textcolor{stringliteral}{'.json'})}
+\DoxyCodeLine{259             metric\_score = self.evaluate(validation\_path,}
+\DoxyCodeLine{260                                          ann\_path,}
+\DoxyCodeLine{261                                          res\_path,}
+\DoxyCodeLine{262                                          eval\_path,}
+\DoxyCodeLine{263                                          batch\_size=val\_batch\_size,}
+\DoxyCodeLine{264                                          beam\_size=beam\_size,}
+\DoxyCodeLine{265                                          metric=validation\_metric)}
+\DoxyCodeLine{266             \textcolor{comment}{\# save model checkpoint}}
+\DoxyCodeLine{267             is\_best = metric\_score > best\_val\_score}
+\DoxyCodeLine{268             best\_val\_score = max(metric\_score, best\_val\_score)}
+\DoxyCodeLine{269             tmp\_model\_path = \mbox{\hyperlink{namespaceutils_a6f4aeed7680156c2eb29e98e9ea4840f}{save\_checkpoint}}(directory,}
+\DoxyCodeLine{270                                              epoch=e,}
+\DoxyCodeLine{271                                              epochs\_since\_improvement=}
+\DoxyCodeLine{272                                              epochs\_since\_improvement,}
+\DoxyCodeLine{273                                              encoder=self.encoder,}
+\DoxyCodeLine{274                                              decoder=self.decoder,}
+\DoxyCodeLine{275                                              enc\_optimizer=}
+\DoxyCodeLine{276                                              self.encoder\_optimizer,}
+\DoxyCodeLine{277                                              dec\_optimizer=}
+\DoxyCodeLine{278                                              self.decoder\_optimizer,}
+\DoxyCodeLine{279                                              cider=metric\_score,}
+\DoxyCodeLine{280                                              is\_best=is\_best)}
+\DoxyCodeLine{281             \textcolor{keywordflow}{if} tmp\_model\_path:}
+\DoxyCodeLine{282                 best\_path = tmp\_model\_path}
+\DoxyCodeLine{283 }
+\DoxyCodeLine{284             \textcolor{keywordflow}{if} is\_best:}
+\DoxyCodeLine{285                 epochs\_since\_improvement = 0}
+\DoxyCodeLine{286             \textcolor{keywordflow}{else}:}
+\DoxyCodeLine{287                 epochs\_since\_improvement += 1}
+\DoxyCodeLine{288 }
+\DoxyCodeLine{289         \textcolor{comment}{\# end of training}}
+\DoxyCodeLine{290         training\_time = timedelta(seconds=\mbox{\hyperlink{namespacetrain__model_a36fe43ec1b00f331c7f374e1478b7e4d}{int}}(time() -\/ start\_time))  \textcolor{comment}{\# seconds}}
+\DoxyCodeLine{291         d = datetime(1, 1, 1) + training\_time}
+\DoxyCodeLine{292         training\_time = \textcolor{stringliteral}{"\%d:\%d:\%d:\%d"} \% (d.day-\/1, d.hour, d.minute, d.second)}
+\DoxyCodeLine{293         training\_history[\textcolor{stringliteral}{'training\_time'}] = \mbox{\hyperlink{namespacetrain__model_af1334e726c4782724a0e5b8f9e031e01}{str}}(training\_time)}
+\DoxyCodeLine{294         training\_history[\textcolor{stringliteral}{'model\_save\_path'}] = \mbox{\hyperlink{namespacetrain__model_af1334e726c4782724a0e5b8f9e031e01}{str}}(best\_path)}
+\DoxyCodeLine{295         train\_path = directory.joinpath(self.model\_name + \textcolor{stringliteral}{'\_log.txt'})}
+\DoxyCodeLine{296         \textcolor{comment}{\# save model to file}}
+\DoxyCodeLine{297         self.save\_model(directory)}
+\DoxyCodeLine{298         \textcolor{comment}{\# save log to file}}
+\DoxyCodeLine{299         \mbox{\hyperlink{namespaceutils_a3a5ab90c7571b59ba9756fad6c06bbea}{save\_training\_log}}(train\_path, training\_history)}
+\DoxyCodeLine{300 }
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classgenerator__framework_1_1_generator_aceb27420cb70446bb00d469ad091ffb8}\label{classgenerator__framework_1_1_generator_aceb27420cb70446bb00d469ad091ffb8}} 
+\index{generator\_framework.Generator@{generator\_framework.Generator}!train\_on\_batch@{train\_on\_batch}}
+\index{train\_on\_batch@{train\_on\_batch}!generator\_framework.Generator@{generator\_framework.Generator}}
+\doxysubsubsection{\texorpdfstring{train\_on\_batch()}{train\_on\_batch()}}
+{\footnotesize\ttfamily def generator\+\_\+framework.\+Generator.\+train\+\_\+on\+\_\+batch (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{x,  }\item[{}]{caption\+\_\+lengths }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Parameters
+----------
+x : list.
+    batch of images and captions.
+target : tensor.
+
+caption_lengths
+
+Returns
+-------\end{DoxyVerb}
+ 
+
+Definition at line 301 of file generator\+\_\+framework.\+py.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{301     \textcolor{keyword}{def }train\_on\_batch(self, x, caption\_lengths):}
+\DoxyCodeLine{302         \textcolor{stringliteral}{"""}}
+\DoxyCodeLine{303 \textcolor{stringliteral}{}}
+\DoxyCodeLine{304 \textcolor{stringliteral}{        Parameters}}
+\DoxyCodeLine{305 \textcolor{stringliteral}{        -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{306 \textcolor{stringliteral}{        x : list.}}
+\DoxyCodeLine{307 \textcolor{stringliteral}{            batch of images and captions.}}
+\DoxyCodeLine{308 \textcolor{stringliteral}{        target : tensor.}}
+\DoxyCodeLine{309 \textcolor{stringliteral}{}}
+\DoxyCodeLine{310 \textcolor{stringliteral}{        caption\_lengths}}
+\DoxyCodeLine{311 \textcolor{stringliteral}{}}
+\DoxyCodeLine{312 \textcolor{stringliteral}{        Returns}}
+\DoxyCodeLine{313 \textcolor{stringliteral}{        -\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{314 \textcolor{stringliteral}{}}
+\DoxyCodeLine{315 \textcolor{stringliteral}{        """}}
+\DoxyCodeLine{316         \textcolor{comment}{\# unpack batch}}
+\DoxyCodeLine{317         input\_img, input\_w = x}
+\DoxyCodeLine{318         \textcolor{comment}{\# move to device}}
+\DoxyCodeLine{319         input\_img = input\_img.to(self.device)}
+\DoxyCodeLine{320         input\_w = input\_w.to(self.device)}
+\DoxyCodeLine{321 }
+\DoxyCodeLine{322         \textcolor{comment}{\# encode images}}
+\DoxyCodeLine{323         global\_images, enc\_images = self.encoder(input\_img)}
+\DoxyCodeLine{324         \textcolor{comment}{\# (batch\_size, embedding\_size) (batch, 512) global\_images}}
+\DoxyCodeLine{325         \textcolor{comment}{\# (batch\_size, region\_size, hidden\_size) (batch, 64, 512) encoded\_imgs}}
+\DoxyCodeLine{326 }
+\DoxyCodeLine{327         \textcolor{comment}{\# sort batches by caption length descending, this way the whole}}
+\DoxyCodeLine{328         \textcolor{comment}{\# batch\_size\_t will be correct}}
+\DoxyCodeLine{329         \textcolor{comment}{\# convert to tensor}}
+\DoxyCodeLine{330         caption\_lengths = torch.from\_numpy(caption\_lengths)}
+\DoxyCodeLine{331         caption\_lengths, sort\_idx = caption\_lengths.sort(dim=0,}
+\DoxyCodeLine{332                                                          descending=\textcolor{keyword}{True})}
+\DoxyCodeLine{333         input\_w = input\_w[sort\_idx]  \textcolor{comment}{\# (batch\_size, max\_len)}}
+\DoxyCodeLine{334         global\_images = global\_images[sort\_idx]  \textcolor{comment}{\# (batch\_size, embedding\_size)}}
+\DoxyCodeLine{335         enc\_images = enc\_images[sort\_idx]  \textcolor{comment}{\# (batch\_size, 64, 1536)}}
+\DoxyCodeLine{336 }
+\DoxyCodeLine{337         target = input\_w[:, 1:]  \textcolor{comment}{\# sorted targets}}
+\DoxyCodeLine{338         target = target.to(self.device)}
+\DoxyCodeLine{339 }
+\DoxyCodeLine{340         batch\_size = enc\_images.size()[0]}
+\DoxyCodeLine{341 }
+\DoxyCodeLine{342         \textcolor{comment}{\# we do not want to predict the last endseq token}}
+\DoxyCodeLine{343         decoding\_lengths = np.copy(caption\_lengths)}
+\DoxyCodeLine{344         decoding\_lengths = (decoding\_lengths -\/ 1)}
+\DoxyCodeLine{345         max\_batch\_length = max(decoding\_lengths)}
+\DoxyCodeLine{346 }
+\DoxyCodeLine{347         predictions = torch.zeros(batch\_size,}
+\DoxyCodeLine{348                                   self.max\_length,}
+\DoxyCodeLine{349                                   self.vocab\_size)}
+\DoxyCodeLine{350 }
+\DoxyCodeLine{351         h\_t, c\_t = self.decoder.initialize\_variables(batch\_size)}
+\DoxyCodeLine{352 }
+\DoxyCodeLine{353         \textcolor{keywordflow}{for} timestep \textcolor{keywordflow}{in} range(max\_batch\_length):}
+\DoxyCodeLine{354             batch\_size\_t = sum([lens > timestep \textcolor{keywordflow}{for} lens \textcolor{keywordflow}{in} decoding\_lengths])}
+\DoxyCodeLine{355             \textcolor{comment}{\# x: [input\_img, input\_w]}}
+\DoxyCodeLine{356             \textcolor{comment}{\# input\_img: [global\_image, encoded\_image]}}
+\DoxyCodeLine{357             \textcolor{comment}{\# image features does not vary over time}}
+\DoxyCodeLine{358             input\_image\_t = [global\_images[:batch\_size\_t],}
+\DoxyCodeLine{359                              enc\_images[:batch\_size\_t]]}
+\DoxyCodeLine{360             x\_t = [input\_image\_t, input\_w[:batch\_size\_t, timestep]]}
+\DoxyCodeLine{361 }
+\DoxyCodeLine{362             pt, h\_t, c\_t = self.decoder(x\_t,}
+\DoxyCodeLine{363                                         (h\_t[:, :batch\_size\_t],}
+\DoxyCodeLine{364                                          c\_t[:, :batch\_size\_t]))}
+\DoxyCodeLine{365             predictions[:batch\_size\_t, timestep, :] = pt}
+\DoxyCodeLine{366 }
+\DoxyCodeLine{367         \textcolor{comment}{\# loop finished}}
+\DoxyCodeLine{368         \textcolor{comment}{\# pack padded sequences}}
+\DoxyCodeLine{369         output = pack\_padded\_sequence(predictions,}
+\DoxyCodeLine{370                                       decoding\_lengths,}
+\DoxyCodeLine{371                                       batch\_first=\textcolor{keyword}{True})[0]}
+\DoxyCodeLine{372         target = pack\_padded\_sequence(target,}
+\DoxyCodeLine{373                                       decoding\_lengths,}
+\DoxyCodeLine{374                                       batch\_first=\textcolor{keyword}{True})[0]}
+\DoxyCodeLine{375 }
+\DoxyCodeLine{376         \textcolor{comment}{\# get loss}}
+\DoxyCodeLine{377         loss = self.criterion(output, target)}
+\DoxyCodeLine{378         loss\_num = loss.item()}
+\DoxyCodeLine{379         print(\textcolor{stringliteral}{'loss'}, \textcolor{stringliteral}{'('} + self.optimizer\_string + \textcolor{stringliteral}{'):'}, loss\_num)}
+\DoxyCodeLine{380 }
+\DoxyCodeLine{381         \textcolor{comment}{\# backpropagate}}
+\DoxyCodeLine{382         loss.backward()}
+\DoxyCodeLine{383         \textcolor{comment}{\# update weights}}
+\DoxyCodeLine{384         self.encoder\_optimizer.step()}
+\DoxyCodeLine{385         self.decoder\_optimizer.step()}
+\DoxyCodeLine{386 }
+\DoxyCodeLine{387         \textcolor{keywordflow}{return} loss\_num}
+\DoxyCodeLine{388 }
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classgenerator__framework_1_1_generator_ab0ef2e33e9121097c2c8eb4c3f4d6602}\label{classgenerator__framework_1_1_generator_ab0ef2e33e9121097c2c8eb4c3f4d6602}} 
+\index{generator\_framework.Generator@{generator\_framework.Generator}!criterion@{criterion}}
+\index{criterion@{criterion}!generator\_framework.Generator@{generator\_framework.Generator}}
+\doxysubsubsection{\texorpdfstring{criterion}{criterion}}
+{\footnotesize\ttfamily generator\+\_\+framework.\+Generator.\+criterion}
+
+
+
+Definition at line 75 of file generator\+\_\+framework.\+py.
+
+\mbox{\Hypertarget{classgenerator__framework_1_1_generator_ac5ea8c1541002a90e9f19abeadbd2520}\label{classgenerator__framework_1_1_generator_ac5ea8c1541002a90e9f19abeadbd2520}} 
+\index{generator\_framework.Generator@{generator\_framework.Generator}!decoder@{decoder}}
+\index{decoder@{decoder}!generator\_framework.Generator@{generator\_framework.Generator}}
+\doxysubsubsection{\texorpdfstring{decoder}{decoder}}
+{\footnotesize\ttfamily generator\+\_\+framework.\+Generator.\+decoder}
+
+
+
+Definition at line 68 of file generator\+\_\+framework.\+py.
+
+\mbox{\Hypertarget{classgenerator__framework_1_1_generator_a0fddd4b6df64aa752d2527fbc359d20e}\label{classgenerator__framework_1_1_generator_a0fddd4b6df64aa752d2527fbc359d20e}} 
+\index{generator\_framework.Generator@{generator\_framework.Generator}!decoder\_optimizer@{decoder\_optimizer}}
+\index{decoder\_optimizer@{decoder\_optimizer}!generator\_framework.Generator@{generator\_framework.Generator}}
+\doxysubsubsection{\texorpdfstring{decoder\_optimizer}{decoder\_optimizer}}
+{\footnotesize\ttfamily generator\+\_\+framework.\+Generator.\+decoder\+\_\+optimizer}
+
+
+
+Definition at line 80 of file generator\+\_\+framework.\+py.
+
+\mbox{\Hypertarget{classgenerator__framework_1_1_generator_a2ae2f47ff20de5b7595277bd243bb1e4}\label{classgenerator__framework_1_1_generator_a2ae2f47ff20de5b7595277bd243bb1e4}} 
+\index{generator\_framework.Generator@{generator\_framework.Generator}!device@{device}}
+\index{device@{device}!generator\_framework.Generator@{generator\_framework.Generator}}
+\doxysubsubsection{\texorpdfstring{device}{device}}
+{\footnotesize\ttfamily generator\+\_\+framework.\+Generator.\+device}
+
+
+
+Definition at line 86 of file generator\+\_\+framework.\+py.
+
+\mbox{\Hypertarget{classgenerator__framework_1_1_generator_a9acb4e0d1acd68c22988393517097484}\label{classgenerator__framework_1_1_generator_a9acb4e0d1acd68c22988393517097484}} 
+\index{generator\_framework.Generator@{generator\_framework.Generator}!embedding\_size@{embedding\_size}}
+\index{embedding\_size@{embedding\_size}!generator\_framework.Generator@{generator\_framework.Generator}}
+\doxysubsubsection{\texorpdfstring{embedding\_size}{embedding\_size}}
+{\footnotesize\ttfamily generator\+\_\+framework.\+Generator.\+embedding\+\_\+size}
+
+
+
+Definition at line 54 of file generator\+\_\+framework.\+py.
+
+\mbox{\Hypertarget{classgenerator__framework_1_1_generator_abd28ced5360b0637bd594dc437abcf81}\label{classgenerator__framework_1_1_generator_abd28ced5360b0637bd594dc437abcf81}} 
+\index{generator\_framework.Generator@{generator\_framework.Generator}!encoded\_features@{encoded\_features}}
+\index{encoded\_features@{encoded\_features}!generator\_framework.Generator@{generator\_framework.Generator}}
+\doxysubsubsection{\texorpdfstring{encoded\_features}{encoded\_features}}
+{\footnotesize\ttfamily generator\+\_\+framework.\+Generator.\+encoded\+\_\+features}
+
+
+
+Definition at line 64 of file generator\+\_\+framework.\+py.
+
+\mbox{\Hypertarget{classgenerator__framework_1_1_generator_a6208d47c1e55fceef96e7eac092e4cb9}\label{classgenerator__framework_1_1_generator_a6208d47c1e55fceef96e7eac092e4cb9}} 
+\index{generator\_framework.Generator@{generator\_framework.Generator}!encoder@{encoder}}
+\index{encoder@{encoder}!generator\_framework.Generator@{generator\_framework.Generator}}
+\doxysubsubsection{\texorpdfstring{encoder}{encoder}}
+{\footnotesize\ttfamily generator\+\_\+framework.\+Generator.\+encoder}
+
+
+
+Definition at line 67 of file generator\+\_\+framework.\+py.
+
+\mbox{\Hypertarget{classgenerator__framework_1_1_generator_afa53b48dfe8009c37fc308026c66ea37}\label{classgenerator__framework_1_1_generator_afa53b48dfe8009c37fc308026c66ea37}} 
+\index{generator\_framework.Generator@{generator\_framework.Generator}!encoder\_optimizer@{encoder\_optimizer}}
+\index{encoder\_optimizer@{encoder\_optimizer}!generator\_framework.Generator@{generator\_framework.Generator}}
+\doxysubsubsection{\texorpdfstring{encoder\_optimizer}{encoder\_optimizer}}
+{\footnotesize\ttfamily generator\+\_\+framework.\+Generator.\+encoder\+\_\+optimizer}
+
+
+
+Definition at line 79 of file generator\+\_\+framework.\+py.
+
+\mbox{\Hypertarget{classgenerator__framework_1_1_generator_ac965711739f28198a8e04c8f00bcd7c2}\label{classgenerator__framework_1_1_generator_ac965711739f28198a8e04c8f00bcd7c2}} 
+\index{generator\_framework.Generator@{generator\_framework.Generator}!feature\_path@{feature\_path}}
+\index{feature\_path@{feature\_path}!generator\_framework.Generator@{generator\_framework.Generator}}
+\doxysubsubsection{\texorpdfstring{feature\_path}{feature\_path}}
+{\footnotesize\ttfamily generator\+\_\+framework.\+Generator.\+feature\+\_\+path}
+
+
+
+Definition at line 63 of file generator\+\_\+framework.\+py.
+
+\mbox{\Hypertarget{classgenerator__framework_1_1_generator_a1288e6c1bb61bb743c458bf044cf1f6c}\label{classgenerator__framework_1_1_generator_a1288e6c1bb61bb743c458bf044cf1f6c}} 
+\index{generator\_framework.Generator@{generator\_framework.Generator}!framework\_name@{framework\_name}}
+\index{framework\_name@{framework\_name}!generator\_framework.Generator@{generator\_framework.Generator}}
+\doxysubsubsection{\texorpdfstring{framework\_name}{framework\_name}}
+{\footnotesize\ttfamily generator\+\_\+framework.\+Generator.\+framework\+\_\+name}
+
+
+
+Definition at line 84 of file generator\+\_\+framework.\+py.
+
+\mbox{\Hypertarget{classgenerator__framework_1_1_generator_a92f35ab68330cee26aac3684b0e8140c}\label{classgenerator__framework_1_1_generator_a92f35ab68330cee26aac3684b0e8140c}} 
+\index{generator\_framework.Generator@{generator\_framework.Generator}!hidden\_size@{hidden\_size}}
+\index{hidden\_size@{hidden\_size}!generator\_framework.Generator@{generator\_framework.Generator}}
+\doxysubsubsection{\texorpdfstring{hidden\_size}{hidden\_size}}
+{\footnotesize\ttfamily generator\+\_\+framework.\+Generator.\+hidden\+\_\+size}
+
+
+
+Definition at line 55 of file generator\+\_\+framework.\+py.
+
+\mbox{\Hypertarget{classgenerator__framework_1_1_generator_a97c277a5cb67a6b34cab4914ddfd3039}\label{classgenerator__framework_1_1_generator_a97c277a5cb67a6b34cab4914ddfd3039}} 
+\index{generator\_framework.Generator@{generator\_framework.Generator}!input\_shape@{input\_shape}}
+\index{input\_shape@{input\_shape}!generator\_framework.Generator@{generator\_framework.Generator}}
+\doxysubsubsection{\texorpdfstring{input\_shape}{input\_shape}}
+{\footnotesize\ttfamily generator\+\_\+framework.\+Generator.\+input\+\_\+shape}
+
+
+
+Definition at line 51 of file generator\+\_\+framework.\+py.
+
+\mbox{\Hypertarget{classgenerator__framework_1_1_generator_a056a9f8a3162e02bb7c8ac874eeda862}\label{classgenerator__framework_1_1_generator_a056a9f8a3162e02bb7c8ac874eeda862}} 
+\index{generator\_framework.Generator@{generator\_framework.Generator}!ixtoword@{ixtoword}}
+\index{ixtoword@{ixtoword}!generator\_framework.Generator@{generator\_framework.Generator}}
+\doxysubsubsection{\texorpdfstring{ixtoword}{ixtoword}}
+{\footnotesize\ttfamily generator\+\_\+framework.\+Generator.\+ixtoword}
+
+
+
+Definition at line 60 of file generator\+\_\+framework.\+py.
+
+\mbox{\Hypertarget{classgenerator__framework_1_1_generator_ade1643944d85905b727f6279e31c4d86}\label{classgenerator__framework_1_1_generator_ade1643944d85905b727f6279e31c4d86}} 
+\index{generator\_framework.Generator@{generator\_framework.Generator}!loss\_string@{loss\_string}}
+\index{loss\_string@{loss\_string}!generator\_framework.Generator@{generator\_framework.Generator}}
+\doxysubsubsection{\texorpdfstring{loss\_string}{loss\_string}}
+{\footnotesize\ttfamily generator\+\_\+framework.\+Generator.\+loss\+\_\+string}
+
+
+
+Definition at line 74 of file generator\+\_\+framework.\+py.
+
+\mbox{\Hypertarget{classgenerator__framework_1_1_generator_a33043bad9b3ed64472718d713e6cb03e}\label{classgenerator__framework_1_1_generator_a33043bad9b3ed64472718d713e6cb03e}} 
+\index{generator\_framework.Generator@{generator\_framework.Generator}!lr@{lr}}
+\index{lr@{lr}!generator\_framework.Generator@{generator\_framework.Generator}}
+\doxysubsubsection{\texorpdfstring{lr}{lr}}
+{\footnotesize\ttfamily generator\+\_\+framework.\+Generator.\+lr}
+
+
+
+Definition at line 81 of file generator\+\_\+framework.\+py.
+
+\mbox{\Hypertarget{classgenerator__framework_1_1_generator_a5897831cdb92d7b30faa60ed5ac2a8b1}\label{classgenerator__framework_1_1_generator_a5897831cdb92d7b30faa60ed5ac2a8b1}} 
+\index{generator\_framework.Generator@{generator\_framework.Generator}!max\_length@{max\_length}}
+\index{max\_length@{max\_length}!generator\_framework.Generator@{generator\_framework.Generator}}
+\doxysubsubsection{\texorpdfstring{max\_length}{max\_length}}
+{\footnotesize\ttfamily generator\+\_\+framework.\+Generator.\+max\+\_\+length}
+
+
+
+Definition at line 52 of file generator\+\_\+framework.\+py.
+
+\mbox{\Hypertarget{classgenerator__framework_1_1_generator_aa3a39cb2d05673f32d5c8d0b574d3f27}\label{classgenerator__framework_1_1_generator_aa3a39cb2d05673f32d5c8d0b574d3f27}} 
+\index{generator\_framework.Generator@{generator\_framework.Generator}!model\_name@{model\_name}}
+\index{model\_name@{model\_name}!generator\_framework.Generator@{generator\_framework.Generator}}
+\doxysubsubsection{\texorpdfstring{model\_name}{model\_name}}
+{\footnotesize\ttfamily generator\+\_\+framework.\+Generator.\+model\+\_\+name}
+
+
+
+Definition at line 71 of file generator\+\_\+framework.\+py.
+
+\mbox{\Hypertarget{classgenerator__framework_1_1_generator_a2fe550fdb232ca76830f1fd3bddd06a7}\label{classgenerator__framework_1_1_generator_a2fe550fdb232ca76830f1fd3bddd06a7}} 
+\index{generator\_framework.Generator@{generator\_framework.Generator}!optimizer\_string@{optimizer\_string}}
+\index{optimizer\_string@{optimizer\_string}!generator\_framework.Generator@{generator\_framework.Generator}}
+\doxysubsubsection{\texorpdfstring{optimizer\_string}{optimizer\_string}}
+{\footnotesize\ttfamily generator\+\_\+framework.\+Generator.\+optimizer\+\_\+string}
+
+
+
+Definition at line 78 of file generator\+\_\+framework.\+py.
+
+\mbox{\Hypertarget{classgenerator__framework_1_1_generator_aa38966ce2a3649528d9aaf7a7086bded}\label{classgenerator__framework_1_1_generator_aa38966ce2a3649528d9aaf7a7086bded}} 
+\index{generator\_framework.Generator@{generator\_framework.Generator}!random\_seed@{random\_seed}}
+\index{random\_seed@{random\_seed}!generator\_framework.Generator@{generator\_framework.Generator}}
+\doxysubsubsection{\texorpdfstring{random\_seed}{random\_seed}}
+{\footnotesize\ttfamily generator\+\_\+framework.\+Generator.\+random\+\_\+seed}
+
+
+
+Definition at line 58 of file generator\+\_\+framework.\+py.
+
+\mbox{\Hypertarget{classgenerator__framework_1_1_generator_ace49af445407bd87413a6318b13542ed}\label{classgenerator__framework_1_1_generator_ace49af445407bd87413a6318b13542ed}} 
+\index{generator\_framework.Generator@{generator\_framework.Generator}!save\_path@{save\_path}}
+\index{save\_path@{save\_path}!generator\_framework.Generator@{generator\_framework.Generator}}
+\doxysubsubsection{\texorpdfstring{save\_path}{save\_path}}
+{\footnotesize\ttfamily generator\+\_\+framework.\+Generator.\+save\+\_\+path}
+
+
+
+Definition at line 57 of file generator\+\_\+framework.\+py.
+
+\mbox{\Hypertarget{classgenerator__framework_1_1_generator_addb797c1bd7dbba849fae35e85513b52}\label{classgenerator__framework_1_1_generator_addb797c1bd7dbba849fae35e85513b52}} 
+\index{generator\_framework.Generator@{generator\_framework.Generator}!train\_params@{train\_params}}
+\index{train\_params@{train\_params}!generator\_framework.Generator@{generator\_framework.Generator}}
+\doxysubsubsection{\texorpdfstring{train\_params}{train\_params}}
+{\footnotesize\ttfamily generator\+\_\+framework.\+Generator.\+train\+\_\+params}
+
+
+
+Definition at line 69 of file generator\+\_\+framework.\+py.
+
+\mbox{\Hypertarget{classgenerator__framework_1_1_generator_a150b9cde4d959c1666813fb47393fa43}\label{classgenerator__framework_1_1_generator_a150b9cde4d959c1666813fb47393fa43}} 
+\index{generator\_framework.Generator@{generator\_framework.Generator}!vocab\_path@{vocab\_path}}
+\index{vocab\_path@{vocab\_path}!generator\_framework.Generator@{generator\_framework.Generator}}
+\doxysubsubsection{\texorpdfstring{vocab\_path}{vocab\_path}}
+{\footnotesize\ttfamily generator\+\_\+framework.\+Generator.\+vocab\+\_\+path}
+
+
+
+Definition at line 61 of file generator\+\_\+framework.\+py.
+
+\mbox{\Hypertarget{classgenerator__framework_1_1_generator_a501827024aa9fcb467662593eeead308}\label{classgenerator__framework_1_1_generator_a501827024aa9fcb467662593eeead308}} 
+\index{generator\_framework.Generator@{generator\_framework.Generator}!vocab\_size@{vocab\_size}}
+\index{vocab\_size@{vocab\_size}!generator\_framework.Generator@{generator\_framework.Generator}}
+\doxysubsubsection{\texorpdfstring{vocab\_size}{vocab\_size}}
+{\footnotesize\ttfamily generator\+\_\+framework.\+Generator.\+vocab\+\_\+size}
+
+
+
+Definition at line 62 of file generator\+\_\+framework.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/models/\mbox{\hyperlink{generator__framework_8py}{generator\+\_\+framework.\+py}}\end{DoxyCompactItemize}

@@ -1,0 +1,284 @@
+\hypertarget{namespacebuild__features}{}\doxysection{build\+\_\+features Namespace Reference}
+\label{namespacebuild__features}\index{build\_features@{build\_features}}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespacebuild__features_a503907aa288ba141bc6cfa317bb86713}{R\+O\+O\+T\+\_\+\+P\+A\+TH}} = Path(\+\_\+\+\_\+file\+\_\+\+\_\+).absolute().parents\mbox{[}2\mbox{]}
+\item 
+tuple \mbox{\hyperlink{namespacebuild__features_aaa0c2ed19651f3c9ae10c8cfbbd72729}{D\+I\+M\+E\+N\+S\+I\+O\+NS}} = (299, 299, 3)
+\item 
+\mbox{\hyperlink{namespacebuild__features_a34448d79ea0d5d6972586803629c1bfb}{parser}} = argparse.\+Argument\+Parser()
+\item 
+\mbox{\hyperlink{namespacebuild__features_a82c6b60aa422c26df5a1bf57263a4cb3}{type}}
+\item 
+\mbox{\hyperlink{namespacebuild__features_a97cb0578a5afa2f54ab41c13c5ac49c2}{bool}}
+\item 
+\mbox{\hyperlink{namespacebuild__features_aad43a617dd7adda8e1efd1ee7b9770a0}{default}}
+\item 
+\mbox{\hyperlink{namespacebuild__features_a1289fbe404528095bb3ee47f836323fc}{help}}
+\item 
+\mbox{\hyperlink{namespacebuild__features_a1c5aef25fd77d6e5b75a9987b19c36a7}{nargs}}
+\item 
+\mbox{\hyperlink{namespacebuild__features_a57e122f7b8ed6a5c2492b60f6c749b29}{str}}
+\item 
+\mbox{\hyperlink{namespacebuild__features_a5c052b50d2be4e00ebf695da3bdac576}{int}}
+\item 
+\mbox{\hyperlink{namespacebuild__features_ac863d94cc07ddaab08a76bcdc5c7891b}{args}} = vars(parser.\+parse\+\_\+args())
+\item 
+\mbox{\hyperlink{namespacebuild__features_a1f91b3c2623aef5b8a98c59325d7bd52}{dataset\+\_\+}} = \mbox{\hyperlink{namespacebuild__features_ac863d94cc07ddaab08a76bcdc5c7891b}{args}}\mbox{[}\textquotesingle{}dataset\textquotesingle{}\mbox{]}
+\item 
+\mbox{\hyperlink{namespacebuild__features_a1173c446977d416deaa4d09b3e798dc4}{new\+\_\+dims\+\_\+}} = \mbox{\hyperlink{namespacebuild__features_ac863d94cc07ddaab08a76bcdc5c7891b}{args}}\mbox{[}\textquotesingle{}new\+\_\+image\+\_\+size\textquotesingle{}\mbox{]}
+\item 
+tuple \mbox{\hyperlink{namespacebuild__features_a851bfbb85b2c7ca1774ffe52dfc07da2}{dims}} = \mbox{\hyperlink{namespacebuild__features_aaa0c2ed19651f3c9ae10c8cfbbd72729}{D\+I\+M\+E\+N\+S\+I\+O\+NS}}\mbox{[}\+:2\mbox{]}
+\item 
+\mbox{\hyperlink{namespacebuild__features_a9d05d6cfb8e34f6f065b06cc5b4ab666}{raw\+\_\+path}} = R\+O\+O\+T\+\_\+\+P\+A\+T\+H.\+joinpath(\textquotesingle{}data\textquotesingle{}, \textquotesingle{}raw\textquotesingle{})
+\item 
+\mbox{\hyperlink{namespacebuild__features_a16eefc649977c187da6450ce5dd08cc5}{interim\+\_\+path}} = R\+O\+O\+T\+\_\+\+P\+A\+T\+H.\+joinpath(\textquotesingle{}data\textquotesingle{}, \textquotesingle{}interim\textquotesingle{})
+\item 
+\mbox{\hyperlink{namespacebuild__features_a0e5635116f6f7e9453d9ab54d87f5089}{processed\+\_\+path}} = R\+O\+O\+T\+\_\+\+P\+A\+T\+H.\+joinpath(\textquotesingle{}data\textquotesingle{}, \textquotesingle{}processed\textquotesingle{})
+\item 
+\mbox{\hyperlink{namespacebuild__features_a00f53c62cc19a2db76855bd46f674dc4}{image\+\_\+path\+\_\+}} = raw\+\_\+path.\+joinpath(\mbox{\hyperlink{namespacebuild__features_a1f91b3c2623aef5b8a98c59325d7bd52}{dataset\+\_\+}}, \textquotesingle{}Images\textquotesingle{})
+\item 
+\mbox{\hyperlink{namespacebuild__features_ada62677029ed21ee1516877a553c7343}{save\+\_\+path\+\_\+}} = interim\+\_\+path.\+joinpath(\mbox{\hyperlink{namespacebuild__features_a1f91b3c2623aef5b8a98c59325d7bd52}{dataset\+\_\+}}, \textquotesingle{}Images\textquotesingle{})
+\item 
+\mbox{\hyperlink{namespacebuild__features_ae3f74cdc5a8f0840a747c0d11f17182f}{output\+\_\+layer\+\_\+dim\+\_\+}} = \mbox{\hyperlink{namespacebuild__features_ac863d94cc07ddaab08a76bcdc5c7891b}{args}}\mbox{[}\textquotesingle{}output\+\_\+layer\+\_\+idx\textquotesingle{}\mbox{]}
+\item 
+\mbox{\hyperlink{namespacebuild__features_a63534648861d8473324bedda6b49f62c}{vis\+\_\+att\+\_\+}} = \mbox{\hyperlink{namespacebuild__features_ac863d94cc07ddaab08a76bcdc5c7891b}{args}}\mbox{[}\textquotesingle{}visual\+\_\+attention\textquotesingle{}\mbox{]}
+\item 
+\mbox{\hyperlink{namespacebuild__features_a4176b2755c31fe24ef7ca2abddef02f3}{split\+\_\+set\+\_\+path\+\_\+}} = interim\+\_\+path.\+joinpath(\mbox{\hyperlink{namespacebuild__features_a1f91b3c2623aef5b8a98c59325d7bd52}{dataset\+\_\+}}, \mbox{\hyperlink{namespacebuild__features_a1f91b3c2623aef5b8a98c59325d7bd52}{dataset\+\_\+}} + \textquotesingle{}\+\_\+full.\+csv\textquotesingle{})
+\item 
+\mbox{\hyperlink{namespacebuild__features_a6a906f4fe86c4b389c00cdf6ce116ab5}{vis\+\_\+att}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{namespacebuild__features_ac863d94cc07ddaab08a76bcdc5c7891b}\label{namespacebuild__features_ac863d94cc07ddaab08a76bcdc5c7891b}} 
+\index{build\_features@{build\_features}!args@{args}}
+\index{args@{args}!build\_features@{build\_features}}
+\doxysubsubsection{\texorpdfstring{args}{args}}
+{\footnotesize\ttfamily build\+\_\+features.\+args = vars(parser.\+parse\+\_\+args())}
+
+
+
+Definition at line 37 of file build\+\_\+features.\+py.
+
+\mbox{\Hypertarget{namespacebuild__features_a97cb0578a5afa2f54ab41c13c5ac49c2}\label{namespacebuild__features_a97cb0578a5afa2f54ab41c13c5ac49c2}} 
+\index{build\_features@{build\_features}!bool@{bool}}
+\index{bool@{bool}!build\_features@{build\_features}}
+\doxysubsubsection{\texorpdfstring{bool}{bool}}
+{\footnotesize\ttfamily build\+\_\+features.\+bool}
+
+
+
+Definition at line 20 of file build\+\_\+features.\+py.
+
+\mbox{\Hypertarget{namespacebuild__features_a1f91b3c2623aef5b8a98c59325d7bd52}\label{namespacebuild__features_a1f91b3c2623aef5b8a98c59325d7bd52}} 
+\index{build\_features@{build\_features}!dataset\_@{dataset\_}}
+\index{dataset\_@{dataset\_}!build\_features@{build\_features}}
+\doxysubsubsection{\texorpdfstring{dataset\_}{dataset\_}}
+{\footnotesize\ttfamily build\+\_\+features.\+dataset\+\_\+ = \mbox{\hyperlink{namespacebuild__features_ac863d94cc07ddaab08a76bcdc5c7891b}{args}}\mbox{[}\textquotesingle{}dataset\textquotesingle{}\mbox{]}}
+
+
+
+Definition at line 39 of file build\+\_\+features.\+py.
+
+\mbox{\Hypertarget{namespacebuild__features_aad43a617dd7adda8e1efd1ee7b9770a0}\label{namespacebuild__features_aad43a617dd7adda8e1efd1ee7b9770a0}} 
+\index{build\_features@{build\_features}!default@{default}}
+\index{default@{default}!build\_features@{build\_features}}
+\doxysubsubsection{\texorpdfstring{default}{default}}
+{\footnotesize\ttfamily build\+\_\+features.\+default}
+
+
+
+Definition at line 20 of file build\+\_\+features.\+py.
+
+\mbox{\Hypertarget{namespacebuild__features_aaa0c2ed19651f3c9ae10c8cfbbd72729}\label{namespacebuild__features_aaa0c2ed19651f3c9ae10c8cfbbd72729}} 
+\index{build\_features@{build\_features}!DIMENSIONS@{DIMENSIONS}}
+\index{DIMENSIONS@{DIMENSIONS}!build\_features@{build\_features}}
+\doxysubsubsection{\texorpdfstring{DIMENSIONS}{DIMENSIONS}}
+{\footnotesize\ttfamily tuple build\+\_\+features.\+D\+I\+M\+E\+N\+S\+I\+O\+NS = (299, 299, 3)}
+
+
+
+Definition at line 11 of file build\+\_\+features.\+py.
+
+\mbox{\Hypertarget{namespacebuild__features_a851bfbb85b2c7ca1774ffe52dfc07da2}\label{namespacebuild__features_a851bfbb85b2c7ca1774ffe52dfc07da2}} 
+\index{build\_features@{build\_features}!dims@{dims}}
+\index{dims@{dims}!build\_features@{build\_features}}
+\doxysubsubsection{\texorpdfstring{dims}{dims}}
+{\footnotesize\ttfamily build\+\_\+features.\+dims = \mbox{\hyperlink{namespacebuild__features_aaa0c2ed19651f3c9ae10c8cfbbd72729}{D\+I\+M\+E\+N\+S\+I\+O\+NS}}\mbox{[}\+:2\mbox{]}}
+
+
+
+Definition at line 41 of file build\+\_\+features.\+py.
+
+\mbox{\Hypertarget{namespacebuild__features_a1289fbe404528095bb3ee47f836323fc}\label{namespacebuild__features_a1289fbe404528095bb3ee47f836323fc}} 
+\index{build\_features@{build\_features}!help@{help}}
+\index{help@{help}!build\_features@{build\_features}}
+\doxysubsubsection{\texorpdfstring{help}{help}}
+{\footnotesize\ttfamily build\+\_\+features.\+help}
+
+
+
+Definition at line 21 of file build\+\_\+features.\+py.
+
+\mbox{\Hypertarget{namespacebuild__features_a00f53c62cc19a2db76855bd46f674dc4}\label{namespacebuild__features_a00f53c62cc19a2db76855bd46f674dc4}} 
+\index{build\_features@{build\_features}!image\_path\_@{image\_path\_}}
+\index{image\_path\_@{image\_path\_}!build\_features@{build\_features}}
+\doxysubsubsection{\texorpdfstring{image\_path\_}{image\_path\_}}
+{\footnotesize\ttfamily build\+\_\+features.\+image\+\_\+path\+\_\+ = raw\+\_\+path.\+joinpath(\mbox{\hyperlink{namespacebuild__features_a1f91b3c2623aef5b8a98c59325d7bd52}{dataset\+\_\+}}, \textquotesingle{}Images\textquotesingle{})}
+
+
+
+Definition at line 53 of file build\+\_\+features.\+py.
+
+\mbox{\Hypertarget{namespacebuild__features_a5c052b50d2be4e00ebf695da3bdac576}\label{namespacebuild__features_a5c052b50d2be4e00ebf695da3bdac576}} 
+\index{build\_features@{build\_features}!int@{int}}
+\index{int@{int}!build\_features@{build\_features}}
+\doxysubsubsection{\texorpdfstring{int}{int}}
+{\footnotesize\ttfamily build\+\_\+features.\+int}
+
+
+
+Definition at line 35 of file build\+\_\+features.\+py.
+
+\mbox{\Hypertarget{namespacebuild__features_a16eefc649977c187da6450ce5dd08cc5}\label{namespacebuild__features_a16eefc649977c187da6450ce5dd08cc5}} 
+\index{build\_features@{build\_features}!interim\_path@{interim\_path}}
+\index{interim\_path@{interim\_path}!build\_features@{build\_features}}
+\doxysubsubsection{\texorpdfstring{interim\_path}{interim\_path}}
+{\footnotesize\ttfamily build\+\_\+features.\+interim\+\_\+path = R\+O\+O\+T\+\_\+\+P\+A\+T\+H.\+joinpath(\textquotesingle{}data\textquotesingle{}, \textquotesingle{}interim\textquotesingle{})}
+
+
+
+Definition at line 50 of file build\+\_\+features.\+py.
+
+\mbox{\Hypertarget{namespacebuild__features_a1c5aef25fd77d6e5b75a9987b19c36a7}\label{namespacebuild__features_a1c5aef25fd77d6e5b75a9987b19c36a7}} 
+\index{build\_features@{build\_features}!nargs@{nargs}}
+\index{nargs@{nargs}!build\_features@{build\_features}}
+\doxysubsubsection{\texorpdfstring{nargs}{nargs}}
+{\footnotesize\ttfamily build\+\_\+features.\+nargs}
+
+
+
+Definition at line 24 of file build\+\_\+features.\+py.
+
+\mbox{\Hypertarget{namespacebuild__features_a1173c446977d416deaa4d09b3e798dc4}\label{namespacebuild__features_a1173c446977d416deaa4d09b3e798dc4}} 
+\index{build\_features@{build\_features}!new\_dims\_@{new\_dims\_}}
+\index{new\_dims\_@{new\_dims\_}!build\_features@{build\_features}}
+\doxysubsubsection{\texorpdfstring{new\_dims\_}{new\_dims\_}}
+{\footnotesize\ttfamily build\+\_\+features.\+new\+\_\+dims\+\_\+ = \mbox{\hyperlink{namespacebuild__features_ac863d94cc07ddaab08a76bcdc5c7891b}{args}}\mbox{[}\textquotesingle{}new\+\_\+image\+\_\+size\textquotesingle{}\mbox{]}}
+
+
+
+Definition at line 40 of file build\+\_\+features.\+py.
+
+\mbox{\Hypertarget{namespacebuild__features_ae3f74cdc5a8f0840a747c0d11f17182f}\label{namespacebuild__features_ae3f74cdc5a8f0840a747c0d11f17182f}} 
+\index{build\_features@{build\_features}!output\_layer\_dim\_@{output\_layer\_dim\_}}
+\index{output\_layer\_dim\_@{output\_layer\_dim\_}!build\_features@{build\_features}}
+\doxysubsubsection{\texorpdfstring{output\_layer\_dim\_}{output\_layer\_dim\_}}
+{\footnotesize\ttfamily build\+\_\+features.\+output\+\_\+layer\+\_\+dim\+\_\+ = \mbox{\hyperlink{namespacebuild__features_ac863d94cc07ddaab08a76bcdc5c7891b}{args}}\mbox{[}\textquotesingle{}output\+\_\+layer\+\_\+idx\textquotesingle{}\mbox{]}}
+
+
+
+Definition at line 58 of file build\+\_\+features.\+py.
+
+\mbox{\Hypertarget{namespacebuild__features_a34448d79ea0d5d6972586803629c1bfb}\label{namespacebuild__features_a34448d79ea0d5d6972586803629c1bfb}} 
+\index{build\_features@{build\_features}!parser@{parser}}
+\index{parser@{parser}!build\_features@{build\_features}}
+\doxysubsubsection{\texorpdfstring{parser}{parser}}
+{\footnotesize\ttfamily build\+\_\+features.\+parser = argparse.\+Argument\+Parser()}
+
+
+
+Definition at line 19 of file build\+\_\+features.\+py.
+
+\mbox{\Hypertarget{namespacebuild__features_a0e5635116f6f7e9453d9ab54d87f5089}\label{namespacebuild__features_a0e5635116f6f7e9453d9ab54d87f5089}} 
+\index{build\_features@{build\_features}!processed\_path@{processed\_path}}
+\index{processed\_path@{processed\_path}!build\_features@{build\_features}}
+\doxysubsubsection{\texorpdfstring{processed\_path}{processed\_path}}
+{\footnotesize\ttfamily build\+\_\+features.\+processed\+\_\+path = R\+O\+O\+T\+\_\+\+P\+A\+T\+H.\+joinpath(\textquotesingle{}data\textquotesingle{}, \textquotesingle{}processed\textquotesingle{})}
+
+
+
+Definition at line 51 of file build\+\_\+features.\+py.
+
+\mbox{\Hypertarget{namespacebuild__features_a9d05d6cfb8e34f6f065b06cc5b4ab666}\label{namespacebuild__features_a9d05d6cfb8e34f6f065b06cc5b4ab666}} 
+\index{build\_features@{build\_features}!raw\_path@{raw\_path}}
+\index{raw\_path@{raw\_path}!build\_features@{build\_features}}
+\doxysubsubsection{\texorpdfstring{raw\_path}{raw\_path}}
+{\footnotesize\ttfamily build\+\_\+features.\+raw\+\_\+path = R\+O\+O\+T\+\_\+\+P\+A\+T\+H.\+joinpath(\textquotesingle{}data\textquotesingle{}, \textquotesingle{}raw\textquotesingle{})}
+
+
+
+Definition at line 49 of file build\+\_\+features.\+py.
+
+\mbox{\Hypertarget{namespacebuild__features_a503907aa288ba141bc6cfa317bb86713}\label{namespacebuild__features_a503907aa288ba141bc6cfa317bb86713}} 
+\index{build\_features@{build\_features}!ROOT\_PATH@{ROOT\_PATH}}
+\index{ROOT\_PATH@{ROOT\_PATH}!build\_features@{build\_features}}
+\doxysubsubsection{\texorpdfstring{ROOT\_PATH}{ROOT\_PATH}}
+{\footnotesize\ttfamily build\+\_\+features.\+R\+O\+O\+T\+\_\+\+P\+A\+TH = Path(\+\_\+\+\_\+file\+\_\+\+\_\+).absolute().parents\mbox{[}2\mbox{]}}
+
+
+
+Definition at line 8 of file build\+\_\+features.\+py.
+
+\mbox{\Hypertarget{namespacebuild__features_ada62677029ed21ee1516877a553c7343}\label{namespacebuild__features_ada62677029ed21ee1516877a553c7343}} 
+\index{build\_features@{build\_features}!save\_path\_@{save\_path\_}}
+\index{save\_path\_@{save\_path\_}!build\_features@{build\_features}}
+\doxysubsubsection{\texorpdfstring{save\_path\_}{save\_path\_}}
+{\footnotesize\ttfamily build\+\_\+features.\+save\+\_\+path\+\_\+ = interim\+\_\+path.\+joinpath(\mbox{\hyperlink{namespacebuild__features_a1f91b3c2623aef5b8a98c59325d7bd52}{dataset\+\_\+}}, \textquotesingle{}Images\textquotesingle{})}
+
+
+
+Definition at line 54 of file build\+\_\+features.\+py.
+
+\mbox{\Hypertarget{namespacebuild__features_a4176b2755c31fe24ef7ca2abddef02f3}\label{namespacebuild__features_a4176b2755c31fe24ef7ca2abddef02f3}} 
+\index{build\_features@{build\_features}!split\_set\_path\_@{split\_set\_path\_}}
+\index{split\_set\_path\_@{split\_set\_path\_}!build\_features@{build\_features}}
+\doxysubsubsection{\texorpdfstring{split\_set\_path\_}{split\_set\_path\_}}
+{\footnotesize\ttfamily build\+\_\+features.\+split\+\_\+set\+\_\+path\+\_\+ = interim\+\_\+path.\+joinpath(\mbox{\hyperlink{namespacebuild__features_a1f91b3c2623aef5b8a98c59325d7bd52}{dataset\+\_\+}}, \mbox{\hyperlink{namespacebuild__features_a1f91b3c2623aef5b8a98c59325d7bd52}{dataset\+\_\+}} + \textquotesingle{}\+\_\+full.\+csv\textquotesingle{})}
+
+
+
+Definition at line 65 of file build\+\_\+features.\+py.
+
+\mbox{\Hypertarget{namespacebuild__features_a57e122f7b8ed6a5c2492b60f6c749b29}\label{namespacebuild__features_a57e122f7b8ed6a5c2492b60f6c749b29}} 
+\index{build\_features@{build\_features}!str@{str}}
+\index{str@{str}!build\_features@{build\_features}}
+\doxysubsubsection{\texorpdfstring{str}{str}}
+{\footnotesize\ttfamily build\+\_\+features.\+str}
+
+
+
+Definition at line 27 of file build\+\_\+features.\+py.
+
+\mbox{\Hypertarget{namespacebuild__features_a82c6b60aa422c26df5a1bf57263a4cb3}\label{namespacebuild__features_a82c6b60aa422c26df5a1bf57263a4cb3}} 
+\index{build\_features@{build\_features}!type@{type}}
+\index{type@{type}!build\_features@{build\_features}}
+\doxysubsubsection{\texorpdfstring{type}{type}}
+{\footnotesize\ttfamily build\+\_\+features.\+type}
+
+
+
+Definition at line 20 of file build\+\_\+features.\+py.
+
+\mbox{\Hypertarget{namespacebuild__features_a6a906f4fe86c4b389c00cdf6ce116ab5}\label{namespacebuild__features_a6a906f4fe86c4b389c00cdf6ce116ab5}} 
+\index{build\_features@{build\_features}!vis\_att@{vis\_att}}
+\index{vis\_att@{vis\_att}!build\_features@{build\_features}}
+\doxysubsubsection{\texorpdfstring{vis\_att}{vis\_att}}
+{\footnotesize\ttfamily build\+\_\+features.\+vis\+\_\+att}
+
+
+
+Definition at line 71 of file build\+\_\+features.\+py.
+
+\mbox{\Hypertarget{namespacebuild__features_a63534648861d8473324bedda6b49f62c}\label{namespacebuild__features_a63534648861d8473324bedda6b49f62c}} 
+\index{build\_features@{build\_features}!vis\_att\_@{vis\_att\_}}
+\index{vis\_att\_@{vis\_att\_}!build\_features@{build\_features}}
+\doxysubsubsection{\texorpdfstring{vis\_att\_}{vis\_att\_}}
+{\footnotesize\ttfamily build\+\_\+features.\+vis\+\_\+att\+\_\+ = \mbox{\hyperlink{namespacebuild__features_ac863d94cc07ddaab08a76bcdc5c7891b}{args}}\mbox{[}\textquotesingle{}visual\+\_\+attention\textquotesingle{}\mbox{]}}
+
+
+
+Definition at line 59 of file build\+\_\+features.\+py.
+

@@ -1,0 +1,54 @@
+\hypertarget{namespaceresize__images}{}\doxysection{resize\+\_\+images Namespace Reference}
+\label{namespaceresize__images}\index{resize\_images@{resize\_images}}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{namespaceresize__images_ac27c76b953a2bfb8aa6fdc0d3eb0d14c}{resize\+\_\+images}} (image\+\_\+path, save\+\_\+path, new\+\_\+dims)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespaceresize__images_a0fdd9cdbfa0afeecf25928be2777746f}{R\+O\+O\+T\+\_\+\+P\+A\+TH}} = Path(\+\_\+\+\_\+file\+\_\+\+\_\+).absolute().parents\mbox{[}2\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespaceresize__images_ac27c76b953a2bfb8aa6fdc0d3eb0d14c}\label{namespaceresize__images_ac27c76b953a2bfb8aa6fdc0d3eb0d14c}} 
+\index{resize\_images@{resize\_images}!resize\_images@{resize\_images}}
+\index{resize\_images@{resize\_images}!resize\_images@{resize\_images}}
+\doxysubsubsection{\texorpdfstring{resize\_images()}{resize\_images()}}
+{\footnotesize\ttfamily def resize\+\_\+images.\+resize\+\_\+images (\begin{DoxyParamCaption}\item[{}]{image\+\_\+path,  }\item[{}]{save\+\_\+path,  }\item[{}]{new\+\_\+dims }\end{DoxyParamCaption})}
+
+
+
+Definition at line 9 of file resize\+\_\+images.\+py.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{9 \textcolor{keyword}{def }\mbox{\hyperlink{namespaceresize__images_ac27c76b953a2bfb8aa6fdc0d3eb0d14c}{resize\_images}}(image\_path, save\_path, new\_dims):}
+\DoxyCodeLine{10     image\_path = Path(image\_path)}
+\DoxyCodeLine{11     save\_path = Path(save\_path)}
+\DoxyCodeLine{12     directory = save\_path.joinpath(\mbox{\hyperlink{namespacetrain__model_af1334e726c4782724a0e5b8f9e031e01}{str}}(new\_dims[0]) + \textcolor{stringliteral}{'x'} + \mbox{\hyperlink{namespacetrain__model_af1334e726c4782724a0e5b8f9e031e01}{str}}(new\_dims[1]))}
+\DoxyCodeLine{13     \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} directory.is\_dir():}
+\DoxyCodeLine{14         directory.mkdir(parents=\textcolor{keyword}{True})}
+\DoxyCodeLine{15     \textcolor{keywordflow}{for} im\_file \textcolor{keywordflow}{in} image\_path.glob(\textcolor{stringliteral}{'*.jpg'}):}
+\DoxyCodeLine{16         p = len(\mbox{\hyperlink{namespacetrain__model_af1334e726c4782724a0e5b8f9e031e01}{str}}(im\_file.parent)) + 1}
+\DoxyCodeLine{17         image\_name = \mbox{\hyperlink{namespacetrain__model_af1334e726c4782724a0e5b8f9e031e01}{str}}(im\_file)[p:]}
+\DoxyCodeLine{18         image = imread(\mbox{\hyperlink{namespacetrain__model_af1334e726c4782724a0e5b8f9e031e01}{str}}(im\_file))}
+\DoxyCodeLine{19         image = resize(image, new\_dims)}
+\DoxyCodeLine{20         imsave(directory.joinpath(image\_name), image)}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{namespaceresize__images_a0fdd9cdbfa0afeecf25928be2777746f}\label{namespaceresize__images_a0fdd9cdbfa0afeecf25928be2777746f}} 
+\index{resize\_images@{resize\_images}!ROOT\_PATH@{ROOT\_PATH}}
+\index{ROOT\_PATH@{ROOT\_PATH}!resize\_images@{resize\_images}}
+\doxysubsubsection{\texorpdfstring{ROOT\_PATH}{ROOT\_PATH}}
+{\footnotesize\ttfamily resize\+\_\+images.\+R\+O\+O\+T\+\_\+\+P\+A\+TH = Path(\+\_\+\+\_\+file\+\_\+\+\_\+).absolute().parents\mbox{[}2\mbox{]}}
+
+
+
+Definition at line 6 of file resize\+\_\+images.\+py.
+

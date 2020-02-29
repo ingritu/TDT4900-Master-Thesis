@@ -1,0 +1,528 @@
+\hypertarget{classbeam_1_1_beam}{}\doxysection{beam.\+Beam Class Reference}
+\label{classbeam_1_1_beam}\index{beam.Beam@{beam.Beam}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{classbeam_1_1_beam_a6e7944f68d80862ed3c01e03f429fc42}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, image, states, \mbox{\hyperlink{classbeam_1_1_beam_ab7747e809cd5bfb64a95c3d7d7ced976}{beam\+\_\+size}}, input\+\_\+token, eos, \mbox{\hyperlink{classbeam_1_1_beam_ae3df6fd79c3f3d1acccb175756a5da23}{max\+\_\+len}}, \mbox{\hyperlink{classbeam_1_1_beam_aca3ee0b3f1853912cbbae18ce1a4ccce}{vocab\+\_\+size}}, \mbox{\hyperlink{classbeam_1_1_beam_a145eec93a53ea6ab1776d66c381c254b}{device}}, beam\+\_\+id=-\/1)
+\item 
+def \mbox{\hyperlink{classbeam_1_1_beam_a0d6312bf99895e35d798d9f4d90aae43}{update}} (self, predictions, \mbox{\hyperlink{classbeam_1_1_beam_a63807e1a0d707f33d2a0db1884a78181}{h}}, \mbox{\hyperlink{classbeam_1_1_beam_a8cca1e98bd6188ff8ea00f8b343a02aa}{c}})
+\item 
+def \mbox{\hyperlink{classbeam_1_1_beam_a196e7b5b8742465732c2b4ad4d9de21e}{find\+\_\+best\+\_\+comlpete\+\_\+sequence}} (self)
+\item 
+def \mbox{\hyperlink{classbeam_1_1_beam_af1ee899c65911804206bba905664dd9c}{get\+\_\+sequences}} (self)
+\item 
+def \mbox{\hyperlink{classbeam_1_1_beam_a3e9d8362968eb412f48fa720ae99a14c}{get\+\_\+encoded\+\_\+image}} (self)
+\item 
+def \mbox{\hyperlink{classbeam_1_1_beam_a354026c823d45c63b5c7bc9d12736f3a}{get\+\_\+global\+\_\+image}} (self)
+\item 
+def \mbox{\hyperlink{classbeam_1_1_beam_abfe73cc7d108db896bc7e95b47b2cfd5}{get\+\_\+hidden\+\_\+states}} (self)
+\item 
+def \mbox{\hyperlink{classbeam_1_1_beam_a6a71dbba04308972c854b5af094ea607}{get\+\_\+cell\+\_\+states}} (self)
+\item 
+def \mbox{\hyperlink{classbeam_1_1_beam_ac700abba48fc6dff7e6f398a7555df72}{has\+\_\+best\+\_\+sequence}} (self)
+\item 
+def \mbox{\hyperlink{classbeam_1_1_beam_a8feb5a6010dede42a082b351c5d02411}{get\+\_\+best\+\_\+sequence}} (self)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classbeam_1_1_beam_a1e4d1e2fc6000bcd211461ea665e21ec}{id}}
+\item 
+\mbox{\hyperlink{classbeam_1_1_beam_a35009ac28500c357747a389f48507f6e}{encoded\+\_\+image}}
+\item 
+\mbox{\hyperlink{classbeam_1_1_beam_a8cca1e98bd6188ff8ea00f8b343a02aa}{c}}
+\item 
+\mbox{\hyperlink{classbeam_1_1_beam_ab7747e809cd5bfb64a95c3d7d7ced976}{beam\+\_\+size}}
+\item 
+\mbox{\hyperlink{classbeam_1_1_beam_a9c9f188b32489cd83017fbc69c9ddd43}{num\+\_\+unfinished}}
+\item 
+\mbox{\hyperlink{classbeam_1_1_beam_a77c81590fc53619c42ecfb0a988f62f1}{E\+OS}}
+\item 
+\mbox{\hyperlink{classbeam_1_1_beam_ae3df6fd79c3f3d1acccb175756a5da23}{max\+\_\+len}}
+\item 
+\mbox{\hyperlink{classbeam_1_1_beam_aca3ee0b3f1853912cbbae18ce1a4ccce}{vocab\+\_\+size}}
+\item 
+\mbox{\hyperlink{classbeam_1_1_beam_a145eec93a53ea6ab1776d66c381c254b}{device}}
+\item 
+\mbox{\hyperlink{classbeam_1_1_beam_aa76a13141474bb01de4c50acb997895e}{captions}}
+\item 
+\mbox{\hyperlink{classbeam_1_1_beam_af113fffbde16cc6106102f9f19fd8164}{previous\+\_\+words}}
+\item 
+\mbox{\hyperlink{classbeam_1_1_beam_a80396741c97a77679de923295634a859}{top\+\_\+scores}}
+\item 
+\mbox{\hyperlink{classbeam_1_1_beam_a4f4226e84f28b9d446c4c9696b64aec5}{finished\+\_\+caps}}
+\item 
+\mbox{\hyperlink{classbeam_1_1_beam_afb714d2c3ec82f27eecf32d85e291b54}{finished\+\_\+caps\+\_\+scores}}
+\item 
+\mbox{\hyperlink{classbeam_1_1_beam_afe0cff81930313190486a716e0c53857}{optimality\+\_\+certificate}}
+\item 
+\mbox{\hyperlink{classbeam_1_1_beam_a63807e1a0d707f33d2a0db1884a78181}{h}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line 4 of file beam.\+py.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classbeam_1_1_beam_a6e7944f68d80862ed3c01e03f429fc42}\label{classbeam_1_1_beam_a6e7944f68d80862ed3c01e03f429fc42}} 
+\index{beam.Beam@{beam.Beam}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!beam.Beam@{beam.Beam}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily def beam.\+Beam.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{image,  }\item[{}]{states,  }\item[{}]{beam\+\_\+size,  }\item[{}]{input\+\_\+token,  }\item[{}]{eos,  }\item[{}]{max\+\_\+len,  }\item[{}]{vocab\+\_\+size,  }\item[{}]{device,  }\item[{}]{beam\+\_\+id = {\ttfamily -\/1} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 6 of file beam.\+py.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{6     \textcolor{keyword}{def }\_\_init\_\_(self,}
+\DoxyCodeLine{7                  image,}
+\DoxyCodeLine{8                  states,}
+\DoxyCodeLine{9                  beam\_size,}
+\DoxyCodeLine{10                  input\_token,}
+\DoxyCodeLine{11                  eos,}
+\DoxyCodeLine{12                  max\_len,}
+\DoxyCodeLine{13                  vocab\_size,}
+\DoxyCodeLine{14                  device,}
+\DoxyCodeLine{15                  beam\_id=-\/1):}
+\DoxyCodeLine{16         \textcolor{comment}{\# misc}}
+\DoxyCodeLine{17         self.id = beam\_id}
+\DoxyCodeLine{18         self.global\_image, self.encoded\_image = image}
+\DoxyCodeLine{19         self.h, self.c = states}
+\DoxyCodeLine{20         self.beam\_size = beam\_size}
+\DoxyCodeLine{21         self.num\_unfinished = beam\_size}
+\DoxyCodeLine{22         self.EOS = eos}
+\DoxyCodeLine{23         self.max\_len = max\_len}
+\DoxyCodeLine{24         self.vocab\_size = vocab\_size}
+\DoxyCodeLine{25         self.device = device}
+\DoxyCodeLine{26         \textcolor{comment}{\# initialize captions in beam}}
+\DoxyCodeLine{27         \textcolor{comment}{\# unfinished captions}}
+\DoxyCodeLine{28         init\_cap = torch.tensor(input\_token).to(self.device)}
+\DoxyCodeLine{29         self.captions = init\_cap.unsqueeze(0).expand(self.beam\_size, -\/1)}
+\DoxyCodeLine{30         init\_prev\_w = torch.tensor(input\_token).to(self.device)}
+\DoxyCodeLine{31         init\_prev\_w = init\_prev\_w.unsqueeze(0).expand(self.beam\_size, -\/1)}
+\DoxyCodeLine{32         self.previous\_words = init\_prev\_w.squeeze(1)}
+\DoxyCodeLine{33         self.top\_scores = torch.zeros(self.beam\_size, 1).to(self.device)}
+\DoxyCodeLine{34         \textcolor{comment}{\# finished captions}}
+\DoxyCodeLine{35         self.finished\_caps = []  \textcolor{comment}{\# these will never be sorted}}
+\DoxyCodeLine{36         self.finished\_caps\_scores = []  \textcolor{comment}{\# will never be sorted}}
+\DoxyCodeLine{37         \textcolor{comment}{\# Early stopping}}
+\DoxyCodeLine{38         self.optimality\_certificate = \textcolor{keyword}{False}}
+\DoxyCodeLine{39 }
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classbeam_1_1_beam_a196e7b5b8742465732c2b4ad4d9de21e}\label{classbeam_1_1_beam_a196e7b5b8742465732c2b4ad4d9de21e}} 
+\index{beam.Beam@{beam.Beam}!find\_best\_comlpete\_sequence@{find\_best\_comlpete\_sequence}}
+\index{find\_best\_comlpete\_sequence@{find\_best\_comlpete\_sequence}!beam.Beam@{beam.Beam}}
+\doxysubsubsection{\texorpdfstring{find\_best\_comlpete\_sequence()}{find\_best\_comlpete\_sequence()}}
+{\footnotesize\ttfamily def beam.\+Beam.\+find\+\_\+best\+\_\+comlpete\+\_\+sequence (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Definition at line 114 of file beam.\+py.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{114     \textcolor{keyword}{def }find\_best\_comlpete\_sequence(self):}
+\DoxyCodeLine{115         probs = torch.tensor(self.finished\_caps\_scores).to(self.device)}
+\DoxyCodeLine{116         \_, idx = probs.topk(1, dim=0)}
+\DoxyCodeLine{117         \textcolor{keywordflow}{return} \mbox{\hyperlink{namespacetrain__model_a36fe43ec1b00f331c7f374e1478b7e4d}{int}}(idx)}
+\DoxyCodeLine{118 }
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classbeam_1_1_beam_a8feb5a6010dede42a082b351c5d02411}\label{classbeam_1_1_beam_a8feb5a6010dede42a082b351c5d02411}} 
+\index{beam.Beam@{beam.Beam}!get\_best\_sequence@{get\_best\_sequence}}
+\index{get\_best\_sequence@{get\_best\_sequence}!beam.Beam@{beam.Beam}}
+\doxysubsubsection{\texorpdfstring{get\_best\_sequence()}{get\_best\_sequence()}}
+{\footnotesize\ttfamily def beam.\+Beam.\+get\+\_\+best\+\_\+sequence (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Returns
+-------
+A list of sequence tokens.
+\end{DoxyVerb}
+ 
+
+Definition at line 140 of file beam.\+py.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{140     \textcolor{keyword}{def }get\_best\_sequence(self):}
+\DoxyCodeLine{141         \textcolor{stringliteral}{"""}}
+\DoxyCodeLine{142 \textcolor{stringliteral}{        Returns}}
+\DoxyCodeLine{143 \textcolor{stringliteral}{        -\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{144 \textcolor{stringliteral}{        A list of sequence tokens.}}
+\DoxyCodeLine{145 \textcolor{stringliteral}{        """}}
+\DoxyCodeLine{146         \textcolor{keyword}{assert} self.has\_best\_sequence(), \textcolor{stringliteral}{"Beam search incomplete"}}
+\DoxyCodeLine{147         idx = self.find\_best\_comlpete\_sequence()}
+\DoxyCodeLine{148         \textcolor{keywordflow}{return} self.finished\_caps[idx]}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classbeam_1_1_beam_a6a71dbba04308972c854b5af094ea607}\label{classbeam_1_1_beam_a6a71dbba04308972c854b5af094ea607}} 
+\index{beam.Beam@{beam.Beam}!get\_cell\_states@{get\_cell\_states}}
+\index{get\_cell\_states@{get\_cell\_states}!beam.Beam@{beam.Beam}}
+\doxysubsubsection{\texorpdfstring{get\_cell\_states()}{get\_cell\_states()}}
+{\footnotesize\ttfamily def beam.\+Beam.\+get\+\_\+cell\+\_\+states (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Definition at line 133 of file beam.\+py.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{133     \textcolor{keyword}{def }get\_cell\_states(self):}
+\DoxyCodeLine{134         \textcolor{keywordflow}{return} self.c}
+\DoxyCodeLine{135 }
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classbeam_1_1_beam_a3e9d8362968eb412f48fa720ae99a14c}\label{classbeam_1_1_beam_a3e9d8362968eb412f48fa720ae99a14c}} 
+\index{beam.Beam@{beam.Beam}!get\_encoded\_image@{get\_encoded\_image}}
+\index{get\_encoded\_image@{get\_encoded\_image}!beam.Beam@{beam.Beam}}
+\doxysubsubsection{\texorpdfstring{get\_encoded\_image()}{get\_encoded\_image()}}
+{\footnotesize\ttfamily def beam.\+Beam.\+get\+\_\+encoded\+\_\+image (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Definition at line 123 of file beam.\+py.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{123     \textcolor{keyword}{def }get\_encoded\_image(self):}
+\DoxyCodeLine{124         \textcolor{keywordflow}{return} self.encoded\_image.unsqueeze(0).expand(self.num\_unfinished,}
+\DoxyCodeLine{125                                                       -\/1, -\/1)}
+\DoxyCodeLine{126 }
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classbeam_1_1_beam_a354026c823d45c63b5c7bc9d12736f3a}\label{classbeam_1_1_beam_a354026c823d45c63b5c7bc9d12736f3a}} 
+\index{beam.Beam@{beam.Beam}!get\_global\_image@{get\_global\_image}}
+\index{get\_global\_image@{get\_global\_image}!beam.Beam@{beam.Beam}}
+\doxysubsubsection{\texorpdfstring{get\_global\_image()}{get\_global\_image()}}
+{\footnotesize\ttfamily def beam.\+Beam.\+get\+\_\+global\+\_\+image (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Definition at line 127 of file beam.\+py.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{127     \textcolor{keyword}{def }get\_global\_image(self):}
+\DoxyCodeLine{128         \textcolor{keywordflow}{return} self.global\_image.unsqueeze(0).expand(self.num\_unfinished, -\/1)}
+\DoxyCodeLine{129 }
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classbeam_1_1_beam_abfe73cc7d108db896bc7e95b47b2cfd5}\label{classbeam_1_1_beam_abfe73cc7d108db896bc7e95b47b2cfd5}} 
+\index{beam.Beam@{beam.Beam}!get\_hidden\_states@{get\_hidden\_states}}
+\index{get\_hidden\_states@{get\_hidden\_states}!beam.Beam@{beam.Beam}}
+\doxysubsubsection{\texorpdfstring{get\_hidden\_states()}{get\_hidden\_states()}}
+{\footnotesize\ttfamily def beam.\+Beam.\+get\+\_\+hidden\+\_\+states (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Definition at line 130 of file beam.\+py.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{130     \textcolor{keyword}{def }get\_hidden\_states(self):}
+\DoxyCodeLine{131         \textcolor{keywordflow}{return} self.h}
+\DoxyCodeLine{132 }
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classbeam_1_1_beam_af1ee899c65911804206bba905664dd9c}\label{classbeam_1_1_beam_af1ee899c65911804206bba905664dd9c}} 
+\index{beam.Beam@{beam.Beam}!get\_sequences@{get\_sequences}}
+\index{get\_sequences@{get\_sequences}!beam.Beam@{beam.Beam}}
+\doxysubsubsection{\texorpdfstring{get\_sequences()}{get\_sequences()}}
+{\footnotesize\ttfamily def beam.\+Beam.\+get\+\_\+sequences (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Definition at line 119 of file beam.\+py.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{119     \textcolor{keyword}{def }get\_sequences(self):}
+\DoxyCodeLine{120         \textcolor{comment}{\# only return unfinished}}
+\DoxyCodeLine{121         \textcolor{keywordflow}{return} self.previous\_words}
+\DoxyCodeLine{122 }
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classbeam_1_1_beam_ac700abba48fc6dff7e6f398a7555df72}\label{classbeam_1_1_beam_ac700abba48fc6dff7e6f398a7555df72}} 
+\index{beam.Beam@{beam.Beam}!has\_best\_sequence@{has\_best\_sequence}}
+\index{has\_best\_sequence@{has\_best\_sequence}!beam.Beam@{beam.Beam}}
+\doxysubsubsection{\texorpdfstring{has\_best\_sequence()}{has\_best\_sequence()}}
+{\footnotesize\ttfamily def beam.\+Beam.\+has\+\_\+best\+\_\+sequence (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Definition at line 136 of file beam.\+py.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{136     \textcolor{keyword}{def }has\_best\_sequence(self):}
+\DoxyCodeLine{137         \textcolor{keywordflow}{return} len(self.finished\_caps) == self.beam\_size \textcolor{keywordflow}{or} \(\backslash\)}
+\DoxyCodeLine{138                self.optimality\_certificate}
+\DoxyCodeLine{139 }
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classbeam_1_1_beam_a0d6312bf99895e35d798d9f4d90aae43}\label{classbeam_1_1_beam_a0d6312bf99895e35d798d9f4d90aae43}} 
+\index{beam.Beam@{beam.Beam}!update@{update}}
+\index{update@{update}!beam.Beam@{beam.Beam}}
+\doxysubsubsection{\texorpdfstring{update()}{update()}}
+{\footnotesize\ttfamily def beam.\+Beam.\+update (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{predictions,  }\item[{}]{h,  }\item[{}]{c }\end{DoxyParamCaption})}
+
+
+
+Definition at line 40 of file beam.\+py.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{40     \textcolor{keyword}{def }update(self, predictions, h, c):}
+\DoxyCodeLine{41         \textcolor{comment}{\# h, c: (n, num\_unfinished, hidden\_size)}}
+\DoxyCodeLine{42         \textcolor{comment}{\# predictions (num\_unfinished, vocab\_size)}}
+\DoxyCodeLine{43         \textcolor{keywordflow}{if} self.num\_unfinished == 0 \textcolor{keywordflow}{or} self.optimality\_certificate:}
+\DoxyCodeLine{44             \textcolor{comment}{\# Do nothing}}
+\DoxyCodeLine{45             \textcolor{keywordflow}{return}}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47         \textcolor{comment}{\# add probabilities}}
+\DoxyCodeLine{48         \textcolor{comment}{\# (beam\_size, 1) -\/-\/> (beam\_size, vocab\_size)}}
+\DoxyCodeLine{49         scores = self.top\_scores.expand\_as(predictions)}
+\DoxyCodeLine{50         \textcolor{comment}{\# (beam\_size, v) + (num\_unfinished, v) -\/-\/> (num\_unfinished, v)}}
+\DoxyCodeLine{51         predictions = scores + predictions}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53         \textcolor{comment}{\# flatten predictions and find top k}}
+\DoxyCodeLine{54         top\_probs, top\_words = predictions.view(-\/1).topk(self.num\_unfinished,}
+\DoxyCodeLine{55                                                          dim=0,}
+\DoxyCodeLine{56                                                          largest=\textcolor{keyword}{True},}
+\DoxyCodeLine{57                                                          sorted=\textcolor{keyword}{True})}
+\DoxyCodeLine{58         \textcolor{comment}{\# top\_probs, top\_words: (num\_unfinished)}}
+\DoxyCodeLine{59         prev\_word\_idx = top\_words / self.vocab\_size  \textcolor{comment}{\# previous index}}
+\DoxyCodeLine{60         next\_word\_idx = top\_words \% self.vocab\_size  \textcolor{comment}{\# word predicted}}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62         \textcolor{comment}{\# add predicted words to caption}}
+\DoxyCodeLine{63         self.captions = torch.cat([self.captions[prev\_word\_idx],}
+\DoxyCodeLine{64                                    next\_word\_idx.unsqueeze(1)],}
+\DoxyCodeLine{65                                   dim=1)}
+\DoxyCodeLine{66         unfinished\_idx = [idx \textcolor{keywordflow}{for} idx, next\_word \textcolor{keywordflow}{in} enumerate(next\_word\_idx)}
+\DoxyCodeLine{67                           \textcolor{keywordflow}{if} next\_word != self.EOS]}
+\DoxyCodeLine{68         finished\_idx = list(set(range(len(next\_word\_idx))) -\/}
+\DoxyCodeLine{69                             set(unfinished\_idx))}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71         \textcolor{comment}{\# sort h, c, top\_scores, previous\_words}}
+\DoxyCodeLine{72         \textcolor{comment}{\# only keep the unfinished ones}}
+\DoxyCodeLine{73         self.h = h[:, prev\_word\_idx[unfinished\_idx]]}
+\DoxyCodeLine{74         self.c = c[:, prev\_word\_idx[unfinished\_idx]]}
+\DoxyCodeLine{75         self.top\_scores = top\_probs[unfinished\_idx].unsqueeze(1)}
+\DoxyCodeLine{76         self.previous\_words = next\_word\_idx[unfinished\_idx]}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78         \textcolor{comment}{\# update finished captions}}
+\DoxyCodeLine{79         beam\_reduce\_num = min(len(finished\_idx), self.num\_unfinished)}
+\DoxyCodeLine{80         \textcolor{keywordflow}{if} beam\_reduce\_num > 0:}
+\DoxyCodeLine{81             \textcolor{comment}{\# add finished captions to finished}}
+\DoxyCodeLine{82             self.finished\_caps.extend(self.captions[finished\_idx].tolist())}
+\DoxyCodeLine{83             self.finished\_caps\_scores.extend(top\_probs[finished\_idx])}
+\DoxyCodeLine{84             self.num\_unfinished -\/= beam\_reduce\_num}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86             \textcolor{comment}{\# find best complete caption}}
+\DoxyCodeLine{87             best\_fin\_idx = self.find\_best\_comlpete\_sequence()}
+\DoxyCodeLine{88             \textcolor{comment}{\# check whether optimality certificate is achieved}}
+\DoxyCodeLine{89             \textcolor{keywordflow}{if} len(self.finished\_caps) < self.beam\_size:}
+\DoxyCodeLine{90                 \textcolor{comment}{\# only check if there still are unfinished caps left}}
+\DoxyCodeLine{91                 \textcolor{comment}{\# if there are none in unfinished then there is no}}
+\DoxyCodeLine{92                 \textcolor{comment}{\# point to check whether the optimality certificate is obtained}}
+\DoxyCodeLine{93                 best\_unfin\_prob, \_ = self.top\_scores.topk(1, dim=0)}
+\DoxyCodeLine{94                 self.optimality\_certificate = \(\backslash\)}
+\DoxyCodeLine{95                     self.finished\_caps\_scores[best\_fin\_idx] > best\_unfin\_prob}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97             \textcolor{keywordflow}{if} self.optimality\_certificate:}
+\DoxyCodeLine{98                 \textcolor{comment}{\# no need for further calculations}}
+\DoxyCodeLine{99                 self.num\_unfinished = 0}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101         \textcolor{comment}{\# sort captions, only keep the unfinished ones}}
+\DoxyCodeLine{102         \textcolor{comment}{\# could not do this until after finished was updated}}
+\DoxyCodeLine{103         self.captions = self.captions[unfinished\_idx]}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105         \textcolor{keywordflow}{if} self.captions.size(0):}
+\DoxyCodeLine{106             \textcolor{comment}{\# there are still more captions left}}
+\DoxyCodeLine{107             \textcolor{comment}{\# move captions to finished if length too long}}
+\DoxyCodeLine{108             \textcolor{keywordflow}{if} self.captions.size(1) >= self.max\_len:}
+\DoxyCodeLine{109                 self.finished\_caps.extend(self.captions.tolist())}
+\DoxyCodeLine{110                 self.finished\_caps\_scores.extend(self.top\_scores)}
+\DoxyCodeLine{111                 self.captions = torch.empty(self.beam\_size)}
+\DoxyCodeLine{112                 self.num\_unfinished = 0}
+\DoxyCodeLine{113 }
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classbeam_1_1_beam_ab7747e809cd5bfb64a95c3d7d7ced976}\label{classbeam_1_1_beam_ab7747e809cd5bfb64a95c3d7d7ced976}} 
+\index{beam.Beam@{beam.Beam}!beam\_size@{beam\_size}}
+\index{beam\_size@{beam\_size}!beam.Beam@{beam.Beam}}
+\doxysubsubsection{\texorpdfstring{beam\_size}{beam\_size}}
+{\footnotesize\ttfamily beam.\+Beam.\+beam\+\_\+size}
+
+
+
+Definition at line 11 of file beam.\+py.
+
+\mbox{\Hypertarget{classbeam_1_1_beam_a8cca1e98bd6188ff8ea00f8b343a02aa}\label{classbeam_1_1_beam_a8cca1e98bd6188ff8ea00f8b343a02aa}} 
+\index{beam.Beam@{beam.Beam}!c@{c}}
+\index{c@{c}!beam.Beam@{beam.Beam}}
+\doxysubsubsection{\texorpdfstring{c}{c}}
+{\footnotesize\ttfamily beam.\+Beam.\+c}
+
+
+
+Definition at line 10 of file beam.\+py.
+
+\mbox{\Hypertarget{classbeam_1_1_beam_aa76a13141474bb01de4c50acb997895e}\label{classbeam_1_1_beam_aa76a13141474bb01de4c50acb997895e}} 
+\index{beam.Beam@{beam.Beam}!captions@{captions}}
+\index{captions@{captions}!beam.Beam@{beam.Beam}}
+\doxysubsubsection{\texorpdfstring{captions}{captions}}
+{\footnotesize\ttfamily beam.\+Beam.\+captions}
+
+
+
+Definition at line 20 of file beam.\+py.
+
+\mbox{\Hypertarget{classbeam_1_1_beam_a145eec93a53ea6ab1776d66c381c254b}\label{classbeam_1_1_beam_a145eec93a53ea6ab1776d66c381c254b}} 
+\index{beam.Beam@{beam.Beam}!device@{device}}
+\index{device@{device}!beam.Beam@{beam.Beam}}
+\doxysubsubsection{\texorpdfstring{device}{device}}
+{\footnotesize\ttfamily beam.\+Beam.\+device}
+
+
+
+Definition at line 16 of file beam.\+py.
+
+\mbox{\Hypertarget{classbeam_1_1_beam_a35009ac28500c357747a389f48507f6e}\label{classbeam_1_1_beam_a35009ac28500c357747a389f48507f6e}} 
+\index{beam.Beam@{beam.Beam}!encoded\_image@{encoded\_image}}
+\index{encoded\_image@{encoded\_image}!beam.Beam@{beam.Beam}}
+\doxysubsubsection{\texorpdfstring{encoded\_image}{encoded\_image}}
+{\footnotesize\ttfamily beam.\+Beam.\+encoded\+\_\+image}
+
+
+
+Definition at line 9 of file beam.\+py.
+
+\mbox{\Hypertarget{classbeam_1_1_beam_a77c81590fc53619c42ecfb0a988f62f1}\label{classbeam_1_1_beam_a77c81590fc53619c42ecfb0a988f62f1}} 
+\index{beam.Beam@{beam.Beam}!EOS@{EOS}}
+\index{EOS@{EOS}!beam.Beam@{beam.Beam}}
+\doxysubsubsection{\texorpdfstring{EOS}{EOS}}
+{\footnotesize\ttfamily beam.\+Beam.\+E\+OS}
+
+
+
+Definition at line 13 of file beam.\+py.
+
+\mbox{\Hypertarget{classbeam_1_1_beam_a4f4226e84f28b9d446c4c9696b64aec5}\label{classbeam_1_1_beam_a4f4226e84f28b9d446c4c9696b64aec5}} 
+\index{beam.Beam@{beam.Beam}!finished\_caps@{finished\_caps}}
+\index{finished\_caps@{finished\_caps}!beam.Beam@{beam.Beam}}
+\doxysubsubsection{\texorpdfstring{finished\_caps}{finished\_caps}}
+{\footnotesize\ttfamily beam.\+Beam.\+finished\+\_\+caps}
+
+
+
+Definition at line 26 of file beam.\+py.
+
+\mbox{\Hypertarget{classbeam_1_1_beam_afb714d2c3ec82f27eecf32d85e291b54}\label{classbeam_1_1_beam_afb714d2c3ec82f27eecf32d85e291b54}} 
+\index{beam.Beam@{beam.Beam}!finished\_caps\_scores@{finished\_caps\_scores}}
+\index{finished\_caps\_scores@{finished\_caps\_scores}!beam.Beam@{beam.Beam}}
+\doxysubsubsection{\texorpdfstring{finished\_caps\_scores}{finished\_caps\_scores}}
+{\footnotesize\ttfamily beam.\+Beam.\+finished\+\_\+caps\+\_\+scores}
+
+
+
+Definition at line 27 of file beam.\+py.
+
+\mbox{\Hypertarget{classbeam_1_1_beam_a63807e1a0d707f33d2a0db1884a78181}\label{classbeam_1_1_beam_a63807e1a0d707f33d2a0db1884a78181}} 
+\index{beam.Beam@{beam.Beam}!h@{h}}
+\index{h@{h}!beam.Beam@{beam.Beam}}
+\doxysubsubsection{\texorpdfstring{h}{h}}
+{\footnotesize\ttfamily beam.\+Beam.\+h}
+
+
+
+Definition at line 73 of file beam.\+py.
+
+\mbox{\Hypertarget{classbeam_1_1_beam_a1e4d1e2fc6000bcd211461ea665e21ec}\label{classbeam_1_1_beam_a1e4d1e2fc6000bcd211461ea665e21ec}} 
+\index{beam.Beam@{beam.Beam}!id@{id}}
+\index{id@{id}!beam.Beam@{beam.Beam}}
+\doxysubsubsection{\texorpdfstring{id}{id}}
+{\footnotesize\ttfamily beam.\+Beam.\+id}
+
+
+
+Definition at line 8 of file beam.\+py.
+
+\mbox{\Hypertarget{classbeam_1_1_beam_ae3df6fd79c3f3d1acccb175756a5da23}\label{classbeam_1_1_beam_ae3df6fd79c3f3d1acccb175756a5da23}} 
+\index{beam.Beam@{beam.Beam}!max\_len@{max\_len}}
+\index{max\_len@{max\_len}!beam.Beam@{beam.Beam}}
+\doxysubsubsection{\texorpdfstring{max\_len}{max\_len}}
+{\footnotesize\ttfamily beam.\+Beam.\+max\+\_\+len}
+
+
+
+Definition at line 14 of file beam.\+py.
+
+\mbox{\Hypertarget{classbeam_1_1_beam_a9c9f188b32489cd83017fbc69c9ddd43}\label{classbeam_1_1_beam_a9c9f188b32489cd83017fbc69c9ddd43}} 
+\index{beam.Beam@{beam.Beam}!num\_unfinished@{num\_unfinished}}
+\index{num\_unfinished@{num\_unfinished}!beam.Beam@{beam.Beam}}
+\doxysubsubsection{\texorpdfstring{num\_unfinished}{num\_unfinished}}
+{\footnotesize\ttfamily beam.\+Beam.\+num\+\_\+unfinished}
+
+
+
+Definition at line 12 of file beam.\+py.
+
+\mbox{\Hypertarget{classbeam_1_1_beam_afe0cff81930313190486a716e0c53857}\label{classbeam_1_1_beam_afe0cff81930313190486a716e0c53857}} 
+\index{beam.Beam@{beam.Beam}!optimality\_certificate@{optimality\_certificate}}
+\index{optimality\_certificate@{optimality\_certificate}!beam.Beam@{beam.Beam}}
+\doxysubsubsection{\texorpdfstring{optimality\_certificate}{optimality\_certificate}}
+{\footnotesize\ttfamily beam.\+Beam.\+optimality\+\_\+certificate}
+
+
+
+Definition at line 29 of file beam.\+py.
+
+\mbox{\Hypertarget{classbeam_1_1_beam_af113fffbde16cc6106102f9f19fd8164}\label{classbeam_1_1_beam_af113fffbde16cc6106102f9f19fd8164}} 
+\index{beam.Beam@{beam.Beam}!previous\_words@{previous\_words}}
+\index{previous\_words@{previous\_words}!beam.Beam@{beam.Beam}}
+\doxysubsubsection{\texorpdfstring{previous\_words}{previous\_words}}
+{\footnotesize\ttfamily beam.\+Beam.\+previous\+\_\+words}
+
+
+
+Definition at line 23 of file beam.\+py.
+
+\mbox{\Hypertarget{classbeam_1_1_beam_a80396741c97a77679de923295634a859}\label{classbeam_1_1_beam_a80396741c97a77679de923295634a859}} 
+\index{beam.Beam@{beam.Beam}!top\_scores@{top\_scores}}
+\index{top\_scores@{top\_scores}!beam.Beam@{beam.Beam}}
+\doxysubsubsection{\texorpdfstring{top\_scores}{top\_scores}}
+{\footnotesize\ttfamily beam.\+Beam.\+top\+\_\+scores}
+
+
+
+Definition at line 24 of file beam.\+py.
+
+\mbox{\Hypertarget{classbeam_1_1_beam_aca3ee0b3f1853912cbbae18ce1a4ccce}\label{classbeam_1_1_beam_aca3ee0b3f1853912cbbae18ce1a4ccce}} 
+\index{beam.Beam@{beam.Beam}!vocab\_size@{vocab\_size}}
+\index{vocab\_size@{vocab\_size}!beam.Beam@{beam.Beam}}
+\doxysubsubsection{\texorpdfstring{vocab\_size}{vocab\_size}}
+{\footnotesize\ttfamily beam.\+Beam.\+vocab\+\_\+size}
+
+
+
+Definition at line 15 of file beam.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/models/\mbox{\hyperlink{beam_8py}{beam.\+py}}\end{DoxyCompactItemize}

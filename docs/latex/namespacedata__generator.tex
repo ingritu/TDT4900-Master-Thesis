@@ -1,0 +1,191 @@
+\hypertarget{namespacedata__generator}{}\doxysection{data\+\_\+generator Namespace Reference}
+\label{namespacedata__generator}\index{data\_generator@{data\_generator}}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{namespacedata__generator_a5162a96c51dba9265dd7a80db37f5ecb}{data\+\_\+generator}} (data\+\_\+df, batch\+\_\+size, steps\+\_\+per\+\_\+epoch, wordtoix, features, seed=2222)
+\item 
+def \mbox{\hyperlink{namespacedata__generator_a0bea249fa1033d5e9d407e6767dc0623}{get\+\_\+image}} (visual\+\_\+features, data\+\_\+df, i)
+\item 
+def \mbox{\hyperlink{namespacedata__generator_a59dec8d88441b40e19ed85bc3d7bffca}{get\+\_\+caption}} (data\+\_\+df, i)
+\item 
+def \mbox{\hyperlink{namespacedata__generator_afa22325759da06760006b667a30f1352}{to\+\_\+categorical}} (y, num\+\_\+classes=None, dtype=\textquotesingle{}float32\textquotesingle{})
+\item 
+def \mbox{\hyperlink{namespacedata__generator_aa9dcc6b7c0665bf9e734aa191f21312b}{pad\+\_\+sequences}} (sequences, maxlen)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespacedata__generator_a43f3f605e41926e60b22d92d97a491d8}{R\+O\+O\+T\+\_\+\+P\+A\+TH}} = Path(\+\_\+\+\_\+file\+\_\+\+\_\+).absolute().parents\mbox{[}2\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacedata__generator_a5162a96c51dba9265dd7a80db37f5ecb}\label{namespacedata__generator_a5162a96c51dba9265dd7a80db37f5ecb}} 
+\index{data\_generator@{data\_generator}!data\_generator@{data\_generator}}
+\index{data\_generator@{data\_generator}!data\_generator@{data\_generator}}
+\doxysubsubsection{\texorpdfstring{data\_generator()}{data\_generator()}}
+{\footnotesize\ttfamily def data\+\_\+generator.\+data\+\_\+generator (\begin{DoxyParamCaption}\item[{}]{data\+\_\+df,  }\item[{}]{batch\+\_\+size,  }\item[{}]{steps\+\_\+per\+\_\+epoch,  }\item[{}]{wordtoix,  }\item[{}]{features,  }\item[{}]{seed = {\ttfamily 2222} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}outputs data in batches
+\end{DoxyVerb}
+ 
+
+Definition at line 10 of file data\+\_\+generator.\+py.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{10 \textcolor{keyword}{def }\mbox{\hyperlink{namespacedata__generator_a5162a96c51dba9265dd7a80db37f5ecb}{data\_generator}}(data\_df, batch\_size, steps\_per\_epoch,}
+\DoxyCodeLine{11                    wordtoix, features, seed=2222):}
+\DoxyCodeLine{12     \textcolor{stringliteral}{"""}}
+\DoxyCodeLine{13 \textcolor{stringliteral}{    outputs data in batches}}
+\DoxyCodeLine{14 \textcolor{stringliteral}{    """}}
+\DoxyCodeLine{15     \textcolor{comment}{\# TODO: order data to create batches with captions}}
+\DoxyCodeLine{16     \textcolor{comment}{\#  of roughly the same length}}
+\DoxyCodeLine{17     r.seed(seed)}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19     \textcolor{comment}{\# load visual features}}
+\DoxyCodeLine{20     max\_length = max([len(c.split())}
+\DoxyCodeLine{21                       \textcolor{keywordflow}{for} c \textcolor{keywordflow}{in} set(data\_df.loc[:, \textcolor{stringliteral}{'clean\_caption'}])])}
+\DoxyCodeLine{22     \textcolor{comment}{\# infinite loop}}
+\DoxyCodeLine{23     \textcolor{keywordflow}{while} \textcolor{keyword}{True}:}
+\DoxyCodeLine{24         \textcolor{comment}{\# new Epoch have started}}
+\DoxyCodeLine{25         \textcolor{comment}{\# new shuffle state for next epoch}}
+\DoxyCodeLine{26         shuffle\_state = r.randint(0, 10000)}
+\DoxyCodeLine{27         \textcolor{comment}{\# shuffle df}}
+\DoxyCodeLine{28         data\_df = shuffle(data\_df, random\_state=shuffle\_state)}
+\DoxyCodeLine{29         data\_df = data\_df.reset\_index(drop=\textcolor{keyword}{True})}
+\DoxyCodeLine{30         \textcolor{keywordflow}{for} step \textcolor{keywordflow}{in} range(steps\_per\_epoch):}
+\DoxyCodeLine{31             \textcolor{comment}{\# create a new batch}}
+\DoxyCodeLine{32             x1 = []}
+\DoxyCodeLine{33             x2 = []}
+\DoxyCodeLine{34             caption\_lengths = []}
+\DoxyCodeLine{35             \textcolor{comment}{\# Steps per epoch is equal to floor of}}
+\DoxyCodeLine{36             \textcolor{comment}{\# total\_samples/batch\_size}}
+\DoxyCodeLine{37             \textcolor{comment}{\# TODO: make steps per epoch equal to ceiling of}}
+\DoxyCodeLine{38             \textcolor{comment}{\# TODO (continued): total\_samples/batch\_size}}
+\DoxyCodeLine{39             \textcolor{keywordflow}{for} i \textcolor{keywordflow}{in} range(batch\_size * step, batch\_size * (step + 1)):}
+\DoxyCodeLine{40                 image = \mbox{\hyperlink{namespacedata__generator_a0bea249fa1033d5e9d407e6767dc0623}{get\_image}}(features, data\_df, i)}
+\DoxyCodeLine{41                 caption = \mbox{\hyperlink{namespacedata__generator_a59dec8d88441b40e19ed85bc3d7bffca}{get\_caption}}(data\_df, i)}
+\DoxyCodeLine{42                 \textcolor{comment}{\# create caption number sequence}}
+\DoxyCodeLine{43                 seq = [wordtoix[word] \textcolor{keywordflow}{for} word \textcolor{keywordflow}{in} caption.split(\textcolor{stringliteral}{' '})}
+\DoxyCodeLine{44                        \textcolor{keywordflow}{if} word \textcolor{keywordflow}{in} wordtoix]}
+\DoxyCodeLine{45                 caption\_lengths.append(len(seq))}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47                 x1.append(image)}
+\DoxyCodeLine{48                 x2.append(torch.tensor(seq))}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50             \textcolor{comment}{\# pad input sequence}}
+\DoxyCodeLine{51             x2 = \mbox{\hyperlink{namespacedata__generator_aa9dcc6b7c0665bf9e734aa191f21312b}{pad\_sequences}}(x2, max\_length)  \textcolor{comment}{\# output is a tensor}}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53             x1 = torch.tensor(x1)  \textcolor{comment}{\# convert to tensor}}
+\DoxyCodeLine{54             caption\_lengths = np.array(caption\_lengths)  \textcolor{comment}{\# convert to array}}
+\DoxyCodeLine{55             \textcolor{keywordflow}{yield} [[x1, x2], caption\_lengths]}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57 }
+
+\end{DoxyCode}
+\mbox{\Hypertarget{namespacedata__generator_a59dec8d88441b40e19ed85bc3d7bffca}\label{namespacedata__generator_a59dec8d88441b40e19ed85bc3d7bffca}} 
+\index{data\_generator@{data\_generator}!get\_caption@{get\_caption}}
+\index{get\_caption@{get\_caption}!data\_generator@{data\_generator}}
+\doxysubsubsection{\texorpdfstring{get\_caption()}{get\_caption()}}
+{\footnotesize\ttfamily def data\+\_\+generator.\+get\+\_\+caption (\begin{DoxyParamCaption}\item[{}]{data\+\_\+df,  }\item[{}]{i }\end{DoxyParamCaption})}
+
+
+
+Definition at line 63 of file data\+\_\+generator.\+py.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{63 \textcolor{keyword}{def }\mbox{\hyperlink{namespacedata__generator_a59dec8d88441b40e19ed85bc3d7bffca}{get\_caption}}(data\_df, i):}
+\DoxyCodeLine{64     \textcolor{keywordflow}{return} data\_df.loc[i, \textcolor{stringliteral}{'clean\_caption'}]}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66 }
+
+\end{DoxyCode}
+\mbox{\Hypertarget{namespacedata__generator_a0bea249fa1033d5e9d407e6767dc0623}\label{namespacedata__generator_a0bea249fa1033d5e9d407e6767dc0623}} 
+\index{data\_generator@{data\_generator}!get\_image@{get\_image}}
+\index{get\_image@{get\_image}!data\_generator@{data\_generator}}
+\doxysubsubsection{\texorpdfstring{get\_image()}{get\_image()}}
+{\footnotesize\ttfamily def data\+\_\+generator.\+get\+\_\+image (\begin{DoxyParamCaption}\item[{}]{visual\+\_\+features,  }\item[{}]{data\+\_\+df,  }\item[{}]{i }\end{DoxyParamCaption})}
+
+
+
+Definition at line 58 of file data\+\_\+generator.\+py.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{58 \textcolor{keyword}{def }\mbox{\hyperlink{namespacedata__generator_a0bea249fa1033d5e9d407e6767dc0623}{get\_image}}(visual\_features, data\_df, i):}
+\DoxyCodeLine{59     image\_name = data\_df.loc[i, \textcolor{stringliteral}{'image\_name'}]}
+\DoxyCodeLine{60     \textcolor{keywordflow}{return} visual\_features[image\_name]}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 }
+
+\end{DoxyCode}
+\mbox{\Hypertarget{namespacedata__generator_aa9dcc6b7c0665bf9e734aa191f21312b}\label{namespacedata__generator_aa9dcc6b7c0665bf9e734aa191f21312b}} 
+\index{data\_generator@{data\_generator}!pad\_sequences@{pad\_sequences}}
+\index{pad\_sequences@{pad\_sequences}!data\_generator@{data\_generator}}
+\doxysubsubsection{\texorpdfstring{pad\_sequences()}{pad\_sequences()}}
+{\footnotesize\ttfamily def data\+\_\+generator.\+pad\+\_\+sequences (\begin{DoxyParamCaption}\item[{}]{sequences,  }\item[{}]{maxlen }\end{DoxyParamCaption})}
+
+
+
+Definition at line 84 of file data\+\_\+generator.\+py.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{84 \textcolor{keyword}{def }\mbox{\hyperlink{namespacedata__generator_aa9dcc6b7c0665bf9e734aa191f21312b}{pad\_sequences}}(sequences, maxlen):}
+\DoxyCodeLine{85     num = len(sequences)}
+\DoxyCodeLine{86     out\_dims = (num, maxlen)}
+\DoxyCodeLine{87     out\_tensor = sequences[0].data.new(*out\_dims).fill\_(0)}
+\DoxyCodeLine{88     \textcolor{keywordflow}{for} i, tensor \textcolor{keywordflow}{in} enumerate(sequences):}
+\DoxyCodeLine{89         length = tensor.size(0)}
+\DoxyCodeLine{90         out\_tensor[i, :length] = tensor}
+\DoxyCodeLine{91     \textcolor{keywordflow}{return} out\_tensor}
+\DoxyCodeLine{92 }
+
+\end{DoxyCode}
+\mbox{\Hypertarget{namespacedata__generator_afa22325759da06760006b667a30f1352}\label{namespacedata__generator_afa22325759da06760006b667a30f1352}} 
+\index{data\_generator@{data\_generator}!to\_categorical@{to\_categorical}}
+\index{to\_categorical@{to\_categorical}!data\_generator@{data\_generator}}
+\doxysubsubsection{\texorpdfstring{to\_categorical()}{to\_categorical()}}
+{\footnotesize\ttfamily def data\+\_\+generator.\+to\+\_\+categorical (\begin{DoxyParamCaption}\item[{}]{y,  }\item[{}]{num\+\_\+classes = {\ttfamily None},  }\item[{}]{dtype = {\ttfamily \textquotesingle{}float32\textquotesingle{}} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 67 of file data\+\_\+generator.\+py.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{67 \textcolor{keyword}{def }\mbox{\hyperlink{namespacedata__generator_afa22325759da06760006b667a30f1352}{to\_categorical}}(y, num\_classes=None, dtype='float32'):}
+\DoxyCodeLine{68     \textcolor{comment}{\# copied from keras for convenience}}
+\DoxyCodeLine{69     y = np.array(y, dtype=\textcolor{stringliteral}{'int'})}
+\DoxyCodeLine{70     input\_shape = y.shape}
+\DoxyCodeLine{71     \textcolor{keywordflow}{if} input\_shape \textcolor{keywordflow}{and} input\_shape[-\/1] == 1 \textcolor{keywordflow}{and} len(input\_shape) > 1:}
+\DoxyCodeLine{72         input\_shape = tuple(input\_shape[:-\/1])}
+\DoxyCodeLine{73     y = y.ravel()}
+\DoxyCodeLine{74     \textcolor{keywordflow}{if} \textcolor{keywordflow}{not} num\_classes:}
+\DoxyCodeLine{75         num\_classes = np.max(y) + 1}
+\DoxyCodeLine{76     n = y.shape[0]}
+\DoxyCodeLine{77     categorical = np.zeros((n, num\_classes), dtype=dtype)}
+\DoxyCodeLine{78     categorical[np.arange(n), y] = 1}
+\DoxyCodeLine{79     output\_shape = input\_shape + (num\_classes,)}
+\DoxyCodeLine{80     categorical = np.reshape(categorical, output\_shape)}
+\DoxyCodeLine{81     \textcolor{keywordflow}{return} categorical}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83 }
+
+\end{DoxyCode}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{namespacedata__generator_a43f3f605e41926e60b22d92d97a491d8}\label{namespacedata__generator_a43f3f605e41926e60b22d92d97a491d8}} 
+\index{data\_generator@{data\_generator}!ROOT\_PATH@{ROOT\_PATH}}
+\index{ROOT\_PATH@{ROOT\_PATH}!data\_generator@{data\_generator}}
+\doxysubsubsection{\texorpdfstring{ROOT\_PATH}{ROOT\_PATH}}
+{\footnotesize\ttfamily data\+\_\+generator.\+R\+O\+O\+T\+\_\+\+P\+A\+TH = Path(\+\_\+\+\_\+file\+\_\+\+\_\+).absolute().parents\mbox{[}2\mbox{]}}
+
+
+
+Definition at line 7 of file data\+\_\+generator.\+py.
+

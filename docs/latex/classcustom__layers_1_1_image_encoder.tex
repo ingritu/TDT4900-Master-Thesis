@@ -1,0 +1,126 @@
+\hypertarget{classcustom__layers_1_1_image_encoder}{}\doxysection{custom\+\_\+layers.\+Image\+Encoder Class Reference}
+\label{classcustom__layers_1_1_image_encoder}\index{custom\_layers.ImageEncoder@{custom\_layers.ImageEncoder}}
+Inheritance diagram for custom\+\_\+layers.\+Image\+Encoder\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classcustom__layers_1_1_image_encoder}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{classcustom__layers_1_1_image_encoder_a83db192375df4a890e4fb1dc3d946688}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, input\+\_\+shape, hidden\+\_\+size, embedding\+\_\+size)
+\item 
+def \mbox{\hyperlink{classcustom__layers_1_1_image_encoder_a33c210a11bc3b1e5b725a721549be8fe}{forward}} (self, x)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classcustom__layers_1_1_image_encoder_a2847260a61bd7ed2e79b7967100e0f1b}{average\+\_\+pool}}
+\item 
+\mbox{\hyperlink{classcustom__layers_1_1_image_encoder_ab660507abd681b9c6029b660ceb8dfc5}{v\+\_\+affine}}
+\item 
+\mbox{\hyperlink{classcustom__layers_1_1_image_encoder_a71e5813c5688df26ba4c3c08c8f98c58}{global\+\_\+affine}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line 56 of file custom\+\_\+layers.\+py.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classcustom__layers_1_1_image_encoder_a83db192375df4a890e4fb1dc3d946688}\label{classcustom__layers_1_1_image_encoder_a83db192375df4a890e4fb1dc3d946688}} 
+\index{custom\_layers.ImageEncoder@{custom\_layers.ImageEncoder}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!custom\_layers.ImageEncoder@{custom\_layers.ImageEncoder}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily def custom\+\_\+layers.\+Image\+Encoder.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{input\+\_\+shape,  }\item[{}]{hidden\+\_\+size,  }\item[{}]{embedding\+\_\+size }\end{DoxyParamCaption})}
+
+
+
+Definition at line 58 of file custom\+\_\+layers.\+py.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{58     \textcolor{keyword}{def }\_\_init\_\_(self, input\_shape, hidden\_size, embedding\_size):}
+\DoxyCodeLine{59         super(ImageEncoder, self).\_\_init\_\_()}
+\DoxyCodeLine{60         self.average\_pool = nn.AvgPool2d(input\_shape[0])}
+\DoxyCodeLine{61         \textcolor{comment}{\# affine transformation of attention features}}
+\DoxyCodeLine{62         self.v\_affine = nn.Linear(input\_shape[2], hidden\_size)}
+\DoxyCodeLine{63         \textcolor{comment}{\# affine transformation of global image features}}
+\DoxyCodeLine{64         self.global\_affine = nn.Linear(input\_shape[2], embedding\_size)}
+\DoxyCodeLine{65 }
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classcustom__layers_1_1_image_encoder_a33c210a11bc3b1e5b725a721549be8fe}\label{classcustom__layers_1_1_image_encoder_a33c210a11bc3b1e5b725a721549be8fe}} 
+\index{custom\_layers.ImageEncoder@{custom\_layers.ImageEncoder}!forward@{forward}}
+\index{forward@{forward}!custom\_layers.ImageEncoder@{custom\_layers.ImageEncoder}}
+\doxysubsubsection{\texorpdfstring{forward()}{forward()}}
+{\footnotesize\ttfamily def custom\+\_\+layers.\+Image\+Encoder.\+forward (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{x }\end{DoxyParamCaption})}
+
+
+
+Definition at line 66 of file custom\+\_\+layers.\+py.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{66     \textcolor{keyword}{def }forward(self, x):}
+\DoxyCodeLine{67         \textcolor{comment}{\# x = V, (batch\_size, 8, 8, 1536)}}
+\DoxyCodeLine{68         \textcolor{comment}{\# print('Image Encoder')}}
+\DoxyCodeLine{69         input\_shape = x.size()}
+\DoxyCodeLine{70         pixels = input\_shape[1] * input\_shape[2]  \textcolor{comment}{\# 8x8 = 64}}
+\DoxyCodeLine{71         global\_image = self.average\_pool(x).view(input\_shape[0], -\/1)}
+\DoxyCodeLine{72         inputs = x.view(input\_shape[0], pixels, input\_shape[3])}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74         \textcolor{comment}{\# transform}}
+\DoxyCodeLine{75         global\_image = self.global\_affine(global\_image)}
+\DoxyCodeLine{76         inputs = self.v\_affine(inputs)}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78         \textcolor{keywordflow}{return} global\_image, inputs}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 }
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classcustom__layers_1_1_image_encoder_a2847260a61bd7ed2e79b7967100e0f1b}\label{classcustom__layers_1_1_image_encoder_a2847260a61bd7ed2e79b7967100e0f1b}} 
+\index{custom\_layers.ImageEncoder@{custom\_layers.ImageEncoder}!average\_pool@{average\_pool}}
+\index{average\_pool@{average\_pool}!custom\_layers.ImageEncoder@{custom\_layers.ImageEncoder}}
+\doxysubsubsection{\texorpdfstring{average\_pool}{average\_pool}}
+{\footnotesize\ttfamily custom\+\_\+layers.\+Image\+Encoder.\+average\+\_\+pool}
+
+
+
+Definition at line 60 of file custom\+\_\+layers.\+py.
+
+\mbox{\Hypertarget{classcustom__layers_1_1_image_encoder_a71e5813c5688df26ba4c3c08c8f98c58}\label{classcustom__layers_1_1_image_encoder_a71e5813c5688df26ba4c3c08c8f98c58}} 
+\index{custom\_layers.ImageEncoder@{custom\_layers.ImageEncoder}!global\_affine@{global\_affine}}
+\index{global\_affine@{global\_affine}!custom\_layers.ImageEncoder@{custom\_layers.ImageEncoder}}
+\doxysubsubsection{\texorpdfstring{global\_affine}{global\_affine}}
+{\footnotesize\ttfamily custom\+\_\+layers.\+Image\+Encoder.\+global\+\_\+affine}
+
+
+
+Definition at line 64 of file custom\+\_\+layers.\+py.
+
+\mbox{\Hypertarget{classcustom__layers_1_1_image_encoder_ab660507abd681b9c6029b660ceb8dfc5}\label{classcustom__layers_1_1_image_encoder_ab660507abd681b9c6029b660ceb8dfc5}} 
+\index{custom\_layers.ImageEncoder@{custom\_layers.ImageEncoder}!v\_affine@{v\_affine}}
+\index{v\_affine@{v\_affine}!custom\_layers.ImageEncoder@{custom\_layers.ImageEncoder}}
+\doxysubsubsection{\texorpdfstring{v\_affine}{v\_affine}}
+{\footnotesize\ttfamily custom\+\_\+layers.\+Image\+Encoder.\+v\+\_\+affine}
+
+
+
+Definition at line 62 of file custom\+\_\+layers.\+py.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/models/\mbox{\hyperlink{custom__layers_8py}{custom\+\_\+layers.\+py}}\end{DoxyCompactItemize}

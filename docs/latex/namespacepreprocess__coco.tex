@@ -1,0 +1,131 @@
+\hypertarget{namespacepreprocess__coco}{}\doxysection{preprocess\+\_\+coco Namespace Reference}
+\label{namespacepreprocess__coco}\index{preprocess\_coco@{preprocess\_coco}}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{namespacepreprocess__coco_acf96542f0f607c7a974c23718e50c710}{find\+\_\+captions}} (captions, image\+\_\+id)
+\item 
+def \mbox{\hyperlink{namespacepreprocess__coco_ae2bb8dc94c264ac805b20a67bf9c2636}{make\+\_\+dataframe}} (data\+\_\+path)
+\item 
+def \mbox{\hyperlink{namespacepreprocess__coco_a45bf86267c5c044d04fe25d892999efc}{preprocess\+\_\+coco}} (data\+\_\+path, output\+\_\+path, splits)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespacepreprocess__coco_a87d682989d1aa6800e53b65f134cc62e}{R\+O\+O\+T\+\_\+\+P\+A\+TH}} = Path(\+\_\+\+\_\+file\+\_\+\+\_\+).absolute().parents\mbox{[}2\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacepreprocess__coco_acf96542f0f607c7a974c23718e50c710}\label{namespacepreprocess__coco_acf96542f0f607c7a974c23718e50c710}} 
+\index{preprocess\_coco@{preprocess\_coco}!find\_captions@{find\_captions}}
+\index{find\_captions@{find\_captions}!preprocess\_coco@{preprocess\_coco}}
+\doxysubsubsection{\texorpdfstring{find\_captions()}{find\_captions()}}
+{\footnotesize\ttfamily def preprocess\+\_\+coco.\+find\+\_\+captions (\begin{DoxyParamCaption}\item[{}]{captions,  }\item[{}]{image\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+Definition at line 8 of file preprocess\+\_\+coco.\+py.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{8 \textcolor{keyword}{def }\mbox{\hyperlink{namespacepreprocess__coco_acf96542f0f607c7a974c23718e50c710}{find\_captions}}(captions, image\_id):}
+\DoxyCodeLine{9     cap\_ids = []}
+\DoxyCodeLine{10     caps = []}
+\DoxyCodeLine{11     remove\_objects = []}
+\DoxyCodeLine{12     \textcolor{keywordflow}{for} capobj \textcolor{keywordflow}{in} captions:}
+\DoxyCodeLine{13         \textcolor{keywordflow}{if} capobj[\textcolor{stringliteral}{'image\_id'}] == image\_id:}
+\DoxyCodeLine{14             cap\_ids.append(capobj[\textcolor{stringliteral}{'id'}])}
+\DoxyCodeLine{15             caps.append(capobj[\textcolor{stringliteral}{'caption'}])}
+\DoxyCodeLine{16             remove\_objects.append(capobj)}
+\DoxyCodeLine{17     \textcolor{comment}{\# remove used captions}}
+\DoxyCodeLine{18     \textcolor{keywordflow}{for} c \textcolor{keywordflow}{in} remove\_objects:}
+\DoxyCodeLine{19         captions.remove(c)}
+\DoxyCodeLine{20     \textcolor{comment}{\# print('cap\_size', len(captions))}}
+\DoxyCodeLine{21     \textcolor{keywordflow}{return} cap\_ids, caps}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 }
+
+\end{DoxyCode}
+\mbox{\Hypertarget{namespacepreprocess__coco_ae2bb8dc94c264ac805b20a67bf9c2636}\label{namespacepreprocess__coco_ae2bb8dc94c264ac805b20a67bf9c2636}} 
+\index{preprocess\_coco@{preprocess\_coco}!make\_dataframe@{make\_dataframe}}
+\index{make\_dataframe@{make\_dataframe}!preprocess\_coco@{preprocess\_coco}}
+\doxysubsubsection{\texorpdfstring{make\_dataframe()}{make\_dataframe()}}
+{\footnotesize\ttfamily def preprocess\+\_\+coco.\+make\+\_\+dataframe (\begin{DoxyParamCaption}\item[{}]{data\+\_\+path }\end{DoxyParamCaption})}
+
+
+
+Definition at line 24 of file preprocess\+\_\+coco.\+py.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{24 \textcolor{keyword}{def }\mbox{\hyperlink{namespacepreprocess__coco_ae2bb8dc94c264ac805b20a67bf9c2636}{make\_dataframe}}(data\_path):}
+\DoxyCodeLine{25     \textcolor{keyword}{with} open(data\_path, \textcolor{stringliteral}{'r'}) \textcolor{keyword}{as} json\_file:}
+\DoxyCodeLine{26         data\_dict = json.load(json\_file)}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28     out\_dict = \{}
+\DoxyCodeLine{29         \textcolor{stringliteral}{'image\_id'}: [],}
+\DoxyCodeLine{30         \textcolor{stringliteral}{'image\_name'}: [],}
+\DoxyCodeLine{31         \textcolor{stringliteral}{'caption\_id'}: [],}
+\DoxyCodeLine{32         \textcolor{stringliteral}{'caption'}: []}
+\DoxyCodeLine{33     \}}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35     images = data\_dict[\textcolor{stringliteral}{'images'}]}
+\DoxyCodeLine{36     captions = data\_dict[\textcolor{stringliteral}{'annotations'}]}
+\DoxyCodeLine{37     cap\_counter = 0}
+\DoxyCodeLine{38     \textcolor{keywordflow}{for} imgobj \textcolor{keywordflow}{in} images:}
+\DoxyCodeLine{39         im\_id = imgobj[\textcolor{stringliteral}{'id'}]}
+\DoxyCodeLine{40         im\_name = imgobj[\textcolor{stringliteral}{'file\_name'}]}
+\DoxyCodeLine{41         cap\_ids, caps = \mbox{\hyperlink{namespacepreprocess__coco_acf96542f0f607c7a974c23718e50c710}{find\_captions}}(captions, imgobj[\textcolor{stringliteral}{'id'}])}
+\DoxyCodeLine{42         \textcolor{keywordflow}{for} c \textcolor{keywordflow}{in} range(len(cap\_ids)):}
+\DoxyCodeLine{43             cap\_id = im\_name + \textcolor{stringliteral}{"\#"} + \mbox{\hyperlink{namespacetrain__model_af1334e726c4782724a0e5b8f9e031e01}{str}}(cap\_ids[c])}
+\DoxyCodeLine{44             caption = caps[c]}
+\DoxyCodeLine{45             out\_dict[\textcolor{stringliteral}{'image\_id'}].append(im\_id)}
+\DoxyCodeLine{46             out\_dict[\textcolor{stringliteral}{'image\_name'}].append(im\_name)}
+\DoxyCodeLine{47             out\_dict[\textcolor{stringliteral}{'caption\_id'}].append(im\_name + \textcolor{stringliteral}{"\#"} + cap\_id)}
+\DoxyCodeLine{48             out\_dict[\textcolor{stringliteral}{'caption'}].append(caption)}
+\DoxyCodeLine{49             cap\_counter += 1}
+\DoxyCodeLine{50             \textcolor{keywordflow}{if} cap\_counter \% 1000 == 0:}
+\DoxyCodeLine{51                 print(cap\_counter)}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53     data\_df = pd.DataFrame(data=out\_dict, columns=out\_dict.keys())}
+\DoxyCodeLine{54     \textcolor{keywordflow}{return} data\_df}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 }
+
+\end{DoxyCode}
+\mbox{\Hypertarget{namespacepreprocess__coco_a45bf86267c5c044d04fe25d892999efc}\label{namespacepreprocess__coco_a45bf86267c5c044d04fe25d892999efc}} 
+\index{preprocess\_coco@{preprocess\_coco}!preprocess\_coco@{preprocess\_coco}}
+\index{preprocess\_coco@{preprocess\_coco}!preprocess\_coco@{preprocess\_coco}}
+\doxysubsubsection{\texorpdfstring{preprocess\_coco()}{preprocess\_coco()}}
+{\footnotesize\ttfamily def preprocess\+\_\+coco.\+preprocess\+\_\+coco (\begin{DoxyParamCaption}\item[{}]{data\+\_\+path,  }\item[{}]{output\+\_\+path,  }\item[{}]{splits }\end{DoxyParamCaption})}
+
+
+
+Definition at line 57 of file preprocess\+\_\+coco.\+py.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{57 \textcolor{keyword}{def }\mbox{\hyperlink{namespacepreprocess__coco_a45bf86267c5c044d04fe25d892999efc}{preprocess\_coco}}(data\_path, output\_path, splits):}
+\DoxyCodeLine{58     \textcolor{comment}{\# TODO: modify to create annotation files too}}
+\DoxyCodeLine{59     \textcolor{keywordflow}{for} split \textcolor{keywordflow}{in} splits:}
+\DoxyCodeLine{60         d\_path = data\_path.joinpath(\textcolor{stringliteral}{'captions\_'} + split + \textcolor{stringliteral}{'2014.json'})}
+\DoxyCodeLine{61         split\_df = \mbox{\hyperlink{namespacepreprocess__coco_ae2bb8dc94c264ac805b20a67bf9c2636}{make\_dataframe}}(d\_path)}
+\DoxyCodeLine{62         split\_df.to\_csv(output\_path.joinpath(\textcolor{stringliteral}{'coco\_'} + split + \textcolor{stringliteral}{'.csv'}))}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 }
+
+\end{DoxyCode}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{namespacepreprocess__coco_a87d682989d1aa6800e53b65f134cc62e}\label{namespacepreprocess__coco_a87d682989d1aa6800e53b65f134cc62e}} 
+\index{preprocess\_coco@{preprocess\_coco}!ROOT\_PATH@{ROOT\_PATH}}
+\index{ROOT\_PATH@{ROOT\_PATH}!preprocess\_coco@{preprocess\_coco}}
+\doxysubsubsection{\texorpdfstring{ROOT\_PATH}{ROOT\_PATH}}
+{\footnotesize\ttfamily preprocess\+\_\+coco.\+R\+O\+O\+T\+\_\+\+P\+A\+TH = Path(\+\_\+\+\_\+file\+\_\+\+\_\+).absolute().parents\mbox{[}2\mbox{]}}
+
+
+
+Definition at line 5 of file preprocess\+\_\+coco.\+py.
+
