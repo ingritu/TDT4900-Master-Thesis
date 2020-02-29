@@ -1,0 +1,203 @@
+Image Captioning\hypertarget{md__r_e_a_d_m_e_autotoc_md1}{}\doxysection{Installations}\label{md__r_e_a_d_m_e_autotoc_md1}
+First go to \href{https://github.com/salaniz/pycocoevalcap}{\texttt{ https\+://github.\+com/salaniz/pycocoevalcap}} to install pycocoevalcap and pycocotools. We need these packages to evaluate the model, and this is copatible with python 3.
+
+It is possible that you will get an error saying \char`\"{}\+No module named Cython\char`\"{} while you are trying to install the packages. If you get this error just install Cython by entering this into the terminal\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{pip install cython}
+\end{DoxyCode}
+
+
+Once cython is installed you should be able to install pycocoevalcap and pycocotools.
+
+Then install the rest of the requirements by running\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{pip install -\/r requirements.txt}
+\end{DoxyCode}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md2}{}\doxysection{Running project}\label{md__r_e_a_d_m_e_autotoc_md2}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md3}{}\doxysubsection{1. Make the dataset}\label{md__r_e_a_d_m_e_autotoc_md3}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{python3 -\/m src.data.make\_dataset -\/-\/help}
+\DoxyCodeLine{}
+\DoxyCodeLine{usage: src.data.make\_dataset.py [-\/h] [-\/-\/dataset DATASET] [-\/-\/karpathy KARPATHY]}
+\DoxyCodeLine{}
+\DoxyCodeLine{optional arguments:}
+\DoxyCodeLine{  -\/h, -\/-\/help           show this help message and exit}
+\DoxyCodeLine{  -\/-\/dataset DATASET    Dataset to train on. The options are \{flickr8k,}
+\DoxyCodeLine{                       flickr30k, coco\}.}
+\DoxyCodeLine{  -\/-\/karpathy KARPATHY  Boolean used to decide whether to train on the karpathy}
+\DoxyCodeLine{                       split of dataset or not.}
+\end{DoxyCode}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md4}{}\doxysubsection{2. Make the features}\label{md__r_e_a_d_m_e_autotoc_md4}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{python3 -\/m src.features.build\_features -\/-\/help}
+\DoxyCodeLine{}
+\DoxyCodeLine{usage: src.features.build\_features.py [-\/h] [-\/-\/resize\_images RESIZE\_IMAGES]}
+\DoxyCodeLine{                                      [-\/-\/new\_image\_size NEW\_IMAGE\_SIZE [NEW\_IMAGE\_SIZE ...]]}
+\DoxyCodeLine{                                      [-\/-\/dataset DATASET] [-\/-\/visual\_attention VISUAL\_ATTENTION]}
+\DoxyCodeLine{                                      [-\/-\/output\_layer\_idx OUTPUT\_LAYER\_IDX]}
+\DoxyCodeLine{}
+\DoxyCodeLine{optional arguments:}
+\DoxyCodeLine{  -\/h, -\/-\/help            show this help message and exit}
+\DoxyCodeLine{  -\/-\/resize\_images RESIZE\_IMAGES}
+\DoxyCodeLine{                        Boolean to decide whether to resize the images before}
+\DoxyCodeLine{                        building the actual features.}
+\DoxyCodeLine{  -\/-\/new\_image\_size NEW\_IMAGE\_SIZE [NEW\_IMAGE\_SIZE ...]}
+\DoxyCodeLine{                        List new image dimensions. should be something like}
+\DoxyCodeLine{                        299 299.}
+\DoxyCodeLine{  -\/-\/dataset DATASET     Which dataset to create image features for. The}
+\DoxyCodeLine{                        options are \{flickr8k, flickr30k, coco\}.}
+\DoxyCodeLine{  -\/-\/visual\_attention VISUAL\_ATTENTION}
+\DoxyCodeLine{                        Boolean for deciding whether to extract visual}
+\DoxyCodeLine{                        features that are usable for models that use visualt}
+\DoxyCodeLine{                        attention.}
+\DoxyCodeLine{  -\/-\/output\_layer\_idx OUTPUT\_LAYER\_IDX}
+\DoxyCodeLine{                        Which layer to extract features from.}
+\end{DoxyCode}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md5}{}\doxysubsection{3. Train a model}\label{md__r_e_a_d_m_e_autotoc_md5}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{python3 -\/m src.models.train\_model -\/-\/help}
+\DoxyCodeLine{}
+\DoxyCodeLine{usage: src.models.train\_model.py [-\/h] [-\/-\/batch\_size BATCH\_SIZE]}
+\DoxyCodeLine{                                 [-\/-\/val\_batch\_size VAL\_BATCH\_SIZE] [-\/-\/beam\_size BEAM\_SIZE]}
+\DoxyCodeLine{                                 [-\/-\/epochs EPOCHS] [-\/-\/embedding\_size EMBEDDING\_SIZE]}
+\DoxyCodeLine{                                 [-\/-\/hidden\_size HIDDEN\_SIZE] [-\/-\/loss\_function LOSS\_FUNCTION]}
+\DoxyCodeLine{                                 [-\/-\/optimizer OPTIMIZER] [-\/-\/lr LR] [-\/-\/seed SEED] [-\/-\/model MODEL]}
+\DoxyCodeLine{                                 [-\/-\/karpathy KARPATHY] [-\/-\/dataset DATASET] -\/-\/image\_feature\_size}
+\DoxyCodeLine{                                 IMAGE\_FEATURE\_SIZE [IMAGE\_FEATURE\_SIZE ...]}
+\DoxyCodeLine{}
+\DoxyCodeLine{optional arguments:}
+\DoxyCodeLine{  -\/h, -\/-\/help            show this help message and exit}
+\DoxyCodeLine{  -\/-\/batch\_size BATCH\_SIZE}
+\DoxyCodeLine{                        Training batch size. The number of captions in a}
+\DoxyCodeLine{                        batch.}
+\DoxyCodeLine{  -\/-\/val\_batch\_size VAL\_BATCH\_SIZE}
+\DoxyCodeLine{                        Validation batch size. The number of images in a}
+\DoxyCodeLine{                        batch. The actual batch size is val\_batch\_size *}
+\DoxyCodeLine{                        beam\_size.}
+\DoxyCodeLine{  -\/-\/beam\_size BEAM\_SIZE}
+\DoxyCodeLine{                        Beam size to use in beam search inference algorithm.}
+\DoxyCodeLine{                        Bigger beam size yields higher performance.}
+\DoxyCodeLine{  -\/-\/epochs EPOCHS       The number of epochs to train the network for.}
+\DoxyCodeLine{  -\/-\/embedding\_size EMBEDDING\_SIZE}
+\DoxyCodeLine{                        Embedding dimension. The size of the word vector}
+\DoxyCodeLine{                        representations.}
+\DoxyCodeLine{  -\/-\/hidden\_size HIDDEN\_SIZE}
+\DoxyCodeLine{                        Hidden dimension.}
+\DoxyCodeLine{  -\/-\/loss\_function LOSS\_FUNCTION}
+\DoxyCodeLine{                        Loss/Cost function to use during training.}
+\DoxyCodeLine{  -\/-\/optimizer OPTIMIZER}
+\DoxyCodeLine{                        Optimizer to use during training.}
+\DoxyCodeLine{  -\/-\/lr LR               Initial learning rate for the decoder.}
+\DoxyCodeLine{  -\/-\/seed SEED           Random state seed.}
+\DoxyCodeLine{  -\/-\/model MODEL         Model name. Which model type to train.}
+\DoxyCodeLine{  -\/-\/karpathy KARPATHY   Boolean used to decide whether to train on the}
+\DoxyCodeLine{                        karpathy split of dataset or not.}
+\DoxyCodeLine{  -\/-\/dataset DATASET     Dataset to train on. The options are \{flickr8k,}
+\DoxyCodeLine{                        flickr30k, coco\}.}
+\DoxyCodeLine{  -\/-\/image\_feature\_size IMAGE\_FEATURE\_SIZE [IMAGE\_FEATURE\_SIZE ...]}
+\DoxyCodeLine{                        List integers. Should be something like}
+\DoxyCodeLine{                        -\/-\/image\_feature\_size 8 8 1536.}
+\end{DoxyCode}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md6}{}\doxysubsection{4. Evaluate a trained model}\label{md__r_e_a_d_m_e_autotoc_md6}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{python3 -\/m src.models.predict\_model -\/-\/help}
+\DoxyCodeLine{}
+\DoxyCodeLine{usage: src.models.predict\_model.py [-\/h] [-\/-\/karpathy KARPATHY] [-\/-\/dataset DATASET] [-\/-\/split SPLIT]}
+\DoxyCodeLine{                                   [-\/-\/model\_name MODEL\_NAME] -\/-\/model MODEL}
+\DoxyCodeLine{                                   [-\/-\/val\_batch\_size VAL\_BATCH\_SIZE] [-\/-\/beam\_size BEAM\_SIZE]}
+\DoxyCodeLine{}
+\DoxyCodeLine{optional arguments:}
+\DoxyCodeLine{  -\/h, -\/-\/help            show this help message and exit}
+\DoxyCodeLine{  -\/-\/karpathy KARPATHY   Boolean used to decide whether to train on the}
+\DoxyCodeLine{                        karpathy split of dataset or not.}
+\DoxyCodeLine{  -\/-\/dataset DATASET     Dataset to test model on. The options are \{flickr8k,}
+\DoxyCodeLine{                        flickr30k, coco\}.}
+\DoxyCodeLine{  -\/-\/split SPLIT         Dataset split to evaluate. Acceptable values are}
+\DoxyCodeLine{                        \{train, val, test\}.}
+\DoxyCodeLine{  -\/-\/model\_name MODEL\_NAME}
+\DoxyCodeLine{                        Model type.}
+\DoxyCodeLine{  -\/-\/model MODEL         Name of the models directory. Should be something like}
+\DoxyCodeLine{                        adaptive\_decoder\_dd-\/Mon-\/yyyy\_(hh:mm:ss).}
+\DoxyCodeLine{  -\/-\/val\_batch\_size VAL\_BATCH\_SIZE}
+\DoxyCodeLine{                        Validation batch size. The number of images in a}
+\DoxyCodeLine{                        batch. The actual batch size is val\_batch\_size *}
+\DoxyCodeLine{                        beam\_size.}
+\DoxyCodeLine{  -\/-\/beam\_size BEAM\_SIZE}
+\DoxyCodeLine{                        Beam size to use in beam search inference algorithm.}
+\DoxyCodeLine{                        Bigger beam size yields higher performance.}
+\end{DoxyCode}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md7}{}\doxysection{Project Structure}\label{md__r_e_a_d_m_e_autotoc_md7}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{/}
+\DoxyCodeLine{├── data/}
+\DoxyCodeLine{│   ├── raw/}
+\DoxyCodeLine{│   │   ├── Flick8k/}
+\DoxyCodeLine{│   │   ├── Flickr30k/}
+\DoxyCodeLine{│   │   ├── karpathy\_split/}
+\DoxyCodeLine{│   │   │   ├── datase\_coco.json}
+\DoxyCodeLine{│   │   │   ├── datase\_flickr8k.json}
+\DoxyCodeLine{│   │   │   └── datase\_flickr30k.json}
+\DoxyCodeLine{│   │   └── MSCOCO/}
+\DoxyCodeLine{│   │       ├── annotations/}
+\DoxyCodeLine{│   │       ├── test2014/}
+\DoxyCodeLine{│   │       ├── train2014/}
+\DoxyCodeLine{│   │       └── val2014/}
+\DoxyCodeLine{│   ├── interim/}
+\DoxyCodeLine{│   ├── processed/}
+\DoxyCodeLine{│   └── README.md}
+\DoxyCodeLine{├── docs/}
+\DoxyCodeLine{│   └── README.md}
+\DoxyCodeLine{├── models/}
+\DoxyCodeLine{│   └── README.md}
+\DoxyCodeLine{├── notebooks/}
+\DoxyCodeLine{│   ├── annotation\_file\_exploration.ipynb}
+\DoxyCodeLine{│   ├── karpathy\_split\_exploration.ipynb}
+\DoxyCodeLine{│   ├── README.md}
+\DoxyCodeLine{│   ├── visualize\_word\_frequency.ipynb}
+\DoxyCodeLine{│   └── visuals/}
+\DoxyCodeLine{├── README.md}
+\DoxyCodeLine{├── references/}
+\DoxyCodeLine{│   ├── annotation\_mock.json}
+\DoxyCodeLine{│   ├── karpathy\_dataset\_mock.json}
+\DoxyCodeLine{│   ├── logs\_and\_checkpoints.txt}
+\DoxyCodeLine{│   ├── README.md}
+\DoxyCodeLine{│   └── run\_notes.txt}
+\DoxyCodeLine{├── reports/}
+\DoxyCodeLine{│   └── README.md}
+\DoxyCodeLine{├── requirements.txt}
+\DoxyCodeLine{└── src/}
+\DoxyCodeLine{    ├── data/}
+\DoxyCodeLine{    │   ├── data\_cleaning.py}
+\DoxyCodeLine{    │   ├── data\_generator.py}
+\DoxyCodeLine{    │   ├── handle\_karpathy\_split.py}
+\DoxyCodeLine{    │   ├── load\_vocabulary.py}
+\DoxyCodeLine{    │   ├── make\_dataset.py}
+\DoxyCodeLine{    │   ├── split\_flickr8k.py}
+\DoxyCodeLine{    │   ├── subset\_splits.py}
+\DoxyCodeLine{    │   ├── text\_to\_csv.py}
+\DoxyCodeLine{    │   └── utils.py}
+\DoxyCodeLine{    ├── features/}
+\DoxyCodeLine{    │   ├── build\_features.py}
+\DoxyCodeLine{    │   ├── glove\_embeddings.py}
+\DoxyCodeLine{    │   ├── resize\_images.py}
+\DoxyCodeLine{    │   └── Resnet\_features.py}
+\DoxyCodeLine{    ├── \_\_init\_\_.py}
+\DoxyCodeLine{    ├── models/}
+\DoxyCodeLine{    │   ├── beam.py}
+\DoxyCodeLine{    │   ├── custom\_layers.py}
+\DoxyCodeLine{    │   ├── generator\_framework.py}
+\DoxyCodeLine{    │   ├── predict\_model.py}
+\DoxyCodeLine{    │   ├── torch\_generators.py}
+\DoxyCodeLine{    │   ├── train\_model.py}
+\DoxyCodeLine{    │   └── utils.py}
+\DoxyCodeLine{    └── visualization/}
+\DoxyCodeLine{        └── visualize.py}
+\end{DoxyCode}
+ 
