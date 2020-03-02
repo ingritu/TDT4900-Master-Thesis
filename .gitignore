@@ -11,6 +11,9 @@ notebooks/visuals
 cococaption/*
 coco-caption/*
 src/test.py
+docs/html
+docs/latex
+.doctrees/*
 
 # Created by https://www.gitignore.io/api/pycharm,jupyternotebooks
 # Edit at https://www.gitignore.io/?templates=pycharm,jupyternotebooks
