@@ -95,6 +95,10 @@ def order_raw_data_and_move_to_interim(data_path, dataset, ann_path):
     train_df = pd.DataFrame(full_dict['train'], columns=columns)
     test_df = pd.DataFrame(full_dict['test'], columns=test_columns)
     val_df = pd.DataFrame(full_dict['val'], columns=test_columns)
+    # merge dfs for full set
+    full_df = train_df.append(val_df,
+                              ignore_index=True).append(test_df,
+                                                        ignore_index=True)
 
     save_path = ROOT_PATH.joinpath('data', 'interim', 'karpathy_split')
     if not save_path.is_dir():
@@ -105,10 +109,12 @@ def order_raw_data_and_move_to_interim(data_path, dataset, ann_path):
     train_file = save_path.joinpath(dataset + '_train.csv')
     test_file = save_path.joinpath(dataset + '_test.csv')
     val_file = save_path.joinpath(dataset + '_val.csv')
+    full_file = save_path.joinpath(dataset + '_full.csv')
 
     train_df.to_csv(train_file)
     test_df.to_csv(test_file)
     val_df.to_csv(val_file)
+    full_df.to_csv(full_file)
     print("finished job!!")
 
 

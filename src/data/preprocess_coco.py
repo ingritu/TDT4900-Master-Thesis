@@ -62,9 +62,10 @@ def preprocess_coco(data_path, output_path, splits):
         # if not a dir then mkdir
         output_path.mkdir(parents=True)
 
+    full_df = pd.DataFrame()
     for split in splits:
         d_path = data_path.joinpath('captions_' + split + '2014.json')
         split_df = make_dataframe(d_path)
+        full_df = full_df.append(split_df, ignore_index=True)
         split_df.to_csv(output_path.joinpath('coco_' + split + '.csv'))
-
-
+    full_df.to_csv(output_path.joinpath('coco_full.csv'))

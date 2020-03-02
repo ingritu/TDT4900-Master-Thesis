@@ -37,6 +37,9 @@ if __name__ == '__main__':
     args = vars(parser.parse_args())
 
     dataset_ = args['dataset']
+    assert dataset_ in {'flickr8k', 'flickr30k', 'coco'}, \
+        dataset_ + " is not supported. Only flickr8k, flickr30k and coco " \
+                   "are supported."
     new_dims_ = args['new_image_size']
     dims = DIMENSIONS[:2]  # use default if nothing else is specified
     if len(new_dims_):
@@ -50,9 +53,21 @@ if __name__ == '__main__':
     interim_path = ROOT_PATH.joinpath('data', 'interim')
     processed_path = ROOT_PATH.joinpath('data', 'processed')
     if args['resize_images']:
-        image_path_ = raw_path.joinpath(dataset_, 'Images')
+        # karpathy split does not matter here
         save_path_ = interim_path.joinpath(dataset_, 'Images')
-        resize_images(image_path_, save_path_, new_dims_)
+        if dataset_ == 'flickr8k':
+            image_path_ = raw_path.joinpath('Flickr8k', 'Images')
+            resize_images(image_path_, save_path_, new_dims_)
+        elif dataset_ == 'flickr30k':
+            image_path_ = raw_path.joinpath('Flickr30k', dataset_ + '-images')
+            resize_images(image_path_, save_path_, new_dims_)
+        else:
+            # must be coco
+            # coco is special because there are three folders for the images
+            image_dirs = ['train2014', 'test2014', 'val2014']
+            for image_dir in image_dirs:
+                image_path_ = raw_path.joinpath('MSCOCO', image_dir)
+                resize_images(image_path_, save_path_, new_dims_)
 
     # Build visual features
     output_layer_dim_ = args['output_layer_idx']
