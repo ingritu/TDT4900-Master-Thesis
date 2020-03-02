@@ -49,24 +49,19 @@ class Generator:
     def __init__(self,
                  model_name,
                  input_shape,
-                 hidden_size,
                  voc_path,
-                 feature_path,
-                 save_path,
-                 loss_function='cross_entropy',
-                 optimizer='adam',
-                 lr=0.0001,
-                 embedding_size=300,
-                 seed=222):
+                 feature_path):
         # delete if not used in this class
         self.input_shape = input_shape
         self.max_length = self.input_shape[1]
 
-        self.embedding_size = embedding_size
-        self.hidden_size = hidden_size
+        self.embedding_size = 0
+        self.hidden_size = 0
+        self.num_lstms = 0
+        self.decoding_stack_size = 0
 
-        self.save_path = save_path
-        self.random_seed = seed
+        self.save_path = None
+        self.random_seed = None
 
         self.vocab_path = voc_path
         self.wordtoix, self.ixtoword = load_vocabulary(self.vocab_path)
@@ -83,14 +78,14 @@ class Generator:
         self.model_name = model_name
 
         # initialize loss function
-        self.loss_string = loss_function
-        self.criterion = loss_switcher(self.loss_string)()
+        self.loss_string = ""
+        self.criterion = None
 
         # set up optimizer
-        self.optimizer_string = optimizer
+        self.optimizer_string = ""
         self.encoder_optimizer = None  # not initialized
         self.decoder_optimizer = None
-        self.lr = lr
+        self.lr = 0
 
         # misc
         self.framework_name = 'CaptionGeneratorFramework'
@@ -99,10 +94,43 @@ class Generator:
                                    if torch.cuda.is_available() else "cpu")
         print('Device:', self.device)
 
-    def compile(self):
+    def compile(self,
+                save_path,
+                embedding_size=512,
+                hidden_size=512,
+                num_lstms=1,
+                decoding_stack_size=1,
+                loss_function='cross_entropy',
+                optimizer='adam',
+                lr=0.0005,
+                seed=222):
         """
-        Builds the model.
+        Bulids the model
+
+        Parameters
+        ----------
+        save_path : Path or str.
+        embedding_size : int.
+        hidden_size : int.
+        num_lstms : int.
+        decoding_stack_size : int.
+        loss_function : str.
+        optimizer : str.
+        lr : float.
+        seed : int.
         """
+        # set values
+        self.save_path = Path(save_path)
+        self.embedding_size = embedding_size
+        self.hidden_size = hidden_size
+        self.num_lstms = num_lstms
+        self.decoding_stack_size = decoding_stack_size
+        self.loss_string = loss_function
+        self.criterion = loss_switcher(self.loss_string)()
+        self.optimizer_string = optimizer
+        self.lr = lr
+        self.random_seed = seed
+
         # initialize model
         self.decoder, self.encoder = model_switcher(self.model_name)
         self.encoder = self.encoder(self.input_shape[0],
@@ -113,6 +141,9 @@ class Generator:
                                     self.vocab_size,
                                     self.device,
                                     embedding_size=self.embedding_size,
+                                    num_lstms=self.num_lstms,
+                                    decoding_stack_size=
+                                    self.decoding_stack_size,
                                     seed=self.random_seed)
         print(self.encoder)
         print(self.decoder)

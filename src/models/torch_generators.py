@@ -125,10 +125,11 @@ class AdaptiveDecoder(nn.Module):
     def __init__(self,
                  input_shape,
                  hidden_size,
+                 embedding_size,
                  vocab_size,
                  device,
-                 num_lstms=0,
-                 embedding_size=300,
+                 num_lstms=1,
+                 decoding_stack_size=1,
                  seed=222):
         super(AdaptiveDecoder, self).__init__()
 
@@ -139,7 +140,8 @@ class AdaptiveDecoder(nn.Module):
 
         self.vocab_size = vocab_size
         self.em_size = embedding_size
-        self.num_lstms = num_lstms
+        self.num_lstms = num_lstms - 1
+        self.decoding_stack_size = decoding_stack_size - 1
         self.random_seed = seed
 
         self.device = device
@@ -152,7 +154,8 @@ class AdaptiveDecoder(nn.Module):
         self.attention_block = AttentionLayer(self.hidden_size,
                                               self.hidden_size)
         self.decoder = MultimodalDecoder(self.hidden_size,
-                                         self.vocab_size, n=1)
+                                         self.vocab_size,
+                                         n=self.decoding_stack_size)
 
     def forward(self, x, states):
         # unpack input

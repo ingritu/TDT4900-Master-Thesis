@@ -21,18 +21,18 @@ if __name__ == '__main__':
     parser.add_argument('--split', type=str, default='val',
                         help='Dataset split to evaluate. '
                              'Acceptable values are {train, val, test}.')
-    parser.add_argument('--model_name', type=str, default='adaptive_decoder',
+    parser.add_argument('--model-name', type=str, default='adaptive_decoder',
                         help='Model type.')
     parser.add_argument('--model', type=str, required=True,
                         help='Name of the models directory. '
                              'Should be something like '
                              'adaptive_decoder_dd-Mon-yyyy_(hh:mm:ss).')
-    parser.add_argument('--val_batch_size', type=int, default=250,
+    parser.add_argument('--val-batch-size', type=int, default=250,
                         help='Validation batch size. '
                              'The number of images in a batch. '
                              'The actual batch size is val_batch_size * '
                              'beam_size.')
-    parser.add_argument('--beam_size', type=int, default=3,
+    parser.add_argument('--beam-size', type=int, default=3,
                         help='Beam size to use in beam search '
                              'inference algorithm. '
                              'Bigger beam size yields higher performance.')
@@ -63,26 +63,11 @@ if __name__ == '__main__':
 
     model_name_ = args['model_name']
 
-    # bull values that generator needs to be set
-    save_path_ = models_path
-    em_dim = 300
-    hidden_shape_ = 50
-    loss_function_ = 'cross_entropy'
-    opt = 'adam'
-    lr_ = 0.0001
-    seed_ = 222
-
     # actual useful values
     max_length = max_length_caption(train_path)
     input_shape_ = [[8, 8, 1536], max_length]
 
-    generator = Generator(model_name_, input_shape_, hidden_shape_,
-                          voc_path_, feature_path_,
-                          save_path_,
-                          loss_function=loss_function_,
-                          optimizer=opt, lr=lr_,
-                          embedding_size=em_dim,
-                          seed=seed_)
+    generator = Generator(model_name_, input_shape_, voc_path_, feature_path_)
 
     generator.load_model(saved_model_path_)
 

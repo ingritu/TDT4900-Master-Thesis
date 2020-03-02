@@ -73,44 +73,62 @@ optional arguments:
 ```
 python3 -m src.models.train_model --help
 
-usage: src.models.train_model.py [-h] [--batch_size BATCH_SIZE]
-                                 [--val_batch_size VAL_BATCH_SIZE] [--beam_size BEAM_SIZE]
-                                 [--epochs EPOCHS] [--embedding_size EMBEDDING_SIZE]
-                                 [--hidden_size HIDDEN_SIZE] [--loss_function LOSS_FUNCTION]
-                                 [--optimizer OPTIMIZER] [--lr LR] [--seed SEED] [--model MODEL]
-                                 [--karpathy KARPATHY] [--dataset DATASET] --image_feature_size
-                                 IMAGE_FEATURE_SIZE [IMAGE_FEATURE_SIZE ...]
+usage: train_model.py [-h] [--batch-size BATCH_SIZE]
+                      [--val-batch_size VAL_BATCH_SIZE]
+                      [--beam-size BEAM_SIZE] [--epochs EPOCHS]
+                      [--early-stopping_freq EARLY_STOPPING_FREQ]
+                      [--val-metric VAL_METRIC]
+                      [--embedding-size EMBEDDING_SIZE]
+                      [--hidden-size HIDDEN_SIZE] [--num-lstms NUM_LSTMS]
+                      [--decoding-stack-size DECODING_STACK_SIZE]
+                      [--loss-function LOSS_FUNCTION] [--optimizer OPTIMIZER]
+                      [--lr LR] [--seed SEED] [--model MODEL] [--karpathy]
+                      [--dataset DATASET] --image-feature-size
+                      IMAGE_FEATURE_SIZE [IMAGE_FEATURE_SIZE ...]
 
 optional arguments:
   -h, --help            show this help message and exit
-  --batch_size BATCH_SIZE
+  --batch-size BATCH_SIZE
                         Training batch size. The number of captions in a
                         batch.
-  --val_batch_size VAL_BATCH_SIZE
+  --val-batch_size VAL_BATCH_SIZE
                         Validation batch size. The number of images in a
                         batch. The actual batch size is val_batch_size *
                         beam_size.
-  --beam_size BEAM_SIZE
+  --beam-size BEAM_SIZE
                         Beam size to use in beam search inference algorithm.
                         Bigger beam size yields higher performance.
   --epochs EPOCHS       The number of epochs to train the network for.
-  --embedding_size EMBEDDING_SIZE
+  --early-stopping_freq EARLY_STOPPING_FREQ
+                        Training will stop if no improvements have been made
+                        over this many epochs. Default value is 6.
+  --val-metric VAL_METRIC
+                        Automatic evaluation metric to consider for
+                        validation. Acceptable values are {Bleu_1, Bleu_2,
+                        Bleu_3, Bleu_4, ROUGE_L, METEOR, CIDEr, SPICE}. The
+                        default value is CIDEr.
+  --embedding-size EMBEDDING_SIZE
                         Embedding dimension. The size of the word vector
                         representations.
-  --hidden_size HIDDEN_SIZE
+  --hidden-size HIDDEN_SIZE
                         Hidden dimension.
-  --loss_function LOSS_FUNCTION
+  --num-lstms NUM_LSTMS
+                        The number of LSTM cells to stack. Default value is 1.
+  --decoding-stack-size DECODING_STACK_SIZE
+                        The number of Linear layers to stack in the multimodal
+                        decoding part of the model.
+  --loss-function LOSS_FUNCTION
                         Loss/Cost function to use during training.
   --optimizer OPTIMIZER
                         Optimizer to use during training.
   --lr LR               Initial learning rate for the decoder.
   --seed SEED           Random state seed.
   --model MODEL         Model name. Which model type to train.
-  --karpathy KARPATHY   Boolean used to decide whether to train on the
+  --karpathy            Boolean used to decide whether to train on the
                         karpathy split of dataset or not.
   --dataset DATASET     Dataset to train on. The options are {flickr8k,
                         flickr30k, coco}.
-  --image_feature_size IMAGE_FEATURE_SIZE [IMAGE_FEATURE_SIZE ...]
+  --image-feature-size IMAGE_FEATURE_SIZE [IMAGE_FEATURE_SIZE ...]
                         List integers. Should be something like
                         --image_feature_size 8 8 1536.
 ```

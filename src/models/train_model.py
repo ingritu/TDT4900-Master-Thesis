@@ -95,40 +95,45 @@ if __name__ == '__main__':
     save_path_ = ROOT_PATH.joinpath('models')
 
     # training
-    batch_size = args['batch-size']
-    val_batch_size = args['val-batch-size']
-    beam_size = args['beam-size']
+    batch_size = args['batch_size']
+    val_batch_size = args['val_batch_size']
+    beam_size = args['beam_size']
     epochs = args['epochs']
-    early_stopping_freq = args['early-stopping-freq']
-    val_metric = args['val-metric']
+    early_stopping_freq = args['early_stopping_freq']
+    val_metric = args['val_metric']
     # model
     model_name_ = args['model']
-    em_dim = args['embedding-size']
-    hidden_size_ = args['hidden-size']
-    loss_function_ = args['loss-function']
+    em_dim = args['embedding_size']
+    hidden_size_ = args['hidden_size']
+    loss_function_ = args['loss_function']
     opt = args['optimizer']
     lr_ = args['lr']
     seed_ = args['seed']
-    num_lstms = args['num-lstms']
-    decoding_stack_size = args['decoding-stack-size']
+    num_lstms = args['num_lstms']
+    decoding_stack_size = args['decoding_stack_size']
+    assert num_lstms > 0, "num-lstms must be a positive integer."
+    assert decoding_stack_size > 0, \
+        "decoding-stack-size must be a positive integer."
 
     max_length = max_length_caption(train_path)
 
-    image_feature_size = args['image-feature-size']
+    image_feature_size = args['image_feature_size']
     assert len(image_feature_size) == 3, "Wrong argument length for " \
-                                         "image_feature_size. " \
+                                         "image-feature-size. " \
                                          "Expected 3 but got " + \
                                          str(len(image_feature_size)) + "."
     input_shape_ = [image_feature_size, max_length]
 
-    generator = Generator(model_name_, input_shape_, hidden_size_,
-                          voc_path_, feature_path_,
-                          save_path_,
-                          loss_function=loss_function_,
-                          optimizer=opt, lr=lr_,
-                          embedding_size=em_dim,
-                          seed=seed_)
-    generator.compile()
+    generator = Generator(model_name_, input_shape_, voc_path_, feature_path_)
+    generator.compile(save_path_,
+                      embedding_size=em_dim,
+                      hidden_size=hidden_size_,
+                      num_lstms=num_lstms,
+                      decoding_stack_size=decoding_stack_size,
+                      loss_function=loss_function_,
+                      optimizer=opt,
+                      lr=lr_,
+                      seed=seed_)
 
     # model is automatically saved after training
     generator.train(train_path,
