@@ -63,9 +63,9 @@ def extract_image_features(image_path,
     # in memory at any time
     image_path = Path(image_path)
     save_path = Path(save_path)
-
-    if not save_path.is_dir():
-        save_path.mkdir(parents=True)
+    save_dir = save_path.parent
+    if not save_dir.is_dir():
+        save_dir.mkdir(parents=True)
 
     model = load_pre_trained_model(output_layer_idx)
     data_df = pd.read_csv(split_set_path)

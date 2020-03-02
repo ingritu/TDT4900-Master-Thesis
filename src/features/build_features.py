@@ -17,10 +17,10 @@ if __name__ == '__main__':
     """
     # resize images
     parser = argparse.ArgumentParser()
-    parser.add_argument('--resize_images', action='store_true',
+    parser.add_argument('--resize-images', action='store_true',
                         help='Boolean to decide whether to resize the images '
                              'before building the actual features.')
-    parser.add_argument('--new_image_size', type=int,
+    parser.add_argument('--new-image-size', type=int,
                         nargs='+',
                         help='List new image dimensions. should be something '
                              'like 299 299.')
@@ -28,12 +28,17 @@ if __name__ == '__main__':
                         help='Which dataset to create image features for. '
                              'The options are '
                              '{flickr8k, flickr30k, coco}.')
-    parser.add_argument('--visual_attention', action='store_true',
+    parser.add_argument('--visual-attention', action='store_true',
                         help='Boolean for deciding whether to extract visual '
                              'features that are usable for models that use '
                              'visual attention.')
-    parser.add_argument('--output_layer_idx', type=int, default=-3,
+    parser.add_argument('--output-layer-idx', type=int, default=-3,
                         help='Which layer to extract features from.')
+    parser.add_argument('--image-split', type=str, default='full',
+                        help='Which dataset split to make features for. '
+                             'Default value is full, meaning all images in '
+                             'the dataset will be encoded and saved in the '
+                             'same file.')
     args = vars(parser.parse_args())
 
     dataset_ = args['dataset']
@@ -72,12 +77,16 @@ if __name__ == '__main__':
     # Build visual features
     output_layer_dim_ = args['output_layer_idx']
     vis_att_ = args['visual_attention']
+    split = args['image_split']
     image_path_ = interim_path.joinpath(dataset_,
                                         'Images', str(dims[0]) + 'x'
                                         + str(dims[1]))
     save_path_ = processed_path.joinpath(dataset_, 'Images',
-                                         'encoded_visual_attention_full.pkl')
-    split_set_path_ = interim_path.joinpath(dataset_, dataset_ + '_full.csv')
+                                         'encoded_visual_attention_' +
+                                         split + '.pkl')
+    split_set_path_ = interim_path.joinpath(dataset_,
+                                            dataset_ + '_' +
+                                            split + '.csv')
 
     extract_image_features(image_path_,
                            save_path_,

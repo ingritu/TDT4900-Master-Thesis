@@ -1,0 +1,24 @@
+Datasets
+
+MS COCO
+train: 80k images
+val: 40k images
+test: 40k images
+
+karpathy
+train: 110k images
+val: 5k images
+test: 5k images
+
+flickr8k
+train: 6k images
+val: 1k images
+test: 1k images
+
+
+InceptionResnet encoding 8x8x1536
+8k encoded images = 50MB
+-->
+120k encoded images = 750MB
+
+

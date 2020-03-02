@@ -23,7 +23,7 @@ if __name__ == '__main__':
     parser.add_argument('--threshold', type=int, default=3,
                         help='Minimum word frequency for words included '
                              'in the vocabulary.')
-    parser.add_argument('--unk_percentage', type=float, default=0.4,
+    parser.add_argument('--unk-percentage', type=float, default=0.4,
                         help='The percentage of UNK tokens in a caption '
                              'must be below this value in order to be '
                              'included in the train set.')

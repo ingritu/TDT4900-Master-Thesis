@@ -43,32 +43,29 @@ optional arguments:
                         The percentage of UNK tokens in a caption must be
                         below this value in order to be included in the train
                         set.
-
 ```
 ### 2. Make the features
 ```
 python3 -m src.features.build_features --help
 
-usage: src.features.build_features.py [-h] [--resize_images RESIZE_IMAGES]
-                                      [--new_image_size NEW_IMAGE_SIZE [NEW_IMAGE_SIZE ...]]
-                                      [--dataset DATASET] [--visual_attention VISUAL_ATTENTION]
-                                      [--output_layer_idx OUTPUT_LAYER_IDX]
+usage: build_features.py [-h] [--resize-images]
+                         [--new-image-size NEW_IMAGE_SIZE [NEW_IMAGE_SIZE ...]]
+                         [--dataset DATASET] [--visual-attention]
+                         [--output-layer-idx OUTPUT_LAYER_IDX]
 
 optional arguments:
   -h, --help            show this help message and exit
-  --resize_images RESIZE_IMAGES
-                        Boolean to decide whether to resize the images before
+  --resize-images       Boolean to decide whether to resize the images before
                         building the actual features.
-  --new_image_size NEW_IMAGE_SIZE [NEW_IMAGE_SIZE ...]
+  --new-image-size NEW_IMAGE_SIZE [NEW_IMAGE_SIZE ...]
                         List new image dimensions. should be something like
                         299 299.
   --dataset DATASET     Which dataset to create image features for. The
                         options are {flickr8k, flickr30k, coco}.
-  --visual_attention VISUAL_ATTENTION
-                        Boolean for deciding whether to extract visual
-                        features that are usable for models that use visualt
+  --visual-attention    Boolean for deciding whether to extract visual
+                        features that are usable for models that use visual
                         attention.
-  --output_layer_idx OUTPUT_LAYER_IDX
+  --output-layer-idx OUTPUT_LAYER_IDX
                         Which layer to extract features from.
 ```
 
