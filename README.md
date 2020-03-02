@@ -26,14 +26,24 @@ pip install -r requirements.txt
 ```
 python3 -m src.data.make_dataset --help
 
-usage: src.data.make_dataset.py [-h] [--dataset DATASET] [--karpathy KARPATHY]
+usage: make_dataset.py [-h] [--dataset DATASET] [--karpathy]
+                       [--threshold THRESHOLD]
+                       [--unk_percentage UNK_PERCENTAGE]
 
 optional arguments:
-  -h, --help           show this help message and exit
-  --dataset DATASET    Dataset to train on. The options are {flickr8k,
-                       flickr30k, coco}.
-  --karpathy KARPATHY  Boolean used to decide whether to train on the karpathy
-                       split of dataset or not.
+  -h, --help            show this help message and exit
+  --dataset DATASET     Dataset to train on. The options are {flickr8k,
+                        flickr30k, coco}.
+  --karpathy            Boolean used to decide whether to train on the
+                        karpathy split of dataset or not.
+  --threshold THRESHOLD
+                        Minimum word frequency for words included in the
+                        vocabulary.
+  --unk_percentage UNK_PERCENTAGE
+                        The percentage of UNK tokens in a caption must be
+                        below this value in order to be included in the train
+                        set.
+
 ```
 ### 2. Make the features
 ```

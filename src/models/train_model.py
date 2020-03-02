@@ -14,26 +14,42 @@ if __name__ == '__main__':
     """
     # All default values are the values used in the knowing when to look paper
     parser = argparse.ArgumentParser()
-    parser.add_argument('--batch_size', type=int, default=256,
+    # Training details
+    parser.add_argument('--batch-size', type=int, default=256,
                         help='Training batch size. '
                              'The number of captions in a batch.')
-    parser.add_argument('--val_batch_size', type=int, default=250,
+    parser.add_argument('--val-batch_size', type=int, default=250,
                         help='Validation batch size. '
                              'The number of images in a batch. '
                              'The actual batch size is val_batch_size * '
                              'beam_size.')
-    parser.add_argument('--beam_size', type=int, default=3,
+    parser.add_argument('--beam-size', type=int, default=3,
                         help='Beam size to use in beam search '
                              'inference algorithm. '
                              'Bigger beam size yields higher performance.')
     parser.add_argument('--epochs', type=int, default=50,
                         help='The number of epochs to train the network for.')
-    parser.add_argument('--embedding_size', type=int, default=512,
+    parser.add_argument('--early-stopping_freq', type=int, default=6,
+                        help='Training will stop if no improvements have been '
+                             'made over this many epochs. Default value is 6.')
+    parser.add_argument('--val-metric', type=str, default='CIDEr',
+                        help='Automatic evaluation metric to consider for '
+                             'validation. Acceptable values are {Bleu_1, '
+                             'Bleu_2, Bleu_3, Bleu_4, ROUGE_L, METEOR, '
+                             'CIDEr, SPICE}. The default value is CIDEr.')
+    # Model details
+    parser.add_argument('--embedding-size', type=int, default=512,
                         help='Embedding dimension. '
                              'The size of the word vector representations.')
-    parser.add_argument('--hidden_size', type=int, default=512,
+    parser.add_argument('--hidden-size', type=int, default=512,
                         help='Hidden dimension.')
-    parser.add_argument('--loss_function', type=str, default='cross_entropy',
+    parser.add_argument('--num-lstms', type=int, default=1,
+                        help='The number of LSTM cells to stack. '
+                             'Default value is 1.')
+    parser.add_argument('--decoding-stack-size', type=int, default=1,
+                        help='The number of Linear layers to stack in '
+                             'the multimodal decoding part of the model.')
+    parser.add_argument('--loss-function', type=str, default='cross_entropy',
                         help='Loss/Cost function to use during training.')
     parser.add_argument('--optimizer', type=str, default='adam',
                         help='Optimizer to use during training.')
@@ -43,13 +59,14 @@ if __name__ == '__main__':
                         help='Random state seed.')
     parser.add_argument('--model', type=str, default='adaptive_decoder',
                         help='Model name. Which model type to train.')
-    parser.add_argument('--karpathy', type=bool, default=True,
+    # data details
+    parser.add_argument('--karpathy', action='store_true',
                         help='Boolean used to decide whether to train on '
                              'the karpathy split of dataset or not.')
     parser.add_argument('--dataset', type=str, default='coco',
                         help='Dataset to train on. The options are '
                              '{flickr8k, flickr30k, coco}.')
-    parser.add_argument('--image_feature_size', type=int,
+    parser.add_argument('--image-feature-size', type=int,
                         nargs='+', required=True,
                         help='List integers. Should be something like '
                              '--image_feature_size 8 8 1536.')
@@ -61,14 +78,14 @@ if __name__ == '__main__':
                                       'interim')
     processed_path = ROOT_PATH.joinpath('data',
                                         'processed')
+    ann_path = processed_path.joinpath('annotations')
     dataset = args['dataset']
     if args['karpathy']:
         interim_path = interim_path.joinpath('karpathy_split')
         # annotation file
-        annFile = processed_path.joinpath('annotations',
-                                          'karpathy_split',
-                                          dataset + '_val.json')
+        ann_path = ann_path.joinpath('karpathy_split')
 
+    annFile = ann_path.joinpath(dataset + '_val.json')
     train_path = interim_path.joinpath(dataset + '_train_clean.csv')
     val_path = interim_path.joinpath(dataset + '_val.csv')
     voc_path_ = interim_path.joinpath(dataset + '_vocabulary.csv')
@@ -77,23 +94,27 @@ if __name__ == '__main__':
 
     save_path_ = ROOT_PATH.joinpath('models')
 
-    model_name_ = args['model']
-
-    batch_size = args['batch_size']
-    val_batch_size = args['val_batch_size']
-    beam_size = args['beam_size']
-
+    # training
+    batch_size = args['batch-size']
+    val_batch_size = args['val-batch-size']
+    beam_size = args['beam-size']
     epochs = args['epochs']
-    em_dim = args['embedding_size']
-    hidden_size_ = args['hidden_size']
-    loss_function_ = args['loss_function']
+    early_stopping_freq = args['early-stopping-freq']
+    val_metric = args['val-metric']
+    # model
+    model_name_ = args['model']
+    em_dim = args['embedding-size']
+    hidden_size_ = args['hidden-size']
+    loss_function_ = args['loss-function']
     opt = args['optimizer']
     lr_ = args['lr']
     seed_ = args['seed']
+    num_lstms = args['num-lstms']
+    decoding_stack_size = args['decoding-stack-size']
 
     max_length = max_length_caption(train_path)
 
-    image_feature_size = args['image_feature_size']
+    image_feature_size = args['image-feature-size']
     assert len(image_feature_size) == 3, "Wrong argument length for " \
                                          "image_feature_size. " \
                                          "Expected 3 but got " + \
@@ -115,5 +136,8 @@ if __name__ == '__main__':
                     annFile,
                     epochs=epochs,
                     batch_size=batch_size,
+                    early_stopping_freq=early_stopping_freq,
+                    val_batch_size=val_batch_size,
                     beam_size=beam_size,
-                    val_batch_size=val_batch_size)
+                    validation_metric=val_metric)
+    print("Finished training model!")

@@ -68,9 +68,10 @@ class Generator:
         self.save_path = save_path
         self.random_seed = seed
 
-        self.wordtoix, self.ixtoword = load_vocabulary(voc_path)
         self.vocab_path = voc_path
-        self.vocab_size = len(self.wordtoix)
+        self.wordtoix, self.ixtoword = load_vocabulary(self.vocab_path)
+        # len - 1, this removes startseq token from models output vocabulary
+        self.vocab_size = len(self.wordtoix) - 1
         self.feature_path = feature_path
         self.encoded_features = load_visual_features(feature_path)
 

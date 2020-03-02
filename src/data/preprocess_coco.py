@@ -50,12 +50,18 @@ def make_dataframe(data_path):
             if cap_counter % 1000 == 0:
                 print(cap_counter)
 
-    data_df = pd.DataFrame(data=out_dict, columns=out_dict.keys())
+    data_df = pd.DataFrame(data=out_dict, columns=list(out_dict.keys()))
     return data_df
 
 
 def preprocess_coco(data_path, output_path, splits):
     # TODO: modify to create annotation files too
+    data_path = Path(data_path)
+    output_path = Path(output_path)
+    if not output_path.is_dir():
+        # if not a dir then mkdir
+        output_path.mkdir(parents=True)
+
     for split in splits:
         d_path = data_path.joinpath('captions_' + split + '2014.json')
         split_df = make_dataframe(d_path)

@@ -17,7 +17,7 @@ if __name__ == '__main__':
     """
     # resize images
     parser = argparse.ArgumentParser()
-    parser.add_argument('--resize_images', type=bool, default=False,
+    parser.add_argument('--resize_images', action='store_true',
                         help='Boolean to decide whether to resize the images '
                              'before building the actual features.')
     parser.add_argument('--new_image_size', type=int,
@@ -28,10 +28,10 @@ if __name__ == '__main__':
                         help='Which dataset to create image features for. '
                              'The options are '
                              '{flickr8k, flickr30k, coco}.')
-    parser.add_argument('--visual_attention', type=bool, default=True,
+    parser.add_argument('--visual_attention', action='store_true',
                         help='Boolean for deciding whether to extract visual '
                              'features that are usable for models that use '
-                             'visualt attention.')
+                             'visual attention.')
     parser.add_argument('--output_layer_idx', type=int, default=-3,
                         help='Which layer to extract features from.')
     args = vars(parser.parse_args())

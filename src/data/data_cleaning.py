@@ -5,11 +5,9 @@ import string
 
 ROOT_PATH = Path(__file__).absolute().parents[2]
 
-THRESHOLD = 3
-UNK_PERCENTAGE = 0.4
 
-
-def basic_data_cleaning(df_path, save_path, voc_save_path):
+def basic_data_cleaning(df_path, save_path, voc_save_path, threshold=3,
+                        unk_percentage=0.4):
     """
     Basic data cleaning entails:
     - Converting to lower.
@@ -27,6 +25,9 @@ def basic_data_cleaning(df_path, save_path, voc_save_path):
     save_path : Path or str. Where the new .csv file containing
         pre-processed cases will be saved.
     voc_save_path : Path or str. Where the vocabulary will be saved.
+    threshold : int. Word frequency threshold. Default value is 3.
+    unk_percentage : float. Remove captions where the percentage of UNK tokens
+        in the caption is greater than unk_percentage. Default value is 0.4.
 
     Returns
     -------
@@ -67,11 +68,14 @@ def basic_data_cleaning(df_path, save_path, voc_save_path):
         caption_df.at[i, 'clean_caption'] = ' '.join(cap_tokens)
     print("Full vocabulary size:", len(corpus))
 
-    replace_corpus, caption_df = replace_uncommon_words(caption_df, corpus)
+    replace_corpus, caption_df = replace_uncommon_words(caption_df,
+                                                        corpus,
+                                                        threshold)
 
     # remove captions with more than 40% UNK tokens in captions
     count_before = len(caption_df)
-    caption_df, remove_caps_len = remove_too_many_unk(caption_df)
+    caption_df, remove_caps_len = remove_too_many_unk(caption_df,
+                                                      unk_percentage)
     count_after = len(caption_df)
     if count_after != count_before - remove_caps_len:
         print("Did not remove 40% UNK captions!!"
@@ -96,7 +100,7 @@ def basic_data_cleaning(df_path, save_path, voc_save_path):
     caption_df.to_csv(save_path)
 
     # vocabulary stuff
-    vocabulary = [key for key in corpus.keys() if corpus[key] >= THRESHOLD]
+    vocabulary = [key for key in corpus.keys() if corpus[key] >= threshold]
     vocabulary.append('endseq')
     # add startseq last so that we can remove it easily from models vocabulary
     vocabulary.append('startseq')
@@ -110,10 +114,10 @@ def basic_data_cleaning(df_path, save_path, voc_save_path):
             voc_file.write(word + '\n')
 
 
-def replace_uncommon_words(caption_df, corpus):
+def replace_uncommon_words(caption_df, corpus, threshold=3):
     # replace words with less than THRESHOLD occurrences with an UNK
     # token
-    replace_corpus = set([key for key in corpus if corpus[key] < THRESHOLD])
+    replace_corpus = set([key for key in corpus if corpus[key] < threshold])
     for i in range(len(caption_df)):
         cap_tokens = caption_df.loc[i, 'clean_caption'].split()
         cap_tokens = [word if word not in replace_corpus else 'UNK'
@@ -123,14 +127,15 @@ def replace_uncommon_words(caption_df, corpus):
     return replace_corpus, caption_df
 
 
-def remove_too_many_unk(caption_df):
+def remove_too_many_unk(caption_df, unk_percentage=0.4):
     """
     Remove captions with too many UNK tokens in the caption.
 
     Parameters
     ----------
     caption_df : DataFrame. contains pre-processed cases.
-
+    unk_percentage : float. Remove captions where the percentage of UNK tokens
+        in the caption is greater than unk_percentage. Default value is 0.4.
     Returns
     -------
     caption_df : DataFrame. Where captions with too many UNKs have
@@ -142,7 +147,7 @@ def remove_too_many_unk(caption_df):
         caption = caption_df.loc[i, 'clean_caption'].split()
         length = len(caption)
         unks = sum([1 if w == 'UNK' else 0 for w in caption])
-        if unks / length > UNK_PERCENTAGE:
+        if unks / length > unk_percentage:
             print("removes too many UNKs")
             remove_caps.append(caption_df.loc[i, 'caption_id'])
     caption_df = caption_df.loc[
