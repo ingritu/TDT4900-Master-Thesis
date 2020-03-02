@@ -39,7 +39,7 @@ optional arguments:
   --threshold THRESHOLD
                         Minimum word frequency for words included in the
                         vocabulary.
-  --unk_percentage UNK_PERCENTAGE
+  --unk-percentage UNK_PERCENTAGE
                         The percentage of UNK tokens in a caption must be
                         below this value in order to be included in the train
                         set.
@@ -91,7 +91,7 @@ optional arguments:
   --batch-size BATCH_SIZE
                         Training batch size. The number of captions in a
                         batch.
-  --val-batch_size VAL_BATCH_SIZE
+  --val-batch-size VAL_BATCH_SIZE
                         Validation batch size. The number of images in a
                         batch. The actual batch size is val_batch_size *
                         beam_size.

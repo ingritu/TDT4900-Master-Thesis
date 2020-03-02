@@ -66,7 +66,7 @@ class Generator:
         self.vocab_path = voc_path
         self.wordtoix, self.ixtoword = load_vocabulary(self.vocab_path)
         # len - 1, this removes startseq token from models output vocabulary
-        self.vocab_size = len(self.wordtoix) - 1
+        self.vocab_size = len(self.wordtoix)
         self.feature_path = feature_path
         self.encoded_features = load_visual_features(feature_path)
 
@@ -138,9 +138,9 @@ class Generator:
                                     self.embedding_size)
         self.decoder = self.decoder(self.input_shape,
                                     self.hidden_size,
+                                    self.embedding_size,
                                     self.vocab_size,
                                     self.device,
-                                    embedding_size=self.embedding_size,
                                     num_lstms=self.num_lstms,
                                     decoding_stack_size=
                                     self.decoding_stack_size,
@@ -389,7 +389,9 @@ class Generator:
             # image features does not vary over time
             input_image_t = [global_images[:batch_size_t],
                              enc_images[:batch_size_t]]
-            x_t = [input_image_t, input_w[:batch_size_t, timestep]]
+            input_w_t = input_w[:batch_size_t, timestep]
+
+            x_t = [input_image_t, input_w_t]
 
             pt, h_t, c_t = self.decoder(x_t,
                                         (h_t[:, :batch_size_t],

@@ -18,7 +18,7 @@ if __name__ == '__main__':
     parser.add_argument('--batch-size', type=int, default=256,
                         help='Training batch size. '
                              'The number of captions in a batch.')
-    parser.add_argument('--val-batch_size', type=int, default=250,
+    parser.add_argument('--val-batch-size', type=int, default=250,
                         help='Validation batch size. '
                              'The number of images in a batch. '
                              'The actual batch size is val_batch_size * '

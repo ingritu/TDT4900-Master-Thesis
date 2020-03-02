@@ -48,10 +48,10 @@ class AdaptiveModel(nn.Module):
         # decoder
         self.decoder = AdaptiveDecoder(self.input_shape,
                                        self.hidden_size,
+                                       self.em_size,
                                        self.vocab_size,
                                        self.device,
                                        num_lstms=self.num_lstms,
-                                       embedding_size=self.em_size,
                                        seed=self.random_seed)
 
     def initialize_variables(self, batch_size):
