@@ -54,14 +54,6 @@ class AdaptiveModel(nn.Module):
                                        num_lstms=self.num_lstms,
                                        seed=self.random_seed)
 
-    def initialize_variables(self, batch_size):
-        # initialize h and c as zeros
-        hs = torch.zeros(self.num_lstms + 1, batch_size, self.hidden_size)\
-            .to(self.device)
-        cs = torch.zeros(self.num_lstms + 1, batch_size, self.hidden_size)\
-            .to(self.device)
-        return hs, cs
-
     def forward(self, x, caption_lengths, has_end_seq_token=True):
         # visual features (batch_size, 8 ,8, 1536)
         # batch_size is equal to the number of captions

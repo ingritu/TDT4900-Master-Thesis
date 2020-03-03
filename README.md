@@ -136,29 +136,31 @@ optional arguments:
 ```
 python3 -m src.models.predict_model --help
 
-usage: src.models.predict_model.py [-h] [--karpathy KARPATHY] [--dataset DATASET] [--split SPLIT]
-                                   [--model_name MODEL_NAME] --model MODEL
-                                   [--val_batch_size VAL_BATCH_SIZE] [--beam_size BEAM_SIZE]
+usage: predict_model.py [-h] [--karpathy] [--dataset DATASET] [--split SPLIT]
+                        [--model-name MODEL_NAME] --model MODEL
+                        [--val-batch-size VAL_BATCH_SIZE]
+                        [--beam-size BEAM_SIZE]
 
 optional arguments:
   -h, --help            show this help message and exit
-  --karpathy KARPATHY   Boolean used to decide whether to train on the
+  --karpathy            Boolean used to decide whether to train on the
                         karpathy split of dataset or not.
   --dataset DATASET     Dataset to test model on. The options are {flickr8k,
                         flickr30k, coco}.
   --split SPLIT         Dataset split to evaluate. Acceptable values are
                         {train, val, test}.
-  --model_name MODEL_NAME
+  --model-name MODEL_NAME
                         Model type.
   --model MODEL         Name of the models directory. Should be something like
                         adaptive_decoder_dd-Mon-yyyy_(hh:mm:ss).
-  --val_batch_size VAL_BATCH_SIZE
+  --val-batch-size VAL_BATCH_SIZE
                         Validation batch size. The number of images in a
                         batch. The actual batch size is val_batch_size *
                         beam_size.
-  --beam_size BEAM_SIZE
+  --beam-size BEAM_SIZE
                         Beam size to use in beam search inference algorithm.
                         Bigger beam size yields higher performance.
+
 ```
 ## Project Structure
 ```

@@ -12,7 +12,7 @@ if __name__ == '__main__':
     python3 -m src.models.predict_model
     """
     parser = argparse.ArgumentParser()
-    parser.add_argument('--karpathy', type=bool, default=True,
+    parser.add_argument('--karpathy', action='store_true',
                         help='Boolean used to decide whether to train on '
                              'the karpathy split of dataset or not.')
     parser.add_argument('--dataset', type=str, default='coco',
@@ -53,17 +53,16 @@ if __name__ == '__main__':
     if args['karpathy']:
         interim_path = interim_path.joinpath('karpathy_split')
         ann_path = ann_path.joinpath('karpathy_split')
-    train_path = interim_path.joinpath(dataset_, dataset_ + '_train_clean.csv')
-    test_path = interim_path.joinpath(dataset_,
-                                      dataset_ + '_' + split_ + '.csv')
-    voc_path_ = interim_path.joinpath(dataset_, dataset_ + '_vocabulary.csv')
+    train_path = interim_path.joinpath(dataset_ + '_train_clean.csv')
+    test_path = interim_path.joinpath(dataset_ + '_' + split_ + '.csv')
+    voc_path_ = interim_path.joinpath(dataset_ + '_vocabulary.csv')
+    # modify this later to only load the split to predict on
     feature_path_ = processed_path.joinpath(
         dataset_, 'Images', 'encoded_visual_attention_full.pkl')
     saved_model_path_ = model_dir.joinpath('BEST_checkpoint.pth.tar')
 
     model_name_ = args['model_name']
 
-    # actual useful values
     max_length = max_length_caption(train_path)
     input_shape_ = [[8, 8, 1536], max_length]
 
