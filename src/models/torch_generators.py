@@ -21,46 +21,50 @@ class AdaptiveModel(nn.Module):
 
     def __init__(self,
                  input_shape,
+                 max_len,
                  hidden_size,
                  vocab_size,
                  device,
-                 num_lstms=0,
+                 num_lstms=1,
+                 decoding_stack_size=1,
                  embedding_size=300,
                  seed=222):
         super(AdaptiveModel, self).__init__()
-        self.input_shape = input_shape
-        self.visual_feature_shape = input_shape[0]
-        self.max_len = input_shape[1]
+        self.visual_feature_shape = input_shape
+        self.max_len = max_len
         self.hidden_size = hidden_size
 
         self.vocab_size = vocab_size
         self.em_size = embedding_size
         self.num_lstms = num_lstms
+        self.decoding_stack_size = decoding_stack_size
         self.random_seed = seed
 
         self.device = device
 
         # layers
         # encoder
-        self.image_encoder = ImageEncoder(self.visual_feature_shape,
-                                          self.hidden_size,
-                                          self.em_size)
+        self.encoder = ImageEncoder(self.visual_feature_shape,
+                                    self.hidden_size,
+                                    self.em_size)
         # decoder
-        self.decoder = AdaptiveDecoder(self.input_shape,
+        self.decoder = AdaptiveDecoder(self.max_len,
                                        self.hidden_size,
                                        self.em_size,
                                        self.vocab_size,
                                        self.device,
                                        num_lstms=self.num_lstms,
+                                       decoding_stack_size=
+                                       self.decoding_stack_size,
                                        seed=self.random_seed)
 
     def forward(self, x, caption_lengths, has_end_seq_token=True):
-        # visual features (batch_size, 8 ,8, 1536)
+        # visual features (batch_size, 8, 8, 1536)
         # batch_size is equal to the number of captions
         im_input = x[0].to(self.device)
         w_input = x[1].to(self.device)
 
-        global_images, encoded_images = self.image_encoder(im_input)
+        global_images, encoded_images = self.encoder(im_input)
         # (batch_size, embedding_size) (batch, 512) global_images
         # (batch_size, region_size, hidden_size) (batch, 64, 512) encoded_imgs
 
@@ -73,6 +77,9 @@ class AdaptiveModel(nn.Module):
         w_input = w_input[sort_idx]  # (batch_size, max_len)
         global_images = global_images[sort_idx]  # (batch_size, embedding_size)
         encoded_images = encoded_images[sort_idx]  # (batch_size, 64, 1536)
+
+        target = w_input[:, 1:]  # sorted targets
+        target = target.to(self.device)
 
         batch_size = encoded_images.size()[0]
 
@@ -101,7 +108,7 @@ class AdaptiveModel(nn.Module):
                                          c_t[:, :batch_size_t]))
             predictions[:batch_size_t, timestep, :] = pt
 
-        return predictions, decoding_lengths
+        return predictions, target, decoding_lengths
 
 
 class AdaptiveDecoder(nn.Module):
@@ -115,7 +122,7 @@ class AdaptiveDecoder(nn.Module):
     """
 
     def __init__(self,
-                 input_shape,
+                 max_len,
                  hidden_size,
                  embedding_size,
                  vocab_size,
@@ -124,10 +131,7 @@ class AdaptiveDecoder(nn.Module):
                  decoding_stack_size=1,
                  seed=222):
         super(AdaptiveDecoder, self).__init__()
-
-        self.input_shape = input_shape
-        self.visual_feature_shape = input_shape[0]
-        self.max_len = input_shape[1]
+        self.max_len = max_len
         self.hidden_size = hidden_size
 
         self.vocab_size = vocab_size

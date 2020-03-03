@@ -105,7 +105,7 @@ class MultimodalDecoder(nn.Module):
             concat = torch.cat((concat, y), dim=1)
 
         # softmax on output
-        y = F.softmax(self.output_layer(concat))
+        y = torch.softmax(self.output_layer(concat), dim=1)
         return y
 
 
@@ -168,11 +168,11 @@ class AttentionLayer(nn.Module):
         # (batch_size, 64 +1, hidden_size)
 
         # add h_t to regions_att
-        alpha_input = F.tanh(regions_att + h_att)
+        alpha_input = torch.tanh(regions_att + h_att)
         # (batch_size, 64 +1, hidden_size)
 
         # compute alphas + beta
-        alpha = F.softmax(self.alpha_layer(alpha_input).squeeze(2), dim=1)
+        alpha = torch.softmax(self.alpha_layer(alpha_input).squeeze(2), dim=1)
         # (batch_size, 64 + 1)
         alpha = alpha.unsqueeze(2)  # (batch_size, 64 +1, 1)
 

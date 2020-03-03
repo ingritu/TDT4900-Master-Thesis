@@ -57,7 +57,7 @@ if __name__ == '__main__':
                         help='Initial learning rate for the decoder.')
     parser.add_argument('--seed', type=int, default=222,
                         help='Random state seed.')
-    parser.add_argument('--model', type=str, default='adaptive_decoder',
+    parser.add_argument('--model', type=str, default='adaptive',
                         help='Model name. Which model type to train.')
     # data details
     parser.add_argument('--karpathy', action='store_true',
@@ -66,10 +66,6 @@ if __name__ == '__main__':
     parser.add_argument('--dataset', type=str, default='coco',
                         help='Dataset to train on. The options are '
                              '{flickr8k, flickr30k, coco}.')
-    parser.add_argument('--image-feature-size', type=int,
-                        nargs='+', required=True,
-                        help='List integers. Should be something like '
-                             '--image_feature_size 8 8 1536.')
     # there still are more customizable parameters to set,
     # add these later
     args = vars(parser.parse_args())  # access args as dictionary
@@ -115,16 +111,9 @@ if __name__ == '__main__':
     assert decoding_stack_size > 0, \
         "decoding-stack-size must be a positive integer."
 
-    max_length = max_length_caption(train_path)
-
-    image_feature_size = args['image_feature_size']
-    assert len(image_feature_size) == 3, "Wrong argument length for " \
-                                         "image-feature-size. " \
-                                         "Expected 3 but got " + \
-                                         str(len(image_feature_size)) + "."
-    input_shape_ = [image_feature_size, max_length]
-
-    generator = Generator(model_name_, input_shape_, voc_path_, feature_path_)
+    generator = Generator(model_name_,
+                          voc_path_,
+                          feature_path_)
     generator.compile(save_path_,
                       embedding_size=em_dim,
                       hidden_size=hidden_size_,

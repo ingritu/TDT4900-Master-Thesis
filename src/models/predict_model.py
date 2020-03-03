@@ -1,5 +1,4 @@
 from pathlib import Path
-from src.data.utils import max_length_caption
 from src.models.generator_framework import Generator
 
 import argparse
@@ -53,7 +52,6 @@ if __name__ == '__main__':
     if args['karpathy']:
         interim_path = interim_path.joinpath('karpathy_split')
         ann_path = ann_path.joinpath('karpathy_split')
-    train_path = interim_path.joinpath(dataset_ + '_train_clean.csv')
     test_path = interim_path.joinpath(dataset_ + '_' + split_ + '.csv')
     voc_path_ = interim_path.joinpath(dataset_ + '_vocabulary.csv')
     # modify this later to only load the split to predict on
@@ -63,10 +61,7 @@ if __name__ == '__main__':
 
     model_name_ = args['model_name']
 
-    max_length = max_length_caption(train_path)
-    input_shape_ = [[8, 8, 1536], max_length]
-
-    generator = Generator(model_name_, input_shape_, voc_path_, feature_path_)
+    generator = Generator(model_name_, voc_path_, feature_path_)
 
     generator.load_model(saved_model_path_)
 

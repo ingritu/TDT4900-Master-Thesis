@@ -7,10 +7,8 @@ ROOT_PATH = Path(__file__).absolute().parents[2]
 def save_checkpoint(directory,
                     epoch,
                     epochs_since_improvement,
-                    encoder,
-                    decoder,
-                    enc_optimizer,
-                    dec_optimizer,
+                    model,
+                    optimizer,
                     cider,
                     is_best):
     directory = Path(directory)
@@ -23,10 +21,8 @@ def save_checkpoint(directory,
         'epoch': epoch,
         'epochs_since_improvement': epochs_since_improvement,
         'cider': cider,
-        'encoder': encoder,
-        'decoder': decoder,
-        'enc_optimizer': enc_optimizer,
-        'dec_optimizer': dec_optimizer
+        'model': model,
+        'optimizer': optimizer
     }
 
     filename = directory.joinpath('checkpoint_' + str(epoch) + '.pth.tar')
@@ -71,8 +67,7 @@ def save_training_log(path, training_history):
                         '#######\n')
         train_log.write('Model name: ' + training_history['model_name']
                         + '\n\n')
-        train_log.write(training_history['encoder'] + '\n')
-        train_log.write(training_history['decoder'] + '\n')
+        train_log.write(training_history['model'] + '\n')
         train_log.write('Trainable parameters: ' +
                         training_history['trainable_parameters'] + '\n')
         train_log.write('Model save path: ' +

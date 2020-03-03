@@ -3,6 +3,8 @@ from pathlib import Path
 import pandas as pd
 import string
 
+from src.data.utils import max_length_caption
+
 ROOT_PATH = Path(__file__).absolute().parents[2]
 
 
@@ -96,6 +98,7 @@ def basic_data_cleaning(df_path, save_path, voc_save_path, threshold=3,
     if not save_path.parent.is_dir():
         save_path.parent.mkdir(parents=True)
 
+    max_len = max_length_caption("", caption_df)
     # save captions
     caption_df.to_csv(save_path)
 
@@ -110,6 +113,8 @@ def basic_data_cleaning(df_path, save_path, voc_save_path, threshold=3,
         voc_save_path.parent.mkdir(parents=True)
 
     with open(voc_save_path, 'w') as voc_file:
+        # add maxlen to first line in vocabulary file
+        voc_file.write(str(max_len) + '\n')
         for word in vocabulary:
             voc_file.write(word + '\n')
 

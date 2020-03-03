@@ -48,12 +48,8 @@ class Generator:
 
     def __init__(self,
                  model_name,
-                 input_shape,
                  voc_path,
                  feature_path):
-        # delete if not used in this class
-        self.input_shape = input_shape
-        self.max_length = self.input_shape[1]
 
         self.embedding_size = 0
         self.hidden_size = 0
@@ -64,15 +60,15 @@ class Generator:
         self.random_seed = None
 
         self.vocab_path = voc_path
-        self.wordtoix, self.ixtoword = load_vocabulary(self.vocab_path)
-        # len - 1, this removes startseq token from models output vocabulary
+        self.wordtoix, self.ixtoword, self.max_length = \
+            load_vocabulary(self.vocab_path)
         self.vocab_size = len(self.wordtoix)
         self.feature_path = feature_path
         self.encoded_features = load_visual_features(feature_path)
+        self.input_shape = list(self.encoded_features.values())[0].shape
 
         # initialize model as None
-        self.encoder = None
-        self.decoder = None
+        self.model = None
         self.train_params = 0
 
         self.model_name = model_name
@@ -83,8 +79,7 @@ class Generator:
 
         # set up optimizer
         self.optimizer_string = ""
-        self.encoder_optimizer = None  # not initialized
-        self.decoder_optimizer = None
+        self.optimizer = None  # not initialized
         self.lr = 0
 
         # misc
@@ -105,7 +100,7 @@ class Generator:
                 lr=0.0005,
                 seed=222):
         """
-        Bulids the model
+        Bulids the model.
 
         Parameters
         ----------
@@ -132,27 +127,20 @@ class Generator:
         self.random_seed = seed
 
         # initialize model
-        self.decoder, self.encoder = model_switcher(self.model_name)
-        self.encoder = self.encoder(self.input_shape[0],
-                                    self.hidden_size,
-                                    self.embedding_size)
-        self.decoder = self.decoder(self.input_shape,
-                                    self.hidden_size,
-                                    self.embedding_size,
-                                    self.vocab_size,
-                                    self.device,
-                                    num_lstms=self.num_lstms,
-                                    decoding_stack_size=
-                                    self.decoding_stack_size,
-                                    seed=self.random_seed)
-        print(self.encoder)
-        print(self.decoder)
-        self.train_params += sum(p.numel() for p in self.decoder.parameters()
+        self.model = model_switcher(self.model_name)(self.input_shape,
+                                                     self.max_length,
+                                                     self.hidden_size,
+                                                     self.vocab_size,
+                                                     self.device,
+                                                     self.num_lstms,
+                                                     self.decoding_stack_size,
+                                                     self.embedding_size,
+                                                     self.random_seed)
+
+        print(self.model)
+        self.train_params += sum(p.numel() for p in self.model.parameters()
                                  if p.requires_grad)
-        self.train_params += sum(p.numel() for p in self.encoder.parameters()
-                                 if p.requires_grad)
-        self.encoder.to(self.device)
-        self.decoder.to(self.device)
+        self.model.to(self.device)
         print('Trainable Parameters:', self.train_params, '\n\n\n\n')
         self.initialize_optimizer()  # initialize optimizer
 
@@ -161,10 +149,8 @@ class Generator:
         Initializes the optimizer.
         After this is called, optimizer will no longer be None.
         """
-        self.encoder_optimizer = optimizer_switcher(self.optimizer_string)(
-            self.encoder.parameters(), self.lr)
-        self.decoder_optimizer = optimizer_switcher(self.optimizer_string)(
-            self.decoder.parameters(), self.lr)
+        self.optimizer = optimizer_switcher(self.optimizer_string)(
+            self.model.parameters(), self.lr)
 
     def train(self,
               data_path,
@@ -215,8 +201,7 @@ class Generator:
         train_df = pd.read_csv(data_path)
 
         training_history = {
-            'encoder': str(self.encoder),
-            'decoder': str(self.decoder),
+            'model': str(self.model),
             'trainable_parameters': str(self.train_params),
             'lr': str(self.lr),
             'optimizer': self.optimizer_string,
@@ -262,16 +247,14 @@ class Generator:
                       + str(early_stopping_freq) + ' epochs.')
                 break
 
-            self.encoder.train()  # put model in train mode
-            self.decoder.train()
+            self.model.train()  # put model in train mode
 
             print('Epoch: #' + str(e))
             batch_history = []
             for s in range(1, steps_per_epoch + 1):
                 print('Step: #' + str(s) + '/' + str(steps_per_epoch))
                 # zero the gradient buffers
-                self.encoder_optimizer.zero_grad()
-                self.decoder_optimizer.zero_grad()
+                self.optimizer.zero_grad()
 
                 # get minibatch from data generator
                 x, caption_lengths = next(train_generator)
@@ -302,12 +285,8 @@ class Generator:
                                              epoch=e,
                                              epochs_since_improvement=
                                              epochs_since_improvement,
-                                             encoder=self.encoder,
-                                             decoder=self.decoder,
-                                             enc_optimizer=
-                                             self.encoder_optimizer,
-                                             dec_optimizer=
-                                             self.decoder_optimizer,
+                                             model=self.model,
+                                             optimizer=self.optimizer,
                                              cider=metric_score,
                                              is_best=is_best)
             if tmp_model_path:
@@ -332,12 +311,12 @@ class Generator:
 
     def train_on_batch(self, x, caption_lengths):
         """
+        Do one epoch of training on batch x.
 
         Parameters
         ----------
         x : list.
             batch of images and captions.
-        target : tensor.
 
         caption_lengths
 
@@ -345,58 +324,7 @@ class Generator:
         -------
 
         """
-        # unpack batch
-        input_img, input_w = x
-        # move to device
-        input_img = input_img.to(self.device)
-        input_w = input_w.to(self.device)
-
-        # encode images
-        global_images, enc_images = self.encoder(input_img)
-        # (batch_size, embedding_size) (batch, 512) global_images
-        # (batch_size, region_size, hidden_size) (batch, 64, 512) encoded_imgs
-
-        # sort batches by caption length descending, this way the whole
-        # batch_size_t will be correct
-        # convert to tensor
-        caption_lengths = torch.from_numpy(caption_lengths)
-        caption_lengths, sort_idx = caption_lengths.sort(dim=0,
-                                                         descending=True)
-        input_w = input_w[sort_idx]  # (batch_size, max_len)
-        global_images = global_images[sort_idx]  # (batch_size, embedding_size)
-        enc_images = enc_images[sort_idx]  # (batch_size, 64, 1536)
-
-        target = input_w[:, 1:]  # sorted targets
-        target = target.to(self.device)
-
-        batch_size = enc_images.size()[0]
-
-        # we do not want to predict the last endseq token
-        decoding_lengths = np.copy(caption_lengths)
-        decoding_lengths = (decoding_lengths - 1)
-        max_batch_length = max(decoding_lengths)
-
-        predictions = torch.zeros(batch_size,
-                                  self.max_length,
-                                  self.vocab_size)
-
-        h_t, c_t = self.decoder.initialize_variables(batch_size)
-
-        for timestep in range(max_batch_length):
-            batch_size_t = sum([lens > timestep for lens in decoding_lengths])
-            # x: [input_img, input_w]
-            # input_img: [global_image, encoded_image]
-            # image features does not vary over time
-            input_image_t = [global_images[:batch_size_t],
-                             enc_images[:batch_size_t]]
-            input_w_t = input_w[:batch_size_t, timestep]
-
-            x_t = [input_image_t, input_w_t]
-
-            pt, h_t, c_t = self.decoder(x_t,
-                                        (h_t[:, :batch_size_t],
-                                         c_t[:, :batch_size_t]))
-            predictions[:batch_size_t, timestep, :] = pt
+        predictions, target, decoding_lengths = self.model(x, caption_lengths)
 
         # loop finished
         # pack padded sequences
@@ -415,8 +343,7 @@ class Generator:
         # backpropagate
         loss.backward()
         # update weights
-        self.encoder_optimizer.step()
-        self.decoder_optimizer.step()
+        self.optimizer.step()
 
         return loss_num
 
@@ -440,8 +367,7 @@ class Generator:
             beam search are the values.
         """
         data_path = Path(data_path)
-        self.encoder.eval()  # put model in evaluation mode
-        self.decoder.eval()
+        self.model.eval()  # put model in evaluation mode
 
         data_df = pd.read_csv(data_path)
         data_df = data_df.reset_index(drop=True)
@@ -521,9 +447,10 @@ class Generator:
         batch_size = len(batch)
         batch = torch.tensor(batch).to(self.device)
 
-        global_images, encoded_images = self.encoder(batch)
+        global_images, encoded_images = self.model.encoder(batch)
 
-        h_t, c_t = self.decoder.initialize_variables(batch_size * beam_size)
+        h_t, c_t = self.model.decoder.initialize_variables(
+            batch_size * beam_size)
 
         # initialize beams as containing 1 caption
         # need beams to keep track of original indices
@@ -566,7 +493,7 @@ class Generator:
 
             # get predictions
             x = [images, sequences]
-            y_predictions, h_t, c_t = self.decoder(x, (h_t, c_t))
+            y_predictions, h_t, c_t = self.model.decoder(x, (h_t, c_t))
             # y_predictions (M*N, voc_size)
             y_predictions = torch.log_softmax(y_predictions, dim=1)
             # higher log_prob --> higher pob
@@ -655,20 +582,14 @@ class Generator:
 
     def load_model(self, path):
         checkpoint = torch.load(path)
-        self.encoder = checkpoint['encoder']
-        self.decoder = checkpoint['decoder']
-        self.encoder_optimizer = checkpoint['enc_optimizer']
-        self.decoder_optimizer = checkpoint['dec_optimizer']
-        self.encoder.eval()
-        self.decoder.eval()
+        self.model = checkpoint['model']
+        self.optimizer = checkpoint['optimizer']
+        self.model.eval()
         print('Loaded checkpoint at:', path)
-        print(self.encoder)
-        print(self.decoder)
+        print(self.model)
 
     def save_model(self, path):
         path = Path(path)
         assert path.is_dir()
-        path1 = path.joinpath(self.model_name + '_decoder.pth')
-        torch.save(self.decoder.state_dict(), path1)
-        path2 = path.joinpath(self.model_name + '_encoder.pth')
-        torch.save(self.encoder.state_dict(), path2)
+        path = path.joinpath(self.model_name + 'model.pth')
+        torch.save(self.model.state_dict(), path)

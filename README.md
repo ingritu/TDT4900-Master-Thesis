@@ -4,7 +4,7 @@ Image Captioning
 ## Installations
 
 First go to https://github.com/salaniz/pycocoevalcap to install pycocoevalcap and pycocotools.
-We need these packages to evaluate the model, and this is copatible with python 3.
+We need these packages to evaluate the model, and this is compatible with python 3.
 
 It is possible that you will get an error saying "No module named Cython" 
 while you are trying to install the packages. If you get this error just install
@@ -128,9 +128,6 @@ optional arguments:
                         karpathy split of dataset or not.
   --dataset DATASET     Dataset to train on. The options are {flickr8k,
                         flickr30k, coco}.
-  --image-feature-size IMAGE_FEATURE_SIZE [IMAGE_FEATURE_SIZE ...]
-                        List integers. Should be something like
-                        --image_feature_size 8 8 1536.
 ```
 ### 4. Evaluate a trained model
 ```
@@ -163,6 +160,7 @@ optional arguments:
 
 ```
 ## Project Structure
+This project uses the Data Science CookieCutter template.
 ```
 /
 ├── data/
@@ -229,3 +227,8 @@ optional arguments:
     └── visualization/
         └── visualize.py
 ```
+## Acknowledgements
+The model implementation is based on the work of 
+https://github.com/jiasenlu/AdaptiveAttention (original adaptive model), 
+https://github.com/fawazsammani/knowing-when-to-look-adaptive-attention (pytorch implementation) and 
+https://github.com/sgrvinod/a-PyTorch-Tutorial-to-Image-Captioning (pytorch implementation of Show, Attend and Tell).
