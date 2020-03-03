@@ -22,3 +22,10 @@ InceptionResnet encoding 8x8x1536
 120k encoded images = 750MB
 
 
+This is all based on Flickr8k.
+top says that 4GB of memory is allocated during training,
+this grows to 6GB during validation + 1.3GB java for SPICE stuff.
+SPICE stuff is then cached, meaning it is permanently in memory.
+This might mean that SPICE stuff will be downloaded every time we train a
+model in idun and will stay in memory until training is done. It will also be
+downloaded when we run predic_model because this is a different session.
