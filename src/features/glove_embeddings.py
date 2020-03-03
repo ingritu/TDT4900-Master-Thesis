@@ -2,6 +2,16 @@ import numpy as np
 
 
 def load_glove_vectors(glove_path):
+    """
+    Load pre-trained gloVe embeddings
+    Parameters
+    ----------
+    glove_path: Path or str. Path to gloVe embeddings file.
+
+    Returns
+    -------
+    gloVe embeddings.
+    """
     # Load Glove vectors
     embeddings_index = {}  # empty dictionary
     with open(glove_path, encoding='utf-8') as f:
@@ -14,6 +24,10 @@ def load_glove_vectors(glove_path):
 
 
 def embeddings_matrix(vocab_size, wordtoix, embeddings_index, embedding_dim):
+    """
+    Extract embeddings for words in vocabulary and initialize embedding as
+    zeros for words in vocabulary that are not in trained embeddings.
+    """
     embedding_matrix = np.zeros((vocab_size, embedding_dim))
     for word, i in wordtoix.items():
         # if i < max_words:

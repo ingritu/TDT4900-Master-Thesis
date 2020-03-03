@@ -56,32 +56,51 @@ def data_generator(data_df, batch_size, steps_per_epoch,
 
 
 def get_image(visual_features, data_df, i):
+    """
+    Get image encoding.
+
+    Parameters
+    ----------
+    visual_features : dict.
+    data_df : DataFrame.
+    i : int. index.
+
+    Returns
+    -------
+    Image encoding.
+    """
     image_name = data_df.loc[i, 'image_name']
     return visual_features[image_name]
 
 
 def get_caption(data_df, i):
+    """
+    Get caption string.
+    Parameters
+    ----------
+    data_df : DataFrame.
+    i : int. Index.
+
+    Returns
+    -------
+    Caption string.
+    """
     return data_df.loc[i, 'clean_caption']
 
 
-def to_categorical(y, num_classes=None, dtype='float32'):
-    # copied from keras for convenience
-    y = np.array(y, dtype='int')
-    input_shape = y.shape
-    if input_shape and input_shape[-1] == 1 and len(input_shape) > 1:
-        input_shape = tuple(input_shape[:-1])
-    y = y.ravel()
-    if not num_classes:
-        num_classes = np.max(y) + 1
-    n = y.shape[0]
-    categorical = np.zeros((n, num_classes), dtype=dtype)
-    categorical[np.arange(n), y] = 1
-    output_shape = input_shape + (num_classes,)
-    categorical = np.reshape(categorical, output_shape)
-    return categorical
-
-
 def pad_sequences(sequences, maxlen):
+    """
+    Pad sequences.
+
+    Parameters
+    ----------
+    sequences : list. list of tensors.
+    maxlen : int. Size to pad to.
+
+    Returns
+    -------
+    Padded sequences as one tensor.
+    """
     num = len(sequences)
     out_dims = (num, maxlen)
     out_tensor = sequences[0].data.new(*out_dims).fill_(0)

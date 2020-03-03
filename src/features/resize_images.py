@@ -9,6 +9,15 @@ ROOT_PATH = Path(__file__).absolute().parents[2]
 
 
 def resize_images(image_path, save_path, new_dims):
+    """
+    Resize images.
+
+    Parameters
+    ----------
+    image_path : Path or str.
+    save_path : Path or str.
+    new_dims : list.
+    """
     warnings.filterwarnings('ignore')
     image_path = Path(image_path)
     save_path = Path(save_path)

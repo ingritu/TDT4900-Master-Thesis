@@ -38,6 +38,20 @@ class Beam:
         self.optimality_certificate = False
 
     def update(self, predictions, h, c):
+        """
+        Update Beam state with the new predictions. Opt out early if the
+        optimality certificate is achieved before num_unfinished=0.
+
+        Optimality certificate:
+        When to Finish? Optimal Beam Search for Neural Text Generation
+        (modulo beam size) (2017) by Huang et al.
+
+        Parameters
+        ----------
+        predictions : torch.tensor. Predictions.
+        h : torch.tensor. Current hidden states.
+        c : torch.tensor. Current cell states.
+        """
         # h, c: (n, num_unfinished, hidden_size)
         # predictions (num_unfinished, vocab_size)
         if self.num_unfinished == 0 or self.optimality_certificate:
@@ -112,6 +126,13 @@ class Beam:
                 self.num_unfinished = 0
 
     def find_best_comlpete_sequence(self):
+        """
+        Search the finished captions for the most probable caption.
+
+        Returns
+        -------
+        The index of the most probable finished caption.
+        """
         probs = torch.tensor(self.finished_caps_scores).to(self.device)
         _, idx = probs.topk(1, dim=0)
         return int(idx)

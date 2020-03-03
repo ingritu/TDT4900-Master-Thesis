@@ -6,12 +6,24 @@ import torch.nn.functional as F
 class SentinelLSTM(nn.Module):
 
     def __init__(self, input_size, hidden_size, n=0):
+        """
+        Implementation of the Sentinel LSTM by Lu et al. Knowing when to look.
+        Also has the option to stack LSTMCells before generating the
+        Sentinel vector. There are skip connections between all LSTMCells in
+        the stack.
+
+        Parameters
+        ----------
+        input_size : int.
+        hidden_size : int.
+        n : int. The number of extra LSTM cells to use. Default is 0.
+        """
         super(SentinelLSTM, self).__init__()
         # NB! there is a difference between LSTMCell and LSTM.
         # LSTM is notably much quicker
         self.n = n
         self.lstm_cells = []
-        if n:
+        if n > 0:
             inp_size = hidden_size
         else:
             inp_size = input_size
@@ -56,6 +68,16 @@ class SentinelLSTM(nn.Module):
 class ImageEncoder(nn.Module):
 
     def __init__(self, input_shape, hidden_size, embedding_size):
+        """
+        Reshapes or embeds the image features more to fit dims of
+        the rest of the model.
+
+        Parameters
+        ----------
+        input_shape : int.
+        hidden_size : int.
+        embedding_size : int.
+        """
         super(ImageEncoder, self).__init__()
         self.average_pool = nn.AvgPool2d(input_shape[0])
         # affine transformation of attention features
@@ -81,6 +103,15 @@ class ImageEncoder(nn.Module):
 class MultimodalDecoder(nn.Module):
 
     def __init__(self, input_shape, hidden_size, n=0):
+        """
+        Multimodal decoding part of the model.
+
+        Parameters
+        ----------
+        input_shape : int.
+        hidden_size : int.
+        n : int. Default is 0.
+        """
         super(MultimodalDecoder, self).__init__()
         self.layers = []
         if n:
@@ -112,6 +143,15 @@ class MultimodalDecoder(nn.Module):
 class AttentionLayer(nn.Module):
 
     def __init__(self, input_size, hidden_size):
+        """
+        Implementation of the Soft visual attention block
+        by Lu et al. Knowing when to look.
+
+        Parameters
+        ----------
+        input_size : int.
+        hidden_size : int.
+        """
         super(AttentionLayer, self).__init__()
         # input_size 512
         # hidden_size 512

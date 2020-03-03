@@ -11,6 +11,19 @@ def save_checkpoint(directory,
                     optimizer,
                     cider,
                     is_best):
+    """
+    Save model checkpoint to file.
+
+    Parameters
+    ----------
+    directory : Path or str.
+    epoch : int.
+    epochs_since_improvement : int.
+    model : torch_generator.
+    optimizer : torch.optimizer.
+    cider : float.
+    is_best : bool.
+    """
     directory = Path(directory)
 
     # remove worse checkpoints
@@ -41,7 +54,14 @@ def save_checkpoint(directory,
 
 
 def save_training_log(path, training_history):
-    # I do not care that the function is static
+    """
+    Make a log file for the training session.
+
+    Parameters
+    ----------
+    path : Path or str.
+    training_history : dict.
+    """
     with open(path, 'w') as train_log:
         train_log.write('################# '
                         'LOG FILE '

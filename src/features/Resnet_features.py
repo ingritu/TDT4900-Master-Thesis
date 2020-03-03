@@ -58,11 +58,23 @@ def extract_image_features(image_path,
                            split_set_path,
                            output_layer_idx,
                            vis_att=True):
+    """
+    Create image encodings.
+
+    Parameters
+    ----------
+    image_path : Path or str.
+    save_path : Path or str.
+    split_set_path : Path or str.
+    output_layer_idx : int.
+    vis_att : bool.
+    """
     # consider splitting the process up in parts and then
     # combining the parts at the end, to reduce the amount of images
     # in memory at any time
     image_path = Path(image_path)
     save_path = Path(save_path)
+    split_set_path = Path(split_set_path)
     save_dir = save_path.parent
     if not save_dir.is_dir():
         save_dir.mkdir(parents=True)

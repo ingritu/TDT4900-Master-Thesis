@@ -120,7 +120,16 @@ def basic_data_cleaning(df_path, save_path, voc_save_path, threshold=3,
 
 
 def replace_uncommon_words(caption_df, corpus, threshold=3):
-    # replace words with less than THRESHOLD occurrences with an UNK
+    """
+    Replace words with less than THRESHOLD occurrences with an UNK token.
+
+    Parameters
+    ----------
+    caption_df : DataFrame.
+    corpus : dict.
+    threshold : int.
+    """
+    #
     # token
     replace_corpus = set([key for key in corpus if corpus[key] < threshold])
     for i in range(len(caption_df)):
@@ -189,6 +198,14 @@ def remove_bad_captions(caption_df):
 
 
 def is_all_one_letter(caption, letter):
+    """
+    Check whether caption is only a string consisting of one letter.
+
+    Parameters
+    ----------
+    caption : str.
+    letter : str.
+    """
     tmp_caption = caption[1:len(caption) - 1]
     for word in tmp_caption:
         for char in word:
@@ -198,6 +215,13 @@ def is_all_one_letter(caption, letter):
 
 
 def number_to_word(word):
+    """
+    Transform number to number word.
+
+    Parameters
+    ----------
+    word : str.
+    """
     numbers = {'0': 'zero', '1': 'one', '2': 'two', '3': 'three', '4': 'four',
                '5': 'five', '6': 'six', '7': 'seven', '8': 'eight',
                '9': 'nine'}

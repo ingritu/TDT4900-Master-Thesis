@@ -50,7 +50,15 @@ class Generator:
                  model_name,
                  voc_path,
                  feature_path):
+        """
+        Generator framework similar to how keras works.
 
+        Parameters
+        ----------
+        model_name : str.
+        voc_path : Path or str.
+        feature_path : Path or str.
+        """
         self.embedding_size = 0
         self.hidden_size = 0
         self.num_lstms = 0
@@ -59,12 +67,12 @@ class Generator:
         self.save_path = None
         self.random_seed = None
 
-        self.vocab_path = voc_path
+        self.vocab_path = Path(voc_path)
         self.wordtoix, self.ixtoword, self.max_length = \
             load_vocabulary(self.vocab_path)
         self.vocab_size = len(self.wordtoix)
-        self.feature_path = feature_path
-        self.encoded_features = load_visual_features(feature_path)
+        self.feature_path = Path(feature_path)
+        self.encoded_features = load_visual_features(self.feature_path)
         self.input_shape = list(self.encoded_features.values())[0].shape
 
         # initialize model as None
@@ -318,11 +326,11 @@ class Generator:
         x : list.
             batch of images and captions.
 
-        caption_lengths
+        caption_lengths :
 
         Returns
         -------
-
+        loss_num : float
         """
         predictions, target, decoding_lengths = self.model(x, caption_lengths)
 
@@ -581,6 +589,14 @@ class Generator:
         return coco_eval.eval[metric]
 
     def load_model(self, path):
+        """
+        Load model from checkpoint.
+
+        Parameters
+        ----------
+        path : Path or str.
+        """
+        path = Path(path)
         checkpoint = torch.load(path)
         self.model = checkpoint['model']
         self.optimizer = checkpoint['optimizer']
@@ -589,6 +605,13 @@ class Generator:
         print(self.model)
 
     def save_model(self, path):
+        """
+        Save model to path.
+
+        Parameters
+        ----------
+        path : Path or str.
+        """
         path = Path(path)
         assert path.is_dir()
         path = path.joinpath(self.model_name + 'model.pth')

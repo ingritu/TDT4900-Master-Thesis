@@ -29,6 +29,21 @@ class AdaptiveModel(nn.Module):
                  decoding_stack_size=1,
                  embedding_size=300,
                  seed=222):
+        """
+        Adaptive Model
+
+        Parameters
+        ----------
+        input_shape : list
+        max_len : int.
+        hidden_size : int.
+        vocab_size : int.
+        device : torch.device.
+        num_lstms : int.
+        decoding_stack_size : int.
+        embedding_size : int.
+        seed : int.
+        """
         super(AdaptiveModel, self).__init__()
         self.visual_feature_shape = input_shape
         self.max_len = max_len
@@ -113,14 +128,6 @@ class AdaptiveModel(nn.Module):
 
 class AdaptiveDecoder(nn.Module):
 
-    """
-    Adaptive Decoder.
-
-    This class will not do any encoding of the images, but expects an
-    encoded image as input. This generator does not output full sequences,
-    instead it only outputs the predictions at a timestep.
-    """
-
     def __init__(self,
                  max_len,
                  hidden_size,
@@ -130,6 +137,24 @@ class AdaptiveDecoder(nn.Module):
                  num_lstms=1,
                  decoding_stack_size=1,
                  seed=222):
+        """
+        Adaptive Decoder.
+
+        This class will not do any encoding of the images, but expects an
+        encoded image as input. This generator does not output full sequences,
+        instead it only outputs the predictions at a timestep.
+
+        Parameters
+        ----------
+        max_len : int.
+        hidden_size : int.
+        embedding_size : int.
+        vocab_size : int.
+        device : torch.device.
+        num_lstms : int.
+        decoding_stack_size : int.
+        seed : int.
+        """
         super(AdaptiveDecoder, self).__init__()
         self.max_len = max_len
         self.hidden_size = hidden_size

@@ -7,6 +7,16 @@ ROOT_PATH = Path(__file__).absolute().parents[2]
 
 
 def order_raw_data_and_move_to_interim(data_path, dataset, ann_path):
+    """
+    Go through Karpathy datafile and create annotation files and
+    .csv files for each split.
+
+    Parameters
+    ----------
+    data_path : Path or str.
+    dataset : str.
+    ann_path : Path or str.
+    """
     data_path = Path(data_path)
     ann_path = Path(ann_path)
     with open(data_path, 'r') as json_file:
@@ -119,6 +129,9 @@ def order_raw_data_and_move_to_interim(data_path, dataset, ann_path):
 
 
 def initialize_full_dict():
+    """
+    Initialize full dict.
+    """
     train_dict = {}
     # val and test does not need caption_id nor caption columns
     test_dict = {
@@ -138,6 +151,9 @@ def initialize_full_dict():
 
 
 def initialize_ann_dict():
+    """
+    Initialize annotation dict.
+    """
     init_dict = {
         "info": {
             "description": "description",
