@@ -1,5 +1,5 @@
 from pathlib import Path
-from src.features.Resnet_features import extract_image_features
+from src.features.resnet_features import extract_image_features
 from src.features.resize_images import resize_images
 
 import argparse

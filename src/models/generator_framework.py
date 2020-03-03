@@ -13,7 +13,7 @@ import json
 
 from src.data.data_generator import data_generator
 from src.data.utils import load_vocabulary
-from src.features.Resnet_features import load_visual_features
+from src.features.resnet_features import load_visual_features
 from src.models.torch_generators import model_switcher
 from src.models.beam import Beam
 from src.models.utils import save_checkpoint
