@@ -42,6 +42,7 @@ if __name__ == '__main__':
     REMOVE_IMG_SIZE = len(new_df)
     print('removed', OG_SIZE - REMOVE_IMG_SIZE, 'captions')
     print('few captions', few)
+    # these numbers are dependent on how rigorous the initial cleaning was
     # removed 32 captions as a result of not enough caps
     # total removed caps are 344
 
