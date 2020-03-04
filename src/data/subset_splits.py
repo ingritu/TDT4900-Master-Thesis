@@ -44,7 +44,6 @@ for image_id in image_ids:
     counter += 1
     if counter % 1000 == 0:
         print(counter)
-# print(subsets[4][123277])
 
 C1_df = pd.DataFrame(subset_ds[0])
 C2_df = pd.DataFrame(subset_ds[1])
