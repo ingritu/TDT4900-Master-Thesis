@@ -20,10 +20,10 @@ if __name__ == '__main__':
     parser.add_argument('--karpathy', action='store_true',
                         help='Boolean used to decide whether to train on '
                              'the karpathy split of dataset or not.')
-    parser.add_argument('--threshold', type=int, default=3,
+    parser.add_argument('--threshold', type=int, default=5,
                         help='Minimum word frequency for words included '
                              'in the vocabulary.')
-    parser.add_argument('--unk-percentage', type=float, default=0.4,
+    parser.add_argument('--unk-percentage', type=float, default=0.3,
                         help='The percentage of UNK tokens in a caption '
                              'must be below this value in order to be '
                              'included in the train set.')

@@ -15,7 +15,7 @@ if __name__ == '__main__':
     # All default values are the values used in the knowing when to look paper
     parser = argparse.ArgumentParser()
     # Training details
-    parser.add_argument('--batch-size', type=int, default=256,
+    parser.add_argument('--batch-size', type=int, default=80,
                         help='Training batch size. '
                              'The number of captions in a batch.')
     parser.add_argument('--val-batch-size', type=int, default=250,
