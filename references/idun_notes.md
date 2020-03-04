@@ -13,6 +13,8 @@ Find partitions by running:
 ```
 scontrol show partition|grep ^Par
 ```
+### Modules
+Need to load modules.
 
 ## job.slurm file
 If you do not need a lot of CPUs then use a partition with GPUs like EPICALL.

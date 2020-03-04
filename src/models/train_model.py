@@ -75,18 +75,20 @@ if __name__ == '__main__':
     processed_path = ROOT_PATH.joinpath('data',
                                         'processed')
     ann_path = processed_path.joinpath('annotations')
+    feature_path = processed_path.joinpath('images')
     dataset = args['dataset']
     if args['karpathy']:
         interim_path = interim_path.joinpath('karpathy_split')
         # annotation file
         ann_path = ann_path.joinpath('karpathy_split')
+        feature_path = feature_path.joinpath('karpathy_split')
 
     annFile = ann_path.joinpath(dataset + '_val.json')
     train_path = interim_path.joinpath(dataset + '_train_clean.csv')
     val_path = interim_path.joinpath(dataset + '_val.csv')
     voc_path_ = interim_path.joinpath(dataset + '_vocabulary.csv')
-    feature_path_ = processed_path.joinpath(
-        dataset, 'Images', 'encoded_visual_attention_full.pkl')
+    featureFile = processed_path.joinpath(dataset +
+                                          '_encoded_visual_attention_full.pkl')
 
     save_path_ = ROOT_PATH.joinpath('models')
 
@@ -113,7 +115,7 @@ if __name__ == '__main__':
 
     generator = Generator(model_name_,
                           voc_path_,
-                          feature_path_)
+                          featureFile)
     generator.compile(save_path_,
                       embedding_size=em_dim,
                       hidden_size=hidden_size_,

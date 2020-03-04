@@ -88,7 +88,7 @@ if __name__ == '__main__':
     if args['karpathy']:
         img_save_path = img_save_path.joinpath('karpathy_split')
         interim_path = interim_path.joinpath('karpathy_split')
-    file_str = 'encoded_'
+    file_str = dataset_ + '_encoded_'
     if vis_att_:
         file_str += 'visual_attention_'
     file_str += split + '.pkl'
