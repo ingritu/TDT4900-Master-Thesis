@@ -28,6 +28,9 @@ if __name__ == '__main__':
                         help='Which dataset to create image features for. '
                              'The options are '
                              '{flickr8k, flickr30k, coco}.')
+    parser.add_argument('--karpathy', action='store_true',
+                        help='Boolean used to decide whether to train on '
+                             'the karpathy split of dataset or not.')
     parser.add_argument('--visual-attention', action='store_true',
                         help='Boolean for deciding whether to extract visual '
                              'features that are usable for models that use '
@@ -81,12 +84,16 @@ if __name__ == '__main__':
     image_path_ = interim_path.joinpath(dataset_,
                                         'Images', str(dims[0]) + 'x'
                                         + str(dims[1]))
-    save_path_ = processed_path.joinpath(dataset_, 'Images',
-                                         'encoded_visual_attention_' +
-                                         split + '.pkl')
-    split_set_path_ = interim_path.joinpath(dataset_,
-                                            dataset_ + '_' +
-                                            split + '.csv')
+    img_save_path = processed_path.joinpath('images')
+    if args['karpathy']:
+        img_save_path = img_save_path.joinpath('karpathy_split')
+        interim_path = interim_path.joinpath('karpathy_split')
+    file_str = 'encoded_'
+    if vis_att_:
+        file_str += 'visual_attention_'
+    file_str += split + '.pkl'
+    save_path_ = img_save_path.joinpath(file_str)
+    split_set_path_ = interim_path.joinpath(dataset_ + '_' + split + '.csv')
 
     extract_image_features(image_path_,
                            save_path_,

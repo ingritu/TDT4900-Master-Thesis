@@ -1,4 +1,18 @@
 # My notes regarding running on Epic/Idun
+### Partitions
+```
+#SBATCH --partition=WORKQ
+#SBATCH --partition=TRAINING
+#SBATCH --partition=EPT
+#SBATCH --partition=TEST
+#SBATCH --partition=EPIC     #GPU
+#SBATCH --partition=EPIC2    #GPU
+#SBATCH --partition=EPICALL  #GPU
+```
+Find partitions by running:
+```
+scontrol show partition|grep ^Par
+```
 
 ## job.slurm file
 If you do not need a lot of CPUs then use a partition with GPUs like EPICALL.
@@ -34,6 +48,28 @@ source ${HOME}/env1/bin/activate
 
 python3 -m src.namespace.module --args
 ```
+Add gpus
+```
+#SBATCH --gres=gpu:1
+```
+Example from hpc documentation:
+```
+#!/bin/sh
+#SBATCH --partition=EPIC2
+#SBATCH --account=<account>
+#SBATCH --time=00:30:00
+#SBATCH --nodes=2
+#SBATCH --ntasks-per-node=2
+#SBATCH --gres=gpu:1  
+#SBATCH --job-name="LBM_CUDA"
+#SBATCH --output=lbm_cuda.out
+
+cd ${SLURM_SUBMIT_DIR}
+
+module purge
+module load fosscuda/2018b
+```
+
 ## Running a job
 1. Edit job.slurm file.
 2. run:
