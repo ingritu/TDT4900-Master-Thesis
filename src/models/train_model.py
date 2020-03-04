@@ -87,8 +87,8 @@ if __name__ == '__main__':
     train_path = interim_path.joinpath(dataset + '_train_clean.csv')
     val_path = interim_path.joinpath(dataset + '_val.csv')
     voc_path_ = interim_path.joinpath(dataset + '_vocabulary.csv')
-    featureFile = processed_path.joinpath(dataset +
-                                          '_encoded_visual_attention_full.pkl')
+    featureFile = feature_path.joinpath(dataset +
+                                        '_encoded_visual_attention_full.pkl')
 
     save_path_ = ROOT_PATH.joinpath('models')
 
