@@ -81,7 +81,7 @@ def extract_image_features(image_path,
 
     model = load_pre_trained_model(output_layer_idx)
     data_df = pd.read_csv(split_set_path)
-    image_split = set(data_df.loc[:, 'image_id'])
+    image_split = set(data_df.loc[:, 'image_name'])
     start = time()
     encoding_data = {}
     n = len(image_split)

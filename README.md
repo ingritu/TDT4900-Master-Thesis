@@ -178,6 +178,15 @@ This project uses the Data Science CookieCutter template.
 │   │       └── val2014/
 │   ├── interim/
 │   ├── processed/
+│   │   ├── annotations/
+│   │   ├── cap_subsets/
+│   │   │   ├── c1.csv
+│   │   │   ├── c2.csv
+│   │   │   ├── c3.csv
+│   │   │   ├── c4.csv
+│   │   │   └── c5.csv
+│   │   └── images/
+│   │       └── karpathy_split/
 │   └── README.md
 ├── docs/
 │   └── README.md

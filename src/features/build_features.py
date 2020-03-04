@@ -94,7 +94,7 @@ if __name__ == '__main__':
     file_str += split + '.pkl'
     save_path_ = img_save_path.joinpath(file_str)
     split_set_path_ = interim_path.joinpath(dataset_ + '_' + split + '.csv')
-
+    
     extract_image_features(image_path_,
                            save_path_,
                            split_set_path_,
