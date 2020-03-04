@@ -34,3 +34,17 @@ source ${HOME}/env1/bin/activate
 
 python3 -m src.namespace.module --args
 ```
+## Running a job
+1. Edit job.slurm file.
+2. run:
+   ```
+   sbatch job.slurm
+   ```
+3. Find job in queue
+   ```
+   squeue -u <username>
+   ```
+4. View log.
+   ```
+   vim test-srun.out
+   ```
