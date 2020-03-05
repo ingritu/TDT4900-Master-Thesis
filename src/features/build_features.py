@@ -49,13 +49,16 @@ if __name__ == '__main__':
         dataset_ + " is not supported. Only flickr8k, flickr30k and coco " \
                    "are supported."
     new_dims_ = args['new_image_size']
-    dims = DIMENSIONS[:2]  # use default if nothing else is specified
+    dims = DIMENSIONS  # use default if nothing else is specified
     if len(new_dims_):
         assert len(new_dims_) in {2, 3}, \
             "new_image_size length out of range. " \
             "Expected length 2 or 3 but got " + str(len(new_dims_))
         # new dims are valid
-        dims = new_dims_[:2]
+        if len(new_dims_) == 2:
+            dims = new_dims_[:2] + [3]
+        else:
+            dims = new_dims_
 
     raw_path = ROOT_PATH.joinpath('data', 'raw')
     interim_path = ROOT_PATH.joinpath('data', 'interim')
@@ -65,17 +68,17 @@ if __name__ == '__main__':
         save_path_ = interim_path.joinpath(dataset_, 'Images')
         if dataset_ == 'flickr8k':
             image_path_ = raw_path.joinpath('Flickr8k', 'Images')
-            resize_images(image_path_, save_path_, new_dims_)
+            resize_images(image_path_, save_path_, dims)
         elif dataset_ == 'flickr30k':
             image_path_ = raw_path.joinpath('Flickr30k', dataset_ + '-images')
-            resize_images(image_path_, save_path_, new_dims_)
+            resize_images(image_path_, save_path_, dims)
         else:
             # must be coco
             # coco is special because there are three folders for the images
             image_dirs = ['train2014', 'test2014', 'val2014']
             for image_dir in image_dirs:
                 image_path_ = raw_path.joinpath('MSCOCO', image_dir)
-                resize_images(image_path_, save_path_, new_dims_)
+                resize_images(image_path_, save_path_, dims)
 
     # Build visual features
     output_layer_dim_ = args['output_layer_idx']
@@ -94,7 +97,7 @@ if __name__ == '__main__':
     file_str += split + '.pkl'
     save_path_ = img_save_path.joinpath(file_str)
     split_set_path_ = interim_path.joinpath(dataset_ + '_' + split + '.csv')
-    
+
     extract_image_features(image_path_,
                            save_path_,
                            split_set_path_,
