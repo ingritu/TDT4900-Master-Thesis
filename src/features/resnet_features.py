@@ -45,7 +45,7 @@ def encode_vis_att(image, model):
     # add one more dimension
     image = np.expand_dims(image, axis=0)
     # preprocess the image
-    image = preprocess_input(image)
+    image = preprocess_input(image)  # (1, 299, 299, 3)
     # Get the encoding vector for the image
     fea_vec = model.predict(image)
     # reshape from (1, 8, 8, 1536) to (8, 8, 1536)
