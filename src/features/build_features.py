@@ -43,7 +43,7 @@ if __name__ == '__main__':
                              'the dataset will be encoded and saved in the '
                              'same file.')
     args = vars(parser.parse_args())
-
+    print("Started build feature script.")
     dataset_ = args['dataset']
     assert dataset_ in {'flickr8k', 'flickr30k', 'coco'}, \
         dataset_ + " is not supported. Only flickr8k, flickr30k and coco " \
@@ -79,6 +79,7 @@ if __name__ == '__main__':
             for image_dir in image_dirs:
                 image_path_ = raw_path.joinpath('MSCOCO', image_dir)
                 resize_images(image_path_, save_path_, dims)
+            print("Resizing images done.")
 
     # Build visual features
     output_layer_dim_ = args['output_layer_idx']
@@ -97,7 +98,7 @@ if __name__ == '__main__':
     file_str += split + '.pkl'
     save_path_ = img_save_path.joinpath(file_str)
     split_set_path_ = interim_path.joinpath(dataset_ + '_' + split + '.csv')
-
+    print("Encoding images ...")
     extract_image_features(image_path_,
                            save_path_,
                            split_set_path_,
