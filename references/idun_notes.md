@@ -1,10 +1,13 @@
 # My notes regarding running on Epic/Idun
 ### Partitions
+Partitions info
+```
+sinfo
+```
+
 ```
 #SBATCH --partition=WORKQ
-#SBATCH --partition=TRAINING
 #SBATCH --partition=EPT
-#SBATCH --partition=TEST
 #SBATCH --partition=EPIC     #GPU
 #SBATCH --partition=EPIC2    #GPU
 #SBATCH --partition=EPICALL  #GPU
@@ -86,3 +89,8 @@ module load fosscuda/2018b
    ```
    vim test-srun.out
    ```
+## Other
+#### Check user's disk quota
+```
+lfs quota -u <username> /lustre1
+```

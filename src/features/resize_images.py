@@ -25,10 +25,14 @@ def resize_images(image_path, save_path, new_dims):
     if not directory.is_dir():
         directory.mkdir(parents=True)
     print("Resizing images")
+    count = 0
     for im_file in image_path.glob('*.jpg'):
         p = len(str(im_file.parent)) + 1
         image_name = str(im_file)[p:]
         image = imread(str(im_file))
         image = resize(image, new_dims)
-        image = image.astype(np.uint8)
-        imsave(directory.joinpath(image_name), image)
+        image = image*255
+        imsave(directory.joinpath(image_name), image.astype(np.uint8))
+        count += 1
+        if count % 1000 == 0:
+            print(count)
