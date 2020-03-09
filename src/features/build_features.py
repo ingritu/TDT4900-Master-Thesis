@@ -20,6 +20,9 @@ if __name__ == '__main__':
     parser.add_argument('--resize-images', action='store_true',
                         help='Boolean to decide whether to resize the images '
                              'before building the actual features.')
+    parser.add_argument('--build-features', action='store_true',
+                        help='Bool to determine if we should build the '
+                             'new features.')
     parser.add_argument('--new-image-size', type=int,
                         nargs='+',
                         help='List new image dimensions. should be something '
@@ -38,12 +41,19 @@ if __name__ == '__main__':
     parser.add_argument('--output-layer-idx', type=int, default=-3,
                         help='Which layer to extract features from.')
     parser.add_argument('--image-split', type=str, default='full',
+                        help='Which dataset split images to resize. '
+                             'Default is full, meaning all images in '
+                             'the dataset will be resized. This is only '
+                             'necessary for coco since it is so big.')
+    parser.add_argument('--feature-split', type=str, default='full',
                         help='Which dataset split to make features for. '
                              'Default value is full, meaning all images in '
                              'the dataset will be encoded and saved in the '
                              'same file.')
     args = vars(parser.parse_args())
-    print("Started build feature script.")
+
+    print("Started build features script.")
+
     dataset_ = args['dataset']
     assert dataset_ in {'flickr8k', 'flickr30k', 'coco'}, \
         dataset_ + " is not supported. Only flickr8k, flickr30k and coco " \
@@ -76,31 +86,36 @@ if __name__ == '__main__':
             # must be coco
             # coco is special because there are three folders for the images
             image_dirs = ['train2014', 'test2014', 'val2014']
-            for image_dir in image_dirs:
-                image_path_ = raw_path.joinpath('MSCOCO', image_dir)
-                resize_images(image_path_, save_path_, dims)
+            img_split = args['image_split']
+            assert img_split in {'train', 'test', 'val'}, \
+                "Illegal image split. Must be either train, test or val."
+            image_path_ = raw_path.joinpath('MSCOCO', img_split + '2014')
+            resize_images(image_path_, save_path_, dims)
             print("Resizing images done.")
 
     # Build visual features
-    output_layer_dim_ = args['output_layer_idx']
-    vis_att_ = args['visual_attention']
-    split = args['image_split']
-    image_path_ = interim_path.joinpath(dataset_,
-                                        'Images', str(dims[0]) + 'x'
-                                        + str(dims[1]))
-    img_save_path = processed_path.joinpath('images')
-    if args['karpathy']:
-        img_save_path = img_save_path.joinpath('karpathy_split')
-        interim_path = interim_path.joinpath('karpathy_split')
-    file_str = dataset_ + '_encoded_'
-    if vis_att_:
-        file_str += 'visual_attention_'
-    file_str += split + '.pkl'
-    save_path_ = img_save_path.joinpath(file_str)
-    split_set_path_ = interim_path.joinpath(dataset_ + '_' + split + '.csv')
-    print("Encoding images ...")
-    extract_image_features(image_path_,
-                           save_path_,
-                           split_set_path_,
-                           output_layer_dim_,
-                           vis_att=vis_att_)
+    if args['build_features']:
+        output_layer_dim_ = args['output_layer_idx']
+        vis_att_ = args['visual_attention']
+        split = args['feature_split']
+        image_path_ = interim_path.joinpath(dataset_,
+                                            'Images', str(dims[0]) + 'x'
+                                            + str(dims[1]))
+        img_save_path = processed_path.joinpath('images')
+        if args['karpathy']:
+            img_save_path = img_save_path.joinpath('karpathy_split')
+            interim_path = interim_path.joinpath('karpathy_split')
+        file_str = dataset_ + '_encoded_'
+        if vis_att_:
+            file_str += 'visual_attention_'
+        file_str += split + '.pkl'
+        save_path_ = img_save_path.joinpath(file_str)
+        split_set_path_ = interim_path.joinpath(dataset_ + '_' + split +
+                                                '.csv')
+        print("Encoding images ...")
+        extract_image_features(image_path_,
+                               save_path_,
+                               split_set_path_,
+                               output_layer_dim_,
+                               vis_att=vis_att_)
+        print("Encoding done.")

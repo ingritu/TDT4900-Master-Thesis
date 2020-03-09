@@ -94,3 +94,8 @@ module load fosscuda/2018b
 ```
 lfs quota -u <username> /lustre1
 ```
+#### Job info
+```
+sacct -o JobID,ReqMem,MaxVMSize,MaxRSS,MaxRSSTask,State,NodeList -j list,of,jobIDs
+sacct
+```

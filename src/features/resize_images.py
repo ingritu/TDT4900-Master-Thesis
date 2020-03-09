@@ -3,7 +3,6 @@ from skimage.io import imread
 from skimage.io import imsave
 from pathlib import Path
 import numpy as np
-import warnings
 
 ROOT_PATH = Path(__file__).absolute().parents[2]
 
@@ -18,7 +17,6 @@ def resize_images(image_path, save_path, new_dims):
     save_path : Path or str.
     new_dims : list.
     """
-    warnings.filterwarnings('ignore')
     image_path = Path(image_path)
     save_path = Path(save_path)
     directory = save_path.joinpath(str(new_dims[0]) + 'x' + str(new_dims[1]))
@@ -32,7 +30,7 @@ def resize_images(image_path, save_path, new_dims):
         image = imread(str(im_file))
         image = resize(image, new_dims)
         image = image*255
-        imsave(directory.joinpath(image_name), image.astype(np.uint8))
+        imsave(str(directory.joinpath(image_name)), image.astype(np.uint8))
         count += 1
         if count % 1000 == 0:
             print(count)
