@@ -65,6 +65,7 @@ if __name__ == '__main__':
                              '{flickr8k, flickr30k, coco}.')
 
     args = vars(parser.parse_args())
+    print("Past argparse.")
     """""""""
     dataset_ = args['dataset']
     assert dataset_ in {'flickr8k', 'flickr30k', 'coco'}, \
@@ -105,3 +106,4 @@ if __name__ == '__main__':
             resize_images(image_path_, save_path_, dims)
             print("Resizing images done.")
     """""""""
+    print("End of Script.")
