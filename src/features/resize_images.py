@@ -1,5 +1,5 @@
 from skimage.transform import resize
-#from skimage.io import imread
+from skimage.io import imread
 #from skimage.io import imsave
 from pathlib import Path
 #import numpy as np
