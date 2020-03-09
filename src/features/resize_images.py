@@ -47,9 +47,6 @@ if __name__ == '__main__':
     """
     print("Started resize images script.")
     parser = argparse.ArgumentParser()
-    parser.add_argument('--resize-images', action='store_true',
-                        help='Boolean to decide whether to resize the images '
-                             'before building the actual features.')
     parser.add_argument('--new-image-size', type=int,
                         nargs='+',
                         help='List new image dimensions. should be something '
@@ -87,28 +84,28 @@ if __name__ == '__main__':
             dims = new_dims_[:2] + [3]
         else:
             dims = new_dims_
-    """""""""
+
     raw_path = ROOT_PATH.joinpath('data', 'raw')
     interim_path = ROOT_PATH.joinpath('data', 'interim')
     processed_path = ROOT_PATH.joinpath('data', 'processed')
-    if args['resize_images']:
-        # karpathy split does not matter here
-        save_path_ = interim_path.joinpath(dataset_, 'Images')
-        if dataset_ == 'flickr8k':
-            image_path_ = raw_path.joinpath('Flickr8k', 'Images')
-            resize_images(image_path_, save_path_, dims)
-        elif dataset_ == 'flickr30k':
-            image_path_ = raw_path.joinpath('Flickr30k', dataset_ + '-images')
-            resize_images(image_path_, save_path_, dims)
-        else:
-            # must be coco
-            # coco is special because there are three folders for the images
-            image_dirs = ['train2014', 'test2014', 'val2014']
-            img_split = args['image_split']
-            assert img_split in {'train', 'test', 'val'}, \
-                "Illegal image split. Must be either train, test or val."
-            image_path_ = raw_path.joinpath('MSCOCO', img_split + '2014')
-            resize_images(image_path_, save_path_, dims)
-            print("Resizing images done.")
+    """""""""
+    # karpathy split does not matter here
+    save_path_ = interim_path.joinpath(dataset_, 'Images')
+    if dataset_ == 'flickr8k':
+        image_path_ = raw_path.joinpath('Flickr8k', 'Images')
+        resize_images(image_path_, save_path_, dims)
+    elif dataset_ == 'flickr30k':
+        image_path_ = raw_path.joinpath('Flickr30k', dataset_ + '-images')
+        resize_images(image_path_, save_path_, dims)
+    else:
+        # must be coco
+        # coco is special because there are three folders for the images
+        # image_dirs = ['train2014', 'test2014', 'val2014']
+        img_split = args['image_split']
+        assert img_split in {'train', 'test', 'val'}, \
+            "Illegal image split. Must be either train, test or val."
+        image_path_ = raw_path.joinpath('MSCOCO', img_split + '2014')
+        resize_images(image_path_, save_path_, dims)
+        print("Resizing images done.")
     """""""""
     print("End of Script.")
