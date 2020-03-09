@@ -57,11 +57,11 @@ if __name__ == '__main__':
                              'the dataset will be resized. This is only '
                              'necessary for coco since it is so big.')
     parser.add_argument('--dataset', type=str, default='coco',
-                        help='Which dataset to create image features for. '
+                        help='Which dataset to resize its images. '
                              'The options are '
                              '{flickr8k, flickr30k, coco}.')
-
     args = vars(parser.parse_args())
+
     # print all args
     print("using parsed arguments.")
     for key in args:

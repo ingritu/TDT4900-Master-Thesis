@@ -44,32 +44,56 @@ optional arguments:
                         below this value in order to be included in the train
                         set.
 ```
-### 2. Make the features
+### 2. Resize the images
 ```
-python3 -m src.features.build_features --help
-
-usage: build_features.py [-h] [--resize-images]
-                         [--new-image-size NEW_IMAGE_SIZE [NEW_IMAGE_SIZE ...]]
-                         [--dataset DATASET] [--visual-attention]
-                         [--output-layer-idx OUTPUT_LAYER_IDX]
+usage: resize_images.py [-h] --new-image-size NEW_IMAGE_SIZE
+                        [NEW_IMAGE_SIZE ...] [--image-split IMAGE_SPLIT]
+                        [--dataset DATASET]
 
 optional arguments:
   -h, --help            show this help message and exit
-  --resize-images       Boolean to decide whether to resize the images before
-                        building the actual features.
   --new-image-size NEW_IMAGE_SIZE [NEW_IMAGE_SIZE ...]
                         List new image dimensions. should be something like
                         299 299.
-  --dataset DATASET     Which dataset to create image features for. The
-                        options are {flickr8k, flickr30k, coco}.
+  --image-split IMAGE_SPLIT
+                        Which dataset split images to resize. Default is full,
+                        meaning all images in the dataset will be resized.
+                        This is only necessary for coco since it is so big.
+  --dataset DATASET     Which dataset to resize its images. The options are
+                        {flickr8k, flickr30k, coco}.
+```
+### 3. Make the features
+```
+python3 -m src.features.build_features --help
+
+usage: build_features.py [-h]
+                         [--new-image-size NEW_IMAGE_SIZE [NEW_IMAGE_SIZE ...]]
+                         [--feature-split FEATURE_SPLIT] [--karpathy]
+                         [--visual-attention]
+                         [--output-layer-idx OUTPUT_LAYER_IDX]
+                         [--dataset DATASET]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --new-image-size NEW_IMAGE_SIZE [NEW_IMAGE_SIZE ...]
+                        List new image dimensions. should be something like
+                        299 299.
+  --feature-split FEATURE_SPLIT
+                        Which dataset split to make features for. Default
+                        value is full, meaning all images in the dataset will
+                        be encoded and saved in the same file.
+  --karpathy            Boolean used to decide whether to train on the
+                        karpathy split of dataset or not.
   --visual-attention    Boolean for deciding whether to extract visual
                         features that are usable for models that use visual
                         attention.
   --output-layer-idx OUTPUT_LAYER_IDX
                         Which layer to extract features from.
+  --dataset DATASET     Which dataset to create image features for. The
+                        options are {flickr8k, flickr30k, coco}.
 ```
 
-### 3. Train a model
+### 4. Train a model
 ```
 python3 -m src.models.train_model --help
 
@@ -129,7 +153,7 @@ optional arguments:
   --dataset DATASET     Dataset to train on. The options are {flickr8k,
                         flickr30k, coco}.
 ```
-### 4. Evaluate a trained model
+### 5. Evaluate a trained model
 ```
 python3 -m src.models.predict_model --help
 

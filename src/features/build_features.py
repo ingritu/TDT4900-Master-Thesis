@@ -14,15 +14,13 @@ if __name__ == '__main__':
     To run script in terminal:
     python3 -m src.features.build_features
     """
+    print("Started build features script.")
     parser = argparse.ArgumentParser()
     # build features
     parser.add_argument('--new-image-size', type=int,
                         nargs='+',
                         help='List new image dimensions. should be something '
                              'like 299 299.')
-    parser.add_argument('--build-features', action='store_true',
-                        help='Bool to determine if we should build the '
-                             'new features.')
     parser.add_argument('--feature-split', type=str, default='full',
                         help='Which dataset split to make features for. '
                              'Default value is full, meaning all images in '
@@ -41,10 +39,12 @@ if __name__ == '__main__':
                         help='Which dataset to create image features for. '
                              'The options are '
                              '{flickr8k, flickr30k, coco}.')
-
     args = vars(parser.parse_args())
 
-    print("Started build features script.")
+    # print all args
+    print("using parsed arguments.")
+    for key in args:
+        print(key, args[key])
 
     dataset_ = args['dataset']
     assert dataset_ in {'flickr8k', 'flickr30k', 'coco'}, \
@@ -65,29 +65,27 @@ if __name__ == '__main__':
     interim_path = ROOT_PATH.joinpath('data', 'interim')
     processed_path = ROOT_PATH.joinpath('data', 'processed')
 
-    # Build visual features
-    if args['build_features']:
-        output_layer_dim_ = args['output_layer_idx']
-        vis_att_ = args['visual_attention']
-        split = args['feature_split']
-        image_path_ = interim_path.joinpath(dataset_,
-                                            'Images', str(dims[0]) + 'x'
-                                            + str(dims[1]))
-        img_save_path = processed_path.joinpath('images')
-        if args['karpathy']:
-            img_save_path = img_save_path.joinpath('karpathy_split')
-            interim_path = interim_path.joinpath('karpathy_split')
-        file_str = dataset_ + '_encoded_'
-        if vis_att_:
-            file_str += 'visual_attention_'
-        file_str += split + '.pkl'
-        save_path_ = img_save_path.joinpath(file_str)
-        split_set_path_ = interim_path.joinpath(dataset_ + '_' + split +
-                                                '.csv')
-        print("Encoding images ...")
-        extract_image_features(image_path_,
-                               save_path_,
-                               split_set_path_,
-                               output_layer_dim_,
-                               vis_att=vis_att_)
-        print("Encoding done.")
+    output_layer_dim_ = args['output_layer_idx']
+    vis_att_ = args['visual_attention']
+    split = args['feature_split']
+    image_path_ = interim_path.joinpath(dataset_,
+                                        'Images', str(dims[0]) + 'x'
+                                        + str(dims[1]))
+    img_save_path = processed_path.joinpath('images')
+    if args['karpathy']:
+        img_save_path = img_save_path.joinpath('karpathy_split')
+        interim_path = interim_path.joinpath('karpathy_split')
+    file_str = dataset_ + '_encoded_'
+    if vis_att_:
+        file_str += 'visual_attention_'
+    file_str += split + '.pkl'
+    save_path_ = img_save_path.joinpath(file_str)
+    split_set_path_ = interim_path.joinpath(dataset_ + '_' + split +
+                                            '.csv')
+    print("Encoding images ...")
+    extract_image_features(image_path_,
+                           save_path_,
+                           split_set_path_,
+                           output_layer_dim_,
+                           vis_att=vis_att_)
+    print("Encoding done.")
