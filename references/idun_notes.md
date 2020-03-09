@@ -26,12 +26,13 @@ Use the share-ie-idi account not the ie-idi account.
 
 ```
 #!/bin/sh
-#SBATCH --partition=EPICALL
+#SBATCH --partition=EPICALL  # use WORKQ if just CPU and over 30 min long
 #SBATCH --account=share-ie-idi
 #SBATCH --time=hh:mm:ss
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=1
 #SBATCH --ntasks-per-node=1
+#SBATCH --mem=80000  # default unit is megabytes
 #SBATCH --job-name="name-of-job"
 #SBATCH --output=test-srun.out
 #SBATCH --mail-user=iturkerud@gmail.com

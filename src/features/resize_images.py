@@ -1,8 +1,8 @@
-from skimage.transform import resize
-from skimage.io import imread
-from skimage.io import imsave
+#from skimage.transform import resize
+#from skimage.io import imread
+#from skimage.io import imsave
 from pathlib import Path
-import numpy as np
+#import numpy as np
 import argparse
 
 ROOT_PATH = Path(__file__).absolute().parents[2]
@@ -10,9 +10,9 @@ ROOT_PATH = Path(__file__).absolute().parents[2]
 # default image size for InceptionResnet is 299x299
 DIMENSIONS = (299, 299, 3)
 
-
+"""""""""""""""
 def resize_images(image_path, save_path, new_dims):
-    """
+    '''
     Resize images.
 
     Parameters
@@ -20,7 +20,7 @@ def resize_images(image_path, save_path, new_dims):
     image_path : Path or str.
     save_path : Path or str.
     new_dims : list.
-    """
+    '''
     image_path = Path(image_path)
     save_path = Path(save_path)
     directory = save_path.joinpath(str(new_dims[0]) + 'x' + str(new_dims[1]))
@@ -39,12 +39,13 @@ def resize_images(image_path, save_path, new_dims):
         if count % 1000 == 0:
             print(count)
 
-
+"""""""""
 if __name__ == '__main__':
     """
     To run script in terminal:
     python3 -m src.features.resize_images
     """
+    print("Started resize images script.")
     parser = argparse.ArgumentParser()
     parser.add_argument('--resize-images', action='store_true',
                         help='Boolean to decide whether to resize the images '
@@ -64,9 +65,7 @@ if __name__ == '__main__':
                              '{flickr8k, flickr30k, coco}.')
 
     args = vars(parser.parse_args())
-
-    print("Started resize images script.")
-
+    """""""""
     dataset_ = args['dataset']
     assert dataset_ in {'flickr8k', 'flickr30k', 'coco'}, \
         dataset_ + " is not supported. Only flickr8k, flickr30k and coco " \
@@ -105,3 +104,4 @@ if __name__ == '__main__':
             image_path_ = raw_path.joinpath('MSCOCO', img_split + '2014')
             resize_images(image_path_, save_path_, dims)
             print("Resizing images done.")
+    """""""""
