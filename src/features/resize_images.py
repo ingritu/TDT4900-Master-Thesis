@@ -10,7 +10,7 @@ ROOT_PATH = Path(__file__).absolute().parents[2]
 # default image size for InceptionResnet is 299x299
 DIMENSIONS = (299, 299, 3)
 
-"""""""""""""""
+
 def resize_images(image_path, save_path, new_dims):
     '''
     Resize images.
@@ -39,7 +39,7 @@ def resize_images(image_path, save_path, new_dims):
         if count % 1000 == 0:
             print(count)
 
-"""""""""
+
 if __name__ == '__main__':
     """
     To run script in terminal:
@@ -70,10 +70,6 @@ if __name__ == '__main__':
     print("using parsed arguments.")
     for key in args:
         print(key, args[key])
-    print('resize_images', args['resize_images'])
-    print('new_image_size', args['new_image_size'])
-    print('image_split', args['image_split'])
-    print('dataset', args['dataset'])
 
     """""""""
     dataset_ = args['dataset']
