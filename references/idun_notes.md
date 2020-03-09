@@ -31,7 +31,7 @@ Use the share-ie-idi account not the ie-idi account.
 #SBATCH --time=hh:mm:ss
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=1
-#SBATCH --ntask-per-node=1
+#SBATCH --ntasks-per-node=1
 #SBATCH --job-name="name-of-job"
 #SBATCH --output=test-srun.out
 #SBATCH --mail-user=iturkerud@gmail.com

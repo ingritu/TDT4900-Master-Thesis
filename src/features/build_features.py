@@ -1,6 +1,5 @@
 from pathlib import Path
 from src.features.resnet_features import extract_image_features
-from src.features.resize_images import resize_images
 
 import argparse
 
@@ -15,22 +14,20 @@ if __name__ == '__main__':
     To run script in terminal:
     python3 -m src.features.build_features
     """
-    # resize images
     parser = argparse.ArgumentParser()
-    parser.add_argument('--resize-images', action='store_true',
-                        help='Boolean to decide whether to resize the images '
-                             'before building the actual features.')
-    parser.add_argument('--build-features', action='store_true',
-                        help='Bool to determine if we should build the '
-                             'new features.')
+    # build features
     parser.add_argument('--new-image-size', type=int,
                         nargs='+',
                         help='List new image dimensions. should be something '
                              'like 299 299.')
-    parser.add_argument('--dataset', type=str, default='coco',
-                        help='Which dataset to create image features for. '
-                             'The options are '
-                             '{flickr8k, flickr30k, coco}.')
+    parser.add_argument('--build-features', action='store_true',
+                        help='Bool to determine if we should build the '
+                             'new features.')
+    parser.add_argument('--feature-split', type=str, default='full',
+                        help='Which dataset split to make features for. '
+                             'Default value is full, meaning all images in '
+                             'the dataset will be encoded and saved in the '
+                             'same file.')
     parser.add_argument('--karpathy', action='store_true',
                         help='Boolean used to decide whether to train on '
                              'the karpathy split of dataset or not.')
@@ -40,16 +37,11 @@ if __name__ == '__main__':
                              'visual attention.')
     parser.add_argument('--output-layer-idx', type=int, default=-3,
                         help='Which layer to extract features from.')
-    parser.add_argument('--image-split', type=str, default='full',
-                        help='Which dataset split images to resize. '
-                             'Default is full, meaning all images in '
-                             'the dataset will be resized. This is only '
-                             'necessary for coco since it is so big.')
-    parser.add_argument('--feature-split', type=str, default='full',
-                        help='Which dataset split to make features for. '
-                             'Default value is full, meaning all images in '
-                             'the dataset will be encoded and saved in the '
-                             'same file.')
+    parser.add_argument('--dataset', type=str, default='coco',
+                        help='Which dataset to create image features for. '
+                             'The options are '
+                             '{flickr8k, flickr30k, coco}.')
+
     args = vars(parser.parse_args())
 
     print("Started build features script.")
@@ -70,28 +62,8 @@ if __name__ == '__main__':
         else:
             dims = new_dims_
 
-    raw_path = ROOT_PATH.joinpath('data', 'raw')
     interim_path = ROOT_PATH.joinpath('data', 'interim')
     processed_path = ROOT_PATH.joinpath('data', 'processed')
-    if args['resize_images']:
-        # karpathy split does not matter here
-        save_path_ = interim_path.joinpath(dataset_, 'Images')
-        if dataset_ == 'flickr8k':
-            image_path_ = raw_path.joinpath('Flickr8k', 'Images')
-            resize_images(image_path_, save_path_, dims)
-        elif dataset_ == 'flickr30k':
-            image_path_ = raw_path.joinpath('Flickr30k', dataset_ + '-images')
-            resize_images(image_path_, save_path_, dims)
-        else:
-            # must be coco
-            # coco is special because there are three folders for the images
-            image_dirs = ['train2014', 'test2014', 'val2014']
-            img_split = args['image_split']
-            assert img_split in {'train', 'test', 'val'}, \
-                "Illegal image split. Must be either train, test or val."
-            image_path_ = raw_path.joinpath('MSCOCO', img_split + '2014')
-            resize_images(image_path_, save_path_, dims)
-            print("Resizing images done.")
 
     # Build visual features
     if args['build_features']:
