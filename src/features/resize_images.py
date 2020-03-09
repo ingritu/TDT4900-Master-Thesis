@@ -71,7 +71,7 @@ if __name__ == '__main__':
     for key in args:
         print(key, args[key])
 
-    """""""""
+
     dataset_ = args['dataset']
     assert dataset_ in {'flickr8k', 'flickr30k', 'coco'}, \
         dataset_ + " is not supported. Only flickr8k, flickr30k and coco " \
@@ -87,7 +87,7 @@ if __name__ == '__main__':
             dims = new_dims_[:2] + [3]
         else:
             dims = new_dims_
-
+    """""""""
     raw_path = ROOT_PATH.joinpath('data', 'raw')
     interim_path = ROOT_PATH.joinpath('data', 'interim')
     processed_path = ROOT_PATH.joinpath('data', 'processed')
