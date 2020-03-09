@@ -2,7 +2,7 @@ from skimage.transform import resize
 from skimage.io import imread
 from skimage.io import imsave
 from pathlib import Path
-#import numpy as np
+import numpy as np
 import argparse
 
 ROOT_PATH = Path(__file__).absolute().parents[2]
@@ -66,6 +66,15 @@ if __name__ == '__main__':
 
     args = vars(parser.parse_args())
     print("Past argparse.")
+    # print all args
+    print("using parsed arguments.")
+    for key in args:
+        print(key, args[key])
+    print('resize_images', args['resize_images'])
+    print('new_image_size', args['new_image_size'])
+    print('image_split', args['image_split'])
+    print('dataset', args['dataset'])
+
     """""""""
     dataset_ = args['dataset']
     assert dataset_ in {'flickr8k', 'flickr30k', 'coco'}, \
