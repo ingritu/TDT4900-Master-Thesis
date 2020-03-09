@@ -12,7 +12,7 @@ DIMENSIONS = (299, 299, 3)
 
 
 def resize_images(image_path, save_path, new_dims):
-    '''
+    """
     Resize images.
 
     Parameters
@@ -20,7 +20,7 @@ def resize_images(image_path, save_path, new_dims):
     image_path : Path or str.
     save_path : Path or str.
     new_dims : list.
-    '''
+    """
     image_path = Path(image_path)
     save_path = Path(save_path)
     directory = save_path.joinpath(str(new_dims[0]) + 'x' + str(new_dims[1]))
@@ -48,7 +48,7 @@ if __name__ == '__main__':
     print("Started resize images script.")
     parser = argparse.ArgumentParser()
     parser.add_argument('--new-image-size', type=int,
-                        nargs='+',
+                        nargs='+', required=True,
                         help='List new image dimensions. should be something '
                              'like 299 299.')
     parser.add_argument('--image-split', type=str, default='full',
@@ -62,13 +62,12 @@ if __name__ == '__main__':
                              '{flickr8k, flickr30k, coco}.')
 
     args = vars(parser.parse_args())
-    print("Past argparse.")
     # print all args
     print("using parsed arguments.")
     for key in args:
         print(key, args[key])
 
-
+    # check that values are valid
     dataset_ = args['dataset']
     assert dataset_ in {'flickr8k', 'flickr30k', 'coco'}, \
         dataset_ + " is not supported. Only flickr8k, flickr30k and coco " \
@@ -88,16 +87,19 @@ if __name__ == '__main__':
     raw_path = ROOT_PATH.joinpath('data', 'raw')
     interim_path = ROOT_PATH.joinpath('data', 'interim')
     processed_path = ROOT_PATH.joinpath('data', 'processed')
-    """""""""
+
     # karpathy split does not matter here
     save_path_ = interim_path.joinpath(dataset_, 'Images')
     if dataset_ == 'flickr8k':
+        print("resizing flickr8k images.")
         image_path_ = raw_path.joinpath('Flickr8k', 'Images')
         resize_images(image_path_, save_path_, dims)
     elif dataset_ == 'flickr30k':
+        print("resizing flickr30k images.")
         image_path_ = raw_path.joinpath('Flickr30k', dataset_ + '-images')
         resize_images(image_path_, save_path_, dims)
     else:
+        print("resizing coco images.")
         # must be coco
         # coco is special because there are three folders for the images
         # image_dirs = ['train2014', 'test2014', 'val2014']
@@ -107,5 +109,5 @@ if __name__ == '__main__':
         image_path_ = raw_path.joinpath('MSCOCO', img_split + '2014')
         resize_images(image_path_, save_path_, dims)
         print("Resizing images done.")
-    """""""""
+
     print("End of Script.")
