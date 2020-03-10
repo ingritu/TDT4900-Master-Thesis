@@ -13,6 +13,7 @@ if __name__ == '__main__':
     To run script in terminal:
     python3 -m src.data.make_dataset
     """
+    print("Started the make dataset script.")
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset', type=str, default='coco',
                         help='Dataset to train on. The options are '
@@ -27,7 +28,19 @@ if __name__ == '__main__':
                         help='The percentage of UNK tokens in a caption '
                              'must be below this value in order to be '
                              'included in the train set.')
+    parser.add_argument('--cutoff-value', type=int, default=16,
+                        help='As a part of the pre-processing we will '
+                             'augment captions that are considered too '
+                             'long. This argument essentially sets the '
+                             'max length of a caption, excluding the '
+                             'startseq and endseq tokens. The default '
+                             'value is 16.')
     args = vars(parser.parse_args())
+
+    # print all args
+    print("using parsed arguments.")
+    for key in args:
+        print(key, args[key])
 
     # ####################### PRE-PROCESSING ################## #
     raw_path = ROOT_PATH.joinpath('data', 'raw')

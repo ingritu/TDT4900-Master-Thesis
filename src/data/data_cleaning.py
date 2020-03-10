@@ -9,7 +9,7 @@ ROOT_PATH = Path(__file__).absolute().parents[2]
 
 
 def basic_data_cleaning(df_path, save_path, voc_save_path, threshold=3,
-                        unk_percentage=0.4):
+                        unk_percentage=0.4, cutoff_value=16):
     """
     Basic data cleaning entails:
     - Converting to lower.
@@ -19,6 +19,7 @@ def basic_data_cleaning(df_path, save_path, voc_save_path, threshold=3,
     - Replacing uncommon words with UNK token.
     - Removing captions with too many UNK tokens.
     - Removing weired mmmmm mm mmm captions.
+    - Truncate too long captions.
 
     Parameters
     ----------
@@ -30,6 +31,8 @@ def basic_data_cleaning(df_path, save_path, voc_save_path, threshold=3,
     threshold : int. Word frequency threshold. Default value is 3.
     unk_percentage : float. Remove captions where the percentage of UNK tokens
         in the caption is greater than unk_percentage. Default value is 0.4.
+    cutoff_value : int. Truncate captions longer than this value.
+        Default value is 16.
 
     Returns
     -------
@@ -94,6 +97,10 @@ def basic_data_cleaning(df_path, save_path, voc_save_path, threshold=3,
     print('vocabulary size that will be used:',
           len(corpus) - len(replace_corpus))
 
+    # truncate captions
+    caption_df = truncate_too_long_captions(caption_df,
+                                            cutoff_value=cutoff_value)
+
     # check save path
     if not save_path.parent.is_dir():
         save_path.parent.mkdir(parents=True)
@@ -122,6 +129,7 @@ def basic_data_cleaning(df_path, save_path, voc_save_path, threshold=3,
 def replace_uncommon_words(caption_df, corpus, threshold=3):
     """
     Replace words with less than THRESHOLD occurrences with an UNK token.
+    Also adds startseq and endseq tokens to caption.
 
     Parameters
     ----------
@@ -195,6 +203,40 @@ def remove_bad_captions(caption_df):
                  ~caption_df.loc[:, 'caption_id'].isin(remove_caps), :]
     caption_df = caption_df.reset_index(drop=True)
     return caption_df, len(remove_caps)
+
+
+def truncate_too_long_captions(caption_df, cutoff_value=16):
+    """
+    Lu et al. (Knowing when too look) report that they truncate captions
+    longer than 16 words. They do not specify their method for truncating,
+    so we use the word's first definition, which is:
+
+        To shorten (something) by cutting off the top or the end.
+
+    In this implementation we keep the 16 first words and cut off the end.
+    One reason for choosing this method is because we assume that the
+    most important details will be described earlier in the caption
+    than less important details.
+
+    Parameters
+    ----------
+    caption_df : DataFrame. contains pre-processed cases.
+    cutoff_value : int. max length of caption.
+
+    Returns
+    -------
+    caption_df : DataFrame.
+    """
+    for i in range(len(caption_df)):
+        cap_tokens = caption_df.loc[i, 'clean_caption'].split()
+        cap_len = len(cap_tokens)
+        if cap_len > cutoff_value + 2:  # +2 because startseq + endseq tokens
+            # cutoff + startseq token
+            cap_tokens = cap_tokens[:cutoff_value + 1]
+            # add endseq token
+            cap_tokens = cap_tokens + ['endseq']
+            caption_df.at[i, 'clean_caption'] = ' '.join(cap_tokens)
+    return caption_df
 
 
 def is_all_one_letter(caption, letter):
