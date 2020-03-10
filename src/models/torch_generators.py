@@ -63,15 +63,15 @@ class AdaptiveModel(nn.Module):
                                     self.hidden_size,
                                     self.em_size)
         # decoder
-        self.decoder = AdaptiveDecoder(self.max_len,
-                                       self.hidden_size,
-                                       self.em_size,
-                                       self.vocab_size,
-                                       self.device,
-                                       num_lstms=self.num_lstms,
-                                       decoding_stack_size=
-                                       self.decoding_stack_size,
-                                       seed=self.random_seed)
+        self.decoder = AdaptiveDecoder(
+            self.max_len,
+            self.hidden_size,
+            self.em_size,
+            self.vocab_size,
+            self.device,
+            num_lstms=self.num_lstms,
+            decoding_stack_size=self.decoding_stack_size,
+            seed=self.random_seed)
 
     def forward(self, x, caption_lengths, has_end_seq_token=True):
         # visual features (batch_size, 8, 8, 1536)
@@ -86,7 +86,7 @@ class AdaptiveModel(nn.Module):
         # sort batches by caption length descending, this way the whole
         # batch_size_t will be correct
         # convert to tensor
-        caption_lengths = torch.from_numpy(caption_lengths)
+        caption_lengths = torch.from_numpy(caption_lengths).to(self.device)
         caption_lengths, sort_idx = caption_lengths.sort(dim=0,
                                                          descending=True)
         w_input = w_input[sort_idx]  # (batch_size, max_len)
@@ -171,6 +171,7 @@ class AdaptiveDecoder(nn.Module):
         self.embedding = nn.Embedding(self.vocab_size, self.em_size)
         self.sentinel_lstm = SentinelLSTM(self.em_size * 2,
                                           self.hidden_size,
+                                          self.device,
                                           n=self.num_lstms)
         self.attention_block = AttentionLayer(self.hidden_size,
                                               self.hidden_size)
@@ -210,6 +211,3 @@ class AdaptiveDecoder(nn.Module):
         cs = torch.zeros(self.num_lstms + 1, batch_size, self.hidden_size) \
             .to(self.device)
         return hs, cs
-
-
-

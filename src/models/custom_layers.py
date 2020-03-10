@@ -5,7 +5,7 @@ import torch.nn.functional as F
 
 class SentinelLSTM(nn.Module):
 
-    def __init__(self, input_size, hidden_size, n=0):
+    def __init__(self, input_size, hidden_size, device, n=0):
         """
         Implementation of the Sentinel LSTM by Lu et al. Knowing when to look.
         Also has the option to stack LSTMCells before generating the
@@ -16,12 +16,14 @@ class SentinelLSTM(nn.Module):
         ----------
         input_size : int.
         hidden_size : int.
+        device : torch.device.
         n : int. The number of extra LSTM cells to use. Default is 0.
         """
         super(SentinelLSTM, self).__init__()
         # NB! there is a difference between LSTMCell and LSTM.
         # LSTM is notably much quicker
         self.n = n
+        self.device = device
         self.lstm_cells = []
         if n > 0:
             inp_size = hidden_size
@@ -42,8 +44,8 @@ class SentinelLSTM(nn.Module):
         # remember old states
         h_tm1, c_tm1 = states
         # new states lists
-        hs = torch.zeros(h_tm1.size())
-        cs = torch.zeros(c_tm1.size())
+        hs = torch.zeros(h_tm1.size()).to(self.device)
+        cs = torch.zeros(c_tm1.size()).to(self.device)
         inputs = x
         for i in range(self.n):
             # feed layers the correct h and c states
