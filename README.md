@@ -28,7 +28,8 @@ python3 -m src.data.make_dataset --help
 
 usage: make_dataset.py [-h] [--dataset DATASET] [--karpathy]
                        [--threshold THRESHOLD]
-                       [--unk_percentage UNK_PERCENTAGE]
+                       [--unk-percentage UNK_PERCENTAGE]
+                       [--cutoff-value CUTOFF_VALUE]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -43,6 +44,12 @@ optional arguments:
                         The percentage of UNK tokens in a caption must be
                         below this value in order to be included in the train
                         set.
+  --cutoff-value CUTOFF_VALUE
+                        As a part of the pre-processing we will augment
+                        captions that are considered too long. This argument
+                        essentially sets the max length of a caption,
+                        excluding the startseq and endseq tokens. The default
+                        value is 16.
 ```
 ### 2. Resize the images
 ```

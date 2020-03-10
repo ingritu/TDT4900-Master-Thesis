@@ -72,8 +72,13 @@ if __name__ == '__main__':
     print("Cleaning", dataset_)
     threshold = args['threshold']
     unk_percentage = args['unk_percentage']
+    cutoff_value = args['cutoff_value']
     df_path_ = interim_path.joinpath(dataset_ + '_train.csv')
     save_path_ = interim_path.joinpath(dataset_ + '_train_clean.csv')
     voc_save_path_ = interim_path.joinpath(dataset_ + '_vocabulary.csv')
-    basic_data_cleaning(df_path_, save_path_, voc_save_path_,
-                        threshold=threshold, unk_percentage=unk_percentage)
+    basic_data_cleaning(df_path_,
+                        save_path_,
+                        voc_save_path_,
+                        threshold=threshold,
+                        unk_percentage=unk_percentage,
+                        cutoff_value=cutoff_value)
