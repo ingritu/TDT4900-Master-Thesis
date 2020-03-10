@@ -52,7 +52,7 @@ module load foss/2019b
 module load Python/3.7.4
 source ${HOME}/env1/bin/activate
 
-python3 -m src.namespace.module --args
+python3 -u -m src.namespace.module --args
 ```
 Add gpus
 ```
@@ -99,4 +99,13 @@ lfs quota -u <username> /lustre1
 ```
 sacct -o JobID,ReqMem,MaxVMSize,MaxRSS,MaxRSSTask,State,NodeList -j list,of,jobIDs
 sacct
+```
+### See output in realtime
+Add -u flag to python like so:
+```
+python3 -u -m src...
+```
+To see output:
+```
+watch tail outputfile.out
 ```
