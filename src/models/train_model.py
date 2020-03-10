@@ -1,7 +1,6 @@
-from src.data.utils import max_length_caption
+from pathlib import Path
 from src.models.generator_framework import Generator
 
-from pathlib import Path
 import argparse
 
 ROOT_PATH = Path(__file__).absolute().parents[2]
@@ -12,6 +11,7 @@ if __name__ == '__main__':
     To run script in terminal:
     python3 -m src.models.train_model --args
     """
+    print("Started train model script.")
     # All default values are the values used in the knowing when to look paper
     parser = argparse.ArgumentParser()
     # Training details
@@ -69,6 +69,11 @@ if __name__ == '__main__':
     # there still are more customizable parameters to set,
     # add these later
     args = vars(parser.parse_args())  # access args as dictionary
+
+    # print all args
+    print("using parsed arguments.")
+    for key in args:
+        print(key, args[key])
 
     interim_path = ROOT_PATH.joinpath('data',
                                       'interim')

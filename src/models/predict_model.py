@@ -10,6 +10,7 @@ if __name__ == '__main__':
     To run script in terminal:
     python3 -m src.models.predict_model
     """
+    print("Started predict model script.")
     parser = argparse.ArgumentParser()
     parser.add_argument('--karpathy', action='store_true',
                         help='Boolean used to decide whether to train on '
@@ -36,6 +37,11 @@ if __name__ == '__main__':
                              'inference algorithm. '
                              'Bigger beam size yields higher performance.')
     args = vars(parser.parse_args())
+
+    # print all args
+    print("using parsed arguments.")
+    for key in args:
+        print(key, args[key])
 
     interim_path = ROOT_PATH.joinpath('data', 'interim')
     processed_path = ROOT_PATH.joinpath('data', 'processed')
