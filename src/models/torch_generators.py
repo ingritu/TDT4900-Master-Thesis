@@ -98,10 +98,10 @@ class AdaptiveModel(nn.Module):
 
         batch_size = encoded_images.size()[0]
 
-        decoding_lengths = np.copy(caption_lengths)
+        decoding_lengths = caption_lengths
         if has_end_seq_token:
-            decoding_lengths = (decoding_lengths - 1)
-        batch_max_length = max(decoding_lengths)
+            decoding_lengths = decoding_lengths - 1
+        batch_max_length = int(torch.max(decoding_lengths))
 
         predictions = torch.zeros(batch_size,
                                   self.max_len,
