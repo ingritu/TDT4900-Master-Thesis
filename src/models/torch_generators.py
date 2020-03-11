@@ -1,6 +1,5 @@
 import torch
 from torch import nn as nn
-import numpy as np
 
 from src.models.custom_layers import SentinelLSTM
 from src.models.custom_layers import AttentionLayer
@@ -105,7 +104,7 @@ class AdaptiveModel(nn.Module):
 
         predictions = torch.zeros(batch_size,
                                   self.max_len,
-                                  self.vocab_size)
+                                  self.vocab_size).to(self.device)
         # initialize h and c
         h_t, c_t = self.decoder.initialize_variables(batch_size)
 
