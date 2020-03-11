@@ -98,6 +98,8 @@ lfs quota -u <username> /lustre1
 #### Job info
 ```
 sacct -o JobID,ReqMem,MaxVMSize,MaxRSS,MaxRSSTask,State,NodeList -j list,of,jobIDs
+sacct -a -X --format=JobID,Partition,AllocCPUS,Reqgres,State,NodeList,Start,End,Timelimit,Elapsed  -u <username>
+sacct --helpformat
 sacct
 ```
 ### See output in realtime

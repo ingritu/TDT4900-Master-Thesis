@@ -2,6 +2,14 @@
 
 All datasets are saved here.
 
+### MS COCO
+Download the MS COCO captioning (2015) dataset from:
+http://cocodataset.org/#download
+
+#### Karpathy split
+Get the karpathy split .json files from: 
+https://cs.stanford.edu/people/karpathy/deepimagesent/
+
 ## Data is immutable
 Don't ever edit your raw data, especially not manually, and especially not in Excel. 
 Don't overwrite your raw data. Don't save multiple versions of the raw data. 
