@@ -103,8 +103,7 @@ class Generator:
                 decoding_stack_size=1,
                 loss_function='cross_entropy',
                 optimizer='adam',
-                lr=0.0005,
-                seed=222):
+                lr=0.0005):
         """
         Bulids the model.
 
@@ -117,7 +116,6 @@ class Generator:
         loss_function : str.
         optimizer : str.
         lr : float.
-        seed : int.
         """
         # set values
         self.save_path = Path(save_path)

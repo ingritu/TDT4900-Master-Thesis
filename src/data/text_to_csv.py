@@ -25,8 +25,8 @@ def text_to_csv(file_path, save_path):
     # set up caption dictionary
     captions = {}
     labels = ['image_id', 'image_name', 'caption_id', 'caption']
-    for l in labels:
-        captions[l] = []
+    for lbl in labels:
+        captions[lbl] = []
 
     image_name2ids = {}
     counter = 0
