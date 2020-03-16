@@ -458,8 +458,8 @@ class Generator:
         # initialize beams as containing 1 caption
         # need beams to keep track of original indices
         beams = [Beam([g_image, enc_image],
-                      states=[h_t[:, i*beam_size: (i+1)*beam_size],
-                              c_t[:, i*beam_size: (i+1)*beam_size]],
+                      states=[h_t[i*beam_size: (i+1)*beam_size],
+                              c_t[i*beam_size: (i+1)*beam_size]],
                       beam_size=beam_size,
                       input_token=[self.wordtoix['startseq']],
                       eos=self.wordtoix['endseq'],

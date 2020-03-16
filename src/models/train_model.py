@@ -22,11 +22,6 @@ if __name__ == '__main__':
     parser.add_argument('--batch-size', type=int, default=80,
                         help='Training batch size. '
                              'The number of captions in a batch.')
-    parser.add_argument('--val-batch-size', type=int, default=250,
-                        help='Validation batch size. '
-                             'The number of images in a batch. '
-                             'The actual batch size is val_batch_size * '
-                             'beam_size.')
     parser.add_argument('--beam-size', type=int, default=3,
                         help='Beam size to use in beam search '
                              'inference algorithm. '
@@ -104,8 +99,8 @@ if __name__ == '__main__':
 
     # training
     batch_size = args['batch_size']
-    val_batch_size = args['val_batch_size']
     beam_size = args['beam_size']
+    val_batch_size = batch_size // beam_size
     epochs = args['epochs']
     early_stopping_freq = args['early_stopping_freq']
     val_metric = args['val_metric']
