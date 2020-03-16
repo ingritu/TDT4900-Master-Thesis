@@ -125,8 +125,7 @@ if __name__ == '__main__':
                       decoding_stack_size=decoding_stack_size,
                       loss_function=loss_function_,
                       optimizer=opt,
-                      lr=lr_,
-                      seed=seed_)
+                      lr=lr_)
 
     # model is automatically saved after training
     generator.train(train_path,
