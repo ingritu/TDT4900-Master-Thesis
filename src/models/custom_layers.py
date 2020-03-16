@@ -188,7 +188,7 @@ class AttentionLayer(nn.Module):
         # compute alphas + beta
         alpha = torch.softmax(self.alpha_layer(alpha_input).squeeze(2), dim=1)
         # (batch_size, 64 + 1)
-        alpha.unsqueeze(2)  # (batch_size, 64 +1, 1)
+        alpha = alpha.unsqueeze(2)  # (batch_size, 64 +1, 1)
 
         # multiply with regions
         context_vector = (alpha * regions).sum(dim=1)  # the actual z_t

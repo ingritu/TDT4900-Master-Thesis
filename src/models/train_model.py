@@ -65,10 +65,12 @@ if __name__ == '__main__':
     # there still are more customizable parameters to set,
     # add these later
     args = vars(parser.parse_args())  # access args as dictionary
-    torch.manual_seed(args['seed'])
+    # SEEDING TRAINING
+    seed_ = args['seed']
+    torch.manual_seed(seed_)
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
-    np.random.seed(args['seed'])
+    np.random.seed(seed_)
 
     # print all args
     print("using parsed arguments.")
@@ -111,7 +113,6 @@ if __name__ == '__main__':
     loss_function_ = args['loss_function']
     opt = args['optimizer']
     lr_ = args['lr']
-    seed_ = args['seed']
     decoding_stack_size = args['decoding_stack_size']
     assert decoding_stack_size > 0, \
         "decoding-stack-size must be a positive integer."

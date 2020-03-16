@@ -64,7 +64,6 @@ class Generator:
         self.decoding_stack_size = 0
 
         self.save_path = None
-        self.random_seed = None
 
         self.vocab_path = Path(voc_path)
         self.wordtoix, self.ixtoword, self.max_length = \
@@ -284,14 +283,15 @@ class Generator:
             # save model checkpoint
             is_best = metric_score > best_val_score
             best_val_score = max(metric_score, best_val_score)
-            tmp_model_path = save_checkpoint(directory,
-                                             epoch=e,
-                                             epochs_since_improvement=
-                                             epochs_since_improvement,
-                                             model=self.model,
-                                             optimizer=self.optimizer,
-                                             cider=metric_score,
-                                             is_best=is_best)
+            tmp_model_path = save_checkpoint(
+                directory,
+                epoch=e,
+                epochs_since_improvement=epochs_since_improvement,
+                model=self.model,
+                optimizer=self.optimizer,
+                cider=metric_score,
+                is_best=is_best)
+
             if tmp_model_path:
                 best_path = tmp_model_path
 
