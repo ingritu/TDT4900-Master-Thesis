@@ -18,7 +18,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     # build features
     parser.add_argument('--new-image-size', type=int,
-                        nargs='+',
+                        nargs='+', required=True,
                         help='List new image dimensions. should be something '
                              'like 299 299.')
     parser.add_argument('--feature-split', type=str, default='full',

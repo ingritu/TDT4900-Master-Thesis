@@ -84,8 +84,8 @@ class Beam:
 
         # sort h, c, top_scores, previous_words
         # only keep the unfinished ones
-        self.h = h[:, prev_word_idx[unfinished_idx]]
-        self.c = c[:, prev_word_idx[unfinished_idx]]
+        self.h = h[prev_word_idx[unfinished_idx]]
+        self.c = c[prev_word_idx[unfinished_idx]]
         self.top_scores = top_probs[unfinished_idx].unsqueeze(1)
         self.previous_words = next_word_idx[unfinished_idx]
 

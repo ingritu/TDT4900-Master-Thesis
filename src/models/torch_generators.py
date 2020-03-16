@@ -99,7 +99,7 @@ class AdaptiveModel(nn.Module):
 
         decoding_lengths = caption_lengths
         if has_end_seq_token:
-            decoding_lengths = decoding_lengths - 1
+            decoding_lengths -= 1
         batch_max_length = int(torch.max(decoding_lengths))
 
         predictions = torch.zeros(batch_size,
@@ -118,9 +118,9 @@ class AdaptiveModel(nn.Module):
             x_t = [input_image_t, w_input[:batch_size_t, timestep]]
 
             pt, h_t, c_t = self.decoder(x_t,
-                                        (h_t[:, :batch_size_t],
-                                         c_t[:, :batch_size_t]))
-            predictions[:batch_size_t, timestep, :] = pt
+                                        (h_t[:batch_size_t],
+                                         c_t[:batch_size_t]))
+            predictions[:batch_size_t, timestep, :] = torch.softmax(pt, dim=1)
 
         return predictions, target, decoding_lengths
 
@@ -170,8 +170,7 @@ class AdaptiveDecoder(nn.Module):
         self.embedding = nn.Embedding(self.vocab_size, self.em_size)
         self.sentinel_lstm = SentinelLSTM(self.em_size * 2,
                                           self.hidden_size,
-                                          self.device,
-                                          n=self.num_lstms)
+                                          self.device)
         self.attention_block = AttentionLayer(self.hidden_size,
                                               self.hidden_size)
         self.decoder = MultimodalDecoder(self.hidden_size,
@@ -197,16 +196,14 @@ class AdaptiveDecoder(nn.Module):
         h_tm1, c_tm1 = states
 
         # decoding
-        h_t, c_t, h_top, s_t = self.sentinel_lstm(x_t, (h_tm1, c_tm1))
-        z_t = self.attention_block([encoded_images, s_t, h_top])
+        h_t, c_t, s_t = self.sentinel_lstm(x_t, (h_tm1, c_tm1))
+        z_t = self.attention_block([encoded_images, s_t, h_t])
         pt = self.decoder(z_t)
 
         return pt, h_t, c_t
 
     def initialize_variables(self, batch_size):
         # initialize h and c as zeros
-        hs = torch.zeros(self.num_lstms + 1, batch_size, self.hidden_size) \
-            .to(self.device)
-        cs = torch.zeros(self.num_lstms + 1, batch_size, self.hidden_size) \
-            .to(self.device)
-        return hs, cs
+        h_t = torch.zeros(batch_size, self.hidden_size).to(self.device)
+        c_t = torch.zeros(batch_size, self.hidden_size).to(self.device)
+        return h_t, c_t

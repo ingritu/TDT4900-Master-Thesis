@@ -5,66 +5,38 @@ import torch.nn.functional as F
 
 class SentinelLSTM(nn.Module):
 
-    def __init__(self, input_size, hidden_size, device, n=0):
+    def __init__(self, input_size, hidden_size, device):
         """
         Implementation of the Sentinel LSTM by Lu et al. Knowing when to look.
-        Also has the option to stack LSTMCells before generating the
-        Sentinel vector. There are skip connections between all LSTMCells in
-        the stack.
 
         Parameters
         ----------
         input_size : int.
         hidden_size : int.
         device : torch.device.
-        n : int. The number of extra LSTM cells to use. Default is 0.
         """
         super(SentinelLSTM, self).__init__()
         # NB! there is a difference between LSTMCell and LSTM.
         # LSTM is notably much quicker
-        self.n = n
         self.device = device
         self.lstm_cells = []
-        if n > 0:
-            inp_size = hidden_size
-        else:
-            inp_size = input_size
-        self.lstm_kernel = nn.LSTMCell(inp_size, hidden_size)
-        self.x_gate = nn.Linear(inp_size, hidden_size)
+        self.lstm_kernel = nn.LSTMCell(input_size, hidden_size)
+        self.x_gate = nn.Linear(input_size, hidden_size)
         self.h_gate = nn.Linear(hidden_size, hidden_size)
-
-        inp_size = input_size
-        hid_size = hidden_size
-        for _ in range(self.n):
-            self.lstm_cells.append(nn.LSTMCell(inp_size, hid_size))
-            inp_size = hid_size
 
     def forward(self, x, states):
         # print('Sentinel LSTM')
         # remember old states
         h_tm1, c_tm1 = states
-        # new states lists
-        hs = torch.zeros(h_tm1.size()).to(self.device)
-        cs = torch.zeros(c_tm1.size()).to(self.device)
-        inputs = x
-        for i in range(self.n):
-            # feed layers the correct h and c states
-            h, c = self.lstm_cells[i](inputs, (h_tm1[i], c_tm1[i]))
-            hs[i] = h
-            cs[i] = c
-            # add residual
-            inputs = h + inputs
 
         # get new states
-        h_t, c_t = self.lstm_kernel(inputs, (h_tm1[-1], c_tm1[-1]))
-        hs[-1] = h_t
-        cs[-1] = c_t
+        h_t, c_t = self.lstm_kernel(x, (h_tm1, c_tm1))
 
         # compute sentinel vector
         # could either concat h_tm1 with x or have to gates
-        sv = torch.sigmoid(self.h_gate(h_tm1[-1]) + self.x_gate(inputs))
+        sv = torch.sigmoid(self.h_gate(h_tm1) + self.x_gate(x))
         s_t = sv * torch.tanh(c_t)
-        return hs, cs, h_t, s_t
+        return h_t, c_t, s_t
 
 
 class ImageEncoder(nn.Module):
@@ -138,7 +110,7 @@ class MultimodalDecoder(nn.Module):
             concat = torch.cat((concat, y), dim=1)
 
         # softmax on output
-        y = torch.softmax(self.output_layer(concat), dim=1)
+        y = self.output_layer(concat)
         return y
 
 

@@ -516,8 +516,8 @@ class Generator:
                     preds = y_predictions[start_idx: end_idx]
                     # update beam with predictions
                     b.update(preds,
-                             h_t[:, start_idx: end_idx],
-                             c_t[:, start_idx: end_idx])
+                             h_t[start_idx: end_idx],
+                             c_t[start_idx: end_idx])
 
                     if b.has_best_sequence():
                         # add to finished predictions

@@ -33,7 +33,7 @@ def resize_images(image_path, save_path, new_dims):
         image_name = str(im_file)[p:]
         image = imread(str(im_file))
         image = resize(image, new_dims)
-        image = image*255
+        image *= 255
         imsave(str(directory.joinpath(image_name)), image.astype(np.uint8))
         count += 1
         if count % 1000 == 0:
