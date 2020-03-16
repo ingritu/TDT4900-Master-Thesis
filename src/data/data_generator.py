@@ -2,19 +2,17 @@ import torch
 from pathlib import Path
 import numpy as np
 from sklearn.utils import shuffle
-import random as r
 
 ROOT_PATH = Path(__file__).absolute().parents[2]
 
 
 def data_generator(data_df, batch_size, steps_per_epoch,
-                   wordtoix, features, seed=2222):
+                   wordtoix, features):
     """
     outputs data in batches
     """
     # TODO: order data to create batches with captions
     #  of roughly the same length
-    r.seed(seed)
 
     # load visual features
     max_length = max([len(c.split())
@@ -22,10 +20,8 @@ def data_generator(data_df, batch_size, steps_per_epoch,
     # infinite loop
     while True:
         # new Epoch have started
-        # new shuffle state for next epoch
-        shuffle_state = r.randint(0, 10000)
         # shuffle df
-        data_df = shuffle(data_df, random_state=shuffle_state)
+        data_df = shuffle(data_df)
         data_df = data_df.reset_index(drop=True)
         for step in range(steps_per_epoch):
             # create a new batch

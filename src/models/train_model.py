@@ -3,6 +3,10 @@ from src.models.generator_framework import Generator
 
 import argparse
 
+# import to set seed in this program
+import torch
+import numpy as np
+
 ROOT_PATH = Path(__file__).absolute().parents[2]
 
 
@@ -66,6 +70,10 @@ if __name__ == '__main__':
     # there still are more customizable parameters to set,
     # add these later
     args = vars(parser.parse_args())  # access args as dictionary
+    torch.manual_seed(args['seed'])
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+    np.random.seed(args['seed'])
 
     # print all args
     print("using parsed arguments.")

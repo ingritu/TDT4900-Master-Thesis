@@ -128,7 +128,6 @@ class Generator:
         self.criterion = loss_switcher(self.loss_string)()
         self.optimizer_string = optimizer
         self.lr = lr
-        self.random_seed = seed
 
         # initialize model
         self.model = model_switcher(self.model_name)(self.input_shape,
@@ -137,8 +136,7 @@ class Generator:
                                                      self.vocab_size,
                                                      self.device,
                                                      self.decoding_stack_size,
-                                                     self.embedding_size,
-                                                     self.random_seed)
+                                                     self.embedding_size)
 
         print(self.model)
         self.train_params += sum(p.numel() for p in self.model.parameters()
@@ -226,8 +224,7 @@ class Generator:
         train_generator = data_generator(train_df, batch_size,
                                          steps_per_epoch,
                                          self.wordtoix,
-                                         self.encoded_features,
-                                         seed=self.random_seed)
+                                         self.encoded_features)
 
         start_time = time()
 

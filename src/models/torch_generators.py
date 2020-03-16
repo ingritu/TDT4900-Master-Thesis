@@ -25,8 +25,7 @@ class AdaptiveModel(nn.Module):
                  vocab_size,
                  device,
                  decoding_stack_size=1,
-                 embedding_size=300,
-                 seed=222):
+                 embedding_size=300):
         """
         Adaptive Model
 
@@ -49,7 +48,6 @@ class AdaptiveModel(nn.Module):
         self.vocab_size = vocab_size
         self.em_size = embedding_size
         self.decoding_stack_size = decoding_stack_size
-        self.random_seed = seed
 
         self.device = device
 
@@ -65,8 +63,7 @@ class AdaptiveModel(nn.Module):
             self.em_size,
             self.vocab_size,
             self.device,
-            decoding_stack_size=self.decoding_stack_size,
-            seed=self.random_seed)
+            decoding_stack_size=self.decoding_stack_size)
 
     def forward(self, x, caption_lengths, has_end_seq_token=True):
         # visual features (batch_size, 8, 8, 1536)
@@ -129,8 +126,7 @@ class AdaptiveDecoder(nn.Module):
                  embedding_size,
                  vocab_size,
                  device,
-                 decoding_stack_size=1,
-                 seed=222):
+                 decoding_stack_size=1):
         """
         Adaptive Decoder.
 
@@ -147,7 +143,6 @@ class AdaptiveDecoder(nn.Module):
         device : torch.device.
         num_lstms : int.
         decoding_stack_size : int.
-        seed : int.
         """
         super(AdaptiveDecoder, self).__init__()
         self.max_len = max_len
@@ -156,7 +151,6 @@ class AdaptiveDecoder(nn.Module):
         self.vocab_size = vocab_size
         self.em_size = embedding_size
         self.decoding_stack_size = decoding_stack_size - 1
-        self.random_seed = seed
 
         self.device = device
 
