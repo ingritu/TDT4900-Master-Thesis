@@ -103,6 +103,9 @@ def save_training_log(path, training_history):
                         + '\n\n')
         train_log.write('## Train log!\n')
         # Lastly write the training log
-        for loss in training_history['history']:
+        for loss, val_score in zip(training_history['history'],
+                                   training_history['val_history']):
             # TODO: add val score.... zip?
-            train_log.write(str(round(loss, 5)) + '\n')
+            train_log.write('loss: ' + str(round(loss, 5)) +
+                            '\tvalidation score: ' + str(round(val_score, 6))
+                            + '\n')

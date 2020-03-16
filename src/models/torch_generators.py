@@ -38,7 +38,6 @@ class AdaptiveModel(nn.Module):
         device : torch.device.
         decoding_stack_size : int.
         embedding_size : int.
-        seed : int.
         """
         super(AdaptiveModel, self).__init__()
         self.visual_feature_shape = input_shape
@@ -141,7 +140,6 @@ class AdaptiveDecoder(nn.Module):
         embedding_size : int.
         vocab_size : int.
         device : torch.device.
-        num_lstms : int.
         decoding_stack_size : int.
         """
         super(AdaptiveDecoder, self).__init__()

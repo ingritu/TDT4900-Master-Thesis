@@ -209,6 +209,7 @@ class Generator:
             'loss': self.loss_string,
             'model_name': self.model_name,
             'history': [],
+            'val_history': [],
             'voc_size': str(self.vocab_size),
             'voc_path': str(self.vocab_path),
             'feature_path': str(self.feature_path),
@@ -271,6 +272,7 @@ class Generator:
             eval_path = directory.joinpath('captions_eval_' + str(e) + '.json')
             res_path = directory.joinpath('captions_result_' + str(e)
                                           + '.json')
+            val_start = time()
             metric_score = self.evaluate(validation_path,
                                          ann_path,
                                          res_path,
@@ -278,6 +280,9 @@ class Generator:
                                          batch_size=val_batch_size,
                                          beam_size=beam_size,
                                          metric=validation_metric)
+            val_time = time() - val_start
+            training_history['val_history'].append(metric_score)
+            print("Validation took", round(val_time, 2), 'seconds')
             # save model checkpoint
             is_best = metric_score > best_val_score
             best_val_score = max(metric_score, best_val_score)

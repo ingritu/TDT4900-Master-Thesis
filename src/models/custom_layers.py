@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
+import torch.nn.functional as f
 
 
 class SentinelLSTM(nn.Module):
@@ -106,7 +106,7 @@ class MultimodalDecoder(nn.Module):
         # print('Multimodal Decoder')
         concat = x
         for layer in self.layers:
-            y = F.relu(layer(concat))
+            y = f.relu(layer(concat))
             concat = torch.cat((concat, y), dim=1)
 
         # softmax on output
@@ -148,15 +148,15 @@ class AttentionLayer(nn.Module):
         # c_t is context vector: sum of alphas*v
         # output should be beta*s_t + (1-beta)*c_t
         # print('attention layer')
-        V = x[0]  # (batch_size, 8x8, hidden_size)
+        v = x[0]  # (batch_size, 8x8, hidden_size)
         s_t = x[1]  # (batch_size, hidden_size)
         h_t = x[2]  # (batch_size, hidden_size)
 
         # embed visual features
-        v_embed = F.relu(self.v_att(V))  # (batch_size, 64, hidden_size)
+        v_embed = f.relu(self.v_att(v))  # (batch_size, 64, hidden_size)
 
         # s_t embedding
-        s_proj = F.relu(self.s_proj(s_t))  # (batch_size, hidden_size)
+        s_proj = f.relu(self.s_proj(s_t))  # (batch_size, hidden_size)
         s_att = self.s_att(s_proj)  # (batch_size, hidden_size)
 
         # h_t embedding
@@ -171,12 +171,12 @@ class AttentionLayer(nn.Module):
 
         # make h_att the same dimension as regions_att
         h_att = h_att.unsqueeze(1).expand(h_att.size()[0],
-                                          V.size()[1] + 1,
+                                          v.size()[1] + 1,
                                           h_att.size()[1])
         # (batch_size, 64 + 1, hidden_size)
 
         # concatenations
-        regions = torch.cat((V, s_proj), dim=1)
+        regions = torch.cat((v, s_proj), dim=1)
         # (batch_size, 64 +1, hidden_size)
         regions_att = torch.cat((v_embed, s_att), dim=1)
         # (batch_size, 64 +1, hidden_size)
@@ -188,7 +188,7 @@ class AttentionLayer(nn.Module):
         # compute alphas + beta
         alpha = torch.softmax(self.alpha_layer(alpha_input).squeeze(2), dim=1)
         # (batch_size, 64 + 1)
-        alpha = alpha.unsqueeze(2)  # (batch_size, 64 +1, 1)
+        alpha.unsqueeze(2)  # (batch_size, 64 +1, 1)
 
         # multiply with regions
         context_vector = (alpha * regions).sum(dim=1)  # the actual z_t

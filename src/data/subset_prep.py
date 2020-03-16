@@ -42,9 +42,11 @@ if __name__ == '__main__':
     REMOVE_IMG_SIZE = len(new_df)
     print('removed', OG_SIZE - REMOVE_IMG_SIZE, 'captions')
     print('few captions', few)
-    # these numbers are dependent on how rigorous the initial cleaning was
+    # these numbers are dependent on how rigorous the initial cleaning was,
+    # in particular the unk-percentage, which may remove captions.
     # removed 32 captions as a result of not enough caps
-    # total removed caps are 344
+    # total removed caps are 344 unk=0.4
+    # 432 unk=0.3
 
     save_path = ROOT_PATH.joinpath('data', 'interim', 'karpathy_split',
                                    'coco_sub_prep.csv')
