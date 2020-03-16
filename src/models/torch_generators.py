@@ -24,7 +24,6 @@ class AdaptiveModel(nn.Module):
                  hidden_size,
                  vocab_size,
                  device,
-                 num_lstms=1,
                  decoding_stack_size=1,
                  embedding_size=300,
                  seed=222):
@@ -38,7 +37,6 @@ class AdaptiveModel(nn.Module):
         hidden_size : int.
         vocab_size : int.
         device : torch.device.
-        num_lstms : int.
         decoding_stack_size : int.
         embedding_size : int.
         seed : int.
@@ -50,7 +48,6 @@ class AdaptiveModel(nn.Module):
 
         self.vocab_size = vocab_size
         self.em_size = embedding_size
-        self.num_lstms = num_lstms
         self.decoding_stack_size = decoding_stack_size
         self.random_seed = seed
 
@@ -68,7 +65,6 @@ class AdaptiveModel(nn.Module):
             self.em_size,
             self.vocab_size,
             self.device,
-            num_lstms=self.num_lstms,
             decoding_stack_size=self.decoding_stack_size,
             seed=self.random_seed)
 
@@ -133,7 +129,6 @@ class AdaptiveDecoder(nn.Module):
                  embedding_size,
                  vocab_size,
                  device,
-                 num_lstms=1,
                  decoding_stack_size=1,
                  seed=222):
         """
@@ -160,7 +155,6 @@ class AdaptiveDecoder(nn.Module):
 
         self.vocab_size = vocab_size
         self.em_size = embedding_size
-        self.num_lstms = num_lstms - 1
         self.decoding_stack_size = decoding_stack_size - 1
         self.random_seed = seed
 

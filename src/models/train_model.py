@@ -43,9 +43,6 @@ if __name__ == '__main__':
                              'The size of the word vector representations.')
     parser.add_argument('--hidden-size', type=int, default=512,
                         help='Hidden dimension.')
-    parser.add_argument('--num-lstms', type=int, default=1,
-                        help='The number of LSTM cells to stack. '
-                             'Default value is 1.')
     parser.add_argument('--decoding-stack-size', type=int, default=1,
                         help='The number of Linear layers to stack in '
                              'the multimodal decoding part of the model.')
@@ -112,9 +109,7 @@ if __name__ == '__main__':
     opt = args['optimizer']
     lr_ = args['lr']
     seed_ = args['seed']
-    num_lstms = args['num_lstms']
     decoding_stack_size = args['decoding_stack_size']
-    assert num_lstms > 0, "num-lstms must be a positive integer."
     assert decoding_stack_size > 0, \
         "decoding-stack-size must be a positive integer."
 
@@ -124,7 +119,6 @@ if __name__ == '__main__':
     generator.compile(save_path_,
                       embedding_size=em_dim,
                       hidden_size=hidden_size_,
-                      num_lstms=num_lstms,
                       decoding_stack_size=decoding_stack_size,
                       loss_function=loss_function_,
                       optimizer=opt,

@@ -61,7 +61,6 @@ class Generator:
         """
         self.embedding_size = 0
         self.hidden_size = 0
-        self.num_lstms = 0
         self.decoding_stack_size = 0
 
         self.save_path = None
@@ -101,7 +100,6 @@ class Generator:
                 save_path,
                 embedding_size=512,
                 hidden_size=512,
-                num_lstms=1,
                 decoding_stack_size=1,
                 loss_function='cross_entropy',
                 optimizer='adam',
@@ -115,7 +113,6 @@ class Generator:
         save_path : Path or str.
         embedding_size : int.
         hidden_size : int.
-        num_lstms : int.
         decoding_stack_size : int.
         loss_function : str.
         optimizer : str.
@@ -126,7 +123,6 @@ class Generator:
         self.save_path = Path(save_path)
         self.embedding_size = embedding_size
         self.hidden_size = hidden_size
-        self.num_lstms = num_lstms
         self.decoding_stack_size = decoding_stack_size
         self.loss_string = loss_function
         self.criterion = loss_switcher(self.loss_string)()
@@ -140,7 +136,6 @@ class Generator:
                                                      self.hidden_size,
                                                      self.vocab_size,
                                                      self.device,
-                                                     self.num_lstms,
                                                      self.decoding_stack_size,
                                                      self.embedding_size,
                                                      self.random_seed)
