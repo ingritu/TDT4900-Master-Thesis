@@ -26,6 +26,10 @@ if __name__ == '__main__':
                         help='Beam size to use in beam search '
                              'inference algorithm. '
                              'Bigger beam size yields higher performance.')
+    parser.add_argument('--val-batch-size', type=int, default=250,
+                        help='Validation batch size. The number of images in a'
+                             ' batch. The actual batch size is '
+                             'val_batch_size * beam_size.')
     parser.add_argument('--epochs', type=int, default=50,
                         help='The number of epochs to train the network for.')
     parser.add_argument('--early-stopping_freq', type=int, default=6,
@@ -102,7 +106,7 @@ if __name__ == '__main__':
     # training
     batch_size = args['batch_size']
     beam_size = args['beam_size']
-    val_batch_size = batch_size // beam_size
+    val_batch_size = args['val_batch_size']
     epochs = args['epochs']
     early_stopping_freq = args['early_stopping_freq']
     val_metric = args['val_metric']

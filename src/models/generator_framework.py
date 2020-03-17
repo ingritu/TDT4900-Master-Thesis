@@ -250,7 +250,7 @@ class Generator:
             print('Epoch: #' + str(e))
             batch_history = []
             for s in range(1, steps_per_epoch + 1):
-                print('Step: #' + str(s) + '/' + str(steps_per_epoch))
+                print()
                 # zero the gradient buffers
                 self.optimizer.zero_grad()
 
@@ -259,6 +259,8 @@ class Generator:
 
                 loss_num = self.train_on_batch(x, caption_lengths)
                 batch_history.append(loss_num)
+                print('Step: #' + str(s) + '/' + str(steps_per_epoch) + '\t' +
+                      'loss (' + self.optimizer_string + '):', loss_num)
 
             # add the mean loss of the epoch to the training history
             training_history['history'].append(np.mean(
@@ -341,7 +343,6 @@ class Generator:
         # get loss
         loss = self.criterion(output, target)
         loss_num = loss.item()
-        print('loss', '(' + self.optimizer_string + '):', loss_num)
 
         # backpropagate
         loss.backward()
@@ -491,8 +492,8 @@ class Generator:
                                        dim=0)
             images = [global_images, encoded_images]
             # get states
-            h_t = torch.cat([b.get_hidden_states() for b in beams], dim=1)
-            c_t = torch.cat([b.get_cell_states() for b in beams], dim=1)
+            h_t = torch.cat([b.get_hidden_states() for b in beams], dim=0)
+            c_t = torch.cat([b.get_cell_states() for b in beams], dim=0)
 
             # get predictions
             x = [images, sequences]
