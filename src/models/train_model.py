@@ -46,9 +46,6 @@ if __name__ == '__main__':
                              'The size of the word vector representations.')
     parser.add_argument('--hidden-size', type=int, default=512,
                         help='Hidden dimension.')
-    parser.add_argument('--decoding-stack-size', type=int, default=1,
-                        help='The number of Linear layers to stack in '
-                             'the multimodal decoding part of the model.')
     parser.add_argument('--loss-function', type=str, default='cross_entropy',
                         help='Loss/Cost function to use during training.')
     parser.add_argument('--optimizer', type=str, default='adam',

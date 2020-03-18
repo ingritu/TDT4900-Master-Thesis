@@ -76,7 +76,7 @@ class ImageEncoder(nn.Module):
 
 class MultimodalDecoder(nn.Module):
 
-    def __init__(self, input_shape, hidden_size, n=0):
+    def __init__(self, input_shape, hidden_size):
         """
         Multimodal decoding part of the model.
 
@@ -84,33 +84,15 @@ class MultimodalDecoder(nn.Module):
         ----------
         input_shape : int.
         hidden_size : int.
-        n : int. Default is 0.
         """
         super(MultimodalDecoder, self).__init__()
-        self.layers = []
-        if n:
-            new_input_shape = input_shape*2
-            self.layers.append(nn.Linear(input_shape, input_shape))
-            input_shape = new_input_shape
-        else:
-            n = 1
-
-        for _ in range(n - 1):
-            self.layers.append(nn.Linear(input_shape, input_shape))
-
         # output layer, this is the only layer if n=0
         self.output_layer = nn.Linear(input_shape, hidden_size)
 
     def forward(self, x):
         # x: context_vector + h_t (batch_size, hidden_size)
         # print('Multimodal Decoder')
-        concat = x
-        for layer in self.layers:
-            y = f.relu(layer(concat))
-            concat = torch.cat((concat, y), dim=1)
-
-        # softmax on output
-        y = self.output_layer(concat)
+        y = self.output_layer(x)
         return y
 
 

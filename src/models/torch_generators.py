@@ -24,8 +24,7 @@ class AdaptiveModel(nn.Module):
                  hidden_size,
                  vocab_size,
                  device,
-                 decoding_stack_size=1,
-                 embedding_size=300):
+                 embedding_size=512):
         """
         Adaptive Model
 
@@ -36,7 +35,6 @@ class AdaptiveModel(nn.Module):
         hidden_size : int.
         vocab_size : int.
         device : torch.device.
-        decoding_stack_size : int.
         embedding_size : int.
         """
         super(AdaptiveModel, self).__init__()
@@ -46,7 +44,6 @@ class AdaptiveModel(nn.Module):
 
         self.vocab_size = vocab_size
         self.em_size = embedding_size
-        self.decoding_stack_size = decoding_stack_size
 
         self.device = device
 
@@ -61,8 +58,7 @@ class AdaptiveModel(nn.Module):
             self.hidden_size,
             self.em_size,
             self.vocab_size,
-            self.device,
-            decoding_stack_size=self.decoding_stack_size)
+            self.device)
 
     def forward(self, x, caption_lengths, has_end_seq_token=True):
         # visual features (batch_size, 8, 8, 1536)
@@ -124,8 +120,7 @@ class AdaptiveDecoder(nn.Module):
                  hidden_size,
                  embedding_size,
                  vocab_size,
-                 device,
-                 decoding_stack_size=1):
+                 device):
         """
         Adaptive Decoder.
 
@@ -140,7 +135,6 @@ class AdaptiveDecoder(nn.Module):
         embedding_size : int.
         vocab_size : int.
         device : torch.device.
-        decoding_stack_size : int.
         """
         super(AdaptiveDecoder, self).__init__()
         self.max_len = max_len
@@ -148,7 +142,6 @@ class AdaptiveDecoder(nn.Module):
 
         self.vocab_size = vocab_size
         self.em_size = embedding_size
-        self.decoding_stack_size = decoding_stack_size - 1
 
         self.device = device
 
@@ -160,8 +153,7 @@ class AdaptiveDecoder(nn.Module):
         self.attention_block = AttentionLayer(self.hidden_size,
                                               self.hidden_size)
         self.decoder = MultimodalDecoder(self.hidden_size,
-                                         self.vocab_size,
-                                         n=self.decoding_stack_size)
+                                         self.vocab_size)
 
     def forward(self, x, states):
         # unpack input
