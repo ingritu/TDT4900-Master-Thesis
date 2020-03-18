@@ -5,7 +5,7 @@ import torch.nn.functional as f
 
 class SentinelLSTM(nn.Module):
 
-    def __init__(self, input_size, hidden_size, device):
+    def __init__(self, input_size, hidden_size):
         """
         Implementation of the Sentinel LSTM by Lu et al. Knowing when to look.
 
@@ -13,12 +13,10 @@ class SentinelLSTM(nn.Module):
         ----------
         input_size : int.
         hidden_size : int.
-        device : torch.device.
         """
         super(SentinelLSTM, self).__init__()
         # NB! there is a difference between LSTMCell and LSTM.
         # LSTM is notably much quicker
-        self.device = device
         self.lstm_cells = []
         self.lstm_kernel = nn.LSTMCell(input_size, hidden_size)
         self.x_gate = nn.Linear(input_size, hidden_size)

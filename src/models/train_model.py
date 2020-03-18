@@ -114,9 +114,6 @@ if __name__ == '__main__':
     loss_function_ = args['loss_function']
     opt = args['optimizer']
     lr_ = args['lr']
-    decoding_stack_size = args['decoding_stack_size']
-    assert decoding_stack_size > 0, \
-        "decoding-stack-size must be a positive integer."
 
     generator = Generator(model_name_,
                           voc_path_,
@@ -124,7 +121,6 @@ if __name__ == '__main__':
     generator.compile(save_path_,
                       embedding_size=em_dim,
                       hidden_size=hidden_size_,
-                      decoding_stack_size=decoding_stack_size,
                       loss_function=loss_function_,
                       optimizer=opt,
                       lr=lr_)
