@@ -31,8 +31,6 @@ if __name__ == '__main__':
     start_idx = 0
     for idx in range(files):
         end_idx = min((idx + 1) * MAX_CAPS_IN_FILE, df_size)
-        sub_i = df.loc[start_idx: end_idx - 1, ['image_name', 'image_id',
-                                                'caption_id', 'caption',
-                                                'clean_caption']]
+        sub_i = df.loc[start_idx: end_idx - 1, ['caption_id', 'caption']]
         sub_i.to_csv(save_path.joinpath(subset_ + '_' + str(idx) + '.txt'))
         start_idx = end_idx

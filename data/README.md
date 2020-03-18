@@ -10,6 +10,9 @@ http://cocodataset.org/#download
 Get the karpathy split .json files from: 
 https://cs.stanford.edu/people/karpathy/deepimagesent/
 
+### Paraphrases
+collected using: https://www.onlinedoctranslator.com/translationform
+
 ## Data is immutable
 Don't ever edit your raw data, especially not manually, and especially not in Excel. 
 Don't overwrite your raw data. Don't save multiple versions of the raw data. 
