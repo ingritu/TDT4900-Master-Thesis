@@ -29,3 +29,25 @@ def load_vocabulary(voc_path):
         wordtoix[word] = i
         ixtoword[i] = word
     return wordtoix, ixtoword, max_len
+
+
+def pad_sequences(sequences, maxlen):
+    """
+    Pad sequences.
+
+    Parameters
+    ----------
+    sequences : list. list of tensors.
+    maxlen : int. Size to pad to.
+
+    Returns
+    -------
+    Padded sequences as one tensor.
+    """
+    num = len(sequences)
+    out_dims = (num, maxlen)
+    out_tensor = sequences[0].data.new(*out_dims).fill_(0)
+    for i, tensor in enumerate(sequences):
+        length = tensor.size(0)
+        out_tensor[i, :length] = tensor
+    return out_tensor

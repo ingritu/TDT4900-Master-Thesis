@@ -11,7 +11,9 @@ import numpy as np
 from time import time
 import json
 
-from src.data.data_generator import data_generator
+from torch.utils.data import DataLoader
+from src.data.dataset import TrainCaptionDataset
+from src.data.dataset import TestCaptionDataset
 from src.data.utils import load_vocabulary
 from src.features.resnet_features import load_visual_features
 from src.models.torch_generators import model_switcher
@@ -202,7 +204,6 @@ class Generator:
         data_path = Path(data_path)
         validation_path = Path(validation_path)
         ann_path = Path(ann_path)
-        train_df = pd.read_csv(data_path)
 
         training_history = {
             'model': str(self.model),
@@ -223,13 +224,14 @@ class Generator:
             'model_save_path': ''
         }
 
-        steps_per_epoch = len(train_df) // batch_size
-
-        train_generator = data_generator(train_df, batch_size,
-                                         steps_per_epoch,
-                                         self.wordtoix,
-                                         self.encoded_features)
-
+        train_gen = TrainCaptionDataset(data_path,
+                                        self.encoded_features,
+                                        self.wordtoix,
+                                        self.max_length)
+        steps_per_epoch = int(np.ceil(len(train_gen) / batch_size))
+        train_generator = DataLoader(train_gen,
+                                     batch_size=batch_size,
+                                     shuffle=True)
         start_time = time()
 
         date_time_obj = datetime.now()
@@ -255,14 +257,16 @@ class Generator:
 
             print('Epoch: #' + str(e))
             batch_history = []
-            for s in range(1, steps_per_epoch + 1):
-                # get minibatch from data generator
-                x, caption_lengths = next(train_generator)
+            for batch_i, (encoded_images, captions, caplens) in enumerate(
+                    train_generator):
+                x = [encoded_images, captions]
+                caplens = caplens.numpy()
 
-                loss_num = self.train_on_batch(x, caption_lengths)
+                loss_num = self.train_on_batch(x, caplens)
                 batch_history.append(loss_num)
-                print('Step: #' + str(s) + '/' + str(steps_per_epoch) + '\t' +
-                      'loss (' + self.optimizer_string + '):', loss_num)
+                print('Step: #' + str(batch_i + 1) + '/' + str(steps_per_epoch)
+                      + '\t' + 'loss (' + self.optimizer_string + '):',
+                      loss_num)
 
             # add the mean loss of the epoch to the training history
             training_history['history'].append(np.mean(
@@ -377,49 +381,42 @@ class Generator:
         data_path = Path(data_path)
         self.model.eval()  # put model in evaluation mode
 
-        data_df = pd.read_csv(data_path)
-        data_df = data_df.reset_index(drop=True)
+        test_gen = TestCaptionDataset(data_path, self.encoded_features)
+        test_len = len(test_gen)
+        if batch_size > test_len:
+            batch_size = test_len
 
-        predicted_captions = []
+        test_generator = DataLoader(test_gen,
+                                    batch_size=batch_size,
+                                    shuffle=False)
+        predicted_captions_full = []
 
-        num_images = len(data_df)
-        if batch_size > num_images:
-            batch_size = num_images
-        steps = int(np.ceil(num_images / batch_size))
-        prev_batch_idx = 0
-        for i in range(steps):
-            # create input batch
-            end_batch_idx = min(prev_batch_idx + batch_size, num_images)
-            batch_df = data_df.iloc[prev_batch_idx: end_batch_idx, :]
-            image_ids = batch_df.loc[:, 'image_id'].to_numpy()
-            image_names = batch_df.loc[:, 'image_name'].to_numpy()
-
-            enc_images = []
-            for image_id, image_name in zip(image_ids, image_names):
-                # get encoded features for this batch
+        for batch_i, (encoded_images, image_ids) in enumerate(test_generator):
+            predicted_captions = []
+            for image_id in image_ids:
+                # prepare predictions
                 pred_dict = {
                     "image_id": int(image_id),
                     "caption": ""
                 }
                 predicted_captions.append(pred_dict)
-                enc_images.append(self.encoded_features[image_name])
 
             # get full sentence predictions from beam_search algorithm
-            predictions = self.beam_search(enc_images, beam_size=beam_size)
+            predictions = self.beam_search(encoded_images, beam_size=beam_size)
             predictions = self.post_process_predictions(predictions)
 
             # put predictions in the right pred_dict
-            counter = 0
-            for idx in range(prev_batch_idx, end_batch_idx):
-                predicted_captions[idx]["caption"] = predictions[counter]
-                counter += 1
+            for idx in range(len(predictions)):
+                predicted_captions[idx]["caption"] = predictions[idx]
+            predicted_captions_full.append(predicted_captions)
 
             # verbose
-            print('Batch step', i + 1)
-            # update prev_batch_idx
-            prev_batch_idx = end_batch_idx
-
-        return predicted_captions
+            print('Batch step', batch_i + 1)
+        # unfold batch predictions
+        out = []
+        for row in predicted_captions_full:
+            out.extend(row)
+        return out
 
     @staticmethod
     def post_process_predictions(predictions):

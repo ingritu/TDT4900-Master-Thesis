@@ -2,6 +2,7 @@ import torch
 from pathlib import Path
 import numpy as np
 from sklearn.utils import shuffle
+from src.data.utils import pad_sequences
 
 ROOT_PATH = Path(__file__).absolute().parents[2]
 
@@ -82,26 +83,3 @@ def get_caption(data_df, i):
     Caption string.
     """
     return data_df.loc[i, 'clean_caption']
-
-
-def pad_sequences(sequences, maxlen):
-    """
-    Pad sequences.
-
-    Parameters
-    ----------
-    sequences : list. list of tensors.
-    maxlen : int. Size to pad to.
-
-    Returns
-    -------
-    Padded sequences as one tensor.
-    """
-    num = len(sequences)
-    out_dims = (num, maxlen)
-    out_tensor = sequences[0].data.new(*out_dims).fill_(0)
-    for i, tensor in enumerate(sequences):
-        length = tensor.size(0)
-        out_tensor[i, :length] = tensor
-    return out_tensor
-
