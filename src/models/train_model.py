@@ -32,7 +32,7 @@ if __name__ == '__main__':
                              'val_batch_size * beam_size.')
     parser.add_argument('--epochs', type=int, default=50,
                         help='The number of epochs to train the network for.')
-    parser.add_argument('--early-stopping_freq', type=int, default=6,
+    parser.add_argument('--early-stopping-freq', type=int, default=6,
                         help='Training will stop if no improvements have been '
                              'made over this many epochs. Default value is 6.')
     parser.add_argument('--val-metric', type=str, default='CIDEr',
