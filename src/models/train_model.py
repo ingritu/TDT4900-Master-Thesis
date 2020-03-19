@@ -69,8 +69,8 @@ if __name__ == '__main__':
     # SEEDING TRAINING
     seed_ = args['seed']
     torch.manual_seed(seed_)
-    torch.backends.cudnn.deterministic = True
-    torch.backends.cudnn.benchmark = False
+    # torch.backends.cudnn.deterministic = True
+    # torch.backends.cudnn.benchmark = False
     np.random.seed(seed_)
 
     # print all args

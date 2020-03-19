@@ -245,10 +245,6 @@ class Generator:
             print('Epoch: #' + str(e))
             batch_history = []
             for s in range(1, steps_per_epoch + 1):
-                print()
-                # zero the gradient buffers
-                self.optimizer.zero_grad()
-
                 # get minibatch from data generator
                 x, caption_lengths = next(train_generator)
 
@@ -340,6 +336,8 @@ class Generator:
         loss_num = loss.item()
 
         # backpropagate
+        # zero the gradient buffers
+        self.optimizer.zero_grad()
         loss.backward()
         # update weights
         self.optimizer.step()
