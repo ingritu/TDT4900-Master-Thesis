@@ -69,10 +69,10 @@ if __name__ == '__main__':
     args = vars(parser.parse_args())  # access args as dictionary
     # SEEDING TRAINING
     seed_ = args['seed']
-    torch.manual_seed(seed_)
+    # torch.manual_seed(seed_)
     # torch.backends.cudnn.deterministic = True
     # torch.backends.cudnn.benchmark = False
-    np.random.seed(seed_)
+    # np.random.seed(seed_)
 
     print("OS: ", sys.platform)
     print("Python: ", sys.version)
