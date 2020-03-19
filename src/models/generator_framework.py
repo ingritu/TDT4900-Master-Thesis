@@ -133,9 +133,15 @@ class Generator:
         print(self.model)
         self.train_params += sum(p.numel() for p in self.model.parameters()
                                  if p.requires_grad)
-        self.model.to(self.device)
         print('Trainable Parameters:', self.train_params, '\n\n\n\n')
-        self.initialize_optimizer()  # initialize optimizer
+
+        # check for multiple GPUs
+        if torch.cuda.device_count() > 1:
+            print("Let's use", torch.cuda.device_count(), "GPUs!")
+            self.model = nn.DataParallel(self.model)
+        self.model.to(self.device)
+
+        self.initialize_optimizer()
 
     def initialize_optimizer(self):
         """
