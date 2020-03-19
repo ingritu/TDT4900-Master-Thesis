@@ -1,10 +1,11 @@
 from pathlib import Path
 from src.models.generator_framework import Generator
-
+import sys
 import argparse
 
 # import to set seed in this program
 import torch
+import torch.multiprocessing as mp
 import numpy as np
 
 ROOT_PATH = Path(__file__).absolute().parents[2]
@@ -73,6 +74,17 @@ if __name__ == '__main__':
     # torch.backends.cudnn.benchmark = False
     np.random.seed(seed_)
 
+    print("OS: ", sys.platform)
+    print("Python: ", sys.version)
+    print("PyTorch: ", torch.__version__)
+    print("Numpy: ", np.__version__)
+
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    num_gpus = torch.cuda.device_count()
+    num_cpus = mp.cpu_count()
+    multi_gpus = num_gpus > 1
+    print("GPUs:", num_gpus)
+    print("CPUs:", num_cpus)
     # print all args
     print("using parsed arguments.")
     for key in args:
@@ -115,6 +127,10 @@ if __name__ == '__main__':
     opt = args['optimizer']
     lr_ = args['lr']
 
+    if multi_gpus:
+        lr_ *= num_gpus
+        batch_size *= num_gpus
+
     generator = Generator(model_name_,
                           voc_path_,
                           featureFile)
@@ -123,7 +139,8 @@ if __name__ == '__main__':
                       hidden_size=hidden_size_,
                       loss_function=loss_function_,
                       optimizer=opt,
-                      lr=lr_)
+                      lr=lr_,
+                      multi_gpus=multi_gpus)
 
     # model is automatically saved after training
     generator.train(train_path,

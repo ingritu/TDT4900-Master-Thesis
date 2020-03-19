@@ -75,6 +75,7 @@ class Generator:
         # initialize model as None
         self.model = None
         self.train_params = 0
+        self.multi_gpus = False
 
         self.model_name = model_name
 
@@ -100,7 +101,8 @@ class Generator:
                 hidden_size=512,
                 loss_function='cross_entropy',
                 optimizer='adam',
-                lr=0.0005):
+                lr=0.0005,
+                multi_gpus=False):
         """
         Bulids the model.
 
@@ -112,6 +114,7 @@ class Generator:
         loss_function : str.
         optimizer : str.
         lr : float.
+        multi_gpus : bool.
         """
         # set values
         self.save_path = Path(save_path)
@@ -121,6 +124,7 @@ class Generator:
         self.criterion = loss_switcher(self.loss_string)()
         self.optimizer_string = optimizer
         self.lr = lr
+        self.multi_gpus = multi_gpus
 
         # initialize model
         self.model = model_switcher(self.model_name)(self.input_shape,
@@ -136,9 +140,10 @@ class Generator:
         print('Trainable Parameters:', self.train_params, '\n\n\n\n')
 
         # check for multiple GPUs
-        if torch.cuda.device_count() > 1:
-            print("Let's use", torch.cuda.device_count(), "GPUs!")
+        if self.multi_gpus:
+            print("Using multiple GPUs.")
             self.model = nn.DataParallel(self.model)
+
         self.model.to(self.device)
 
         self.initialize_optimizer()
