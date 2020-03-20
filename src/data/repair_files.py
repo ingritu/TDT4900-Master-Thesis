@@ -61,6 +61,7 @@ def repair_file(file):
     - weired symbols in captions like '"', '«' and '»'
     - caption_id: image_name # caption_num
     - spaces after ','
+    - period instead of comma after index
 
     Parameters
     ----------
@@ -73,15 +74,14 @@ def repair_file(file):
     print(lines[1])
     lines = lines[1:]  # remove labels
     lines = repair_captions(lines, cap_bool=False)
-    lines = [line for line in lines if len(line) > 0]
+    lines = [line for line in lines if len(line) > 1]
     labels = ",caption_id,caption\n"
     indices, caption_ids, captions = [], [], []
     for line in lines:
         line = line.split(",")  # most lines are still comma separated
         print(line)
-        indices.append(line[0])
+        indices.append(line[0].replace(' ', '').strip())
         line = line[1:]
-        print(line)
         caption_id = ''
         evaluate = line[0]
         if contains_caption_id(evaluate):
@@ -107,6 +107,9 @@ def repair_file(file):
                     captions.append(caption)
         assert caption_id != '', "wrong in caption_id fetching"
 
+    for index in indices:
+        if not index.isdecimal():
+            print('index', index)
     assert sum([index.isdecimal() for index in indices]) == len(indices), \
         "Indices are not correct."
 
@@ -171,6 +174,10 @@ def repair_caption_ids(caption_ids):
 def repair_captions(captions, cap_bool=True):
     out = []
     for cap in captions:
+        if not cap_bool:
+            period_idx = cap.find('.', 0, 10)
+            if period_idx != -1:
+                cap = cap.replace('.', ',', 1)
         cap = cap.replace('"', '')
         cap = cap.replace('«', '')
         cap = cap.replace('»', '')
