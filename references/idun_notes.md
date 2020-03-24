@@ -32,7 +32,7 @@ Use the share-ie-idi account not the ie-idi account.
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --mem=80000  # default unit is megabytes
+#SBATCH --mem=80G  # max is 124G
 #SBATCH --job-name="name-of-job"
 #SBATCH --output=test-srun.out
 #SBATCH --mail-user=iturkerud@gmail.com
