@@ -78,7 +78,7 @@ class AbstractModel(nn.Module):
         target = w_input[:, 1:]  # sorted targets
         target = target.to(self.device)
 
-        batch_size = encoded_images.size()[0]
+        batch_size = encoded_images.size(0)
 
         decoding_lengths = caption_lengths
         if has_end_seq_token:
@@ -103,7 +103,8 @@ class AbstractModel(nn.Module):
             pt, h_t, c_t = self.decoder(x_t,
                                         (h_t[:batch_size_t],
                                          c_t[:batch_size_t]))
-            predictions[:batch_size_t, timestep, :] = torch.softmax(pt, dim=1)
+            pt = torch.softmax(pt, dim=1)  # (batch_size_t, vocab_size)
+            predictions[:batch_size_t, timestep, :] = pt
 
         return predictions, target, decoding_lengths
 

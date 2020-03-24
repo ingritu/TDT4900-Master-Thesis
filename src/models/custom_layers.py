@@ -166,7 +166,9 @@ class AttentionLayer(nn.Module):
         # (batch_size, 64 +1, hidden_size)
 
         # compute alphas + beta
-        alpha = torch.softmax(self.alpha_layer(alpha_input).squeeze(2), dim=1)
+        alpha = self.alpha_layer(alpha_input).squeeze(2)
+        print('alpha dims', alpha.size())
+        alpha = torch.softmax(alpha, dim=1)
         # (batch_size, 64 + 1)
         alpha = alpha.unsqueeze(2)  # (batch_size, 64 +1, 1)
 

@@ -3,7 +3,6 @@ from torch import nn
 from torch import optim
 from torch.nn.utils.rnn import pack_padded_sequence
 from pathlib import Path
-import pandas as pd
 from datetime import datetime
 from datetime import timedelta
 from collections import defaultdict
@@ -123,7 +122,7 @@ class Generator:
         self.embedding_size = embedding_size
         self.hidden_size = hidden_size
         self.loss_string = loss_function
-        self.criterion = loss_switcher(self.loss_string)()
+        self.criterion = loss_switcher(self.loss_string)().to(self.device)
         self.optimizer_string = optimizer
         self.lr = lr
         self.multi_gpus = multi_gpus
@@ -156,7 +155,8 @@ class Generator:
         After this is called, optimizer will no longer be None.
         """
         self.optimizer = optimizer_switcher(self.optimizer_string)(
-            self.model.parameters(), self.lr)
+            params=filter(lambda p: p.requires_grad, self.model.parameters()),
+            lr=self.lr)
 
     def train(self,
               data_path,
@@ -245,6 +245,15 @@ class Generator:
         best_val_score = -1  # all metric give positive scores
         best_path = None
         epochs_since_improvement = 0
+
+        # save untrained model
+        save_checkpoint(directory,
+                        epoch=0,
+                        epochs_since_improvement=epochs_since_improvement,
+                        model=self.model,
+                        optimizer=self.optimizer,
+                        cider=-1,
+                        is_best=True)
 
         for e in range(1, epochs + 1):
             # early stopping
@@ -335,28 +344,39 @@ class Generator:
         -------
         loss_num : float
         """
-        predictions, target, decoding_lengths = self.model(x, caption_lengths)
-
-        # loop finished
-        # pack padded sequences
-        output = pack_padded_sequence(predictions,
-                                      decoding_lengths,
-                                      batch_first=True)[0]
-        target = pack_padded_sequence(target,
-                                      decoding_lengths,
-                                      batch_first=True)[0]
-
-        # get loss
-        loss = self.criterion(output, target)
-        loss_num = loss.item()
-
-        # backpropagate
         # zero the gradient buffers
         self.optimizer.zero_grad()
+
+        predictions, target, decoding_lengths = self.model(x, caption_lengths)
+        arr_target = target.detach().numpy()
+        #print([' '.join([self.ixtoword[w] for w in arr_target_row]) for arr_target_row in arr_target])
+        #print(decoding_lengths)
+        # loop finished
+        # pack padded sequences
+        #print('output shape before', predictions.size())
+        output = pack_padded_sequence(predictions,
+                                      decoding_lengths,
+                                      batch_first=True,
+                                      enforce_sorted=True).data
+        #print('output shape after', output.size())
+        target = pack_padded_sequence(target,
+                                      decoding_lengths,
+                                      batch_first=True,
+                                      enforce_sorted=True).data
+
+        # get loss
+        #print('output', output)
+        #print('target', target)
+        arr_target = target.detach().numpy()
+        #print(' '.join([self.ixtoword[w] for w in arr_target]))
+        loss = self.criterion(output, target)
+
+        # backpropagate
         loss.backward()
         # update weights
         self.optimizer.step()
 
+        loss_num = loss.item()
         return loss_num
 
     def predict(self, data_path, batch_size=1, beam_size=1):
@@ -446,11 +466,9 @@ class Generator:
         predictions : dict.
             key: image index, value: predicted caption.
         """
-        # consider if it is possible to handle more than one sample at a time
-        # for instance more images, and/or predict on the entire beam
         # initialization
         batch_size = len(batch)
-        batch = torch.tensor(batch).to(self.device)
+        batch = batch.to(self.device)
 
         global_images, encoded_images = self.model.encoder(batch)
 
