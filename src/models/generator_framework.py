@@ -274,7 +274,7 @@ class Generator:
                 loss_num = self.train_on_batch(x, caplens)
                 batch_history.append(loss_num)
                 print('Step: #' + str(batch_i + 1) + '/' + str(steps_per_epoch)
-                      + '\t' + 'loss (' + self.optimizer_string + '):',
+                      + '\t' + 'loss (' + self.loss_string + '):',
                       loss_num)
 
             # add the mean loss of the epoch to the training history
@@ -320,7 +320,7 @@ class Generator:
         # end of training
         training_time = timedelta(seconds=int(time() - start_time))  # seconds
         d = datetime(1, 1, 1) + training_time
-        training_time = "%d:%d:%d:%d" % (d.day-1, d.hour, d.minute, d.second)
+        training_time = "%d-%d:%d:%d" % (d.day-1, d.hour, d.minute, d.second)
         training_history['training_time'] = str(training_time)
         training_history['model_save_path'] = str(best_path)
         train_path = directory.joinpath(self.model_name + '_log.txt')
