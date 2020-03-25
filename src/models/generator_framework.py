@@ -348,7 +348,7 @@ class Generator:
         self.optimizer.zero_grad()
 
         predictions, target, decoding_lengths = self.model(x, caption_lengths)
-        arr_target = target.detach().numpy()
+        #arr_target = target.detach().numpy()
         #print([' '.join([self.ixtoword[w] for w in arr_target_row]) for arr_target_row in arr_target])
         #print(decoding_lengths)
         # loop finished
