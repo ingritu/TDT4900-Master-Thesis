@@ -353,27 +353,18 @@ class Generator:
         self.optimizer.zero_grad()
 
         predictions, target, decoding_lengths = self.model(x, caption_lengths)
-        #arr_target = target.detach().numpy()
-        #print([' '.join([self.ixtoword[w] for w in arr_target_row]) for arr_target_row in arr_target])
-        #print(decoding_lengths)
-        # loop finished
+
         # pack padded sequences
-        #print('output shape before', predictions.size())
         output = pack_padded_sequence(predictions,
                                       decoding_lengths,
                                       batch_first=True,
                                       enforce_sorted=True).data
-        #print('output shape after', output.size())
         target = pack_padded_sequence(target,
                                       decoding_lengths,
                                       batch_first=True,
                                       enforce_sorted=True).data
 
         # get loss
-        #print('output', output)
-        #print('target', target)
-        #arr_target = target.detach().numpy()
-        #print(' '.join([self.ixtoword[w] for w in arr_target]))
         loss = self.criterion(output, target)
 
         # backpropagate
@@ -595,8 +586,7 @@ class Generator:
         # save predictions to res_path which is .json
         with open(res_path, 'w') as res_file:
             json.dump(predictions, res_file)
-
-        """""""""
+        
         coco = COCO(str(ann_path))
         coco_res = coco.loadRes(str(res_path))
         coco_eval = COCOEvalCap(coco, coco_res)
@@ -608,8 +598,6 @@ class Generator:
             json.dump(coco_eval.eval, eval_file)
         
         score = coco_eval.eval[metric]
-        """""""""
-        score = 0
 
         return score
 
