@@ -91,7 +91,7 @@ class Generator:
 
         # misc
         self.framework_name = 'CaptionGeneratorFramework'
-        # gpu
+        self.dr = 0
         self.device = torch.device("cuda:0"
                                    if torch.cuda.is_available() else "cpu")
         print('Device:', self.device)
@@ -103,6 +103,7 @@ class Generator:
                 loss_function='cross_entropy',
                 optimizer='adam',
                 lr=0.0005,
+                dr=0.5,
                 multi_gpus=False):
         """
         Bulids the model.
@@ -115,6 +116,7 @@ class Generator:
         loss_function : str.
         optimizer : str.
         lr : float.
+        dr : float. Dropout value.
         multi_gpus : bool.
         """
         # set values
@@ -125,15 +127,18 @@ class Generator:
         self.criterion = loss_switcher(self.loss_string)().to(self.device)
         self.optimizer_string = optimizer
         self.lr = lr
+        self.dr = dr
         self.multi_gpus = multi_gpus
 
         # initialize model
-        self.model = model_switcher(self.model_name)(self.input_shape,
-                                                     self.max_length,
-                                                     self.hidden_size,
-                                                     self.vocab_size,
-                                                     self.device,
-                                                     self.embedding_size)
+        self.model = model_switcher(self.model_name)(
+            self.input_shape,
+            self.max_length,
+            self.hidden_size,
+            self.vocab_size,
+            self.device,
+            embedding_size=self.embedding_size,
+            dr=self.dr)
 
         print(self.model)
         self.train_params += sum(p.numel() for p in self.model.parameters()
@@ -591,6 +596,7 @@ class Generator:
         with open(res_path, 'w') as res_file:
             json.dump(predictions, res_file)
 
+        """""""""
         coco = COCO(str(ann_path))
         coco_res = coco.loadRes(str(res_path))
         coco_eval = COCOEvalCap(coco, coco_res)
@@ -600,8 +606,12 @@ class Generator:
         # save evaluations to eval_path which is .json
         with open(eval_path, 'w') as eval_file:
             json.dump(coco_eval.eval, eval_file)
+        
+        score = coco_eval.eval[metric]
+        """""""""
+        score = 0
 
-        return coco_eval.eval[metric]
+        return score
 
     def load_model(self, path):
         """

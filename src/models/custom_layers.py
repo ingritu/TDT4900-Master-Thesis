@@ -39,7 +39,7 @@ class SentinelLSTM(nn.Module):
 
 class ImageEncoder(nn.Module):
 
-    def __init__(self, input_shape, hidden_size, embedding_size):
+    def __init__(self, input_shape, hidden_size, embedding_size, dr=0.5):
         """
         Reshapes or embeds the image features more to fit dims of
         the rest of the model.
@@ -49,13 +49,16 @@ class ImageEncoder(nn.Module):
         input_shape : int.
         hidden_size : int.
         embedding_size : int.
+        dr : float. Dropout value.
         """
         super(ImageEncoder, self).__init__()
         self.average_pool = nn.AvgPool2d(input_shape[0])
         # affine transformation of attention features
         self.v_affine = nn.Linear(input_shape[2], hidden_size)
+        self.v_dr = nn.Dropout(dr)
         # affine transformation of global image features
         self.global_affine = nn.Linear(input_shape[2], embedding_size)
+        self.g_dr = nn.Dropout(dr)
 
     def forward(self, x):
         # x = V, (batch_size, 8, 8, 1536)
@@ -66,8 +69,10 @@ class ImageEncoder(nn.Module):
         inputs = x.view(input_shape[0], pixels, input_shape[3])
 
         # transform
-        global_image = self.global_affine(global_image)
-        inputs = self.v_affine(inputs)
+        global_image = f.relu(self.global_affine(global_image))
+        global_image = self.g_dr(global_image)
+        inputs = f.relu(self.v_affine(inputs))
+        inputs = self.v_dr(inputs)
 
         return global_image, inputs
 
@@ -96,7 +101,7 @@ class MultimodalDecoder(nn.Module):
 
 class AttentionLayer(nn.Module):
 
-    def __init__(self, input_size, hidden_size):
+    def __init__(self, input_size, hidden_size, dr=0.5):
         """
         Implementation of the Soft visual attention block
         by Lu et al. Knowing when to look.
@@ -105,6 +110,7 @@ class AttentionLayer(nn.Module):
         ----------
         input_size : int.
         hidden_size : int.
+        dr : float. Dropout value.
         """
         super(AttentionLayer, self).__init__()
         # input_size 512
@@ -113,14 +119,18 @@ class AttentionLayer(nn.Module):
         self.v_att = nn.Linear(input_size, hidden_size)
 
         self.s_proj = nn.Linear(input_size, input_size)
+        self.s_proj_dr = nn.Dropout(dr)
         self.s_att = nn.Linear(input_size, hidden_size)
 
         self.h_proj = nn.Linear(input_size, input_size)
+        self.h_proj_dr = nn.Dropout(dr)
         self.h_att = nn.Linear(input_size, hidden_size)
 
         self.alpha_layer = nn.Linear(hidden_size, 1)
+        self.alpha_dr = nn.Dropout(dr)
         # might move this outside
         self.context_proj = nn.Linear(input_size, input_size)
+        self.context_proj_dr = nn.Dropout(dr)
 
     def forward(self, x):
         # x : [V, s_t, h_t]
@@ -137,10 +147,12 @@ class AttentionLayer(nn.Module):
 
         # s_t embedding
         s_proj = f.relu(self.s_proj(s_t))  # (batch_size, hidden_size)
+        s_proj = self.s_proj_dr(s_proj)  # dropout
         s_att = self.s_att(s_proj)  # (batch_size, hidden_size)
 
         # h_t embedding
         h_proj = torch.tanh(self.h_proj(h_t))  # (batch_size, hidden_size)
+        h_proj = self.h_proj_dr(h_proj)  # dropout
         h_att = self.h_att(h_proj)  # (batch_size, hidden_size)
 
         # make s_proj the same dimension as V
@@ -164,6 +176,7 @@ class AttentionLayer(nn.Module):
         # add h_t to regions_att
         alpha_input = torch.tanh(regions_att + h_att)
         # (batch_size, 64 +1, hidden_size)
+        alpha_input = self.alpha_dr(alpha_input)  # dropout
 
         # compute alphas + beta
         alpha = self.alpha_layer(alpha_input).squeeze(2)
@@ -177,6 +190,7 @@ class AttentionLayer(nn.Module):
         # (batch_size, hidden_size)
 
         z_t = torch.tanh(self.context_proj(context_vector + h_proj))
+        z_t = self.context_proj_dr(z_t)
         # (batch_size, hidden_size)
 
         return z_t

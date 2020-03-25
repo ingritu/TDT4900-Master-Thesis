@@ -24,7 +24,8 @@ class AbstractModel(nn.Module):
                  hidden_size,
                  vocab_size,
                  device,
-                 embedding_size=512):
+                 embedding_size=512,
+                 dr=0.5):
         """
         Generic Abstract Model
 
@@ -36,6 +37,7 @@ class AbstractModel(nn.Module):
         vocab_size : int.
         device : torch.device.
         embedding_size : int.
+        dr : float. Dropout value.
         """
         super(AbstractModel, self).__init__()
         self.visual_feature_shape = input_shape
@@ -44,6 +46,7 @@ class AbstractModel(nn.Module):
 
         self.vocab_size = vocab_size
         self.em_size = embedding_size
+        self.dr = dr
 
         self.device = device
 
@@ -51,7 +54,8 @@ class AbstractModel(nn.Module):
         # encoder
         self.encoder = ImageEncoder(self.visual_feature_shape,
                                     self.hidden_size,
-                                    self.em_size)
+                                    self.em_size,
+                                    dr=self.dr)
         # decoder
         self.decoder = None
 
@@ -103,7 +107,7 @@ class AbstractModel(nn.Module):
             pt, h_t, c_t = self.decoder(x_t,
                                         (h_t[:batch_size_t],
                                          c_t[:batch_size_t]))
-            pt = torch.softmax(pt, dim=1)  # (batch_size_t, vocab_size)
+            pt = torch.log_softmax(pt, dim=1)  # (batch_size_t, vocab_size)
             predictions[:batch_size_t, timestep, :] = pt
 
         return predictions, target, decoding_lengths
@@ -117,7 +121,8 @@ class AdaptiveModel(AbstractModel):
                  hidden_size,
                  vocab_size,
                  device,
-                 embedding_size=512):
+                 embedding_size=512,
+                 dr=0.5):
         """
         Adaptive Model
 
@@ -129,17 +134,20 @@ class AdaptiveModel(AbstractModel):
         vocab_size : int.
         device : torch.device.
         embedding_size : int.
+        dr : float. Dropout value.
         """
         super(AdaptiveModel, self).__init__(input_shape, max_len, hidden_size,
                                             vocab_size, device,
-                                            embedding_size=embedding_size)
+                                            embedding_size=embedding_size,
+                                            dr=dr)
         # decoder
         self.decoder = AdaptiveDecoder(
             self.max_len,
             self.hidden_size,
             self.em_size,
             self.vocab_size,
-            self.device)
+            self.device,
+            dr=self.dr)
 
 
 class AdaptiveDecoder(nn.Module):
@@ -149,7 +157,8 @@ class AdaptiveDecoder(nn.Module):
                  hidden_size,
                  embedding_size,
                  vocab_size,
-                 device):
+                 device,
+                 dr=0.5):
         """
         Adaptive Decoder.
 
@@ -164,12 +173,14 @@ class AdaptiveDecoder(nn.Module):
         embedding_size : int.
         vocab_size : int.
         device : torch.device.
+        dr : float. Dropout value.
         """
         super(AdaptiveDecoder, self).__init__()
         self.max_len = max_len
         self.hidden_size = hidden_size
         self.vocab_size = vocab_size
         self.em_size = embedding_size
+        self.dr = dr
 
         # device
         self.device = device
@@ -179,7 +190,8 @@ class AdaptiveDecoder(nn.Module):
         self.sentinel_lstm = SentinelLSTM(self.em_size * 2,
                                           self.hidden_size)
         self.attention_block = AttentionLayer(self.hidden_size,
-                                              self.hidden_size)
+                                              self.hidden_size,
+                                              dr=self.dr)
         self.decoder = MultimodalDecoder(self.hidden_size,
                                          self.vocab_size)
 
@@ -223,13 +235,15 @@ class BasicModel(AbstractModel):
                  hidden_size,
                  vocab_size,
                  device,
-                 embedding_size=512):
+                 embedding_size=512,
+                 dr=0.5):
         super(BasicModel, self).__init__(input_shape,
                                          max_len,
                                          hidden_size,
                                          vocab_size,
                                          device,
-                                         embedding_size=embedding_size)
+                                         embedding_size=embedding_size,
+                                         dr=dr)
         self.decoder = BasicDecoder(hidden_size,
                                     embedding_size,
                                     vocab_size,

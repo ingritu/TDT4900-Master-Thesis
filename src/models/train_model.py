@@ -25,17 +25,21 @@ if __name__ == '__main__':
     # Training details
     parser.add_argument('--batch-size', type=int, default=80,
                         help='Training batch size. '
-                             'The number of captions in a batch.')
+                             'The number of captions in a batch. '
+                             'Default is 80.')
     parser.add_argument('--beam-size', type=int, default=3,
                         help='Beam size to use in beam search '
                              'inference algorithm. '
-                             'Bigger beam size yields higher performance.')
+                             'Bigger beam size yields higher performance. '
+                             'Default is 3.')
     parser.add_argument('--val-batch-size', type=int, default=250,
                         help='Validation batch size. The number of images in a'
                              ' batch. The actual batch size is '
-                             'val_batch_size * beam_size.')
+                             'val_batch_size * beam_size. '
+                             'Default is 250.')
     parser.add_argument('--epochs', type=int, default=50,
-                        help='The number of epochs to train the network for.')
+                        help='The number of epochs to train the network for. '
+                             'Default is 50 epochs.')
     parser.add_argument('--early-stopping-freq', type=int, default=6,
                         help='Training will stop if no improvements have been '
                              'made over this many epochs. Default value is 6.')
@@ -47,26 +51,36 @@ if __name__ == '__main__':
     # Model details
     parser.add_argument('--embedding-size', type=int, default=512,
                         help='Embedding dimension. '
-                             'The size of the word vector representations.')
+                             'The size of the word vector representations. '
+                             'Default is 512.')
     parser.add_argument('--hidden-size', type=int, default=512,
-                        help='Hidden dimension.')
+                        help='Hidden dimension. '
+                             'Default is 512.')
     parser.add_argument('--loss-function', type=str, default='cross_entropy',
-                        help='Loss/Cost function to use during training.')
+                        help='Loss/Cost function to use during training. '
+                             'Default is cross_entropy')
     parser.add_argument('--optimizer', type=str, default='adam',
-                        help='Optimizer to use during training.')
+                        help='Optimizer to use during training. '
+                             'Default is adam')
     parser.add_argument('--lr', type=float, default=0.0005,
-                        help='Initial learning rate for the decoder.')
+                        help='Initial learning rate for the decoder. '
+                             'Default is 0.0005')
     parser.add_argument('--seed', type=int, default=222,
                         help='Random state seed.')
     parser.add_argument('--model', type=str, default='adaptive',
-                        help='Model name. Which model type to train.')
+                        help='Model name. Which model type to train. '
+                             'Default is "adaptive".')
+    parser.add_argument('--dropout', type=float, default=0.5,
+                        help='Use dropout on some layers. '
+                             'Decide the dropout value. Default value is 0.5')
     # data details
     parser.add_argument('--karpathy', action='store_true',
                         help='Boolean used to decide whether to train on '
                              'the karpathy split of dataset or not.')
     parser.add_argument('--dataset', type=str, default='coco',
                         help='Dataset to train on. The options are '
-                             '{flickr8k, flickr30k, coco}.')
+                             '{flickr8k, flickr30k, coco}. '
+                             'Default is "coco".')
     # there still are more customizable parameters to set,
     # add these later
     args = vars(parser.parse_args())  # access args as dictionary
