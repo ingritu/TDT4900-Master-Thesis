@@ -367,7 +367,7 @@ class Generator:
         # get loss
         #print('output', output)
         #print('target', target)
-        arr_target = target.detach().numpy()
+        #arr_target = target.detach().numpy()
         #print(' '.join([self.ixtoword[w] for w in arr_target]))
         loss = self.criterion(output, target)
 
