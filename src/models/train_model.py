@@ -1,9 +1,12 @@
 from pathlib import Path
 from src.models.generator_framework import Generator
+from src.utils import get_gpu_name
+from src.utils import get_cuda_version
+from src.utils import get_cudnn_version
 import sys
 import argparse
 
-# import to set seed in this program
+
 import torch
 import torch.multiprocessing as mp
 import numpy as np
@@ -78,6 +81,8 @@ if __name__ == '__main__':
     print("Python: ", sys.version)
     print("PyTorch: ", torch.__version__)
     print("Numpy: ", np.__version__)
+    print("CUDA:", get_cuda_version())
+    print("CuDNN:", get_cudnn_version())
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     num_gpus = torch.cuda.device_count()
@@ -85,6 +90,7 @@ if __name__ == '__main__':
     multi_gpus = num_gpus > 1
     print("GPUs:", num_gpus)
     print("CPUs:", num_cpus)
+    print("GPU:", get_gpu_name())
     # print all args
     print("using parsed arguments.")
     for key in args:
