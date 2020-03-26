@@ -521,13 +521,10 @@ class Generator:
             # y_predictions (M*N, voc_size)
             y_predictions = torch.log_softmax(y_predictions, dim=1)
             # higher log_prob --> higher pob
-            print('y_predictions', y_predictions.size())
-            print('num_unfinished', [b.num_unfinished for b in beams])
-            print('working beams', working_beams_idx)
+
             remove_idx = set()
             start_idx = 0
             for idx, b in enumerate(beams):
-                print(idx)
                 if idx in working_beams_idx:
                     end_idx = start_idx + b.num_unfinished
                     preds = y_predictions[start_idx: end_idx]
@@ -541,7 +538,7 @@ class Generator:
                         predictions[idx] = \
                             ' '.join([self.ixtoword[w]
                                       for w in b.get_best_sequence()])
-                        print('idx', idx, predictions[idx])
+
                         remove_idx.add(idx)
                         start_idx = end_idx
                 # remove idx of finished beams
