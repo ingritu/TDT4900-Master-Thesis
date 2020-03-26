@@ -48,6 +48,10 @@ if __name__ == '__main__':
                              'validation. Acceptable values are {Bleu_1, '
                              'Bleu_2, Bleu_3, Bleu_4, ROUGE_L, METEOR, '
                              'CIDEr, SPICE}. The default value is CIDEr.')
+    parser.add_argument('--not-validate', action='store_true',
+                        help='Bool for switching on and off COCO evaluation. '
+                             'Activating flag means to not do '
+                             'COCO evaluation.')
     # Model details
     parser.add_argument('--embedding-size', type=int, default=512,
                         help='Embedding dimension. '
@@ -98,7 +102,6 @@ if __name__ == '__main__':
     print("CUDA:", get_cuda_version())
     print("CuDNN:", get_cudnn_version())
 
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     num_gpus = torch.cuda.device_count()
     num_cpus = mp.cpu_count()
     multi_gpus = num_gpus > 1
@@ -139,6 +142,7 @@ if __name__ == '__main__':
     epochs = args['epochs']
     early_stopping_freq = args['early_stopping_freq']
     val_metric = args['val_metric']
+    not_validate_ = args['not_validate']
     # model
     model_name_ = args['model']
     em_dim = args['embedding_size']
@@ -171,5 +175,6 @@ if __name__ == '__main__':
                     early_stopping_freq=early_stopping_freq,
                     val_batch_size=val_batch_size,
                     beam_size=beam_size,
-                    validation_metric=val_metric)
+                    validation_metric=val_metric,
+                    not_validate=not_validate_)
     print("Finished training model!")

@@ -92,6 +92,7 @@ class Generator:
         # misc
         self.framework_name = 'CaptionGeneratorFramework'
         self.dr = 0
+        self.not_validate = True
         self.device = torch.device("cuda:0"
                                    if torch.cuda.is_available() else "cpu")
         print('Device:', self.device)
@@ -172,7 +173,8 @@ class Generator:
               early_stopping_freq=6,
               val_batch_size=1,
               beam_size=1,
-              validation_metric='CIDEr'):
+              validation_metric='CIDEr',
+              not_validate=False):
         """
         Method for training the model.
 
@@ -200,12 +202,15 @@ class Generator:
             Metrics = {'CIDEr', 'METEOR', 'SPICE', 'ROUGE_L',
             'Bleu_1', 'Bleu_2', 'Bleu_3', 'Bleu_4'}.
             Defualt value is 'CIDEr'.
+        not_validate : Bool.
+            switch on and off COCO evaluation. Default is False.
 
         Returns
         -------
         Saves the model and checkpoints to its own folder. Then writes a log
         with all necessary information about the model and training.
         """
+        self.not_validate = not_validate
         data_path = Path(data_path)
         validation_path = Path(validation_path)
         ann_path = Path(ann_path)
@@ -586,18 +591,21 @@ class Generator:
         # save predictions to res_path which is .json
         with open(res_path, 'w') as res_file:
             json.dump(predictions, res_file)
-        
-        coco = COCO(str(ann_path))
-        coco_res = coco.loadRes(str(res_path))
-        coco_eval = COCOEvalCap(coco, coco_res)
-        coco_eval.params['image_id'] = coco_res.getImgIds()
-        coco_eval.evaluate()
 
-        # save evaluations to eval_path which is .json
-        with open(eval_path, 'w') as eval_file:
-            json.dump(coco_eval.eval, eval_file)
-        
-        score = coco_eval.eval[metric]
+        if not self.not_validate:
+            coco = COCO(str(ann_path))
+            coco_res = coco.loadRes(str(res_path))
+            coco_eval = COCOEvalCap(coco, coco_res)
+            coco_eval.params['image_id'] = coco_res.getImgIds()
+            coco_eval.evaluate()
+
+            # save evaluations to eval_path which is .json
+            with open(eval_path, 'w') as eval_file:
+                json.dump(coco_eval.eval, eval_file)
+
+            score = coco_eval.eval[metric]
+        else:
+            score = 0
 
         return score
 
