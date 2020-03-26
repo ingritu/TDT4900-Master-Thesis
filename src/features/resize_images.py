@@ -55,11 +55,13 @@ if __name__ == '__main__':
                         help='Which dataset split images to resize. '
                              'Default is full, meaning all images in '
                              'the dataset will be resized. This is only '
-                             'necessary for coco since it is so big.')
+                             'necessary for coco since it is so big. '
+                             'The default value is "full".')
     parser.add_argument('--dataset', type=str, default='coco',
                         help='Which dataset to resize its images. '
                              'The options are '
-                             '{flickr8k, flickr30k, coco}.')
+                             '{flickr8k, flickr30k, coco}. '
+                             'The default value is "coco".')
     args = vars(parser.parse_args())
 
     # print all args

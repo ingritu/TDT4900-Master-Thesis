@@ -17,12 +17,15 @@ if __name__ == '__main__':
                              'the karpathy split of dataset or not.')
     parser.add_argument('--dataset', type=str, default='coco',
                         help='Dataset to test model on. The options are '
-                             '{flickr8k, flickr30k, coco}.')
+                             '{flickr8k, flickr30k, coco}. '
+                             'The default value is "coco".')
     parser.add_argument('--split', type=str, default='val',
                         help='Dataset split to evaluate. '
-                             'Acceptable values are {train, val, test}.')
-    parser.add_argument('--model-name', type=str, default='adaptive_decoder',
-                        help='Model type.')
+                             'Acceptable values are {train, val, test}. '
+                             'The default value is "val".')
+    parser.add_argument('--model-name', type=str, default='adaptive',
+                        help='Model type. '
+                             'The default value is adaptive.')
     parser.add_argument('--model', type=str, required=True,
                         help='Name of the models directory. '
                              'Should be something like '
@@ -31,11 +34,13 @@ if __name__ == '__main__':
                         help='Validation batch size. '
                              'The number of images in a batch. '
                              'The actual batch size is val_batch_size * '
-                             'beam_size.')
+                             'beam_size. '
+                             'The default value is 250.')
     parser.add_argument('--beam-size', type=int, default=3,
                         help='Beam size to use in beam search '
                              'inference algorithm. '
-                             'Bigger beam size yields higher performance.')
+                             'Bigger beam size yields higher performance. '
+                             'The default value is 3.')
     args = vars(parser.parse_args())
 
     # print all args

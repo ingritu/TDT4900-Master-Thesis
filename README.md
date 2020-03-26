@@ -34,16 +34,16 @@ usage: make_dataset.py [-h] [--dataset DATASET] [--karpathy]
 optional arguments:
   -h, --help            show this help message and exit
   --dataset DATASET     Dataset to train on. The options are {flickr8k,
-                        flickr30k, coco}.
+                        flickr30k, coco}. The default value is "coco".
   --karpathy            Boolean used to decide whether to train on the
                         karpathy split of dataset or not.
   --threshold THRESHOLD
                         Minimum word frequency for words included in the
-                        vocabulary.
+                        vocabulary. The defualt value is 5.
   --unk-percentage UNK_PERCENTAGE
                         The percentage of UNK tokens in a caption must be
                         below this value in order to be included in the train
-                        set.
+                        set. The default value is 0.3.
   --cutoff-value CUTOFF_VALUE
                         As a part of the pre-processing we will augment
                         captions that are considered too long. This argument
@@ -66,17 +66,18 @@ optional arguments:
                         Which dataset split images to resize. Default is full,
                         meaning all images in the dataset will be resized.
                         This is only necessary for coco since it is so big.
+                        The default value is "full".
   --dataset DATASET     Which dataset to resize its images. The options are
-                        {flickr8k, flickr30k, coco}.
+                        {flickr8k, flickr30k, coco}. The default value is
+                        "coco".
 ```
 ### 3. Make the features
 ```
 python3 -m src.features.build_features --help
 
-usage: build_features.py [-h]
-                         [--new-image-size NEW_IMAGE_SIZE [NEW_IMAGE_SIZE ...]]
-                         [--feature-split FEATURE_SPLIT] [--karpathy]
-                         [--visual-attention]
+usage: build_features.py [-h] --new-image-size NEW_IMAGE_SIZE
+                         [NEW_IMAGE_SIZE ...] [--feature-split FEATURE_SPLIT]
+                         [--karpathy] [--visual-attention]
                          [--output-layer-idx OUTPUT_LAYER_IDX]
                          [--dataset DATASET]
 
@@ -88,77 +89,82 @@ optional arguments:
   --feature-split FEATURE_SPLIT
                         Which dataset split to make features for. Default
                         value is full, meaning all images in the dataset will
-                        be encoded and saved in the same file.
+                        be encoded and saved in the same file. The default
+                        value is "full".
   --karpathy            Boolean used to decide whether to train on the
                         karpathy split of dataset or not.
   --visual-attention    Boolean for deciding whether to extract visual
                         features that are usable for models that use visual
                         attention.
   --output-layer-idx OUTPUT_LAYER_IDX
-                        Which layer to extract features from.
+                        Which layer to extract features from. The default
+                        value is -3.
   --dataset DATASET     Which dataset to create image features for. The
-                        options are {flickr8k, flickr30k, coco}.
+                        options are {flickr8k, flickr30k, coco}. The default
+                        value "coco".
 ```
 
 ### 4. Train a model
 ```
 python3 -m src.models.train_model --help
 
-usage: train_model.py [-h] [--batch-size BATCH_SIZE]
-                      [--val-batch_size VAL_BATCH_SIZE]
-                      [--beam-size BEAM_SIZE] [--epochs EPOCHS]
-                      [--early-stopping_freq EARLY_STOPPING_FREQ]
-                      [--val-metric VAL_METRIC]
+usage: train_model.py [-h] [--batch-size BATCH_SIZE] [--beam-size BEAM_SIZE]
+                      [--val-batch-size VAL_BATCH_SIZE] [--epochs EPOCHS]
+                      [--early-stopping-freq EARLY_STOPPING_FREQ]
+                      [--val-metric VAL_METRIC] [--not-validate]
                       [--embedding-size EMBEDDING_SIZE]
-                      [--hidden-size HIDDEN_SIZE] [--num-lstms NUM_LSTMS]
-                      [--decoding-stack-size DECODING_STACK_SIZE]
+                      [--hidden-size HIDDEN_SIZE]
                       [--loss-function LOSS_FUNCTION] [--optimizer OPTIMIZER]
-                      [--lr LR] [--seed SEED] [--model MODEL] [--karpathy]
-                      [--dataset DATASET] --image-feature-size
-                      IMAGE_FEATURE_SIZE [IMAGE_FEATURE_SIZE ...]
+                      [--lr LR] [--seed SEED] [--model MODEL]
+                      [--dropout DROPOUT] [--karpathy] [--dataset DATASET]
 
 optional arguments:
   -h, --help            show this help message and exit
   --batch-size BATCH_SIZE
                         Training batch size. The number of captions in a
-                        batch.
+                        batch. The default value is 80.
+  --beam-size BEAM_SIZE
+                        Beam size to use in beam search inference algorithm.
+                        Bigger beam size yields higher performance. The
+                        default value is 3.
   --val-batch-size VAL_BATCH_SIZE
                         Validation batch size. The number of images in a
                         batch. The actual batch size is val_batch_size *
-                        beam_size.
-  --beam-size BEAM_SIZE
-                        Beam size to use in beam search inference algorithm.
-                        Bigger beam size yields higher performance.
-  --epochs EPOCHS       The number of epochs to train the network for.
-  --early-stopping_freq EARLY_STOPPING_FREQ
+                        beam_size. The default value is 250.
+  --epochs EPOCHS       The number of epochs to train the network for. The
+                        default value is 50 epochs.
+  --early-stopping-freq EARLY_STOPPING_FREQ
                         Training will stop if no improvements have been made
-                        over this many epochs. Default value is 6.
+                        over this many epochs. The default value is 6.
   --val-metric VAL_METRIC
                         Automatic evaluation metric to consider for
                         validation. Acceptable values are {Bleu_1, Bleu_2,
                         Bleu_3, Bleu_4, ROUGE_L, METEOR, CIDEr, SPICE}. The
                         default value is CIDEr.
+  --not-validate        Bool for switching on and off COCO evaluation.
+                        Activating flag means to not do COCO evaluation.
   --embedding-size EMBEDDING_SIZE
                         Embedding dimension. The size of the word vector
-                        representations.
+                        representations. The default value is 512.
   --hidden-size HIDDEN_SIZE
-                        Hidden dimension.
-  --num-lstms NUM_LSTMS
-                        The number of LSTM cells to stack. Default value is 1.
-  --decoding-stack-size DECODING_STACK_SIZE
-                        The number of Linear layers to stack in the multimodal
-                        decoding part of the model.
+                        Hidden dimension. The default value is 512.
   --loss-function LOSS_FUNCTION
-                        Loss/Cost function to use during training.
+                        Loss/Cost function to use during training. The default
+                        value is cross_entropy.
   --optimizer OPTIMIZER
-                        Optimizer to use during training.
-  --lr LR               Initial learning rate for the decoder.
+                        Optimizer to use during training. The default value is
+                        adam.
+  --lr LR               Initial learning rate for the decoder. The default
+                        value is 0.001.
   --seed SEED           Random state seed.
-  --model MODEL         Model name. Which model type to train.
+  --model MODEL         Model name. Which model type to train. The default
+                        value is "adaptive".
+  --dropout DROPOUT     Use dropout on some layers. Decide the dropout value.
+                        The default value is 0.5
   --karpathy            Boolean used to decide whether to train on the
                         karpathy split of dataset or not.
   --dataset DATASET     Dataset to train on. The options are {flickr8k,
-                        flickr30k, coco}.
+                        flickr30k, coco}. The default value is "coco".
 ```
 ### 5. Evaluate a trained model
 ```
@@ -174,21 +180,21 @@ optional arguments:
   --karpathy            Boolean used to decide whether to train on the
                         karpathy split of dataset or not.
   --dataset DATASET     Dataset to test model on. The options are {flickr8k,
-                        flickr30k, coco}.
+                        flickr30k, coco}. The default value is "coco".
   --split SPLIT         Dataset split to evaluate. Acceptable values are
-                        {train, val, test}.
+                        {train, val, test}. The default value is "val".
   --model-name MODEL_NAME
-                        Model type.
+                        Model type. The default value is adaptive.
   --model MODEL         Name of the models directory. Should be something like
                         adaptive_decoder_dd-Mon-yyyy_(hh:mm:ss).
   --val-batch-size VAL_BATCH_SIZE
                         Validation batch size. The number of images in a
                         batch. The actual batch size is val_batch_size *
-                        beam_size.
+                        beam_size. The default value is 250.
   --beam-size BEAM_SIZE
                         Beam size to use in beam search inference algorithm.
-                        Bigger beam size yields higher performance.
-
+                        Bigger beam size yields higher performance. The
+                        default value is 3.
 ```
 ## Project Structure
 This project uses the Data Science CookieCutter template.

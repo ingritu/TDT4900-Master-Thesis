@@ -17,17 +17,20 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset', type=str, default='coco',
                         help='Dataset to train on. The options are '
-                             '{flickr8k, flickr30k, coco}.')
+                             '{flickr8k, flickr30k, coco}. '
+                             'The default value is "coco".')
     parser.add_argument('--karpathy', action='store_true',
                         help='Boolean used to decide whether to train on '
                              'the karpathy split of dataset or not.')
     parser.add_argument('--threshold', type=int, default=5,
                         help='Minimum word frequency for words included '
-                             'in the vocabulary.')
+                             'in the vocabulary. '
+                             'The defualt value is 5.')
     parser.add_argument('--unk-percentage', type=float, default=0.3,
                         help='The percentage of UNK tokens in a caption '
                              'must be below this value in order to be '
-                             'included in the train set.')
+                             'included in the train set. '
+                             'The default value is 0.3.')
     parser.add_argument('--cutoff-value', type=int, default=16,
                         help='As a part of the pre-processing we will '
                              'augment captions that are considered too '

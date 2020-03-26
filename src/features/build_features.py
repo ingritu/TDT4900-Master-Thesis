@@ -25,7 +25,8 @@ if __name__ == '__main__':
                         help='Which dataset split to make features for. '
                              'Default value is full, meaning all images in '
                              'the dataset will be encoded and saved in the '
-                             'same file.')
+                             'same file. '
+                             'The default value is "full".')
     parser.add_argument('--karpathy', action='store_true',
                         help='Boolean used to decide whether to train on '
                              'the karpathy split of dataset or not.')
@@ -34,11 +35,13 @@ if __name__ == '__main__':
                              'features that are usable for models that use '
                              'visual attention.')
     parser.add_argument('--output-layer-idx', type=int, default=-3,
-                        help='Which layer to extract features from.')
+                        help='Which layer to extract features from. '
+                             'The default value is -3.')
     parser.add_argument('--dataset', type=str, default='coco',
                         help='Which dataset to create image features for. '
                              'The options are '
-                             '{flickr8k, flickr30k, coco}.')
+                             '{flickr8k, flickr30k, coco}. '
+                             'The default value "coco".')
     args = vars(parser.parse_args())
 
     # print all args
