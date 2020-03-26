@@ -33,3 +33,33 @@ Currently by default, we ask for an S3 bucket and use AWS CLI to sync
 data in the data folder with the server.
 
 This section was copied from https://drivendata.github.io/cookiecutter-data-science/
+
+## Structure
+````
+data/
+├── external/
+├── raw/
+│   ├── Flick8k/
+│   ├── Flickr30k/
+│   ├── karpathy_split/
+│   │   ├── datase_coco.json
+│   │   ├── datase_flickr8k.json
+│   │   └── datase_flickr30k.json
+│   └── MSCOCO/
+│       ├── annotations/
+│       ├── test2014/
+│       ├── train2014/
+│       └── val2014/
+├── interim/
+├── processed/
+│   ├── annotations/
+│   ├── cap_subsets/
+│   │   ├── c1.csv
+│   │   ├── c2.csv
+│   │   ├── c3.csv
+│   │   ├── c4.csv
+│   │   └── c5.csv
+│   └── images/
+│       └── karpathy_split/
+└── README.md
+````
