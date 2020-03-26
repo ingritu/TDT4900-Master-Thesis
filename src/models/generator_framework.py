@@ -521,13 +521,14 @@ class Generator:
             # y_predictions (M*N, voc_size)
             y_predictions = torch.log_softmax(y_predictions, dim=1)
             # higher log_prob --> higher pob
-
+            print('y_predictions', y_predictions.size())
+            print('num_unfinished', [b.num_unfinished for b in beams])
+            print('working beams', working_beams_idx)
             remove_idx = set()
-            for i in range(batch_size):
-                start_idx = i * beam_size
-                if i in working_beams_idx:
-                    # feed right predictions to right beams
-                    b = beams[i]
+            start_idx = 0
+            for idx, b in enumerate(beams):
+                print(idx)
+                if idx in working_beams_idx:
                     end_idx = start_idx + b.num_unfinished
                     preds = y_predictions[start_idx: end_idx]
                     # update beam with predictions
@@ -537,15 +538,16 @@ class Generator:
 
                     if b.has_best_sequence():
                         # add to finished predictions
-                        predictions[i] = \
+                        predictions[idx] = \
                             ' '.join([self.ixtoword[w]
                                       for w in b.get_best_sequence()])
-                        remove_idx.add(i)
-            # remove idx of finished beams
+                        print('idx', idx, predictions[idx])
+                        remove_idx.add(idx)
+                        start_idx = end_idx
+                # remove idx of finished beams
             working_beams_idx = set(idx for idx in working_beams_idx
                                     if idx not in remove_idx)
 
-        # should be removed when finished
         assert len(predictions) == batch_size, \
             "The number of predictions does not match the number of images"
         return predictions
