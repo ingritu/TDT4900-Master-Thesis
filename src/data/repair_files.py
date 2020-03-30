@@ -45,6 +45,18 @@ def end_of_caption_id(string):
     return None
 
 
+def missing_comma(string):
+    return "," not in string[1:10]
+
+def repair_index(string):
+    if missing_comma(string):
+        # find end of index
+        for i in range(10, -1, -1):
+            try:
+                index = int(string[:i])
+            except
+
+
 def repair_file(file):
     """
     Repairs translated files.
@@ -56,12 +68,14 @@ def repair_file(file):
     uncorrupted.
 
     Errors include:
+    - no "," after index.
     - caption_num and image_name switch order in caption_id.
-        - # caption_num image_name
-    - weired symbols in captions like '"', '«' and '»'
-    - caption_id: image_name # caption_num
-    - spaces after ','
-    - period instead of comma after index
+        - # caption_num image_name.
+    - weired symbols in captions like '"', '«' and '»'.
+    - caption_id: image_name # caption_num.
+    - extra "," in the middle of caption_num.
+    - spaces after ','.
+    - period instead of comma after index.
 
     Parameters
     ----------

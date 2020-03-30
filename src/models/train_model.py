@@ -88,6 +88,8 @@ if __name__ == '__main__':
                         help='Dataset to train on. The options are '
                              '{flickr8k, flickr30k, coco}. '
                              'The default value is "coco".')
+    parser.add_argument('--mini', action='store_true',
+                        help='switch for using custom mini sets.')
     # there still are more customizable parameters to set,
     # add these later
     args = vars(parser.parse_args())  # access args as dictionary
@@ -129,9 +131,14 @@ if __name__ == '__main__':
         ann_path = ann_path.joinpath('karpathy_split')
         feature_path = feature_path.joinpath('karpathy_split')
 
+    mini_ = args['mini']
     annFile = ann_path.joinpath(dataset + '_val.json')
-    train_path = interim_path.joinpath(dataset + '_mini_train_clean.csv')
-    val_path = interim_path.joinpath(dataset + '_mini_val.csv')
+    if mini_:
+        train_path = interim_path.joinpath(dataset + '_mini_train_clean.csv')
+        val_path = interim_path.joinpath(dataset + '_mini_val.csv')
+    else:
+        train_path = interim_path.joinpath(dataset + '_train_clean.csv')
+        val_path = interim_path.joinpath(dataset + '_val.csv')
     voc_path_ = interim_path.joinpath(dataset + '_vocabulary.csv')
     featureFile = feature_path.joinpath(dataset +
                                         '_encoded_visual_attention_full.pkl')
