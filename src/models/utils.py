@@ -89,23 +89,37 @@ def save_training_log(path, training_history):
                         + '\n\n')
         train_log.write(training_history['model'] + '\n')
         train_log.write('Trainable parameters: ' +
-                        training_history['trainable_parameters'] + '\n')
-        train_log.write('Model save path: ' +
-                        training_history['model_save_path'] + '\n\n')
+                        training_history['trainable_parameters'] + '\n\n')
 
         train_log.write('## Training Configs ##\n')
         train_log.write('Epochs: ' + training_history['epochs'] + '\n')
         train_log.write('Batch size: ' + training_history['batch_size']
                         + '\n')
-        train_log.write('Training time: ' +
-                        training_history['training_time'] + '\n')
         train_log.write('Loss function: ' + training_history['loss']
                         + '\n\n')
         train_log.write('## Train log!\n')
-        # Lastly write the training log
-        for loss, val_score in zip(training_history['history'],
-                                   training_history['val_history']):
-            # TODO: add val score.... zip?
-            train_log.write('loss: ' + str(round(loss, 5)) +
-                            '\tvalidation score: ' + str(round(val_score, 6))
-                            + '\n')
+
+
+def update_log(path, mean_training_loss, val_score, training_history=None):
+    """
+    Update the log with new loss and validation score.
+
+    Parameters
+    ----------
+    path: Path or str.
+    mean_training_loss : float.
+    val_score: float.
+    training_history: dict.
+    """
+    path = Path(path)
+    with open(path, 'a') as train_log:
+        if training_history is None:
+            train_log.write("loss: " + str(round(mean_training_loss, 5)) +
+                            "\t validation score: " + str(round(val_score, 5))
+                            + "\n")
+        else:
+            train_log.write("\n####### END OF TRAINING INFO #######\n")
+            train_log.write('Training time: ' +
+                            training_history['training_time'] + '\n\n')
+            train_log.write('Model save path: ' +
+                            training_history['model_save_path'] + '\n')

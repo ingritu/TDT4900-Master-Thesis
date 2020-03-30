@@ -19,6 +19,7 @@ from src.models.torch_generators import model_switcher
 from src.models.beam import Beam
 from src.models.utils import save_checkpoint
 from src.models.utils import save_training_log
+from src.models.utils import update_log
 
 from pycocoevalcap.eval import COCOEvalCap
 from pycocotools.coco import COCO
@@ -252,6 +253,10 @@ class Generator:
         if not directory.is_dir():
             directory.mkdir()
 
+        train_path = directory.joinpath(self.model_name + '_log.txt')
+        # save log to file
+        save_training_log(train_path, training_history)
+
         best_val_score = -1  # all metric give positive scores
         best_path = None
         epochs_since_improvement = 0
@@ -287,9 +292,8 @@ class Generator:
                       + '\t' + 'loss (' + self.loss_string + '):',
                       loss_num)
 
-            # add the mean loss of the epoch to the training history
-            training_history['history'].append(np.mean(
-                np.array(batch_history)))
+            # find mean loss for epoch
+            mean_loss = np.mean(np.array(batch_history))
 
             # validation here
             # consider just overwriting the same file
@@ -305,7 +309,8 @@ class Generator:
                                          beam_size=beam_size,
                                          metric=validation_metric)
             val_time = time() - val_start
-            training_history['val_history'].append(metric_score)
+            # update log with loss and validation score
+            update_log(train_path, mean_loss, metric_score)
             print("Validation took", round(val_time, 2), 'seconds')
             # save model checkpoint
             is_best = metric_score > best_val_score
@@ -333,11 +338,10 @@ class Generator:
         training_time = "%d-%d:%d:%d" % (d.day-1, d.hour, d.minute, d.second)
         training_history['training_time'] = str(training_time)
         training_history['model_save_path'] = str(best_path)
-        train_path = directory.joinpath(self.model_name + '_log.txt')
         # save model to file
         self.save_model(directory)
-        # save log to file
-        save_training_log(train_path, training_history)
+        # final update to log
+        update_log(train_path, 0, 0, training_history)
 
     def train_on_batch(self, x, caption_lengths):
         """

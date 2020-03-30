@@ -130,8 +130,8 @@ if __name__ == '__main__':
         feature_path = feature_path.joinpath('karpathy_split')
 
     annFile = ann_path.joinpath(dataset + '_val.json')
-    train_path = interim_path.joinpath(dataset + '_train_clean.csv')
-    val_path = interim_path.joinpath(dataset + '_val.csv')
+    train_path = interim_path.joinpath(dataset + '_mini_train_clean.csv')
+    val_path = interim_path.joinpath(dataset + '_mini_val.csv')
     voc_path_ = interim_path.joinpath(dataset + '_vocabulary.csv')
     featureFile = feature_path.joinpath(dataset +
                                         '_encoded_visual_attention_full.pkl')
