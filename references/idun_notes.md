@@ -6,11 +6,8 @@ sinfo
 ```
 
 ```
-#SBATCH --partition=WORKQ
-#SBATCH --partition=EPT
-#SBATCH --partition=EPIC     #GPU
-#SBATCH --partition=EPIC2    #GPU
-#SBATCH --partition=EPICALL  #GPU
+#SBATCH --partition=CPUQ
+#SBATCH --partition=GPUQ     #GPU
 ```
 Find partitions by running:
 ```
@@ -26,12 +23,12 @@ Use the share-ie-idi account not the ie-idi account.
 
 ```
 #!/bin/sh
-#SBATCH --partition=EPICALL  # use WORKQ if just CPU and over 30 min long
+#SBATCH --partition=GPUQ  # use WORKQ if just CPU and over 30 min long
 #SBATCH --account=share-ie-idi
 #SBATCH --time=hh:mm:ss
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=1
-#SBATCH --ntasks-per-node=1
+#SBATCH --ntasks-per-node=1  // should be=2 for validation
 #SBATCH --mem=80G  # max is 124G
 #SBATCH --job-name="name-of-job"
 #SBATCH --output=test-srun.out
@@ -61,7 +58,7 @@ Add gpus
 Example from hpc documentation:
 ```
 #!/bin/sh
-#SBATCH --partition=EPIC2
+#SBATCH --partition=GPUQ
 #SBATCH --account=<account>
 #SBATCH --time=00:30:00
 #SBATCH --nodes=2
@@ -73,7 +70,7 @@ Example from hpc documentation:
 cd ${SLURM_SUBMIT_DIR}
 
 module purge
-module load fosscuda/2018b
+module load fosscuda/2019b
 ```
 
 ## Running a job
