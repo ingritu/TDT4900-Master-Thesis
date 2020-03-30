@@ -32,29 +32,37 @@ def contains_caption_id(string):
     return False
 
 
-def end_of_caption_id(string):
+def image_id_satisfied(string):
+    # example COCO_val2014_000000477949
+    base_val = "COCO_val2014_00"
+    base_train = "COCO_train2014_00"
+    length = len("COCO_val2014_000000477949")
+    base = string[:15]
+    rest = string[15:]
+    base_bool = base == base_val or base == base_train
+    return base_bool and len(string) == length and rest.isdecimal()
+
+
+def end_of_caption_idx(string):
     # exploit that all caption_ids seem to end will always end with a
     # number or a # symbol
     idx = -1
     str_len = len(string)
     while str_len + idx > 0:
         c = string[idx]
-        if c == "#" or c.isdecimal():
+        if c == "#":
+            return idx
+        if c.isdecimal():
+            # end idx candidate
+            # some captions contains numbers so this is
+            # only a candidate if decimal
             return idx
         idx -= 1
     return None
 
 
 def missing_comma(string):
-    return "," not in string[1:10]
-
-def repair_index(string):
-    if missing_comma(string):
-        # find end of index
-        for i in range(10, -1, -1):
-            try:
-                index = int(string[:i])
-            except
+    return "," not in string[0:8]
 
 
 def repair_file(file):
@@ -66,6 +74,9 @@ def repair_file(file):
     repaired then the errors just gets worse. In particular we need
     caption_id and caption to be clearly separated and to keep caption_id
     uncorrupted.
+
+    Errors that are not repaired are detected so that you could easily
+    repair the error yourself.
 
     Errors include:
     - no "," after index.
@@ -85,10 +96,20 @@ def repair_file(file):
     file = Path(file)
     with open(file, 'r') as f:
         lines = f.readlines()
-    print(lines[1])
+    #print(lines[1])
     lines = lines[1:]  # remove labels
     lines = repair_captions(lines, cap_bool=False)
     lines = [line for line in lines if len(line) > 1]
+    tmp_lines = []
+    recent = 0
+    print("repair indices")
+    for line in lines:
+        string, recent = repair_index(line, recent)
+        #print(recent, type(recent))
+        tmp_lines.append(string)
+    lines = tmp_lines
+    print("indices repaired")
+
     labels = ",caption_id,caption\n"
     indices, caption_ids, captions = [], [], []
     for line in lines:
@@ -99,7 +120,7 @@ def repair_file(file):
         caption_id = ''
         evaluate = line[0]
         if contains_caption_id(evaluate):
-            end_idx = end_of_caption_id(evaluate)
+            end_idx = end_of_caption_idx(evaluate)
             if end_idx is not None:
                 caption_id = evaluate[:len(evaluate) + end_idx + 1]
                 caption_ids.append(caption_id)
@@ -111,7 +132,7 @@ def repair_file(file):
             # join with the next one and assume this enough
             evaluate = ' '.join([evaluate] + [line[1]])
             if contains_caption_id(evaluate):
-                end_idx = end_of_caption_id(evaluate)
+                end_idx = end_of_caption_idx(evaluate)
                 if end_idx is not None:
                     caption_id = evaluate[:len(evaluate) + end_idx + 1]
                     caption_ids.append(caption_id)
@@ -127,10 +148,13 @@ def repair_file(file):
     assert sum([index.isdecimal() for index in indices]) == len(indices), \
         "Indices are not correct."
 
+    print("repair caption_id ...")
     caption_ids = repair_caption_ids(caption_ids)  # should be done
+    print("repair captions ...")
     captions = repair_captions(captions)  # should be done
 
     # prepare to write to file
+    print("write to file ...")
     out_str = labels
     for index, caption_id, caption in zip(indices, caption_ids, captions):
         out_str += index + ',' + caption_id + ',' + caption + '\n'
@@ -139,16 +163,98 @@ def repair_file(file):
     outfile += '.repaired.txt'
     with open(outfile, 'w') as out_f:
         out_f.write(out_str)
+    print("DONE!!!")
+
+
+def repair_index(string, recent_index=0):
+    tmp_index = -1
+    if missing_comma(string):
+        # find end of index
+        # find idx of space
+        space_idx = string.find(" ", 0, 10)
+        if space_idx != -1:
+            tmp_index = string[0:space_idx]
+            try:
+                tmp_index = int(tmp_index)
+            except ValueError:
+                print(string)
+            if recent_index == 0:
+                # just accept the index regardless
+                string = str(tmp_index) + "," + string[space_idx:]
+                tmp_index = tmp_index
+            elif tmp_index == recent_index + 1:
+                # found index
+                string = str(tmp_index) + "," + string[space_idx:]
+                tmp_index = tmp_index
+            else:
+                print("does not match recent index", recent_index)
+                print(string)
+                exit()
+        else:
+            print("did not find a space in substring:", string[:10])
+            print(string)
+            exit()
+    else:
+        splits = string.split(",")
+        tmp_index = splits[0].strip()
+        tmp_index = tmp_index.replace(" ", "")
+        tmp_index = int(tmp_index)
+        if recent_index != 0:
+            # else the string is already correct
+            if tmp_index != recent_index + 1:
+                # try joining with next item
+                tmp_index = ''.join([item.strip() for item in splits[:2]])
+                tmp_index = tmp_index.replace(" ", "")
+                try:
+                    tmp_index = int(tmp_index)
+                except ValueError:
+                    print(string)
+                if tmp_index == recent_index + 1:
+                    # modify string
+                    # matches recent now
+                    string = str(tmp_index) + "," + ','.join(splits[2:])
+                else:
+                    print("index error")
+                    print(string)
+                    exit()
+            else:
+                # modify string
+                # matches recent
+                string = str(tmp_index) + "," + ','.join(splits[1:])
+
+    return string, tmp_index
 
 
 def repair_caption_ids(caption_ids):
     out = []
-    for caption_id in caption_ids:
+    for idx, caption_id in enumerate(caption_ids):
         items = caption_id.split(' ')
         items = [item.strip() for item in items if len(item) > 0]
         if len(items) != 3:
-            print(items)
-        #assert len(items) == 3, "some other error also exists."
+            cap_num_space_last = \
+                sum([itm.strip().isdecimal() for itm in items[2:]]) == \
+                len(items[2:])
+            cap_num_space_first = \
+                sum([itm.strip().isdecimal() for itm in items[0:2]]) == \
+                len(items[0:2])
+            cap_num_space_middle = \
+                sum([itm.strip().isdecimal() for itm in items[1:3]]) == \
+                len(items[1:3])
+            if cap_num_space_last:
+                # join the numbers
+                cap_num = ''.join([itm.strip() for itm in items[2:]])
+                items = items[:2] + [cap_num]
+            elif cap_num_space_first:
+                # join the numbers
+                cap_num = ''.join([itm.strip() for itm in items[:2]])
+                items = [cap_num] + items[2:]
+            elif cap_num_space_middle:
+                # join the numbers
+                cap_num = ''.join([itm.strip() for itm in items[1:3]])
+                items = [items[0]] + [cap_num] + items[3:]
+            else:
+                print(idx, items)
+                exit()
         if items[0] == '#':
             # caption_id starts with #
             if items[1][0].isalpha():
@@ -205,9 +311,10 @@ def repair_captions(captions, cap_bool=True):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--file', type=str, required=True,
-                        help='name of file to repair without the .en.fr.txt')
+                        help='name of file to repair without the .txt')
+    parser.add_argument('--postfix', type=str, default='.en.fr')
     args = vars(parser.parse_args())
-    file_ = args['file'] + '.en.fr.txt'
+    file_ = args['file'] + args['postfix'] + '.txt'
     repair_files_dir = ROOT_PATH.joinpath('data', 'external', 'c5')
 
     repair_file(repair_files_dir.joinpath(file_))
