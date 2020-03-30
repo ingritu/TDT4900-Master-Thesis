@@ -32,15 +32,19 @@ def contains_caption_id(string):
     return False
 
 
-def image_id_satisfied(string):
+def is_image_id(string):
     # example COCO_val2014_000000477949
-    base_val = "COCO_val2014_00"
-    base_train = "COCO_train2014_00"
-    length = len("COCO_val2014_000000477949")
-    base = string[:15]
-    rest = string[15:]
+    # example COCO_train2014_000000467654
+    base_val = "COCO_val2014_000"
+    base_train = "COCO_train2014_0"
+    length_val = len("COCO_val2014_000000477949")
+    length_train = len("COCO_train2014_000000467654")
+    str_len = len(string)
+    base = string[:16]
+    rest = string[16:]
     base_bool = base == base_val or base == base_train
-    return base_bool and len(string) == length and rest.isdecimal()
+    length_bool = str_len == length_val or str_len == length_train
+    return base_bool and length_bool and rest.isdecimal()
 
 
 def end_of_caption_idx(string):
@@ -48,15 +52,23 @@ def end_of_caption_idx(string):
     # number or a # symbol
     idx = -1
     str_len = len(string)
-    while str_len + idx > 0:
-        c = string[idx]
-        if c == "#":
-            return idx
-        if c.isdecimal():
-            # end idx candidate
-            # some captions contains numbers so this is
-            # only a candidate if decimal
-            return idx
+    # string = COCO_val2014_000000581683 # 585508 a wedding cake
+    # that is high 5 layers and flowers on it.
+    splits = string.split(" ")
+    sp_len = len(splits)
+    while sp_len + idx > 0:
+        item = splits[idx].strip()
+        if item == "#" or is_image_id(item):
+            cap_id = " ".join(splits[:sp_len + idx + 1]).strip()
+            return len(cap_id) - str_len - 1
+        elif item.isdecimal():
+            # could be part of caption or is cap_num
+            # look ahead
+            next_item = splits[idx - 1].strip()
+            if next_item == "#" or is_image_id(next_item):
+                # this is the actual end of caption_id
+                cap_id = " ".join(splits[:sp_len + idx + 1]).strip()
+                return len(cap_id) - str_len - 1
         idx -= 1
     return None
 
