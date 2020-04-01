@@ -74,7 +74,11 @@ def end_of_caption_idx(string):
 
 
 def missing_comma(string):
-    return "," not in string[0:8]
+    new = string
+    new = new.replace(" ", "")
+    new = new.replace("\t", "")
+    new = new.replace("\u200b", "")
+    return "," not in new[0:]
 
 
 def repair_file(file):
@@ -128,7 +132,7 @@ def repair_file(file):
         line = line.split(",")  # most lines are still comma separated
         print(line)
         indices.append(line[0].replace(' ', '').strip())
-        line = line[1:]
+        line = line[1:]  # remove index
         caption_id = ''
         evaluate = line[0]
         if contains_caption_id(evaluate):
@@ -169,6 +173,9 @@ def repair_file(file):
     print("write to file ...")
     out_str = labels
     for index, caption_id, caption in zip(indices, caption_ids, captions):
+        if "," in caption[:3]:
+            caption = caption.replace(",", "", 1)
+            caption = caption.strip()
         out_str += index + ',' + caption_id + ',' + caption + '\n'
 
     outfile = str(file).replace('.txt', '')  # remove txt
@@ -201,6 +208,10 @@ def repair_index(string, recent_index=0):
             else:
                 print("does not match recent index", recent_index)
                 print(string)
+                new = string
+                new = new.replace(" ", "")
+                new = new.replace("\u200b", "")
+                print(new[0:8])
                 exit()
         else:
             print("did not find a space in substring:", string[:10])
@@ -210,6 +221,7 @@ def repair_index(string, recent_index=0):
         splits = string.split(",")
         tmp_index = splits[0].strip()
         tmp_index = tmp_index.replace(" ", "")
+        tmp_index = tmp_index.replace("\u200b", "")
         tmp_index = int(tmp_index)
         if recent_index != 0:
             # else the string is already correct
@@ -242,6 +254,7 @@ def repair_caption_ids(caption_ids):
     for idx, caption_id in enumerate(caption_ids):
         items = caption_id.split(' ')
         items = [item.strip() for item in items if len(item) > 0]
+        items = [item.replace("\u200b", "") for item in items]
         if len(items) != 3:
             cap_num_space_last = \
                 sum([itm.strip().isdecimal() for itm in items[2:]]) == \
@@ -307,8 +320,7 @@ def repair_captions(captions, cap_bool=True):
     out = []
     for cap in captions:
         if not cap_bool:
-            period_idx = cap.find('.', 0, 10)
-            if period_idx != -1:
+            if '.' in cap[:10]:
                 cap = cap.replace('.', ',', 1)
         cap = cap.replace('"', '')
         cap = cap.replace('«', '')
