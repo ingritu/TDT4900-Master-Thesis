@@ -2,6 +2,8 @@ import torch
 from torch import nn as nn
 
 from src.models.custom_layers import SentinelLSTM
+from src.models.custom_layers import SentinelLSTM2
+from src.models.custom_layers import SentinelLSTM3
 from src.models.custom_layers import AttentionLayer
 from src.models.custom_layers import ImageEncoder
 from src.models.custom_layers import MultimodalDecoder
@@ -11,6 +13,8 @@ def model_switcher(model_str):
     model_str = model_str.lower()
     switcher = {
         'adaptive': AdaptiveModel,
+        'adaptive2': AdaptiveModel,
+        'adaptive3': AdaptiveModel,
         'basic': BasicModel,
     }
     return switcher.get(model_str, AdaptiveModel)
@@ -214,8 +218,8 @@ class AdaptiveDecoder(nn.Module):
         h_tm1, c_tm1 = states
 
         # decoding
-        h_t, c_t, s_t = self.sentinel_lstm(x_t, (h_tm1, c_tm1))
-        z_t = self.attention_block([encoded_images, s_t, h_t])
+        h_t, c_t, h_top, s_t = self.sentinel_lstm(x_t, (h_tm1, c_tm1))
+        z_t = self.attention_block([encoded_images, s_t, h_top])
         pt = self.decoder(z_t)
 
         return pt, h_t, c_t
@@ -248,6 +252,121 @@ class BasicModel(AbstractModel):
                                     embedding_size,
                                     vocab_size,
                                     device)
+
+
+class AdaptiveDecoder2(AdaptiveDecoder):
+
+    def __init__(self,
+                 max_len,
+                 hidden_size,
+                 embedding_size,
+                 vocab_size,
+                 device,
+                 dr=0.5):
+        """
+        Adaptive decoder that uses 2 LSTMCells.
+
+        Parameters
+        ----------
+        max_len
+        hidden_size
+        embedding_size
+        vocab_size
+        device
+        dr
+        """
+        super(AdaptiveDecoder2, self).__init__(max_len,
+                                               hidden_size,
+                                               embedding_size,
+                                               vocab_size,
+                                               device,
+                                               dr=dr)
+        # overwrite this layer
+        self.sentinel_lstm = SentinelLSTM2(self.em_size * 2,
+                                           self.hidden_size)
+
+
+class AdaptiveModel2(AbstractModel):
+
+    def __init__(self,
+                 input_shape,
+                 max_len,
+                 hidden_size,
+                 vocab_size,
+                 device,
+                 embedding_size=512,
+                 dr=0.5):
+        super(AdaptiveModel2, self).__init__(input_shape,
+                                             max_len,
+                                             hidden_size,
+                                             vocab_size,
+                                             device,
+                                             embedding_size=embedding_size,
+                                             dr=dr)
+        self.decoder = AdaptiveDecoder2(self.max_len,
+                                        self.hidden_size,
+                                        self.em_size,
+                                        self.vocab_size,
+                                        self.device,
+                                        dr=self.dr)
+
+
+class AdaptiveDecoder3(AdaptiveDecoder):
+
+    def __init__(self,
+                 max_len,
+                 hidden_size,
+                 embedding_size,
+                 vocab_size,
+                 device,
+                 dr=0.5):
+        """
+        AdaptiveDecoder that uses 3 LSTMCells
+
+        Parameters
+        ----------
+        max_len
+        hidden_size
+        embedding_size
+        vocab_size
+        device
+        dr
+        """
+        super(AdaptiveDecoder3, self).__init__(max_len,
+                                               hidden_size,
+                                               embedding_size,
+                                               vocab_size,
+                                               device,
+                                               dr=dr)
+
+        # overwrite this layer
+        self.sentinel_lstm = SentinelLSTM3(self.em_size * 2,
+                                           self.hidden_size)
+
+
+class AdaptiveModel3(AbstractModel):
+
+    def __init__(self,
+                 input_shape,
+                 max_len,
+                 hidden_size,
+                 vocab_size,
+                 device,
+                 embedding_size=512,
+                 dr=0.5):
+        super(AdaptiveModel3, self).__init__(input_shape,
+                                             max_len,
+                                             hidden_size,
+                                             vocab_size,
+                                             device,
+                                             embedding_size=embedding_size,
+                                             dr=dr)
+        self.decoder = AdaptiveDecoder3(self.max_len,
+                                        self.hidden_size,
+                                        self.em_size,
+                                        self.vocab_size,
+                                        self.device,
+                                        dr=self.dr)
 
 
 class BasicDecoder(nn.Module):

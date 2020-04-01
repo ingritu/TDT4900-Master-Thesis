@@ -5,7 +5,7 @@ import torch.nn.functional as f
 
 class SentinelLSTM(nn.Module):
 
-    def __init__(self, input_size, hidden_size):
+    def __init__(self, input_size, hidden_size, dr=0.5):
         """
         Implementation of the Sentinel LSTM by Lu et al. Knowing when to look.
 
@@ -13,28 +13,126 @@ class SentinelLSTM(nn.Module):
         ----------
         input_size : int.
         hidden_size : int.
+        dr : float. Dropout value.
         """
         super(SentinelLSTM, self).__init__()
         # NB! there is a difference between LSTMCell and LSTM.
         # LSTM is notably much quicker
-        self.lstm_cells = []
-        self.lstm_kernel = nn.LSTMCell(input_size, hidden_size)
-        self.x_gate = nn.Linear(input_size, hidden_size)
-        self.h_gate = nn.Linear(hidden_size, hidden_size)
+        self.input_size = input_size
+        self.hidden_size = hidden_size
+        self.dr = dr
+        self.lstm_kernel = nn.LSTMCell(self.input_size, self.hidden_size)
+        self.h_dr = nn.Dropout(p=self.dr)
+        self.c_dr = nn.Dropout(p=self.dr)
+        self.x_gate = nn.Linear(self.input_size, self.hidden_size)
+        self.h_gate = nn.Linear(self.hidden_size, self.hidden_size)
+        self.s_dr = nn.Dropout(p=self.dr)
 
     def forward(self, x, states):
-        # print('Sentinel LSTM')
+        # TODO fix to fit with new dim of h and c.
         # remember old states
         h_tm1, c_tm1 = states
 
         # get new states
         h_t, c_t = self.lstm_kernel(x, (h_tm1, c_tm1))
+        h_t, c_t = self.h_dr(h_t), self.c_dr(c_t)
 
         # compute sentinel vector
         # could either concat h_tm1 with x or have to gates
         sv = torch.sigmoid(self.h_gate(h_tm1) + self.x_gate(x))
         s_t = sv * torch.tanh(c_t)
-        return h_t, c_t, s_t
+        s_t = self.s_dr(s_t)
+        return h_t, c_t, h_top, s_t
+
+
+class SentinelLSTM2(nn.Module):
+
+    def __init__(self, input_size, hidden_size, dr=0.5):
+        """
+        Contains 2 LSTMCells
+
+        Parameters
+        ----------
+        input_size
+        hidden_size
+        dr
+        """
+        super(SentinelLSTM2, self).__init__()
+        self.input_size = input_size
+        self.hidden_size = hidden_size
+        self.dr = dr
+
+        self.sentinel_lstm = SentinelLSTM(self.hidden_size,
+                                          self.hidden_size,
+                                          dr=self.dr)
+        self.lstm_cell_0 = nn.LSTMCell(self.input_size, self.hidden_size)
+        self.h0_dr = nn.Dropout(p=self.dr)
+        self.c0_dr = nn.Dropout(p=self.dr)
+
+    def forward(self, x, states):
+        # unpack states
+        h_tm1, c_tm1 = states
+
+        h0, c0 = self.lstm_cell_0(x, (h_tm1[:, 0], c_tm1[:, 0]))
+        h0, c0 = self.h0_dr(h0), self.c0_dr(c0)
+
+        x = h0 + x
+        # get new states
+        h_t, c_t, s_t = self.sentinel_lstm(x, (h_tm1[:, 1], c_tm1[:, 1]))
+
+        ht = torch.cat((h0, h_t), dim=1)
+        ct = torch.cat((c0, c_t), dim=1)
+        return ht, ct, h_t, s_t
+
+
+class SentinelLSTM3(nn.Module):
+
+    def __init__(self, input_size, hidden_size, dr=0.5):
+        """
+        Contains 3 LSTMCells
+        Parameters
+        ----------
+        input_size
+        hidden_size
+        dr
+        """
+        super(SentinelLSTM3, self).__init__()
+        self.input_size = input_size
+        self.hidden_size = hidden_size
+        self.dr = dr
+
+        self.lstm_cell_0 = nn.LSTMCell(self.input_size, self.hidden_size)
+        self.h0_dr = nn.Dropout(p=self.dr)
+        self.c0_dr = nn.Dropout(p=self.dr)
+
+        self.lstm_cell_1 = nn.LSTMCell(self.hidden_size, self.hidden_size)
+        self.h1_dr = nn.Dropout(p=self.dr)
+        self.c1_dr = nn.Dropout(p=self.dr)
+
+        self.sentinel_lstm = SentinelLSTM(self.hidden_size,
+                                          self.hidden_size,
+                                          dr=self.dr)
+
+    def forward(self, x, states):
+        # unpack states
+        h_tm1, c_tm1 = states
+
+        h0, c0 = self.lstm_cell_0(x, (h_tm1[:, 0], c_tm1[:, 0]))
+        h0, c0 = self.h0_dr(h0), self.c0_dr(c0)
+
+        x = h0 + x
+
+        h1, c1 = self.lstm_cell_1(x, (h_tm1[:, 1], c_tm1[:, 1]))
+        h1, c1 = self.h1_dr(h1), self.c1_dr(c1)
+
+        x = h1 + x
+
+        # get new states
+        h_t, c_t, s_t = self.sentinel_lstm(x, (h_tm1[:, 1], c_tm1[:, 1]))
+
+        ht = torch.cat((h0, h_t), dim=1)
+        ct = torch.cat((c0, c_t), dim=1)
+        return ht, ct, h_t, s_t
 
 
 class ImageEncoder(nn.Module):
