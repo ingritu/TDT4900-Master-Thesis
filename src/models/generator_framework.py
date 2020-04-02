@@ -272,7 +272,9 @@ class Generator:
                                             + timestamp_str)
 
         # check that directory is a Directory if not make it one
-        while directory.is_dir():
+        sleep_counter = 0
+        # in case this results in infinite loop for some reason
+        while directory.is_dir() and sleep_counter < 10:
             # handle problem with that runs might get
             # resources at the same time.
             sleep(10)
@@ -280,6 +282,7 @@ class Generator:
             timestamp_str = date_time_obj.strftime("%d-%b-%Y_(%H:%M:%S)")
             directory = self.save_path.joinpath(self.model_name + '_'
                                                 + timestamp_str)
+            sleep_counter += 1
         # make new dir for new model
         directory.mkdir()
 
