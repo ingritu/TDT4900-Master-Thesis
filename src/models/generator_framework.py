@@ -96,6 +96,7 @@ class Generator:
         # misc
         self.framework_name = 'CaptionGeneratorFramework'
         self.dr = 0
+        self.seed = 0
         self.not_validate = True
         self.device = torch.device("cuda:0"
                                    if torch.cuda.is_available() else "cpu")
@@ -109,9 +110,10 @@ class Generator:
                 optimizer='adam',
                 lr=0.0005,
                 dr=0.5,
-                multi_gpus=False):
+                multi_gpus=False,
+                seed=0):
         """
-        Bulids the model.
+        Builds the model.
 
         Parameters
         ----------
@@ -123,6 +125,7 @@ class Generator:
         lr : float.
         dr : float. Dropout value.
         multi_gpus : bool.
+        seed : int.
         """
         # set values
         self.save_path = Path(save_path)
@@ -134,6 +137,7 @@ class Generator:
         self.lr = lr
         self.dr = dr
         self.multi_gpus = multi_gpus
+        self.seed = seed
 
         # initialize model
         self.model = model_switcher(self.model_name)(
@@ -253,7 +257,8 @@ class Generator:
             'epochs': str(epochs),
             'batch_size': str(batch_size),
             'training_time': str(0),
-            'model_save_path': ''
+            'model_save_path': '',
+            'seed': str(self.seed)
         }
 
         train_gen = TrainCaptionDataset(data_path,

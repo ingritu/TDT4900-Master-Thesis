@@ -190,7 +190,8 @@ if __name__ == '__main__':
                       loss_function=loss_function_,
                       optimizer=opt,
                       lr=lr_,
-                      multi_gpus=multi_gpus)
+                      multi_gpus=multi_gpus,
+                      seed=seed_)
 
     # model is automatically saved after training
     generator.train(train_path,

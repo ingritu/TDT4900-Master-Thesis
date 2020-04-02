@@ -86,7 +86,8 @@ def save_training_log(path, training_history):
                         'MODEL '
                         '#######\n')
         train_log.write('Model name: ' + training_history['model_name']
-                        + '\n\n')
+                        + '\n')
+        train_log.write('SEED: ' + training_history['seed'] + '\n\n')
         train_log.write(training_history['model'] + '\n')
         train_log.write('Trainable parameters: ' +
                         training_history['trainable_parameters'] + '\n\n')
