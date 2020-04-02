@@ -54,6 +54,15 @@ if __name__ == '__main__':
                         help='Bool for switching on and off COCO evaluation. '
                              'Activating flag means to not do '
                              'COCO evaluation.')
+    parser.add_argument('--lr-decay-start', type=int, default=20,
+                        help='when to start decaying the learning rate. '
+                             'The default value is 20.')
+    parser.add_argument('--lr-decay-every', type=int, default=5,
+                        help='how often to decay the learning rate. '
+                             'The default value is 5.')
+    parser.add_argument('--lr-decay-factor', type=float, default=0.5,
+                        help='Factor to decay lr with. '
+                             'The default value is 0.5.')
     # Model details
     parser.add_argument('--embedding-size', type=int, default=512,
                         help='Embedding dimension. '
@@ -153,6 +162,9 @@ if __name__ == '__main__':
     early_stopping_freq = args['early_stopping_freq']
     val_metric = args['val_metric']
     not_validate_ = args['not_validate']
+    lr_decay_start_ = args['lr_decay_start']
+    lr_decay_every_ = args['lr_decay_every']
+    lr_decay_factor_ = args['lr_decay_factor']
     # model
     model_name_ = args['model']
     em_dim = args['embedding_size']
@@ -186,5 +198,8 @@ if __name__ == '__main__':
                     val_batch_size=val_batch_size,
                     beam_size=beam_size,
                     validation_metric=val_metric,
-                    not_validate=not_validate_)
+                    not_validate=not_validate_,
+                    lr_decay_start=lr_decay_start_,
+                    lr_decay_every=lr_decay_every_,
+                    lr_decay_factor=lr_decay_factor_)
     print("Finished training model!")

@@ -226,64 +226,9 @@ class AdaptiveDecoder(nn.Module):
 
     def initialize_variables(self, batch_size):
         # initialize h and c as zeros
-        h_t = torch.zeros(batch_size, self.hidden_size).to(self.device)
-        c_t = torch.zeros(batch_size, self.hidden_size).to(self.device)
+        h_t = torch.zeros(batch_size, 1, self.hidden_size).to(self.device)
+        c_t = torch.zeros(batch_size, 1, self.hidden_size).to(self.device)
         return h_t, c_t
-
-
-class BasicModel(AbstractModel):
-
-    def __init__(self,
-                 input_shape,
-                 max_len,
-                 hidden_size,
-                 vocab_size,
-                 device,
-                 embedding_size=512,
-                 dr=0.5):
-        super(BasicModel, self).__init__(input_shape,
-                                         max_len,
-                                         hidden_size,
-                                         vocab_size,
-                                         device,
-                                         embedding_size=embedding_size,
-                                         dr=dr)
-        self.decoder = BasicDecoder(hidden_size,
-                                    embedding_size,
-                                    vocab_size,
-                                    device)
-
-
-class AdaptiveDecoder2(AdaptiveDecoder):
-
-    def __init__(self,
-                 max_len,
-                 hidden_size,
-                 embedding_size,
-                 vocab_size,
-                 device,
-                 dr=0.5):
-        """
-        Adaptive decoder that uses 2 LSTMCells.
-
-        Parameters
-        ----------
-        max_len
-        hidden_size
-        embedding_size
-        vocab_size
-        device
-        dr
-        """
-        super(AdaptiveDecoder2, self).__init__(max_len,
-                                               hidden_size,
-                                               embedding_size,
-                                               vocab_size,
-                                               device,
-                                               dr=dr)
-        # overwrite this layer
-        self.sentinel_lstm = SentinelLSTM2(self.em_size * 2,
-                                           self.hidden_size)
 
 
 class AdaptiveModel2(AbstractModel):
@@ -311,7 +256,7 @@ class AdaptiveModel2(AbstractModel):
                                         dr=self.dr)
 
 
-class AdaptiveDecoder3(AdaptiveDecoder):
+class AdaptiveDecoder2(AdaptiveDecoder):
 
     def __init__(self,
                  max_len,
@@ -321,27 +266,32 @@ class AdaptiveDecoder3(AdaptiveDecoder):
                  device,
                  dr=0.5):
         """
-        AdaptiveDecoder that uses 3 LSTMCells
+        Adaptive decoder that uses 2 LSTMCells.
 
         Parameters
         ----------
-        max_len
-        hidden_size
-        embedding_size
-        vocab_size
-        device
-        dr
+        max_len : int.
+        hidden_size : int.
+        embedding_size : int.
+        vocab_size : int.
+        device : torch.device.
+        dr : float. Dropout value.
         """
-        super(AdaptiveDecoder3, self).__init__(max_len,
+        super(AdaptiveDecoder2, self).__init__(max_len,
                                                hidden_size,
                                                embedding_size,
                                                vocab_size,
                                                device,
                                                dr=dr)
-
         # overwrite this layer
-        self.sentinel_lstm = SentinelLSTM3(self.em_size * 2,
+        self.sentinel_lstm = SentinelLSTM2(self.em_size * 2,
                                            self.hidden_size)
+
+    def initialize_variables(self, batch_size):
+        # initialize h and c as zeros
+        h_t = torch.zeros(batch_size, 2, self.hidden_size).to(self.device)
+        c_t = torch.zeros(batch_size, 2, self.hidden_size).to(self.device)
+        return h_t, c_t
 
 
 class AdaptiveModel3(AbstractModel):
@@ -367,6 +317,68 @@ class AdaptiveModel3(AbstractModel):
                                         self.vocab_size,
                                         self.device,
                                         dr=self.dr)
+
+
+class AdaptiveDecoder3(AdaptiveDecoder):
+
+    def __init__(self,
+                 max_len,
+                 hidden_size,
+                 embedding_size,
+                 vocab_size,
+                 device,
+                 dr=0.5):
+        """
+        AdaptiveDecoder that uses 3 LSTMCells
+
+        Parameters
+        ----------
+        max_len : int.
+        hidden_size : int.
+        embedding_size : int.
+        vocab_size : int.
+        device : torch.device.
+        dr : float. Dropout value.
+        """
+        super(AdaptiveDecoder3, self).__init__(max_len,
+                                               hidden_size,
+                                               embedding_size,
+                                               vocab_size,
+                                               device,
+                                               dr=dr)
+
+        # overwrite this layer
+        self.sentinel_lstm = SentinelLSTM3(self.em_size * 2,
+                                           self.hidden_size)
+
+    def initialize_variables(self, batch_size):
+        # initialize h and c as zeros
+        h_t = torch.zeros(batch_size, 3, self.hidden_size).to(self.device)
+        c_t = torch.zeros(batch_size, 3, self.hidden_size).to(self.device)
+        return h_t, c_t
+
+
+class BasicModel(AbstractModel):
+
+    def __init__(self,
+                 input_shape,
+                 max_len,
+                 hidden_size,
+                 vocab_size,
+                 device,
+                 embedding_size=512,
+                 dr=0.5):
+        super(BasicModel, self).__init__(input_shape,
+                                         max_len,
+                                         hidden_size,
+                                         vocab_size,
+                                         device,
+                                         embedding_size=embedding_size,
+                                         dr=dr)
+        self.decoder = BasicDecoder(hidden_size,
+                                    embedding_size,
+                                    vocab_size,
+                                    device)
 
 
 class BasicDecoder(nn.Module):

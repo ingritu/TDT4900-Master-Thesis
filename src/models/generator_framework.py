@@ -11,6 +11,7 @@ from time import time
 import json
 
 from torch.utils.data import DataLoader
+from torch.optim.lr_scheduler import MultiStepLR
 from src.data.dataset import TrainCaptionDataset
 from src.data.dataset import TestCaptionDataset
 from src.data.utils import load_vocabulary
@@ -163,7 +164,7 @@ class Generator:
         """
         self.optimizer = optimizer_switcher(self.optimizer_string)(
             params=filter(lambda p: p.requires_grad, self.model.parameters()),
-            lr=self.lr)
+            lr=self.lr, weight_decay=0.999)
 
     def train(self,
               data_path,
@@ -175,7 +176,10 @@ class Generator:
               val_batch_size=1,
               beam_size=1,
               validation_metric='CIDEr',
-              not_validate=False):
+              not_validate=False,
+              lr_decay_start=20,
+              lr_decay_every=5,
+              lr_decay_factor=0.5):
         """
         Method for training the model.
 
@@ -205,6 +209,12 @@ class Generator:
             Defualt value is 'CIDEr'.
         not_validate : Bool.
             switch on and off COCO evaluation. Default is False.
+        lr_decay_start : int.
+            When learning rate decay should start.
+        lr_decay_every : int.
+            How ofter the learning rate will decay.
+        lr_decay_factor : float.
+            How much the learning rate will decay.
 
         Returns
         -------
@@ -270,6 +280,14 @@ class Generator:
                         cider=-1,
                         is_best=True)
 
+        # create lr scheduler
+        print([num for num in range(lr_decay_start, epochs, lr_decay_every)])
+        lr_scheduler = MultiStepLR(self.optimizer,
+                                   [num for num in range(lr_decay_start,
+                                                         epochs,
+                                                         lr_decay_every)],
+                                   lr_decay_factor)
+
         for e in range(1, epochs + 1):
             # early stopping
             if epochs_since_improvement == early_stopping_freq:
@@ -331,6 +349,9 @@ class Generator:
                 epochs_since_improvement = 0
             else:
                 epochs_since_improvement += 1
+
+            # update learning rate scheduler
+            lr_scheduler.step()
 
         # end of training
         training_time = timedelta(seconds=int(time() - start_time))  # seconds

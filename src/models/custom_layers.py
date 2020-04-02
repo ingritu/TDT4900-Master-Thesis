@@ -32,6 +32,7 @@ class SentinelLSTM(nn.Module):
         # TODO fix to fit with new dim of h and c.
         # remember old states
         h_tm1, c_tm1 = states
+        h_tm1, c_tm1 = h_tm1.squeeze(1), c_tm1.squeeze(1)
 
         # get new states
         h_t, c_t = self.lstm_kernel(x, (h_tm1, c_tm1))
@@ -42,7 +43,7 @@ class SentinelLSTM(nn.Module):
         sv = torch.sigmoid(self.h_gate(h_tm1) + self.x_gate(x))
         s_t = sv * torch.tanh(c_t)
         s_t = self.s_dr(s_t)
-        return h_t, c_t, h_top, s_t
+        return h_t.unsqueeze(1), c_t.unsqueeze(1), h_t, s_t
 
 
 class SentinelLSTM2(nn.Module):
