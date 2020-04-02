@@ -8,9 +8,11 @@ from datetime import timedelta
 from collections import defaultdict
 import numpy as np
 from time import time
+from time import sleep
 import json
 
 from torch.utils.data import DataLoader
+from torch.nn.utils import clip_grad_value_
 from torch.optim.lr_scheduler import MultiStepLR
 from src.data.dataset import TrainCaptionDataset
 from src.data.dataset import TestCaptionDataset
@@ -179,7 +181,8 @@ class Generator:
               not_validate=False,
               lr_decay_start=20,
               lr_decay_every=5,
-              lr_decay_factor=0.5):
+              lr_decay_factor=0.5,
+              clip_value=0.1):
         """
         Method for training the model.
 
@@ -201,20 +204,28 @@ class Generator:
             The number of images to do inference on simultaneously.
             Default is 1.
         beam_size : int.
-            Beam size for validation. Default is 1.
+            Beam size for validation.
+            Default is 1.
         validation_metric : str.
             Which automatic text evaluation metric to use for validation.
             Metrics = {'CIDEr', 'METEOR', 'SPICE', 'ROUGE_L',
             'Bleu_1', 'Bleu_2', 'Bleu_3', 'Bleu_4'}.
             Defualt value is 'CIDEr'.
         not_validate : Bool.
-            switch on and off COCO evaluation. Default is False.
+            switch on and off COCO evaluation.
+            Default is False.
         lr_decay_start : int.
             When learning rate decay should start.
+            Default is 20.
         lr_decay_every : int.
             How ofter the learning rate will decay.
+            Default value is 5.
         lr_decay_factor : float.
             How much the learning rate will decay.
+            Default value is 0.5.
+        clip_value : float.
+            Value to clip gradients by.
+            Default value is 0.1.
 
         Returns
         -------
@@ -259,9 +270,18 @@ class Generator:
         timestamp_str = date_time_obj.strftime("%d-%b-%Y_(%H:%M:%S)")
         directory = self.save_path.joinpath(self.model_name + '_'
                                             + timestamp_str)
+
         # check that directory is a Directory if not make it one
-        if not directory.is_dir():
-            directory.mkdir()
+        while directory.is_dir():
+            # handle problem with that runs might get
+            # resources at the same time.
+            sleep(10)
+            date_time_obj = datetime.now()
+            timestamp_str = date_time_obj.strftime("%d-%b-%Y_(%H:%M:%S)")
+            directory = self.save_path.joinpath(self.model_name + '_'
+                                                + timestamp_str)
+        # make new dir for new model
+        directory.mkdir()
 
         train_path = directory.joinpath(self.model_name + '_log.txt')
         # save log to file
@@ -281,7 +301,7 @@ class Generator:
                         is_best=True)
 
         # create lr scheduler
-        print([num for num in range(lr_decay_start, epochs, lr_decay_every)])
+        # this will decay the learning rate
         lr_scheduler = MultiStepLR(self.optimizer,
                                    [num for num in range(lr_decay_start,
                                                          epochs,
@@ -304,7 +324,9 @@ class Generator:
                 x = [encoded_images, captions]
                 caplens = caplens.numpy()
 
-                loss_num = self.train_on_batch(x, caplens)
+                loss_num = self.train_on_batch(x,
+                                               caplens,
+                                               clip_value=clip_value)
                 batch_history.append(loss_num)
                 print('Step: #' + str(batch_i + 1) + '/' + str(steps_per_epoch)
                       + '\t' + 'loss (' + self.loss_string + '):',
@@ -364,7 +386,7 @@ class Generator:
         # final update to log
         update_log(train_path, 0, 0, training_history)
 
-    def train_on_batch(self, x, caption_lengths):
+    def train_on_batch(self, x, caption_lengths, clip_value=0.1):
         """
         Do one epoch of training on batch x.
 
@@ -372,8 +394,10 @@ class Generator:
         ----------
         x : list.
             batch of images and captions.
-
-        caption_lengths :
+        caption_lengths : torch.tensor.
+        clip_value : float.
+            Value to clip gradients by.
+            Default value is 0.1.
 
         Returns
         -------
@@ -397,8 +421,12 @@ class Generator:
         # get loss
         loss = self.criterion(output, target)
 
-        # backpropagate
+        # back-propagate
         loss.backward()
+
+        # clip gradients
+        clip_grad_value_(self.model.parameters(), clip_value)
+
         # update weights
         self.optimizer.step()
 

@@ -63,6 +63,9 @@ if __name__ == '__main__':
     parser.add_argument('--lr-decay-factor', type=float, default=0.5,
                         help='Factor to decay lr with. '
                              'The default value is 0.5.')
+    parser.add_argument('--clip-value', type=float, default=0.1,
+                        help='Value to clip gradients by. '
+                             'The default value is 0.1.')
     # Model details
     parser.add_argument('--embedding-size', type=int, default=512,
                         help='Embedding dimension. '
@@ -165,6 +168,7 @@ if __name__ == '__main__':
     lr_decay_start_ = args['lr_decay_start']
     lr_decay_every_ = args['lr_decay_every']
     lr_decay_factor_ = args['lr_decay_factor']
+    clip_value_ = args['clip_value']
     # model
     model_name_ = args['model']
     em_dim = args['embedding_size']
@@ -201,5 +205,6 @@ if __name__ == '__main__':
                     not_validate=not_validate_,
                     lr_decay_start=lr_decay_start_,
                     lr_decay_every=lr_decay_every_,
-                    lr_decay_factor=lr_decay_factor_)
+                    lr_decay_factor=lr_decay_factor_,
+                    clip_value=clip_value_)
     print("Finished training model!")

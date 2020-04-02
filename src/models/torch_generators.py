@@ -13,8 +13,8 @@ def model_switcher(model_str):
     model_str = model_str.lower()
     switcher = {
         'adaptive': AdaptiveModel,
-        'adaptive2': AdaptiveModel,
-        'adaptive3': AdaptiveModel,
+        'adaptive2': AdaptiveModel2,
+        'adaptive3': AdaptiveModel3,
         'basic': BasicModel,
     }
     return switcher.get(model_str, AdaptiveModel)

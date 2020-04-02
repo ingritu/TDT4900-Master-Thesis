@@ -1,12 +1,7 @@
 import torch
 from pathlib import Path
-import math
 
 ROOT_PATH = Path(__file__).absolute().parents[2]
-
-
-def clip_gradients():
-    pass
 
 
 def save_checkpoint(directory,
