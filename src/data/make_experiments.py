@@ -189,4 +189,16 @@ if __name__ == '__main__':
         basic_data_cleaning(df_path_, save_path_, voc_path_,
                             threshold=5, cutoff_value=16, unk_percentage=0.3)
 
+    base_str = str(sub_path_)
+    for df_path_ in sub_path_.glob('*.csv'):
+        filename = str(df_path_)[len(base_str) + 1:]
+        print(filename[:-4])
+        save_path_ = processed_path.joinpath('karpathy_split',
+                                             filename[:-4] +
+                                             '_train_clean.csv')
+        voc_path_ = processed_path.joinpath('karpathy_split',
+                                            filename + '_vocabulary.csv')
+        basic_data_cleaning(df_path_, save_path_, voc_path_,
+                            threshold=5, cutoff_value=16, unk_percentage=0.3)
+
 
