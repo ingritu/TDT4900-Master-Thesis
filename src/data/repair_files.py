@@ -78,7 +78,7 @@ def missing_comma(string):
     new = new.replace(" ", "")
     new = new.replace("\t", "")
     new = new.replace("\u200b", "")
-    return "," not in new[0:]
+    return "," not in new[:10]
 
 
 def repair_file(file):
