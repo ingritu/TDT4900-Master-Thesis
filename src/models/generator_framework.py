@@ -433,7 +433,8 @@ class Generator:
         loss.backward()
 
         # clip gradients
-        clip_grad_value_(self.model.parameters(), clip_value)
+        if clip_value != -1:
+            clip_grad_value_(self.model.parameters(), clip_value)
 
         # update weights
         self.optimizer.step()

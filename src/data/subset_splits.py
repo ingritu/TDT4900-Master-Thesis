@@ -52,9 +52,9 @@ if __name__ == '__main__':
     C4_df = pd.DataFrame(subset_ds[3])
     C5_df = pd.DataFrame(subset_ds[4])
 
-    processed_path = ROOT_PATH.joinpath('data',
-                                        'processed')
-    sub_C_dir = processed_path.joinpath('cap_subsets')
+    interim_path = ROOT_PATH.joinpath('data',
+                                      'interim')
+    sub_C_dir = interim_path.joinpath('cap_subsets')
 
     if not sub_C_dir.is_dir():
         sub_C_dir.mkdir(parents=True)

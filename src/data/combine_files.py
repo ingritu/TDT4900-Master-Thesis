@@ -45,7 +45,6 @@ for i in range(71):
 assert len([cap for cap in data['caption'] if len(cap) == 0]) == 0, \
     "some caps are empty"
 
-# data["caption"] = ["a" for _ in range(len(data['idx']))]
 print(len(data['idx']))
 print(len(data['caption']))
 
