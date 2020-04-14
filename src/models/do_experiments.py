@@ -167,7 +167,8 @@ if __name__ == '__main__':
 
     generator = Generator(model_name_,
                           voc_path_,
-                          featureFile)
+                          featureFile,
+                          experiment=True)
     generator.compile(model_path,
                       embedding_size=em_dim,
                       hidden_size=hidden_size_,

@@ -54,7 +54,8 @@ class Generator:
     def __init__(self,
                  model_name,
                  voc_path,
-                 feature_path):
+                 feature_path,
+                 experiment=False):
         """
         Generator framework similar to how keras works.
 
@@ -63,6 +64,7 @@ class Generator:
         model_name : str.
         voc_path : Path or str.
         feature_path : Path or str.
+        experiment : bool.
         """
         self.embedding_size = 0
         self.hidden_size = 0
@@ -96,6 +98,7 @@ class Generator:
         # misc
         self.framework_name = 'CaptionGeneratorFramework'
         self.dr = 0
+        self.exp = experiment
         self.seed = 0
         self.not_validate = True
         self.device = torch.device("cuda:0"
@@ -273,7 +276,10 @@ class Generator:
 
         date_time_obj = datetime.now()
         timestamp_str = date_time_obj.strftime("%d-%b-%Y_(%H:%M:%S)")
-        directory = self.save_path.joinpath(self.model_name + '_'
+        local_model_name = self.model_name
+        if self.exp:
+            local_model_name += '_exp'
+        directory = self.save_path.joinpath(local_model_name + '_'
                                             + timestamp_str)
 
         # check that directory is a Directory if not make it one
@@ -285,13 +291,13 @@ class Generator:
             sleep(10)
             date_time_obj = datetime.now()
             timestamp_str = date_time_obj.strftime("%d-%b-%Y_(%H:%M:%S)")
-            directory = self.save_path.joinpath(self.model_name + '_'
+            directory = self.save_path.joinpath(local_model_name + '_'
                                                 + timestamp_str)
             sleep_counter += 1
         # make new dir for new model
         directory.mkdir()
 
-        train_path = directory.joinpath(self.model_name + '_log.txt')
+        train_path = directory.joinpath(local_model_name + '_log.txt')
         # save log to file
         save_training_log(train_path, training_history)
 
@@ -381,7 +387,7 @@ class Generator:
                 epochs_since_improvement += 1
 
             # update learning rate scheduler
-            lr_scheduler.step()
+            lr_scheduler.step(e)
 
         # end of training
         training_time = timedelta(seconds=int(time() - start_time))  # seconds
