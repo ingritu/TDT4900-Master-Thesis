@@ -156,12 +156,14 @@ if __name__ == '__main__':
     train_path = processed_path.joinpath('karpathy_split',
                                          dataset_ + '_train_clean.csv')
     voc_path_ = processed_path.joinpath('karpathy_split',
-                                       dataset_ + '_vocabulary.csv')
+                                        dataset_ + '_vocabulary.csv')
     annFile = processed_path.joinpath('annotations',
                                       'karpathy_split',
                                       'coco_val.json')
-
-
+    val_path = processed_path.joinpath('karpathy_split',
+                                       'coco_val.csv')
+    featureFile = processed_path.joinpath(
+        'images', 'karpathy_split', 'coco_encoded_visual_attention_full.pkl')
 
     generator = Generator(model_name_,
                           voc_path_,
@@ -192,4 +194,3 @@ if __name__ == '__main__':
                     lr_decay_factor=lr_decay_factor_,
                     clip_value=clip_value_)
     print("Finished training model!")
-
