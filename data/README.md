@@ -38,6 +38,7 @@ This section was copied from https://drivendata.github.io/cookiecutter-data-scie
 ````
 data/
 ├── external/
+│   └── p5.csv
 ├── raw/
 │   ├── Flick8k/
 │   ├── Flickr30k/
@@ -53,13 +54,14 @@ data/
 ├── interim/
 ├── processed/
 │   ├── annotations/
-│   ├── cap_subsets/
-│   │   ├── c1.csv
-│   │   ├── c2.csv
-│   │   ├── c3.csv
-│   │   ├── c4.csv
-│   │   └── c5.csv
-│   └── images/
-│       └── karpathy_split/
+│   ├── images/
+│   │   └── karpathy_split/
+│   └── karpathy_split/  # this is where the experiments are located
+│       ├── c1.csv
+│       ├── c2.csv
+│       │       .
+│       │       .
+│       │       .
+│       └── cp10.csv
 └── README.md
 ````
