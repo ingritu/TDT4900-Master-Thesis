@@ -183,7 +183,6 @@ if __name__ == '__main__':
         for df_path_ in para_dir_.glob('*.csv'):
             filename = str(df_path_)[len(base_str) + 1:-4]
             print(filename)
-            exit()
             save_path_ = processed_path.joinpath('karpathy_split',
                                                  filename +
                                                  '_train_clean.csv')
