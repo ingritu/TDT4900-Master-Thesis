@@ -1,11 +1,11 @@
+import argparse
 from pathlib import Path
+
 from src.models.generator_framework import Generator
 from src.utils import get_gpu_name
 from src.utils import get_cuda_version
 from src.utils import get_cudnn_version
 import sys
-import argparse
-
 
 import torch
 import torch.multiprocessing as mp
@@ -13,15 +13,12 @@ import numpy as np
 
 ROOT_PATH = Path(__file__).absolute().parents[2]
 
-
 if __name__ == '__main__':
     """
-    To run script in terminal:
-    python3 -m src.models.train_model --args
-    """
-    print("Started train model script.")
-    # Some of the  default values are the values used in the
-    # knowing when to look paper
+       To run script in terminal:
+       python3 -m src.models.do_experiments --args
+       """
+    print("Started do experiments script.")
     parser = argparse.ArgumentParser()
     # Training details
     parser.add_argument('--batch-size', type=int, default=80,
@@ -94,18 +91,13 @@ if __name__ == '__main__':
                              'Decide the dropout value. '
                              'The default value is 0.5')
     # data details
-    parser.add_argument('--karpathy', action='store_true',
-                        help='Boolean used to decide whether to train on '
-                             'the karpathy split of dataset or not.')
-    parser.add_argument('--dataset', type=str, default='coco',
-                        help='Dataset to train on. The options are '
-                             '{flickr8k, flickr30k, coco}. '
+    parser.add_argument('--dataset', type=str, default='cp10',
+                        help='Experiment Dataset to train on. The options are '
+                             '{c1, c2, c3, c4, c5, cp6, cp7, cp8, cp9, cp10, '
+                             'c1p1, c2p2, c3p3, c4p4}. '
                              'The default value is "coco".')
-    parser.add_argument('--mini', action='store_true',
-                        help='switch for using custom mini sets.')
-    # there still are more customizable parameters to set,
-    # add these later
-    args = vars(parser.parse_args())  # access args as dictionary
+
+    args = vars(parser.parse_args())
     # SEEDING TRAINING
     seed_ = args['seed']
     torch.manual_seed(seed_)
@@ -131,33 +123,6 @@ if __name__ == '__main__':
     for key in args:
         print(key, args[key])
 
-    interim_path = ROOT_PATH.joinpath('data',
-                                      'interim')
-    processed_path = ROOT_PATH.joinpath('data',
-                                        'processed')
-    ann_path = processed_path.joinpath('annotations')
-    feature_path = processed_path.joinpath('images')
-    dataset = args['dataset']
-    if args['karpathy']:
-        interim_path = interim_path.joinpath('karpathy_split')
-        # annotation file
-        ann_path = ann_path.joinpath('karpathy_split')
-        feature_path = feature_path.joinpath('karpathy_split')
-
-    mini_ = args['mini']
-    annFile = ann_path.joinpath(dataset + '_val.json')
-    if mini_:
-        train_path = interim_path.joinpath(dataset + '_mini_train_clean.csv')
-        val_path = interim_path.joinpath(dataset + '_mini_val.csv')
-    else:
-        train_path = interim_path.joinpath(dataset + '_train_clean.csv')
-        val_path = interim_path.joinpath(dataset + '_val.csv')
-    voc_path_ = interim_path.joinpath(dataset + '_vocabulary.csv')
-    featureFile = feature_path.joinpath(dataset +
-                                        '_encoded_visual_attention_full.pkl')
-
-    save_path_ = ROOT_PATH.joinpath('models')
-
     # training
     batch_size = args['batch_size']
     beam_size = args['beam_size']
@@ -178,15 +143,30 @@ if __name__ == '__main__':
     opt = args['optimizer']
     lr_ = args['lr']
     dr_ = args['dropout']
+    # data
+    dataset_ = args['dataset']
 
     if multi_gpus:
         lr_ *= num_gpus
         batch_size *= num_gpus
 
+    processed_path = ROOT_PATH.joinpath('data', 'processed')
+    model_path = ROOT_PATH.joinpath('models')
+
+    train_path = processed_path.joinpath('karpathy_split',
+                                         dataset_ + '_train_clean.csv')
+    voc_path_ = processed_path.joinpath('karpathy_split',
+                                       dataset_ + '_vocabulary.csv')
+    annFile = processed_path.joinpath('annotations',
+                                      'karpathy_split',
+                                      'coco_val.json')
+
+
+
     generator = Generator(model_name_,
                           voc_path_,
                           featureFile)
-    generator.compile(save_path_,
+    generator.compile(model_path,
                       embedding_size=em_dim,
                       hidden_size=hidden_size_,
                       loss_function=loss_function_,
@@ -212,3 +192,4 @@ if __name__ == '__main__':
                     lr_decay_factor=lr_decay_factor_,
                     clip_value=clip_value_)
     print("Finished training model!")
+
