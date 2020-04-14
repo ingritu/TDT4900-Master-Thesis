@@ -6,6 +6,7 @@ from src.models.custom_layers import SentinelLSTM2
 from src.models.custom_layers import SentinelLSTM3
 from src.models.custom_layers import AttentionLayer
 from src.models.custom_layers import ImageEncoder
+from src.models.custom_layers import BasicImageEncoder
 from src.models.custom_layers import MultimodalDecoder
 
 
@@ -49,7 +50,7 @@ class AbstractModel(nn.Module):
         self.hidden_size = hidden_size
 
         self.vocab_size = vocab_size
-        self.em_size = embedding_size
+        self.embedding_size = embedding_size
         self.dr = dr
 
         self.device = device
@@ -58,7 +59,7 @@ class AbstractModel(nn.Module):
         # encoder
         self.encoder = ImageEncoder(self.visual_feature_shape,
                                     self.hidden_size,
-                                    self.em_size,
+                                    self.embedding_size,
                                     dr=self.dr)
         # decoder
         self.decoder = None
@@ -86,7 +87,7 @@ class AbstractModel(nn.Module):
         target = w_input[:, 1:]  # sorted targets
         target = target.to(self.device)
 
-        batch_size = encoded_images.size(0)
+        batch_size = global_images.size(0)
 
         decoding_lengths = caption_lengths
         if has_end_seq_token:
@@ -107,10 +108,9 @@ class AbstractModel(nn.Module):
             input_image_t = [global_images[:batch_size_t],
                              encoded_images[:batch_size_t]]
             x_t = [input_image_t, w_input[:batch_size_t, timestep]]
+            states = (h_t[:batch_size_t], c_t[:batch_size_t])
 
-            pt, h_t, c_t = self.decoder(x_t,
-                                        (h_t[:batch_size_t],
-                                         c_t[:batch_size_t]))
+            pt, h_t, c_t = self.decoder(x_t, states)
             pt = torch.log_softmax(pt, dim=1)  # (batch_size_t, vocab_size)
             predictions[:batch_size_t, timestep, :] = pt
 
@@ -148,7 +148,7 @@ class AdaptiveModel(AbstractModel):
         self.decoder = AdaptiveDecoder(
             self.max_len,
             self.hidden_size,
-            self.em_size,
+            self.embedding_size,
             self.vocab_size,
             self.device,
             dr=self.dr)
@@ -183,15 +183,15 @@ class AdaptiveDecoder(nn.Module):
         self.max_len = max_len
         self.hidden_size = hidden_size
         self.vocab_size = vocab_size
-        self.em_size = embedding_size
+        self.embedding_size = embedding_size
         self.dr = dr
 
         # device
         self.device = device
 
         # layers
-        self.embedding = nn.Embedding(self.vocab_size, self.em_size)
-        self.sentinel_lstm = SentinelLSTM(self.em_size * 2,
+        self.embedding = nn.Embedding(self.vocab_size, self.embedding_size)
+        self.sentinel_lstm = SentinelLSTM(self.embedding_size * 2,
                                           self.hidden_size)
         self.attention_block = AttentionLayer(self.hidden_size,
                                               self.hidden_size,
@@ -250,7 +250,7 @@ class AdaptiveModel2(AbstractModel):
                                              dr=dr)
         self.decoder = AdaptiveDecoder2(self.max_len,
                                         self.hidden_size,
-                                        self.em_size,
+                                        self.embedding_size,
                                         self.vocab_size,
                                         self.device,
                                         dr=self.dr)
@@ -284,7 +284,7 @@ class AdaptiveDecoder2(AdaptiveDecoder):
                                                device,
                                                dr=dr)
         # overwrite this layer
-        self.sentinel_lstm = SentinelLSTM2(self.em_size * 2,
+        self.sentinel_lstm = SentinelLSTM2(self.embedding_size * 2,
                                            self.hidden_size)
 
     def initialize_variables(self, batch_size):
@@ -313,7 +313,7 @@ class AdaptiveModel3(AbstractModel):
                                              dr=dr)
         self.decoder = AdaptiveDecoder3(self.max_len,
                                         self.hidden_size,
-                                        self.em_size,
+                                        self.embedding_size,
                                         self.vocab_size,
                                         self.device,
                                         dr=self.dr)
@@ -348,7 +348,7 @@ class AdaptiveDecoder3(AdaptiveDecoder):
                                                dr=dr)
 
         # overwrite this layer
-        self.sentinel_lstm = SentinelLSTM3(self.em_size * 2,
+        self.sentinel_lstm = SentinelLSTM3(self.embedding_size * 2,
                                            self.hidden_size)
 
     def initialize_variables(self, batch_size):
@@ -375,10 +375,13 @@ class BasicModel(AbstractModel):
                                          device,
                                          embedding_size=embedding_size,
                                          dr=dr)
-        self.decoder = BasicDecoder(hidden_size,
-                                    embedding_size,
-                                    vocab_size,
-                                    device)
+        self.encoder = BasicImageEncoder(self.visual_feature_shape,
+                                         self.embedding_size,
+                                         dr=self.dr)
+        self.decoder = BasicDecoder(self.hidden_size,
+                                    self.embedding_size,
+                                    self.vocab_size,
+                                    self.device)
 
 
 class BasicDecoder(nn.Module):

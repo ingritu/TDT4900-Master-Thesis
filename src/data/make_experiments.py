@@ -178,27 +178,18 @@ if __name__ == '__main__':
     # clean the datasets
     print('Cleaning ...')
     base_str = str(para_dir_)
-    for df_path_ in para_dir_.glob('*.csv'):
-        filename = str(df_path_)[len(base_str) + 1:]
-        print(filename[:-4])
-        save_path_ = processed_path.joinpath('karpathy_split',
-                                             filename[:-4] +
-                                             '_train_clean.csv')
-        voc_path_ = processed_path.joinpath('karpathy_split',
-                                            filename + '_vocabulary.csv')
-        basic_data_cleaning(df_path_, save_path_, voc_path_,
-                            threshold=5, cutoff_value=16, unk_percentage=0.3)
-
-    base_str = str(sub_path_)
-    for df_path_ in sub_path_.glob('*.csv'):
-        filename = str(df_path_)[len(base_str) + 1:]
-        print(filename[:-4])
-        save_path_ = processed_path.joinpath('karpathy_split',
-                                             filename[:-4] +
-                                             '_train_clean.csv')
-        voc_path_ = processed_path.joinpath('karpathy_split',
-                                            filename + '_vocabulary.csv')
-        basic_data_cleaning(df_path_, save_path_, voc_path_,
-                            threshold=5, cutoff_value=16, unk_percentage=0.3)
-
-
+    for dir_ in [para_dir_, sub_path_]:
+        base_str = str(dir_)
+        for df_path_ in para_dir_.glob('*.csv'):
+            filename = str(df_path_)[len(base_str) + 1:-4]
+            print(filename)
+            exit()
+            save_path_ = processed_path.joinpath('karpathy_split',
+                                                 filename +
+                                                 '_train_clean.csv')
+            voc_path_ = processed_path.joinpath('karpathy_split',
+                                                filename + '_vocabulary.csv')
+            basic_data_cleaning(df_path_, save_path_, voc_path_,
+                                threshold=5,
+                                cutoff_value=16,
+                                unk_percentage=2.0)
