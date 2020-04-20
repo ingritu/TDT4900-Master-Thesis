@@ -173,7 +173,7 @@ class Generator:
         """
         self.optimizer = optimizer_switcher(self.optimizer_string)(
             params=filter(lambda p: p.requires_grad, self.model.parameters()),
-            lr=self.lr, weight_decay=0.999)
+            lr=self.lr)
 
     def train(self,
               data_path,

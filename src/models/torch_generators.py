@@ -226,8 +226,8 @@ class AdaptiveDecoder(nn.Module):
 
     def initialize_variables(self, batch_size):
         # initialize h and c as zeros
-        h_t = torch.zeros(batch_size, self.hidden_size).to(self.device)
-        c_t = torch.zeros(batch_size, self.hidden_size).to(self.device)
+        h_t = torch.zeros(batch_size, 1, self.hidden_size).to(self.device)
+        c_t = torch.zeros(batch_size, 1, self.hidden_size).to(self.device)
         return h_t, c_t
 
 
