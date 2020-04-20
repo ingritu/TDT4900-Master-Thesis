@@ -32,7 +32,7 @@ if __name__ == '__main__':
                              'inference algorithm. '
                              'Bigger beam size yields higher performance. '
                              'The default value is 3.')
-    parser.add_argument('--val-batch-size', type=int, default=250,
+    parser.add_argument('--val-batch-size', type=int, default=1,
                         help='Validation batch size. The number of images in a'
                              ' batch. The actual batch size is '
                              'val_batch_size * beam_size. '
