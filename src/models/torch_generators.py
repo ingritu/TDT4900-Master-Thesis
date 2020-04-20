@@ -14,8 +14,8 @@ def model_switcher(model_str):
     model_str = model_str.lower()
     switcher = {
         'adaptive': AdaptiveModel,
-        'adaptive2': AdaptiveModel2,
-        'adaptive3': AdaptiveModel3,
+        'adaptive2': AdaptiveModel,
+        'adaptive3': AdaptiveModel,
         'basic': BasicModel,
     }
     return switcher.get(model_str, AdaptiveModel)
@@ -226,8 +226,8 @@ class AdaptiveDecoder(nn.Module):
 
     def initialize_variables(self, batch_size):
         # initialize h and c as zeros
-        h_t = torch.zeros(batch_size, 1, self.hidden_size).to(self.device)
-        c_t = torch.zeros(batch_size, 1, self.hidden_size).to(self.device)
+        h_t = torch.zeros(batch_size, self.hidden_size).to(self.device)
+        c_t = torch.zeros(batch_size, self.hidden_size).to(self.device)
         return h_t, c_t
 
 

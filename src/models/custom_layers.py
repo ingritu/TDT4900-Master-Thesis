@@ -26,16 +26,15 @@ class SentinelLSTM(nn.Module):
     def forward(self, x, states):
         # remember old states
         h_tm1, c_tm1 = states
-        h_tm1, c_tm1 = h_tm1.squeeze(1), c_tm1.squeeze(1)
+        # h_tm1, c_tm1 = h_tm1.squeeze(1), c_tm1.squeeze(1)
 
         # get new states
         h_t, c_t = self.lstm_kernel(x, (h_tm1, c_tm1))
 
         # compute sentinel vector
-        # could either concat h_tm1 with x or have to gates
         sv = torch.sigmoid(self.h_gate(h_tm1) + self.x_gate(x))
         s_t = sv * torch.tanh(c_t)
-        return h_t.unsqueeze(1), c_t.unsqueeze(1), h_t, s_t
+        return h_t, c_t, h_t, s_t
 
 
 class SentinelLSTM2(nn.Module):

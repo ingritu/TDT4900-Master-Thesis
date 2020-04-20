@@ -316,11 +316,13 @@ class Generator:
 
         # create lr scheduler
         # this will decay the learning rate
+        """""""""
         lr_scheduler = MultiStepLR(self.optimizer,
                                    [num for num in range(lr_decay_start,
                                                          epochs,
                                                          lr_decay_every)],
                                    lr_decay_factor)
+        """""""""
 
         for e in range(1, epochs + 1):
             # early stopping
@@ -387,7 +389,7 @@ class Generator:
                 epochs_since_improvement += 1
 
             # update learning rate scheduler
-            lr_scheduler.step(e)
+            #lr_scheduler.step(e)
 
         # end of training
         training_time = timedelta(seconds=int(time() - start_time))  # seconds
@@ -439,7 +441,7 @@ class Generator:
         loss.backward()
 
         # clip gradients
-        if clip_value != -1:
+        if int(clip_value) != -1:
             clip_grad_value_(self.model.parameters(), clip_value)
 
         # update weights
