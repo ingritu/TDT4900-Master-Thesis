@@ -316,13 +316,14 @@ class Generator:
 
         # create lr scheduler
         # this will decay the learning rate
-        """""""""
+        milestones = [num for num in range(lr_decay_start - 1,
+                                           epochs,
+                                           lr_decay_every)]
+        print('milestones:', milestones)
         lr_scheduler = MultiStepLR(self.optimizer,
-                                   [num for num in range(lr_decay_start,
-                                                         epochs,
-                                                         lr_decay_every)],
-                                   lr_decay_factor)
-        """""""""
+                                   milestones=milestones,
+                                   gamma=lr_decay_factor)
+        # lr_scheduler.step()  # make last_epoch=0 not -1
 
         for e in range(1, epochs + 1):
             # early stopping
@@ -334,6 +335,8 @@ class Generator:
             self.model.train()  # put model in train mode
 
             print('Epoch: #' + str(e))
+            print('Current lr:', [group['lr']
+                                  for group in self.optimizer.param_groups])
             batch_history = []
             for batch_i, (encoded_images, captions, caplens) in enumerate(
                     train_generator):
@@ -389,7 +392,7 @@ class Generator:
                 epochs_since_improvement += 1
 
             # update learning rate scheduler
-            #lr_scheduler.step(e)
+            lr_scheduler.step()
 
         # end of training
         training_time = timedelta(seconds=int(time() - start_time))  # seconds
