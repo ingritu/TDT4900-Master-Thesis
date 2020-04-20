@@ -323,7 +323,6 @@ class Generator:
         lr_scheduler = MultiStepLR(self.optimizer,
                                    milestones=milestones,
                                    gamma=lr_decay_factor)
-        # lr_scheduler.step()  # make last_epoch=0 not -1
 
         for e in range(1, epochs + 1):
             # early stopping
