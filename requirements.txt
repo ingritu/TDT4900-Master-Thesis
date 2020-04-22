@@ -1,10 +1,11 @@
+# required packages
 pycocoevalcap
 pycocotools
 torch
+torchvision
 scikit-learn
 keras
 scikit-image
-# required packages
 pandas
 numpy
 h5py
