@@ -53,6 +53,8 @@ optional arguments:
 ```
 ### 2. Resize the images
 ```
+python3 -m src.features.resize_images --help
+
 usage: resize_images.py [-h] --new-image-size NEW_IMAGE_SIZE
                         [NEW_IMAGE_SIZE ...] [--image-split IMAGE_SPLIT]
                         [--dataset DATASET]
@@ -112,11 +114,16 @@ usage: train_model.py [-h] [--batch-size BATCH_SIZE] [--beam-size BEAM_SIZE]
                       [--val-batch-size VAL_BATCH_SIZE] [--epochs EPOCHS]
                       [--early-stopping-freq EARLY_STOPPING_FREQ]
                       [--val-metric VAL_METRIC] [--not-validate]
+                      [--lr-decay-start LR_DECAY_START]
+                      [--lr-decay-every LR_DECAY_EVERY]
+                      [--lr-decay-factor LR_DECAY_FACTOR]
+                      [--clip-value CLIP_VALUE]
                       [--embedding-size EMBEDDING_SIZE]
                       [--hidden-size HIDDEN_SIZE]
                       [--loss-function LOSS_FUNCTION] [--optimizer OPTIMIZER]
                       [--lr LR] [--seed SEED] [--model MODEL]
                       [--dropout DROPOUT] [--karpathy] [--dataset DATASET]
+                      [--mini]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -130,7 +137,7 @@ optional arguments:
   --val-batch-size VAL_BATCH_SIZE
                         Validation batch size. The number of images in a
                         batch. The actual batch size is val_batch_size *
-                        beam_size. The default value is 250.
+                        beam_size. The default value is 1.
   --epochs EPOCHS       The number of epochs to train the network for. The
                         default value is 50 epochs.
   --early-stopping-freq EARLY_STOPPING_FREQ
@@ -143,6 +150,16 @@ optional arguments:
                         default value is CIDEr.
   --not-validate        Bool for switching on and off COCO evaluation.
                         Activating flag means to not do COCO evaluation.
+  --lr-decay-start LR_DECAY_START
+                        when to start decaying the learning rate. The default
+                        value is 20.
+  --lr-decay-every LR_DECAY_EVERY
+                        how often to decay the learning rate. The default
+                        value is 5.
+  --lr-decay-factor LR_DECAY_FACTOR
+                        Factor to decay lr with. The default value is 0.5.
+  --clip-value CLIP_VALUE
+                        Value to clip gradients by. The default value is 0.1.
   --embedding-size EMBEDDING_SIZE
                         Embedding dimension. The size of the word vector
                         representations. The default value is 512.
@@ -165,6 +182,7 @@ optional arguments:
                         karpathy split of dataset or not.
   --dataset DATASET     Dataset to train on. The options are {flickr8k,
                         flickr30k, coco}. The default value is "coco".
+  --mini                switch for using custom mini sets.
 ```
 ### 5. Evaluate a trained model
 ```
@@ -196,6 +214,89 @@ optional arguments:
                         Bigger beam size yields higher performance. The
                         default value is 3.
 ```
+## Running Experiments
+### Make Experiments
+```
+python3 -m src.data.make_experiments
+```
+### Run experiment
+```
+python3 -m src.models.do_experiments --help
+
+usage: do_experiments.py [-h] [--batch-size BATCH_SIZE]
+                         [--beam-size BEAM_SIZE]
+                         [--val-batch-size VAL_BATCH_SIZE] [--epochs EPOCHS]
+                         [--early-stopping-freq EARLY_STOPPING_FREQ]
+                         [--val-metric VAL_METRIC] [--not-validate]
+                         [--lr-decay-start LR_DECAY_START]
+                         [--lr-decay-every LR_DECAY_EVERY]
+                         [--lr-decay-factor LR_DECAY_FACTOR]
+                         [--clip-value CLIP_VALUE]
+                         [--embedding-size EMBEDDING_SIZE]
+                         [--hidden-size HIDDEN_SIZE]
+                         [--loss-function LOSS_FUNCTION]
+                         [--optimizer OPTIMIZER] [--lr LR] [--seed SEED]
+                         [--model MODEL] [--dropout DROPOUT]
+                         [--dataset DATASET]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --batch-size BATCH_SIZE
+                        Training batch size. The number of captions in a
+                        batch. The default value is 80.
+  --beam-size BEAM_SIZE
+                        Beam size to use in beam search inference algorithm.
+                        Bigger beam size yields higher performance. The
+                        default value is 3.
+  --val-batch-size VAL_BATCH_SIZE
+                        Validation batch size. The number of images in a
+                        batch. The actual batch size is val_batch_size *
+                        beam_size. The default value is 1.
+  --epochs EPOCHS       The number of epochs to train the network for. The
+                        default value is 50 epochs.
+  --early-stopping-freq EARLY_STOPPING_FREQ
+                        Training will stop if no improvements have been made
+                        over this many epochs. The default value is 6.
+  --val-metric VAL_METRIC
+                        Automatic evaluation metric to consider for
+                        validation. Acceptable values are {Bleu_1, Bleu_2,
+                        Bleu_3, Bleu_4, ROUGE_L, METEOR, CIDEr, SPICE}. The
+                        default value is CIDEr.
+  --not-validate        Bool for switching on and off COCO evaluation.
+                        Activating flag means to not do COCO evaluation.
+  --lr-decay-start LR_DECAY_START
+                        when to start decaying the learning rate. The default
+                        value is 20.
+  --lr-decay-every LR_DECAY_EVERY
+                        how often to decay the learning rate. The default
+                        value is 5.
+  --lr-decay-factor LR_DECAY_FACTOR
+                        Factor to decay lr with. The default value is 0.5.
+  --clip-value CLIP_VALUE
+                        Value to clip gradients by. The default value is 0.1.
+  --embedding-size EMBEDDING_SIZE
+                        Embedding dimension. The size of the word vector
+                        representations. The default value is 512.
+  --hidden-size HIDDEN_SIZE
+                        Hidden dimension. The default value is 512.
+  --loss-function LOSS_FUNCTION
+                        Loss/Cost function to use during training. The default
+                        value is cross_entropy.
+  --optimizer OPTIMIZER
+                        Optimizer to use during training. The default value is
+                        adam.
+  --lr LR               Initial learning rate for the decoder. The default
+                        value is 0.001.
+  --seed SEED           Random state seed.
+  --model MODEL         Model name. Which model type to train. The default
+                        value is "adaptive".
+  --dropout DROPOUT     Use dropout on some layers. Decide the dropout value.
+                        The default value is 0.5
+  --dataset DATASET     Experiment Dataset to train on. The options are {c1,
+                        c2, c3, c4, c5, cp6, cp7, cp8, cp9, cp10, c1p1, c2p2,
+                        c3p3, c4p4}. The default value is "coco".
+```
+
 ## Project Structure
 This project uses the Data Science CookieCutter template.
 ```
