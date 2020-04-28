@@ -184,7 +184,7 @@ if __name__ == '__main__':
     base_str = str(para_dir_)
     for dir_ in [para_dir_, sub_path_]:
         base_str = str(dir_)
-        for df_path_ in para_dir_.glob('*.csv'):
+        for df_path_ in dir_.glob('*.csv'):
             filename = str(df_path_)[len(base_str) + 1:-4]
             print(filename)
             save_path_ = processed_path.joinpath('karpathy_split',
