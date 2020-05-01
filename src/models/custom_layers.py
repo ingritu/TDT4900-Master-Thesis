@@ -261,7 +261,7 @@ class AttentionLayer(nn.Module):
         h_t = x[2]  # (batch_size, hidden_size)
 
         # embed visual features
-        v_embed = f.relu(self.v_att(v))  # (batch_size, 64, hidden_size)
+        v_embed = self.v_att(v)  # (batch_size, 64, hidden_size)
 
         # s_t embedding
         s_proj = f.relu(self.s_proj(s_t))  # (batch_size, hidden_size)
