@@ -60,11 +60,15 @@ if __name__ == '__main__':
         "Unexpected split. Split must be either train, val or test."
 
     dataset_ = args['dataset']
+    # vocabulary for regular coco karpathy split is in interim not processed
+    main_data_path = interim_path if dataset_ == 'coco' else processed_path
+
     if args['karpathy']:
-        interim_path = interim_path.joinpath('karpathy_split')
+        main_data_path = main_data_path.joinpath('karpathy_split')
         ann_path = ann_path.joinpath('karpathy_split')
-    test_path = interim_path.joinpath(dataset_ + '_' + split_ + '.csv')
-    voc_path_ = interim_path.joinpath(dataset_ + '_vocabulary.csv')
+
+    test_path = main_data_path.joinpath('coco_' + split_ + '.csv')
+    voc_path_ = main_data_path.joinpath(dataset_ + '_vocabulary.csv')
     # modify this later to only load the split to predict on
     feature_path_ = processed_path.joinpath(
         dataset_, 'Images', 'encoded_visual_attention_full.pkl')
@@ -85,9 +89,9 @@ if __name__ == '__main__':
     if split_ == 'mini_val':
         # did not bother making a mini_val annotation file
         split_ = 'val'
-    annFile = ann_path.joinpath(dataset_ + '_' + split_ + '.json')
+    annFile = ann_path.joinpath('coco_' + split_ + '.json')
 
-    # everything is saved to file pluss it is all printed
+    # everything is saved to file plus it is all printed
     result = generator.evaluate(test_path,
                                 annFile,
                                 res_file,
