@@ -171,8 +171,11 @@ if __name__ == '__main__':
                                       'coco_sub_prep.csv')
     val_path = interim_path.joinpath('karpathy_split',
                                      'coco_val.csv')
+    test_path = interim_path.joinpath('karpathy_split',
+                                      'coco_test.csv')
     # move val set to processed
     copy(val_path, processed_path.joinpath('karpathy_split', 'coco_val.csv'))
+    copy(test_path, processed_path.joinpath('karpathy_split','coco_test.csv'))
 
     subset_prep(dataset_path_, prepped_path)
     make_caption_subsets(prepped_path, sub_path_)
