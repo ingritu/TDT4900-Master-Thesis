@@ -71,8 +71,8 @@ if __name__ == '__main__':
     voc_path_ = main_data_path.joinpath(dataset_ + '_vocabulary.csv')
     # modify this later to only load the split to predict on
     feature_path_ = processed_path.joinpath(
-        'coco', 'Images', 'karpathy_split',
-        'encoded_visual_attention_full.pkl')
+        'images', 'karpathy_split',
+        'coco_encoded_visual_attention_full.pkl')
     saved_model_path_ = model_dir.joinpath('BEST_checkpoint.pth.tar')
 
     model_name_ = args['model_name']
