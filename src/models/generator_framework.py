@@ -100,7 +100,7 @@ class Generator:
         self.dr = 0
         self.exp = experiment
         self.seed = 0
-        self.not_validate = True
+        self.not_validate = False  # can be switched on during training
         self.device = torch.device("cuda:0"
                                    if torch.cuda.is_available() else "cpu")
         print('Device:', self.device)
