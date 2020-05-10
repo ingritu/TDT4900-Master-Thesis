@@ -1,6 +1,14 @@
 from pathlib import Path
 from src.models.generator_framework import Generator
 
+import sys
+import torch
+import torch.multiprocessing as mp
+import numpy as np
+from src.utils import get_gpu_name
+from src.utils import get_cuda_version
+from src.utils import get_cudnn_version
+
 import argparse
 
 ROOT_PATH = Path(__file__).absolute().parents[2]
@@ -43,6 +51,20 @@ if __name__ == '__main__':
                              'The default value is 3.')
     args = vars(parser.parse_args())
 
+    print("OS: ", sys.platform)
+    print("Python: ", sys.version)
+    print("PyTorch: ", torch.__version__)
+    print("Numpy: ", np.__version__)
+    print("CUDA:", get_cuda_version())
+    print("CuDNN:", get_cudnn_version())
+
+    num_gpus = torch.cuda.device_count()
+    num_cpus = mp.cpu_count()
+    multi_gpus = num_gpus > 1
+    print("GPUs:", num_gpus)
+    print("CPUs:", num_cpus)
+    print("GPU:", get_gpu_name())
+
     # print all args
     print("using parsed arguments.")
     for key in args:
@@ -77,6 +99,10 @@ if __name__ == '__main__':
 
     model_name_ = args['model_name']
 
+    print('vocabulary:', voc_path_)
+    print('features:', feature_path_)
+    print('dataset;', test_path)
+
     generator = Generator(model_name_, voc_path_, feature_path_)
 
     generator.load_model(saved_model_path_)
@@ -93,11 +119,9 @@ if __name__ == '__main__':
     annFile = ann_path.joinpath('coco_' + split_ + '.json')
 
     # everything is saved to file plus it is all printed
-    result = generator.evaluate(test_path,
-                                annFile,
-                                res_file,
-                                eval_file,
-                                batch_size=val_batch_size,
-                                beam_size=beam_size_)
-
-    print('CIDEr:', result)
+    _ = generator.evaluate(test_path,
+                           annFile,
+                           res_file,
+                           eval_file,
+                           batch_size=val_batch_size,
+                           beam_size=beam_size_)
