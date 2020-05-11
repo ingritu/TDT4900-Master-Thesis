@@ -1,5 +1,6 @@
 from pathlib import Path
 from src.models.generator_framework import Generator
+from src.visualization.add_test_scores import add_test_scores
 
 import sys
 import torch
@@ -10,6 +11,7 @@ from src.utils import get_cuda_version
 from src.utils import get_cudnn_version
 
 import argparse
+import pandas as pd
 
 ROOT_PATH = Path(__file__).absolute().parents[2]
 
@@ -49,6 +51,10 @@ if __name__ == '__main__':
                              'inference algorithm. '
                              'Bigger beam size yields higher performance. '
                              'The default value is 3.')
+    parser.add_argument('--not-update-results-file', action='store_true',
+                        help='Predict model will automatically update the '
+                             'test_results file if the test set is test. '
+                             'Use this flag to turn off that feature.')
     args = vars(parser.parse_args())
 
     print("OS: ", sys.platform)
@@ -125,3 +131,15 @@ if __name__ == '__main__':
                            eval_file,
                            batch_size=val_batch_size,
                            beam_size=beam_size_)
+
+    if split_ == 'test' and not args['not_update_results_file']:
+        # update results file automatically
+        data_file = ROOT_PATH.joinpath('data', 'processed', 'test_results.csv')
+        if data_file.is_file():
+            file_df = pd.read_csv(data_file)
+        else:
+            labels = ['model', 'dataset',
+                      'b1', 'b2', 'b3', 'b4',
+                      'm', 'r', 'c', 's']
+            file_df = pd.DataFrame(columns=labels)
+        add_test_scores(file_df, args['model'], model_dir, dataset_)
