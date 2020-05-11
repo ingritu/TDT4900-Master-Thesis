@@ -19,8 +19,10 @@ def add_test_scores(df, model, model_dir, dataset):
     c = round(eval_scores['CIDEr'], 8)
     s = round(eval_scores['SPICE'], 8)
 
-    index = len(df)
-    df.loc[index] = [model, dataset, b1, b2, b3, b4, m, r, c, s]
+    row = pd.Series([model, dataset, b1, b2, b3, b4, m, r, c, s])
+    row_df = pd.DataFrame([row])
+    df = pd.concat([row_df, df], ignore_index=True)
+    return df
 
 
 if __name__ == '__main__':
@@ -54,6 +56,6 @@ if __name__ == '__main__':
 
     for model_ in args['models']:
         model_dir_ = models_path.joinpath(model_)
-        add_test_scores(file_df, model_, model_dir_, args['dataset'])
+        file_df = add_test_scores(file_df, model_, model_dir_, args['dataset'])
 
     file_df.to_csv(data_file)
