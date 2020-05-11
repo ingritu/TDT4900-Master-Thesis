@@ -9,7 +9,7 @@ ROOT_PATH = Path(__file__).absolute().parents[2]
 def add_test_scores(df, model, model_dir, dataset):
     with open(model_dir.joinpath('TEST_test_eval.json'), 'r') as json_file:
         eval_scores = json.load(json_file)
-    
+
     index = len(df)
     df.loc[index, 'model'] = model
     df.loc[index, 'dataset'] = dataset
@@ -58,4 +58,4 @@ if __name__ == '__main__':
         model_dir_ = models_path.joinpath(model_)
         file_df = add_test_scores(file_df, model_, model_dir_, args['dataset'])
 
-    file_df.to_csv(data_file)
+    file_df.to_csv(data_file, index=False)
