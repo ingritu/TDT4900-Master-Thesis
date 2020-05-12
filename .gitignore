@@ -1,5 +1,7 @@
 # Custom stuff
 !data/README.md
+!data/processed/test_results.csv
+!data/processed/adaptive_test_results.csv
 data/external/*
 data/raw/*
 data/interim/*
