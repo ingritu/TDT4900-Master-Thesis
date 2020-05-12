@@ -8,9 +8,9 @@ ROOT_PATH = Path(__file__).absolute().parents[2]
 
 
 if __name__ == '__main__':
-    print('Started performance script.')
+    print('Started collect test scores script.')
     """
-    python3 -m src.visualization.performance --args
+    python3 -m src.visualization.collect_test_scores --args
     """
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset', type=str, required=True,
