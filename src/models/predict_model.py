@@ -134,7 +134,15 @@ if __name__ == '__main__':
 
     if split_ == 'test' and not args['not_update_results_file']:
         # update results file automatically
-        data_file = ROOT_PATH.joinpath('data', 'processed', 'test_results.csv')
+        if model_name_ == 'adaptive':
+            data_file = ROOT_PATH.joinpath('data',
+                                           'processed',
+                                           'adaptive_test_results.csv')
+        else:
+            data_file = ROOT_PATH.joinpath('data',
+                                           'processed',
+                                           'test_results.csv')
+
         if data_file.is_file():
             file_df = pd.read_csv(data_file)
         else:
