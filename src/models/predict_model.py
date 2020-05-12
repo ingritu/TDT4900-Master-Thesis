@@ -51,10 +51,10 @@ if __name__ == '__main__':
                              'inference algorithm. '
                              'Bigger beam size yields higher performance. '
                              'The default value is 3.')
-    parser.add_argument('--not-update-results-file', action='store_true',
+    parser.add_argument('--update-results-file', action='store_true',
                         help='Predict model will automatically update the '
                              'test_results file if the test set is test. '
-                             'Use this flag to turn off that feature.')
+                             'Use this flag to turn on that feature.')
     args = vars(parser.parse_args())
 
     print("OS: ", sys.platform)
@@ -132,8 +132,9 @@ if __name__ == '__main__':
                            batch_size=val_batch_size,
                            beam_size=beam_size_)
 
-    if split_ == 'test' and not args['not_update_results_file']:
+    if split_ == 'test' and args['update_results_file']:
         # update results file automatically
+        print("Update results file!!!")
         if model_name_ == 'adaptive':
             data_file = ROOT_PATH.joinpath('data',
                                            'processed',
