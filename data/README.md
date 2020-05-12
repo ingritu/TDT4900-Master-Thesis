@@ -43,9 +43,9 @@ data/
 │   ├── Flick8k/
 │   ├── Flickr30k/
 │   ├── karpathy_split/
-│   │   ├── datase_coco.json
-│   │   ├── datase_flickr8k.json
-│   │   └── datase_flickr30k.json
+│   │   ├── dataset_coco.json
+│   │   ├── dataset_flickr8k.json
+│   │   └── dataset_flickr30k.json
 │   └── MSCOCO/
 │       ├── annotations/
 │       ├── test2014/
