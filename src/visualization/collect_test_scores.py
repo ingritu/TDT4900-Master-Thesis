@@ -18,6 +18,8 @@ if __name__ == '__main__':
     parser.add_argument('--models', type=str, nargs='+', required=True,
                         help='List of models. All models should be trained on '
                              'the same dataset.')
+    parser.add_argument('--model-name', type=str, required=True,
+                        help='Model type like basic or adaptive.')
     args = vars(parser.parse_args())
 
     # print all args
@@ -27,7 +29,13 @@ if __name__ == '__main__':
 
     models_path = ROOT_PATH.joinpath('models')
 
-    data_file = ROOT_PATH.joinpath('data', 'processed', 'test_results.csv')
+    if args['model_name']=='adaptive':
+        data_file = ROOT_PATH.joinpath('data',
+                                       'processed',
+                                       'adaptive_test_results.csv')
+    else:
+        data_file = ROOT_PATH.joinpath('data', 'processed', 'test_results.csv')
+    
     if data_file.is_file():
         file_df = pd.read_csv(data_file)
     else:
