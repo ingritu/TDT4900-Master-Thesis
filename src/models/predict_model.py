@@ -152,3 +152,4 @@ if __name__ == '__main__':
                       'm', 'r', 'c', 's']
             file_df = pd.DataFrame(columns=labels)
         add_test_scores(file_df, args['model'], model_dir, dataset_)
+        file_df.to_csv(data_file, index=False)
