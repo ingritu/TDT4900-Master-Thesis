@@ -14,6 +14,7 @@ models/*
 !src/models
 !README.md
 notebooks/visuals
+notebooks/make_example_image.ipynb
 cococaption/*
 coco-caption/*
 src/test.py
