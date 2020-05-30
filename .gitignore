@@ -5,7 +5,9 @@ data/raw/*
 data/interim/*
 data/processed/*
 !data/processed/test_results.csv
+!data/processed/test_vocab_results.csv
 !data/processed/adaptive_test_results.csv
+!data/processed/adaptive_test_vocab_results.csv
 !data/external/p5.csv
 !src/data
 __pycache__/
