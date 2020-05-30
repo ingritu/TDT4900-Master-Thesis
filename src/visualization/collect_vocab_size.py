@@ -2,15 +2,14 @@ from pathlib import Path
 import argparse
 import pandas as pd
 
-from src.visualization.add_test_scores import add_test_scores
+from src.visualization.count_vocabulary import count_vocabulary
 
 ROOT_PATH = Path(__file__).absolute().parents[2]
 
-
 if __name__ == '__main__':
-    print('Started collect test scores script.')
+    print('Started collect vocabulary size script.')
     """
-    python3 -m src.visualization.collect_test_scores --args
+    python3 -m src.visualization.collect_vocab_size --args
     """
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset', type=str, required=True,
@@ -32,20 +31,23 @@ if __name__ == '__main__':
     if args['model_name'] == 'adaptive':
         data_file = ROOT_PATH.joinpath('data',
                                        'processed',
-                                       'adaptive_test_results.csv')
+                                       'adaptive_test_vocab_results.csv')
     else:
-        data_file = ROOT_PATH.joinpath('data', 'processed', 'test_results.csv')
-    
+        data_file = ROOT_PATH.joinpath('data',
+                                       'processed',
+                                       'test_vocab_results.csv')
+
     if data_file.is_file():
         file_df = pd.read_csv(data_file)
     else:
-        labels = ['model', 'dataset',
-                  'b1', 'b2', 'b3', 'b4',
-                  'm', 'r', 'c', 's']
+        labels = ['model', 'dataset', 'voc_size']
         file_df = pd.DataFrame(columns=labels)
 
     for model_ in args['models']:
         model_dir_ = models_path.joinpath(model_)
-        file_df = add_test_scores(file_df, model_, model_dir_, args['dataset'])
+        file_df = count_vocabulary(file_df,
+                                   model_,
+                                   model_dir_,
+                                   args['dataset'])
 
     file_df.to_csv(data_file, index=False)
