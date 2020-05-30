@@ -1,0 +1,10 @@
+{
+  "Bleu_1": 0,
+  "Bleu_2": 0,
+  "Bleu_3": 0,
+  "Bleu_4": 0,
+  "METEOR": 0,
+  "ROUGE_L": 0,
+  "CIDEr": 0,
+  "SPICE": 0
+}
