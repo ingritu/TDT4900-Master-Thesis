@@ -17,6 +17,9 @@ if __name__ == '__main__':
     parser.add_argument('--seed', type=int, default=1234,
                         help='Random seed to determine which images get '
                              'picked as part of the sample set.')
+    parser.add_argument('--experiment', action='store_true',
+                        help='must be active if models were '
+                             'used for experiment.')
 
     args = vars(parser.parse_args())
 
@@ -27,6 +30,7 @@ if __name__ == '__main__':
     seed = args['seed']
     models = args['models']
     sample_size = args['sample_size']
+    exp = args['experiment']
 
     processed_path = ROOT_PATH.joinpath('data', 'processed')
     test_path = processed_path.joinpath('karpathy_split', 'coco_test.csv')
@@ -46,7 +50,8 @@ if __name__ == '__main__':
                                    test_path,
                                    res_df,
                                    seed,
-                                   sample_size=sample_size)
+                                   sample_size=sample_size,
+                                   exp=exp)
 
     # save results
     res_df.to_csv(save_file, index=False)

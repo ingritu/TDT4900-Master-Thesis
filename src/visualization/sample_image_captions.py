@@ -41,7 +41,12 @@ def get_model_trainset(model_path, model_type):
     return data
 
 
-def sample_image_captions(models, test_path, res_df, seed, sample_size=20):
+def sample_image_captions(models,
+                          test_path,
+                          res_df,
+                          seed,
+                          sample_size=20,
+                          exp=True):
     """
     Fetches the captions that models produced on a subset of the test set.
 
@@ -57,6 +62,8 @@ def sample_image_captions(models, test_path, res_df, seed, sample_size=20):
         Random seed.
     sample_size : int.
         Size of sample set. Default is 20.
+    exp : Boolean.
+        Means models were used for experiment and are therefore tagged as such.
 
     Returns
     -------
@@ -75,7 +82,7 @@ def sample_image_captions(models, test_path, res_df, seed, sample_size=20):
     index = len(res_df)
 
     for model_name in models:
-        model_type = get_model_type(model_name)
+        model_type = get_model_type(model_name, exp=exp)
         model_path = models_dir.joinpath(model_name)
         trainset = get_model_trainset(model_path, model_type)
 
