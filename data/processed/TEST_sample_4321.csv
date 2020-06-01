@@ -1,0 +1,561 @@
+model_name,model_type,dataset,image_id,image_name,caption
+basic_exp_07-May-2020_(07:04:45),basic_exp,c1,10574,COCO_val2014_000000406377.jpg,a train is traveling down the tracks near a forest
+basic_exp_07-May-2020_(07:04:45),basic_exp,c1,31456,COCO_val2014_000000365945.jpg,a bed with a white bedspread and a red bedspread
+basic_exp_07-May-2020_(07:04:45),basic_exp,c1,27582,COCO_val2014_000000252573.jpg,a cat laying on a desk next to a computer
+basic_exp_07-May-2020_(07:04:45),basic_exp,c1,16358,COCO_val2014_000000440514.jpg,a clock tower with a sky background and a building in the background
+basic_exp_07-May-2020_(07:04:45),basic_exp,c1,25155,COCO_val2014_000000545111.jpg,a close up of a bowl of fruit on a table
+basic_exp_07-May-2020_(07:04:45),basic_exp,c1,23730,COCO_val2014_000000173584.jpg,a plane flying in the sky with clouds in the background
+basic_exp_07-May-2020_(07:04:45),basic_exp,c1,7107,COCO_val2014_000000036082.jpg,a kitchen with a stove a sink and a refrigerator
+basic_exp_07-May-2020_(07:04:45),basic_exp,c1,6738,COCO_val2014_000000552503.jpg,a plate of food with a fork and knife
+basic_exp_07-May-2020_(07:04:45),basic_exp,c1,14229,COCO_val2014_000000340894.jpg,a computer desk with a laptop and a keyboard
+basic_exp_07-May-2020_(07:04:45),basic_exp,c1,10578,COCO_val2014_000000161231.jpg,a train is traveling down the tracks near a forest
+basic_exp_07-May-2020_(07:04:45),basic_exp,c1,2384,COCO_val2014_000000288799.jpg,a train on a track near a building
+basic_exp_07-May-2020_(07:04:45),basic_exp,c1,35979,COCO_val2014_000000333746.jpg,a train is traveling down the tracks near a building
+basic_exp_07-May-2020_(07:04:45),basic_exp,c1,13457,COCO_val2014_000000358817.jpg,a traffic light sitting on the side of a road
+basic_exp_07-May-2020_(07:04:45),basic_exp,c1,28619,COCO_val2014_000000491765.jpg,a sandwich and a salad on a plate
+basic_exp_07-May-2020_(07:04:45),basic_exp,c1,36165,COCO_val2014_000000479030.jpg,a train is traveling down the tracks near a forest
+basic_exp_07-May-2020_(07:04:45),basic_exp,c1,389,COCO_val2014_000000085329.jpg,a woman in a black dress and a white shirt
+basic_exp_07-May-2020_(07:04:45),basic_exp,c1,20259,COCO_val2014_000000020276.jpg,a man riding a wave on top of a surfboard
+basic_exp_07-May-2020_(07:04:45),basic_exp,c1,24024,COCO_val2014_000000165752.jpg,a man holding a baseball bat in his hand
+basic_exp_07-May-2020_(07:04:45),basic_exp,c1,8933,COCO_val2014_000000396693.jpg,a man riding a surfboard on top of a wave
+basic_exp_07-May-2020_(07:04:45),basic_exp,c1,22630,COCO_val2014_000000451234.jpg,a street sign on a city street with a building in the background
+basic_exp_01-May-2020_(05:42:18),basic_exp,c2,10574,COCO_val2014_000000406377.jpg,a train is traveling down the tracks near a building
+basic_exp_01-May-2020_(05:42:18),basic_exp,c2,31456,COCO_val2014_000000365945.jpg,a bed with a white comforter and a quilt
+basic_exp_01-May-2020_(05:42:18),basic_exp,c2,27582,COCO_val2014_000000252573.jpg,a cat is sitting on a desk with a computer mouse
+basic_exp_01-May-2020_(05:42:18),basic_exp,c2,16358,COCO_val2014_000000440514.jpg,a clock tower with a clock on top of it
+basic_exp_01-May-2020_(05:42:18),basic_exp,c2,25155,COCO_val2014_000000545111.jpg,a banana sitting on top of a wooden table
+basic_exp_01-May-2020_(05:42:18),basic_exp,c2,23730,COCO_val2014_000000173584.jpg,a plane flying in the sky with a sky background
+basic_exp_01-May-2020_(05:42:18),basic_exp,c2,7107,COCO_val2014_000000036082.jpg,a kitchen with a stove and a microwave
+basic_exp_01-May-2020_(05:42:18),basic_exp,c2,6738,COCO_val2014_000000552503.jpg,a bowl of food with a spoon in it
+basic_exp_01-May-2020_(05:42:18),basic_exp,c2,14229,COCO_val2014_000000340894.jpg,a computer monitor sitting on top of a wooden desk
+basic_exp_01-May-2020_(05:42:18),basic_exp,c2,10578,COCO_val2014_000000161231.jpg,a train is coming down the tracks near a building
+basic_exp_01-May-2020_(05:42:18),basic_exp,c2,2384,COCO_val2014_000000288799.jpg,a train is coming down the tracks in a city
+basic_exp_01-May-2020_(05:42:18),basic_exp,c2,35979,COCO_val2014_000000333746.jpg,a train is coming down the tracks near a building
+basic_exp_01-May-2020_(05:42:18),basic_exp,c2,13457,COCO_val2014_000000358817.jpg,a traffic light with a green light on a street
+basic_exp_01-May-2020_(05:42:18),basic_exp,c2,28619,COCO_val2014_000000491765.jpg,a sandwich and a cup of coffee on a table
+basic_exp_01-May-2020_(05:42:18),basic_exp,c2,36165,COCO_val2014_000000479030.jpg,a train is coming down the tracks near a building
+basic_exp_01-May-2020_(05:42:18),basic_exp,c2,389,COCO_val2014_000000085329.jpg,a woman is wearing a tie and a hat
+basic_exp_01-May-2020_(05:42:18),basic_exp,c2,20259,COCO_val2014_000000020276.jpg,a man riding a wave on top of a surfboard
+basic_exp_01-May-2020_(05:42:18),basic_exp,c2,24024,COCO_val2014_000000165752.jpg,a man is holding a dog and a frisbee
+basic_exp_01-May-2020_(05:42:18),basic_exp,c2,8933,COCO_val2014_000000396693.jpg,a man riding a wave on top of a surfboard
+basic_exp_01-May-2020_(05:42:18),basic_exp,c2,22630,COCO_val2014_000000451234.jpg,a man is standing next to a street sign
+basic_exp_08-May-2020_(01:48:29),basic_exp,c3,10574,COCO_val2014_000000406377.jpg,a train is traveling down the tracks near a building
+basic_exp_08-May-2020_(01:48:29),basic_exp,c3,31456,COCO_val2014_000000365945.jpg,a bed with a white comforter and pillows
+basic_exp_08-May-2020_(01:48:29),basic_exp,c3,27582,COCO_val2014_000000252573.jpg,a cat laying on top of a computer keyboard
+basic_exp_08-May-2020_(01:48:29),basic_exp,c3,16358,COCO_val2014_000000440514.jpg,a clock tower with a sky background
+basic_exp_08-May-2020_(01:48:29),basic_exp,c3,25155,COCO_val2014_000000545111.jpg,a glass of orange juice next to a glass of water
+basic_exp_08-May-2020_(01:48:29),basic_exp,c3,23730,COCO_val2014_000000173584.jpg,a small airplane flying through a blue sky
+basic_exp_08-May-2020_(01:48:29),basic_exp,c3,7107,COCO_val2014_000000036082.jpg,a microwave oven sitting on top of a wooden counter
+basic_exp_08-May-2020_(01:48:29),basic_exp,c3,6738,COCO_val2014_000000552503.jpg,a bowl of food with a spoon in it
+basic_exp_08-May-2020_(01:48:29),basic_exp,c3,14229,COCO_val2014_000000340894.jpg,a desk with a laptop and a keyboard on it
+basic_exp_08-May-2020_(01:48:29),basic_exp,c3,10578,COCO_val2014_000000161231.jpg,a train is traveling down the tracks near a station
+basic_exp_08-May-2020_(01:48:29),basic_exp,c3,2384,COCO_val2014_000000288799.jpg,a train is traveling down the tracks near a building
+basic_exp_08-May-2020_(01:48:29),basic_exp,c3,35979,COCO_val2014_000000333746.jpg,a train is traveling down the tracks near a building
+basic_exp_08-May-2020_(01:48:29),basic_exp,c3,13457,COCO_val2014_000000358817.jpg,a traffic light on a city street with cars
+basic_exp_08-May-2020_(01:48:29),basic_exp,c3,28619,COCO_val2014_000000491765.jpg,a sandwich and french fries on a plate
+basic_exp_08-May-2020_(01:48:29),basic_exp,c3,36165,COCO_val2014_000000479030.jpg,a train is coming down the tracks near a station
+basic_exp_08-May-2020_(01:48:29),basic_exp,c3,389,COCO_val2014_000000085329.jpg,a woman wearing a black jacket and a white shirt
+basic_exp_08-May-2020_(01:48:29),basic_exp,c3,20259,COCO_val2014_000000020276.jpg,a man riding a wave on top of a surfboard
+basic_exp_08-May-2020_(01:48:29),basic_exp,c3,24024,COCO_val2014_000000165752.jpg,a man is standing in front of a fire hydrant
+basic_exp_08-May-2020_(01:48:29),basic_exp,c3,8933,COCO_val2014_000000396693.jpg,a man riding a wave on top of a surfboard
+basic_exp_08-May-2020_(01:48:29),basic_exp,c3,22630,COCO_val2014_000000451234.jpg,a street with a lot of people and cars
+basic_exp_04-May-2020_(03:51:12),basic_exp,c4,10574,COCO_val2014_000000406377.jpg,a train on a track near a building
+basic_exp_04-May-2020_(03:51:12),basic_exp,c4,31456,COCO_val2014_000000365945.jpg,a bed with a white bedspread and a red blanket
+basic_exp_04-May-2020_(03:51:12),basic_exp,c4,27582,COCO_val2014_000000252573.jpg,a cat is sitting on a chair with a remote
+basic_exp_04-May-2020_(03:51:12),basic_exp,c4,16358,COCO_val2014_000000440514.jpg,a clock tower with a clock on top
+basic_exp_04-May-2020_(03:51:12),basic_exp,c4,25155,COCO_val2014_000000545111.jpg,a bowl of oranges and a banana on a table
+basic_exp_04-May-2020_(03:51:12),basic_exp,c4,23730,COCO_val2014_000000173584.jpg,a small airplane flying through a blue sky
+basic_exp_04-May-2020_(03:51:12),basic_exp,c4,7107,COCO_val2014_000000036082.jpg,a microwave oven sitting on top of a wooden cabinet
+basic_exp_04-May-2020_(03:51:12),basic_exp,c4,6738,COCO_val2014_000000552503.jpg,a table with a bowl of soup and a bowl of soup and a bowl
+basic_exp_04-May-2020_(03:51:12),basic_exp,c4,14229,COCO_val2014_000000340894.jpg,a desk with a laptop and a monitor
+basic_exp_04-May-2020_(03:51:12),basic_exp,c4,10578,COCO_val2014_000000161231.jpg,a train is pulling into a train station
+basic_exp_04-May-2020_(03:51:12),basic_exp,c4,2384,COCO_val2014_000000288799.jpg,a train on a track near a building
+basic_exp_04-May-2020_(03:51:12),basic_exp,c4,35979,COCO_val2014_000000333746.jpg,a train is coming down the tracks near a building
+basic_exp_04-May-2020_(03:51:12),basic_exp,c4,13457,COCO_val2014_000000358817.jpg,a traffic light sitting on the side of a road
+basic_exp_04-May-2020_(03:51:12),basic_exp,c4,28619,COCO_val2014_000000491765.jpg,a sandwich and fries on a plate with a drink
+basic_exp_04-May-2020_(03:51:12),basic_exp,c4,36165,COCO_val2014_000000479030.jpg,a train traveling down tracks next to a forest
+basic_exp_04-May-2020_(03:51:12),basic_exp,c4,389,COCO_val2014_000000085329.jpg,a woman in a white dress holding a cell phone
+basic_exp_04-May-2020_(03:51:12),basic_exp,c4,20259,COCO_val2014_000000020276.jpg,a man riding a wave on top of a surfboard
+basic_exp_04-May-2020_(03:51:12),basic_exp,c4,24024,COCO_val2014_000000165752.jpg,a dog is standing on the grass with a frisbee
+basic_exp_04-May-2020_(03:51:12),basic_exp,c4,8933,COCO_val2014_000000396693.jpg,a man riding a wave on top of a surfboard
+basic_exp_04-May-2020_(03:51:12),basic_exp,c4,22630,COCO_val2014_000000451234.jpg,a street sign on a pole on a city street
+basic_exp_04-May-2020_(04:12:15),basic_exp,c5,10574,COCO_val2014_000000406377.jpg,a train on a track near a building
+basic_exp_04-May-2020_(04:12:15),basic_exp,c5,31456,COCO_val2014_000000365945.jpg,a bed with a white comforter and a pillow
+basic_exp_04-May-2020_(04:12:15),basic_exp,c5,27582,COCO_val2014_000000252573.jpg,a cat is laying on top of a laptop
+basic_exp_04-May-2020_(04:12:15),basic_exp,c5,16358,COCO_val2014_000000440514.jpg,a clock tower with a clock on top of it
+basic_exp_04-May-2020_(04:12:15),basic_exp,c5,25155,COCO_val2014_000000545111.jpg,a close up of a bowl of fruit on a table
+basic_exp_04-May-2020_(04:12:15),basic_exp,c5,23730,COCO_val2014_000000173584.jpg,a small airplane flying through a blue sky
+basic_exp_04-May-2020_(04:12:15),basic_exp,c5,7107,COCO_val2014_000000036082.jpg,a microwave oven sitting on top of a counter
+basic_exp_04-May-2020_(04:12:15),basic_exp,c5,6738,COCO_val2014_000000552503.jpg,a bowl of soup with carrots and a spoon
+basic_exp_04-May-2020_(04:12:15),basic_exp,c5,14229,COCO_val2014_000000340894.jpg,a desk with a laptop and a monitor
+basic_exp_04-May-2020_(04:12:15),basic_exp,c5,10578,COCO_val2014_000000161231.jpg,a train on a train track with a sky background
+basic_exp_04-May-2020_(04:12:15),basic_exp,c5,2384,COCO_val2014_000000288799.jpg,a train on a track near a building
+basic_exp_04-May-2020_(04:12:15),basic_exp,c5,35979,COCO_val2014_000000333746.jpg,a train on a track near a platform
+basic_exp_04-May-2020_(04:12:15),basic_exp,c5,13457,COCO_val2014_000000358817.jpg,a traffic light on a street with a car parked on the side
+basic_exp_04-May-2020_(04:12:15),basic_exp,c5,28619,COCO_val2014_000000491765.jpg,a sandwich and french fries on a plate
+basic_exp_04-May-2020_(04:12:15),basic_exp,c5,36165,COCO_val2014_000000479030.jpg,a train on a train track with a sky background
+basic_exp_04-May-2020_(04:12:15),basic_exp,c5,389,COCO_val2014_000000085329.jpg,a woman in a dress shirt and tie holding a cell phone
+basic_exp_04-May-2020_(04:12:15),basic_exp,c5,20259,COCO_val2014_000000020276.jpg,a man riding a wave on top of a surfboard
+basic_exp_04-May-2020_(04:12:15),basic_exp,c5,24024,COCO_val2014_000000165752.jpg,a dog is sitting in the grass with a frisbee
+basic_exp_04-May-2020_(04:12:15),basic_exp,c5,8933,COCO_val2014_000000396693.jpg,a man riding a wave on top of a surfboard
+basic_exp_04-May-2020_(04:12:15),basic_exp,c5,22630,COCO_val2014_000000451234.jpg,a busy street with a lot of people walking around
+basic_exp_07-May-2020_(10:22:52),basic_exp,cp6,10574,COCO_val2014_000000406377.jpg,a train is on the tracks near a building
+basic_exp_07-May-2020_(10:22:52),basic_exp,cp6,31456,COCO_val2014_000000365945.jpg,a bed with a white comforter and pillows on it
+basic_exp_07-May-2020_(10:22:52),basic_exp,cp6,27582,COCO_val2014_000000252573.jpg,a cat laying on top of a computer keyboard
+basic_exp_07-May-2020_(10:22:52),basic_exp,cp6,16358,COCO_val2014_000000440514.jpg,a clock tower with a clock on top
+basic_exp_07-May-2020_(10:22:52),basic_exp,cp6,25155,COCO_val2014_000000545111.jpg,a glass bowl filled with oranges on a table
+basic_exp_07-May-2020_(10:22:52),basic_exp,cp6,23730,COCO_val2014_000000173584.jpg,a small plane flying through a blue sky
+basic_exp_07-May-2020_(10:22:52),basic_exp,cp6,7107,COCO_val2014_000000036082.jpg,a microwave oven sitting on top of a counter
+basic_exp_07-May-2020_(10:22:52),basic_exp,cp6,6738,COCO_val2014_000000552503.jpg,a bowl of food with a spoon and chopsticks on a table
+basic_exp_07-May-2020_(10:22:52),basic_exp,cp6,14229,COCO_val2014_000000340894.jpg,a computer monitor and keyboard on a desk
+basic_exp_07-May-2020_(10:22:52),basic_exp,cp6,10578,COCO_val2014_000000161231.jpg,a train on a track near a platform
+basic_exp_07-May-2020_(10:22:52),basic_exp,cp6,2384,COCO_val2014_000000288799.jpg,a train is on the tracks near a building
+basic_exp_07-May-2020_(10:22:52),basic_exp,cp6,35979,COCO_val2014_000000333746.jpg,a train is on the tracks near a building
+basic_exp_07-May-2020_(10:22:52),basic_exp,cp6,13457,COCO_val2014_000000358817.jpg,a traffic light on a street with a car in the background
+basic_exp_07-May-2020_(10:22:52),basic_exp,cp6,28619,COCO_val2014_000000491765.jpg,a sandwich and a salad on a plate
+basic_exp_07-May-2020_(10:22:52),basic_exp,cp6,36165,COCO_val2014_000000479030.jpg,a train is on the tracks near a station
+basic_exp_07-May-2020_(10:22:52),basic_exp,cp6,389,COCO_val2014_000000085329.jpg,a woman wearing a black top and a red tie
+basic_exp_07-May-2020_(10:22:52),basic_exp,cp6,20259,COCO_val2014_000000020276.jpg,a man riding a wave on top of a surfboard
+basic_exp_07-May-2020_(10:22:52),basic_exp,cp6,24024,COCO_val2014_000000165752.jpg,a dog is sitting on a bench in the grass
+basic_exp_07-May-2020_(10:22:52),basic_exp,cp6,8933,COCO_val2014_000000396693.jpg,a man riding a wave on top of a surfboard
+basic_exp_07-May-2020_(10:22:52),basic_exp,cp6,22630,COCO_val2014_000000451234.jpg,a street with a lot of signs on it
+basic_exp_06-May-2020_(01:35:42),basic_exp,cp7,10574,COCO_val2014_000000406377.jpg,a train on a track near a building
+basic_exp_06-May-2020_(01:35:42),basic_exp,cp7,31456,COCO_val2014_000000365945.jpg,a bed with a white bedspread and a red wall
+basic_exp_06-May-2020_(01:35:42),basic_exp,cp7,27582,COCO_val2014_000000252573.jpg,a cat is laying on a remote control
+basic_exp_06-May-2020_(01:35:42),basic_exp,cp7,16358,COCO_val2014_000000440514.jpg,a clock tower in the middle of a city
+basic_exp_06-May-2020_(01:35:42),basic_exp,cp7,25155,COCO_val2014_000000545111.jpg,a glass bowl filled with oranges on a table
+basic_exp_06-May-2020_(01:35:42),basic_exp,cp7,23730,COCO_val2014_000000173584.jpg,a fighter jet flying through a blue sky
+basic_exp_06-May-2020_(01:35:42),basic_exp,cp7,7107,COCO_val2014_000000036082.jpg,a microwave oven sitting on top of a counter
+basic_exp_06-May-2020_(01:35:42),basic_exp,cp7,6738,COCO_val2014_000000552503.jpg,a bowl of soup with a spoon in it
+basic_exp_06-May-2020_(01:35:42),basic_exp,cp7,14229,COCO_val2014_000000340894.jpg,a desk with a keyboard mouse and monitor
+basic_exp_06-May-2020_(01:35:42),basic_exp,cp7,10578,COCO_val2014_000000161231.jpg,a train on a track near a platform
+basic_exp_06-May-2020_(01:35:42),basic_exp,cp7,2384,COCO_val2014_000000288799.jpg,a train on a track near a building
+basic_exp_06-May-2020_(01:35:42),basic_exp,cp7,35979,COCO_val2014_000000333746.jpg,a train on a track near a building
+basic_exp_06-May-2020_(01:35:42),basic_exp,cp7,13457,COCO_val2014_000000358817.jpg,a traffic light on a street corner with buildings in the background
+basic_exp_06-May-2020_(01:35:42),basic_exp,cp7,28619,COCO_val2014_000000491765.jpg,a sandwich and fries on a plate
+basic_exp_06-May-2020_(01:35:42),basic_exp,cp7,36165,COCO_val2014_000000479030.jpg,a train on a track near a platform
+basic_exp_06-May-2020_(01:35:42),basic_exp,cp7,389,COCO_val2014_000000085329.jpg,a woman wearing a tie and a shirt
+basic_exp_06-May-2020_(01:35:42),basic_exp,cp7,20259,COCO_val2014_000000020276.jpg,a man riding a wave on a surfboard
+basic_exp_06-May-2020_(01:35:42),basic_exp,cp7,24024,COCO_val2014_000000165752.jpg,a dog is standing in the grass with a frisbee
+basic_exp_06-May-2020_(01:35:42),basic_exp,cp7,8933,COCO_val2014_000000396693.jpg,a man riding a wave on a surfboard in the ocean
+basic_exp_06-May-2020_(01:35:42),basic_exp,cp7,22630,COCO_val2014_000000451234.jpg,a street with a lot of signs and buildings
+basic_exp_07-May-2020_(11:36:04),basic_exp,cp8,10574,COCO_val2014_000000406377.jpg,a train on a track near a building
+basic_exp_07-May-2020_(11:36:04),basic_exp,cp8,31456,COCO_val2014_000000365945.jpg,a bed with a white bedspread and pillows
+basic_exp_07-May-2020_(11:36:04),basic_exp,cp8,27582,COCO_val2014_000000252573.jpg,a cat laying on a couch next to a remote
+basic_exp_07-May-2020_(11:36:04),basic_exp,cp8,16358,COCO_val2014_000000440514.jpg,a large building with a clock tower in the middle of it
+basic_exp_07-May-2020_(11:36:04),basic_exp,cp8,25155,COCO_val2014_000000545111.jpg,a glass of orange juice sitting on a table
+basic_exp_07-May-2020_(11:36:04),basic_exp,cp8,23730,COCO_val2014_000000173584.jpg,a plane flying in the sky with a trail of smoke
+basic_exp_07-May-2020_(11:36:04),basic_exp,cp8,7107,COCO_val2014_000000036082.jpg,a microwave oven sitting on top of a counter
+basic_exp_07-May-2020_(11:36:04),basic_exp,cp8,6738,COCO_val2014_000000552503.jpg,a bowl of food on a table next to a bowl of soup
+basic_exp_07-May-2020_(11:36:04),basic_exp,cp8,14229,COCO_val2014_000000340894.jpg,a computer desk with a laptop and a desktop computer
+basic_exp_07-May-2020_(11:36:04),basic_exp,cp8,10578,COCO_val2014_000000161231.jpg,a train is parked at a train station
+basic_exp_07-May-2020_(11:36:04),basic_exp,cp8,2384,COCO_val2014_000000288799.jpg,a train is on the tracks in a city
+basic_exp_07-May-2020_(11:36:04),basic_exp,cp8,35979,COCO_val2014_000000333746.jpg,a train is on the tracks in front of a building
+basic_exp_07-May-2020_(11:36:04),basic_exp,cp8,13457,COCO_val2014_000000358817.jpg,a traffic light on a street in the city
+basic_exp_07-May-2020_(11:36:04),basic_exp,cp8,28619,COCO_val2014_000000491765.jpg,a sandwich and fries are on a plate
+basic_exp_07-May-2020_(11:36:04),basic_exp,cp8,36165,COCO_val2014_000000479030.jpg,a train traveling down tracks next to a forest
+basic_exp_07-May-2020_(11:36:04),basic_exp,cp8,389,COCO_val2014_000000085329.jpg,a woman with a tie and a black jacket
+basic_exp_07-May-2020_(11:36:04),basic_exp,cp8,20259,COCO_val2014_000000020276.jpg,a man riding a wave on top of a surfboard
+basic_exp_07-May-2020_(11:36:04),basic_exp,cp8,24024,COCO_val2014_000000165752.jpg,a dog is in the air with a frisbee in its mouth
+basic_exp_07-May-2020_(11:36:04),basic_exp,cp8,8933,COCO_val2014_000000396693.jpg,a man riding a wave on top of a surfboard
+basic_exp_07-May-2020_(11:36:04),basic_exp,cp8,22630,COCO_val2014_000000451234.jpg,a street with a lot of signs on it
+basic_exp_08-May-2020_(09:48:36),basic_exp,cp9,10574,COCO_val2014_000000406377.jpg,a train traveling down train tracks next to a forest
+basic_exp_08-May-2020_(09:48:36),basic_exp,cp9,31456,COCO_val2014_000000365945.jpg,a bed with a white blanket and pillows on it
+basic_exp_08-May-2020_(09:48:36),basic_exp,cp9,27582,COCO_val2014_000000252573.jpg,a cat laying on top of a couch next to a remote control
+basic_exp_08-May-2020_(09:48:36),basic_exp,cp9,16358,COCO_val2014_000000440514.jpg,a large clock tower in the middle of a city
+basic_exp_08-May-2020_(09:48:36),basic_exp,cp9,25155,COCO_val2014_000000545111.jpg,a glass bowl filled with oranges on a table
+basic_exp_08-May-2020_(09:48:36),basic_exp,cp9,23730,COCO_val2014_000000173584.jpg,a fighter jet flying in a blue sky
+basic_exp_08-May-2020_(09:48:36),basic_exp,cp9,7107,COCO_val2014_000000036082.jpg,a microwave oven sitting on top of a counter
+basic_exp_08-May-2020_(09:48:36),basic_exp,cp9,6738,COCO_val2014_000000552503.jpg,a bowl of soup with a spoon in it
+basic_exp_08-May-2020_(09:48:36),basic_exp,cp9,14229,COCO_val2014_000000340894.jpg,a computer desk with a laptop and a monitor
+basic_exp_08-May-2020_(09:48:36),basic_exp,cp9,10578,COCO_val2014_000000161231.jpg,a train is on the tracks near a building
+basic_exp_08-May-2020_(09:48:36),basic_exp,cp9,2384,COCO_val2014_000000288799.jpg,a train on a track near a building
+basic_exp_08-May-2020_(09:48:36),basic_exp,cp9,35979,COCO_val2014_000000333746.jpg,a train on a track near a platform
+basic_exp_08-May-2020_(09:48:36),basic_exp,cp9,13457,COCO_val2014_000000358817.jpg,a traffic light with a green light and a street sign
+basic_exp_08-May-2020_(09:48:36),basic_exp,cp9,28619,COCO_val2014_000000491765.jpg,a sandwich and french fries on a plate
+basic_exp_08-May-2020_(09:48:36),basic_exp,cp9,36165,COCO_val2014_000000479030.jpg,a train is traveling down the tracks in a rural setting
+basic_exp_08-May-2020_(09:48:36),basic_exp,cp9,389,COCO_val2014_000000085329.jpg,a woman wearing a tie and a hat
+basic_exp_08-May-2020_(09:48:36),basic_exp,cp9,20259,COCO_val2014_000000020276.jpg,a man riding a wave on a surfboard
+basic_exp_08-May-2020_(09:48:36),basic_exp,cp9,24024,COCO_val2014_000000165752.jpg,a dog is standing in the grass with a frisbee
+basic_exp_08-May-2020_(09:48:36),basic_exp,cp9,8933,COCO_val2014_000000396693.jpg,a man riding a wave on a surfboard
+basic_exp_08-May-2020_(09:48:36),basic_exp,cp9,22630,COCO_val2014_000000451234.jpg,a street scene with people walking and a sign
+basic_exp_07-May-2020_(13:40:34),basic_exp,cp10,10574,COCO_val2014_000000406377.jpg,a train is on the tracks near a building
+basic_exp_07-May-2020_(13:40:34),basic_exp,cp10,31456,COCO_val2014_000000365945.jpg,a bed with a white bedspread and pillows on top of it
+basic_exp_07-May-2020_(13:40:34),basic_exp,cp10,27582,COCO_val2014_000000252573.jpg,a cat laying on top of a remote control
+basic_exp_07-May-2020_(13:40:34),basic_exp,cp10,16358,COCO_val2014_000000440514.jpg,a large clock tower with a clock on the side of it
+basic_exp_07-May-2020_(13:40:34),basic_exp,cp10,25155,COCO_val2014_000000545111.jpg,a bowl of oranges on a table with a glass of water
+basic_exp_07-May-2020_(13:40:34),basic_exp,cp10,23730,COCO_val2014_000000173584.jpg,a small plane flying in the sky
+basic_exp_07-May-2020_(13:40:34),basic_exp,cp10,7107,COCO_val2014_000000036082.jpg,a microwave oven sitting on top of a counter
+basic_exp_07-May-2020_(13:40:34),basic_exp,cp10,6738,COCO_val2014_000000552503.jpg,a bowl of soup with a spoon in it
+basic_exp_07-May-2020_(13:40:34),basic_exp,cp10,14229,COCO_val2014_000000340894.jpg,a computer desk with a laptop and a desktop computer
+basic_exp_07-May-2020_(13:40:34),basic_exp,cp10,10578,COCO_val2014_000000161231.jpg,a train is on the tracks near a station
+basic_exp_07-May-2020_(13:40:34),basic_exp,cp10,2384,COCO_val2014_000000288799.jpg,a train is on the tracks near a building
+basic_exp_07-May-2020_(13:40:34),basic_exp,cp10,35979,COCO_val2014_000000333746.jpg,a train is on the tracks near a building
+basic_exp_07-May-2020_(13:40:34),basic_exp,cp10,13457,COCO_val2014_000000358817.jpg,a traffic light on a street with cars
+basic_exp_07-May-2020_(13:40:34),basic_exp,cp10,28619,COCO_val2014_000000491765.jpg,a sandwich and fries on a plate
+basic_exp_07-May-2020_(13:40:34),basic_exp,cp10,36165,COCO_val2014_000000479030.jpg,a train is on the tracks near a building
+basic_exp_07-May-2020_(13:40:34),basic_exp,cp10,389,COCO_val2014_000000085329.jpg,a woman wearing a black shirt and a black tie
+basic_exp_07-May-2020_(13:40:34),basic_exp,cp10,20259,COCO_val2014_000000020276.jpg,a man riding a wave on a surfboard
+basic_exp_07-May-2020_(13:40:34),basic_exp,cp10,24024,COCO_val2014_000000165752.jpg,a dog is standing in the grass with a frisbee
+basic_exp_07-May-2020_(13:40:34),basic_exp,cp10,8933,COCO_val2014_000000396693.jpg,a man riding a wave on a surfboard
+basic_exp_07-May-2020_(13:40:34),basic_exp,cp10,22630,COCO_val2014_000000451234.jpg,a street scene with people walking and a man walking on the sidewalk
+basic_exp_06-May-2020_(09:14:11),basic_exp,c1p1,10574,COCO_val2014_000000406377.jpg,a train on a track with buildings in the background
+basic_exp_06-May-2020_(09:14:11),basic_exp,c1p1,31456,COCO_val2014_000000365945.jpg,a bed with a white bedspread and pillows on it
+basic_exp_06-May-2020_(09:14:11),basic_exp,c1p1,27582,COCO_val2014_000000252573.jpg,a cat laying on a desk next to a keyboard
+basic_exp_06-May-2020_(09:14:11),basic_exp,c1p1,16358,COCO_val2014_000000440514.jpg,a clock tower with a weather vane on top of it
+basic_exp_06-May-2020_(09:14:11),basic_exp,c1p1,25155,COCO_val2014_000000545111.jpg,a glass of orange juice sitting next to a glass of orange juice
+basic_exp_06-May-2020_(09:14:11),basic_exp,c1p1,23730,COCO_val2014_000000173584.jpg,a small plane flying in the sky
+basic_exp_06-May-2020_(09:14:11),basic_exp,c1p1,7107,COCO_val2014_000000036082.jpg,a microwave oven sitting on top of a microwave
+basic_exp_06-May-2020_(09:14:11),basic_exp,c1p1,6738,COCO_val2014_000000552503.jpg,a plate of food with a glass of wine and a bowl of soup on a table
+basic_exp_06-May-2020_(09:14:11),basic_exp,c1p1,14229,COCO_val2014_000000340894.jpg,a desk with a laptop and a keyboard and a monitor
+basic_exp_06-May-2020_(09:14:11),basic_exp,c1p1,10578,COCO_val2014_000000161231.jpg,a train is parked on the tracks at the station
+basic_exp_06-May-2020_(09:14:11),basic_exp,c1p1,2384,COCO_val2014_000000288799.jpg,a train is coming down the tracks in a city
+basic_exp_06-May-2020_(09:14:11),basic_exp,c1p1,35979,COCO_val2014_000000333746.jpg,a train on a track near a building
+basic_exp_06-May-2020_(09:14:11),basic_exp,c1p1,13457,COCO_val2014_000000358817.jpg,a traffic light on a street in the city
+basic_exp_06-May-2020_(09:14:11),basic_exp,c1p1,28619,COCO_val2014_000000491765.jpg,a sandwich with a side of fries and a cup of coffee
+basic_exp_06-May-2020_(09:14:11),basic_exp,c1p1,36165,COCO_val2014_000000479030.jpg,a train on a track near a building
+basic_exp_06-May-2020_(09:14:11),basic_exp,c1p1,389,COCO_val2014_000000085329.jpg,a woman in a blue shirt and a white shirt and a pink tie
+basic_exp_06-May-2020_(09:14:11),basic_exp,c1p1,20259,COCO_val2014_000000020276.jpg,a man riding a wave on a surfboard
+basic_exp_06-May-2020_(09:14:11),basic_exp,c1p1,24024,COCO_val2014_000000165752.jpg,a dog is standing on a skateboard in a park
+basic_exp_06-May-2020_(09:14:11),basic_exp,c1p1,8933,COCO_val2014_000000396693.jpg,a man on a surfboard riding a wave
+basic_exp_06-May-2020_(09:14:11),basic_exp,c1p1,22630,COCO_val2014_000000451234.jpg,a street with a lot of people walking and it
+basic_exp_01-May-2020_(23:51:36),basic_exp,c2p2,10574,COCO_val2014_000000406377.jpg,a train on a track near a building
+basic_exp_01-May-2020_(23:51:36),basic_exp,c2p2,31456,COCO_val2014_000000365945.jpg,a bed with a white bedspread and pillows with a lamp on it
+basic_exp_01-May-2020_(23:51:36),basic_exp,c2p2,27582,COCO_val2014_000000252573.jpg,a cat laying on a desk with a computer
+basic_exp_01-May-2020_(23:51:36),basic_exp,c2p2,16358,COCO_val2014_000000440514.jpg,a clock tower in the middle of a city
+basic_exp_01-May-2020_(23:51:36),basic_exp,c2p2,25155,COCO_val2014_000000545111.jpg,a banana sitting on a table next to a glass of water
+basic_exp_01-May-2020_(23:51:36),basic_exp,c2p2,23730,COCO_val2014_000000173584.jpg,a small plane flying in the sky
+basic_exp_01-May-2020_(23:51:36),basic_exp,c2p2,7107,COCO_val2014_000000036082.jpg,a microwave oven on a counter with a teapot
+basic_exp_01-May-2020_(23:51:36),basic_exp,c2p2,6738,COCO_val2014_000000552503.jpg,a bowl of soup and a bowl of soup on a table
+basic_exp_01-May-2020_(23:51:36),basic_exp,c2p2,14229,COCO_val2014_000000340894.jpg,a computer desk with a laptop and a monitor
+basic_exp_01-May-2020_(23:51:36),basic_exp,c2p2,10578,COCO_val2014_000000161231.jpg,a train is on the tracks at a station
+basic_exp_01-May-2020_(23:51:36),basic_exp,c2p2,2384,COCO_val2014_000000288799.jpg,a train on a track near a building
+basic_exp_01-May-2020_(23:51:36),basic_exp,c2p2,35979,COCO_val2014_000000333746.jpg,a train on a track with a sky background
+basic_exp_01-May-2020_(23:51:36),basic_exp,c2p2,13457,COCO_val2014_000000358817.jpg,a traffic light on a street in the city
+basic_exp_01-May-2020_(23:51:36),basic_exp,c2p2,28619,COCO_val2014_000000491765.jpg,a sandwich and a salad on a plate
+basic_exp_01-May-2020_(23:51:36),basic_exp,c2p2,36165,COCO_val2014_000000479030.jpg,a train on a track near a building
+basic_exp_01-May-2020_(23:51:36),basic_exp,c2p2,389,COCO_val2014_000000085329.jpg,a woman wearing a black dress and white shirt
+basic_exp_01-May-2020_(23:51:36),basic_exp,c2p2,20259,COCO_val2014_000000020276.jpg,a man riding a wave on a surfboard
+basic_exp_01-May-2020_(23:51:36),basic_exp,c2p2,24024,COCO_val2014_000000165752.jpg,a dog is sitting on a bench in the grass
+basic_exp_01-May-2020_(23:51:36),basic_exp,c2p2,8933,COCO_val2014_000000396693.jpg,a man riding a wave on a surfboard
+basic_exp_01-May-2020_(23:51:36),basic_exp,c2p2,22630,COCO_val2014_000000451234.jpg,a street sign is in front of a building
+basic_exp_04-May-2020_(17:01:01),basic_exp,c3p3,10574,COCO_val2014_000000406377.jpg,a train on a track near a building
+basic_exp_04-May-2020_(17:01:01),basic_exp,c3p3,31456,COCO_val2014_000000365945.jpg,a bed with a white bedspread and pillows
+basic_exp_04-May-2020_(17:01:01),basic_exp,c3p3,27582,COCO_val2014_000000252573.jpg,a cat laying on top of a remote control
+basic_exp_04-May-2020_(17:01:01),basic_exp,c3p3,16358,COCO_val2014_000000440514.jpg,a clock tower with a clock on each of its sides
+basic_exp_04-May-2020_(17:01:01),basic_exp,c3p3,25155,COCO_val2014_000000545111.jpg,a glass of red liquid is sitting on a table
+basic_exp_04-May-2020_(17:01:01),basic_exp,c3p3,23730,COCO_val2014_000000173584.jpg,a plane flying in the air
+basic_exp_04-May-2020_(17:01:01),basic_exp,c3p3,7107,COCO_val2014_000000036082.jpg,a kitchen with a microwave and a sink
+basic_exp_04-May-2020_(17:01:01),basic_exp,c3p3,6738,COCO_val2014_000000552503.jpg,a bowl of soup with a spoon in it
+basic_exp_04-May-2020_(17:01:01),basic_exp,c3p3,14229,COCO_val2014_000000340894.jpg,a computer desk with a laptop and a monitor
+basic_exp_04-May-2020_(17:01:01),basic_exp,c3p3,10578,COCO_val2014_000000161231.jpg,a train on a track with a sky background
+basic_exp_04-May-2020_(17:01:01),basic_exp,c3p3,2384,COCO_val2014_000000288799.jpg,a train on a track with a sky background
+basic_exp_04-May-2020_(17:01:01),basic_exp,c3p3,35979,COCO_val2014_000000333746.jpg,a train on a track with a sky background
+basic_exp_04-May-2020_(17:01:01),basic_exp,c3p3,13457,COCO_val2014_000000358817.jpg,a traffic light on a street in the city
+basic_exp_04-May-2020_(17:01:01),basic_exp,c3p3,28619,COCO_val2014_000000491765.jpg,a sandwich and a salad on a plate
+basic_exp_04-May-2020_(17:01:01),basic_exp,c3p3,36165,COCO_val2014_000000479030.jpg,a train on a track with a sky background
+basic_exp_04-May-2020_(17:01:01),basic_exp,c3p3,389,COCO_val2014_000000085329.jpg,a woman with a tie in a black shirt and white dress
+basic_exp_04-May-2020_(17:01:01),basic_exp,c3p3,20259,COCO_val2014_000000020276.jpg,a man riding a wave on a surfboard
+basic_exp_04-May-2020_(17:01:01),basic_exp,c3p3,24024,COCO_val2014_000000165752.jpg,a dog is standing in the grass with a frisbee
+basic_exp_04-May-2020_(17:01:01),basic_exp,c3p3,8933,COCO_val2014_000000396693.jpg,a man riding a wave on top of a surfboard
+basic_exp_04-May-2020_(17:01:01),basic_exp,c3p3,22630,COCO_val2014_000000451234.jpg,a busy street with many cars and people
+basic_exp_02-May-2020_(03:03:32),basic_exp,c4p4,10574,COCO_val2014_000000406377.jpg,a train on a track with a sky background
+basic_exp_02-May-2020_(03:03:32),basic_exp,c4p4,31456,COCO_val2014_000000365945.jpg,a bed with a white blanket and pillows on top
+basic_exp_02-May-2020_(03:03:32),basic_exp,c4p4,27582,COCO_val2014_000000252573.jpg,a cat laying on a couch next to a remote control
+basic_exp_02-May-2020_(03:03:32),basic_exp,c4p4,16358,COCO_val2014_000000440514.jpg,a clock tower in the middle of a city
+basic_exp_02-May-2020_(03:03:32),basic_exp,c4p4,25155,COCO_val2014_000000545111.jpg,a glass of red wine is on a table
+basic_exp_02-May-2020_(03:03:32),basic_exp,c4p4,23730,COCO_val2014_000000173584.jpg,a small plane flying in the sky
+basic_exp_02-May-2020_(03:03:32),basic_exp,c4p4,7107,COCO_val2014_000000036082.jpg,a microwave oven sitting on top of a wooden shelf
+basic_exp_02-May-2020_(03:03:32),basic_exp,c4p4,6738,COCO_val2014_000000552503.jpg,a bowl of soup with a spoon in it
+basic_exp_02-May-2020_(03:03:32),basic_exp,c4p4,14229,COCO_val2014_000000340894.jpg,a desk with a laptop and a monitor
+basic_exp_02-May-2020_(03:03:32),basic_exp,c4p4,10578,COCO_val2014_000000161231.jpg,a train is on the tracks in a station
+basic_exp_02-May-2020_(03:03:32),basic_exp,c4p4,2384,COCO_val2014_000000288799.jpg,a train on a track with buildings in the background
+basic_exp_02-May-2020_(03:03:32),basic_exp,c4p4,35979,COCO_val2014_000000333746.jpg,a train is on the tracks in a station
+basic_exp_02-May-2020_(03:03:32),basic_exp,c4p4,13457,COCO_val2014_000000358817.jpg,a traffic light with a red light at the intersection
+basic_exp_02-May-2020_(03:03:32),basic_exp,c4p4,28619,COCO_val2014_000000491765.jpg,a sandwich and a salad on a plate
+basic_exp_02-May-2020_(03:03:32),basic_exp,c4p4,36165,COCO_val2014_000000479030.jpg,a train on a track with a sky background
+basic_exp_02-May-2020_(03:03:32),basic_exp,c4p4,389,COCO_val2014_000000085329.jpg,a woman wearing a shirt and tie with a background
+basic_exp_02-May-2020_(03:03:32),basic_exp,c4p4,20259,COCO_val2014_000000020276.jpg,a man riding a wave on a surfboard
+basic_exp_02-May-2020_(03:03:32),basic_exp,c4p4,24024,COCO_val2014_000000165752.jpg,a dog is sitting on a bench in the grass
+basic_exp_02-May-2020_(03:03:32),basic_exp,c4p4,8933,COCO_val2014_000000396693.jpg,a man riding a wave on a surfboard
+basic_exp_02-May-2020_(03:03:32),basic_exp,c4p4,22630,COCO_val2014_000000451234.jpg,a street with a lot of people walking and a sign
+adaptive_exp_18-May-2020_(01:24:50),adaptive_exp,c1,10574,COCO_val2014_000000406377.jpg,a train traveling down train tracks next to a bridge
+adaptive_exp_18-May-2020_(01:24:50),adaptive_exp,c1,31456,COCO_val2014_000000365945.jpg,a bed with a white bedspread and a white bedspread
+adaptive_exp_18-May-2020_(01:24:50),adaptive_exp,c1,27582,COCO_val2014_000000252573.jpg,a cat laying on a couch with a remote control
+adaptive_exp_18-May-2020_(01:24:50),adaptive_exp,c1,16358,COCO_val2014_000000440514.jpg,a large clock tower with a clock on top of it
+adaptive_exp_18-May-2020_(01:24:50),adaptive_exp,c1,25155,COCO_val2014_000000545111.jpg,a glass vase with a glass of water in front of it
+adaptive_exp_18-May-2020_(01:24:50),adaptive_exp,c1,23730,COCO_val2014_000000173584.jpg,a jet airplane flying in the sky with a sky background
+adaptive_exp_18-May-2020_(01:24:50),adaptive_exp,c1,7107,COCO_val2014_000000036082.jpg,a kitchen with a stove a microwave and a stove
+adaptive_exp_18-May-2020_(01:24:50),adaptive_exp,c1,6738,COCO_val2014_000000552503.jpg,a bowl of food with meat and vegetables
+adaptive_exp_18-May-2020_(01:24:50),adaptive_exp,c1,14229,COCO_val2014_000000340894.jpg,a laptop computer sitting on top of a desk
+adaptive_exp_18-May-2020_(01:24:50),adaptive_exp,c1,10578,COCO_val2014_000000161231.jpg,a train is traveling down the tracks near a platform
+adaptive_exp_18-May-2020_(01:24:50),adaptive_exp,c1,2384,COCO_val2014_000000288799.jpg,a train traveling down train tracks next to a building
+adaptive_exp_18-May-2020_(01:24:50),adaptive_exp,c1,35979,COCO_val2014_000000333746.jpg,a train traveling down train tracks next to a street
+adaptive_exp_18-May-2020_(01:24:50),adaptive_exp,c1,13457,COCO_val2014_000000358817.jpg,a traffic light sitting next to a street sign
+adaptive_exp_18-May-2020_(01:24:50),adaptive_exp,c1,28619,COCO_val2014_000000491765.jpg,a sandwich with fries and a pickle on a table
+adaptive_exp_18-May-2020_(01:24:50),adaptive_exp,c1,36165,COCO_val2014_000000479030.jpg,a train is traveling down the tracks near a forest
+adaptive_exp_18-May-2020_(01:24:50),adaptive_exp,c1,389,COCO_val2014_000000085329.jpg,a woman is holding a UNK and UNK a picture
+adaptive_exp_18-May-2020_(01:24:50),adaptive_exp,c1,20259,COCO_val2014_000000020276.jpg,a man riding a wave on top of a surfboard
+adaptive_exp_18-May-2020_(01:24:50),adaptive_exp,c1,24024,COCO_val2014_000000165752.jpg,a dog is standing on a bench with a frisbee in its mouth
+adaptive_exp_18-May-2020_(01:24:50),adaptive_exp,c1,8933,COCO_val2014_000000396693.jpg,a man riding a wave on top of a surfboard
+adaptive_exp_18-May-2020_(01:24:50),adaptive_exp,c1,22630,COCO_val2014_000000451234.jpg,a street sign is hanging on a pole
+adaptive_exp_19-May-2020_(09:22:41),adaptive_exp,c2,10574,COCO_val2014_000000406377.jpg,a train traveling down tracks next to a bridge
+adaptive_exp_19-May-2020_(09:22:41),adaptive_exp,c2,31456,COCO_val2014_000000365945.jpg,a bed with a white comforter and pillows on it
+adaptive_exp_19-May-2020_(09:22:41),adaptive_exp,c2,27582,COCO_val2014_000000252573.jpg,a cat laying on the floor with a remote control
+adaptive_exp_19-May-2020_(09:22:41),adaptive_exp,c2,16358,COCO_val2014_000000440514.jpg,a large clock tower with a clock on each of its sides
+adaptive_exp_19-May-2020_(09:22:41),adaptive_exp,c2,25155,COCO_val2014_000000545111.jpg,a glass of water with a glass of water on it
+adaptive_exp_19-May-2020_(09:22:41),adaptive_exp,c2,23730,COCO_val2014_000000173584.jpg,a group of airplanes flying through the air
+adaptive_exp_19-May-2020_(09:22:41),adaptive_exp,c2,7107,COCO_val2014_000000036082.jpg,a kitchen with a microwave and a stove top oven
+adaptive_exp_19-May-2020_(09:22:41),adaptive_exp,c2,6738,COCO_val2014_000000552503.jpg,a bowl of soup with carrots and a pan of food
+adaptive_exp_19-May-2020_(09:22:41),adaptive_exp,c2,14229,COCO_val2014_000000340894.jpg,a desk with a laptop and a monitor
+adaptive_exp_19-May-2020_(09:22:41),adaptive_exp,c2,10578,COCO_val2014_000000161231.jpg,a train is traveling down the tracks in the city
+adaptive_exp_19-May-2020_(09:22:41),adaptive_exp,c2,2384,COCO_val2014_000000288799.jpg,a train traveling down tracks next to a street
+adaptive_exp_19-May-2020_(09:22:41),adaptive_exp,c2,35979,COCO_val2014_000000333746.jpg,a train is traveling down the tracks in the city
+adaptive_exp_19-May-2020_(09:22:41),adaptive_exp,c2,13457,COCO_val2014_000000358817.jpg,a traffic light on a street corner with a car
+adaptive_exp_19-May-2020_(09:22:41),adaptive_exp,c2,28619,COCO_val2014_000000491765.jpg,a sandwich and french fries are on a plate
+adaptive_exp_19-May-2020_(09:22:41),adaptive_exp,c2,36165,COCO_val2014_000000479030.jpg,a train is traveling down the tracks in the countryside
+adaptive_exp_19-May-2020_(09:22:41),adaptive_exp,c2,389,COCO_val2014_000000085329.jpg,a woman is wearing a tie and a black shirt
+adaptive_exp_19-May-2020_(09:22:41),adaptive_exp,c2,20259,COCO_val2014_000000020276.jpg,a man riding a wave on top of a surfboard
+adaptive_exp_19-May-2020_(09:22:41),adaptive_exp,c2,24024,COCO_val2014_000000165752.jpg,a dog is sitting on a bench in the grass
+adaptive_exp_19-May-2020_(09:22:41),adaptive_exp,c2,8933,COCO_val2014_000000396693.jpg,a man riding a wave on top of a surfboard
+adaptive_exp_19-May-2020_(09:22:41),adaptive_exp,c2,22630,COCO_val2014_000000451234.jpg,a street sign with a store front and UNK street
+adaptive_exp_18-May-2020_(06:14:10),adaptive_exp,c3,10574,COCO_val2014_000000406377.jpg,a train traveling down train tracks next to a bridge
+adaptive_exp_18-May-2020_(06:14:10),adaptive_exp,c3,31456,COCO_val2014_000000365945.jpg,a bed with a white bedspread and a blue blanket
+adaptive_exp_18-May-2020_(06:14:10),adaptive_exp,c3,27582,COCO_val2014_000000252573.jpg,a cat is laying on the floor next to a remote control
+adaptive_exp_18-May-2020_(06:14:10),adaptive_exp,c3,16358,COCO_val2014_000000440514.jpg,a large clock tower with a clock on each of its sides
+adaptive_exp_18-May-2020_(06:14:10),adaptive_exp,c3,25155,COCO_val2014_000000545111.jpg,a glass vase with a yellow apple and orange on it
+adaptive_exp_18-May-2020_(06:14:10),adaptive_exp,c3,23730,COCO_val2014_000000173584.jpg,a group of fighter jets flying through the sky
+adaptive_exp_18-May-2020_(06:14:10),adaptive_exp,c3,7107,COCO_val2014_000000036082.jpg,a kitchen with a microwave oven and microwave
+adaptive_exp_18-May-2020_(06:14:10),adaptive_exp,c3,6738,COCO_val2014_000000552503.jpg,a bowl of soup with a spoon in it
+adaptive_exp_18-May-2020_(06:14:10),adaptive_exp,c3,14229,COCO_val2014_000000340894.jpg,a desk with a laptop and a monitor
+adaptive_exp_18-May-2020_(06:14:10),adaptive_exp,c3,10578,COCO_val2014_000000161231.jpg,a train is traveling down the tracks in the city
+adaptive_exp_18-May-2020_(06:14:10),adaptive_exp,c3,2384,COCO_val2014_000000288799.jpg,a train is traveling down the tracks near a building
+adaptive_exp_18-May-2020_(06:14:10),adaptive_exp,c3,35979,COCO_val2014_000000333746.jpg,a train is traveling down the tracks near a building
+adaptive_exp_18-May-2020_(06:14:10),adaptive_exp,c3,13457,COCO_val2014_000000358817.jpg,a traffic light on a street with a building in the background
+adaptive_exp_18-May-2020_(06:14:10),adaptive_exp,c3,28619,COCO_val2014_000000491765.jpg,a sandwich and french fries on a plate
+adaptive_exp_18-May-2020_(06:14:10),adaptive_exp,c3,36165,COCO_val2014_000000479030.jpg,a train is traveling down the tracks near a forest
+adaptive_exp_18-May-2020_(06:14:10),adaptive_exp,c3,389,COCO_val2014_000000085329.jpg,a woman wearing a dress shirt and tie
+adaptive_exp_18-May-2020_(06:14:10),adaptive_exp,c3,20259,COCO_val2014_000000020276.jpg,a man riding a wave on top of a surfboard
+adaptive_exp_18-May-2020_(06:14:10),adaptive_exp,c3,24024,COCO_val2014_000000165752.jpg,a dog is sitting in a yard with a frisbee
+adaptive_exp_18-May-2020_(06:14:10),adaptive_exp,c3,8933,COCO_val2014_000000396693.jpg,a man riding a wave on top of a surfboard
+adaptive_exp_18-May-2020_(06:14:10),adaptive_exp,c3,22630,COCO_val2014_000000451234.jpg,a street sign on a street corner with a store
+adaptive_exp_16-May-2020_(11:50:18),adaptive_exp,c4,10574,COCO_val2014_000000406377.jpg,a train traveling down tracks next to a forest
+adaptive_exp_16-May-2020_(11:50:18),adaptive_exp,c4,31456,COCO_val2014_000000365945.jpg,a bed with a white bedspread and a white bedspread
+adaptive_exp_16-May-2020_(11:50:18),adaptive_exp,c4,27582,COCO_val2014_000000252573.jpg,a cat laying on a couch with a remote control
+adaptive_exp_16-May-2020_(11:50:18),adaptive_exp,c4,16358,COCO_val2014_000000440514.jpg,a large clock tower with a clock on each of its sides
+adaptive_exp_16-May-2020_(11:50:18),adaptive_exp,c4,25155,COCO_val2014_000000545111.jpg,a clear glass vase with a yellow liquid in it
+adaptive_exp_16-May-2020_(11:50:18),adaptive_exp,c4,23730,COCO_val2014_000000173584.jpg,a group of fighter jets flying in the sky
+adaptive_exp_16-May-2020_(11:50:18),adaptive_exp,c4,7107,COCO_val2014_000000036082.jpg,a kitchen with a microwave oven and a microwave
+adaptive_exp_16-May-2020_(11:50:18),adaptive_exp,c4,6738,COCO_val2014_000000552503.jpg,a bowl of soup with a bowl of soup and a bowl of soup in it
+adaptive_exp_16-May-2020_(11:50:18),adaptive_exp,c4,14229,COCO_val2014_000000340894.jpg,a desk with a laptop and a keyboard
+adaptive_exp_16-May-2020_(11:50:18),adaptive_exp,c4,10578,COCO_val2014_000000161231.jpg,a train is pulling into a train station
+adaptive_exp_16-May-2020_(11:50:18),adaptive_exp,c4,2384,COCO_val2014_000000288799.jpg,a train is traveling down the tracks near a building
+adaptive_exp_16-May-2020_(11:50:18),adaptive_exp,c4,35979,COCO_val2014_000000333746.jpg,a train is going down the tracks in a city
+adaptive_exp_16-May-2020_(11:50:18),adaptive_exp,c4,13457,COCO_val2014_000000358817.jpg,a traffic light on a street with a car in the background
+adaptive_exp_16-May-2020_(11:50:18),adaptive_exp,c4,28619,COCO_val2014_000000491765.jpg,a sandwich and french fries are on a plate
+adaptive_exp_16-May-2020_(11:50:18),adaptive_exp,c4,36165,COCO_val2014_000000479030.jpg,a train is traveling down the tracks in the country
+adaptive_exp_16-May-2020_(11:50:18),adaptive_exp,c4,389,COCO_val2014_000000085329.jpg,a woman wearing a black dress and a black shirt and tie
+adaptive_exp_16-May-2020_(11:50:18),adaptive_exp,c4,20259,COCO_val2014_000000020276.jpg,a man riding a wave on top of a surfboard
+adaptive_exp_16-May-2020_(11:50:18),adaptive_exp,c4,24024,COCO_val2014_000000165752.jpg,a dog is sitting on a bench in a field
+adaptive_exp_16-May-2020_(11:50:18),adaptive_exp,c4,8933,COCO_val2014_000000396693.jpg,a man riding a wave on top of a surfboard
+adaptive_exp_16-May-2020_(11:50:18),adaptive_exp,c4,22630,COCO_val2014_000000451234.jpg,a street sign for UNK and a store for a market
+adaptive_exp_18-May-2020_(07:42:45),adaptive_exp,c5,10574,COCO_val2014_000000406377.jpg,a train traveling down train tracks next to a building
+adaptive_exp_18-May-2020_(07:42:45),adaptive_exp,c5,31456,COCO_val2014_000000365945.jpg,a bed with a blanket and a cat on top of it
+adaptive_exp_18-May-2020_(07:42:45),adaptive_exp,c5,27582,COCO_val2014_000000252573.jpg,a cat laying on a couch with a remote
+adaptive_exp_18-May-2020_(07:42:45),adaptive_exp,c5,16358,COCO_val2014_000000440514.jpg,a large clock tower with a clock on its side
+adaptive_exp_18-May-2020_(07:42:45),adaptive_exp,c5,25155,COCO_val2014_000000545111.jpg,a orange and white orange and a red apple
+adaptive_exp_18-May-2020_(07:42:45),adaptive_exp,c5,23730,COCO_val2014_000000173584.jpg,a fighter jet flying through a blue sky
+adaptive_exp_18-May-2020_(07:42:45),adaptive_exp,c5,7107,COCO_val2014_000000036082.jpg,a kitchen with a microwave and a stove
+adaptive_exp_18-May-2020_(07:42:45),adaptive_exp,c5,6738,COCO_val2014_000000552503.jpg,a bowl of soup with a spoon in it
+adaptive_exp_18-May-2020_(07:42:45),adaptive_exp,c5,14229,COCO_val2014_000000340894.jpg,a computer monitor and a laptop sitting on a desk
+adaptive_exp_18-May-2020_(07:42:45),adaptive_exp,c5,10578,COCO_val2014_000000161231.jpg,a train is pulling into a station with people
+adaptive_exp_18-May-2020_(07:42:45),adaptive_exp,c5,2384,COCO_val2014_000000288799.jpg,a train traveling down tracks next to a street
+adaptive_exp_18-May-2020_(07:42:45),adaptive_exp,c5,35979,COCO_val2014_000000333746.jpg,a train traveling down train tracks next to a street
+adaptive_exp_18-May-2020_(07:42:45),adaptive_exp,c5,13457,COCO_val2014_000000358817.jpg,a traffic light sitting on the side of a road
+adaptive_exp_18-May-2020_(07:42:45),adaptive_exp,c5,28619,COCO_val2014_000000491765.jpg,a sandwich and french fries on a plate
+adaptive_exp_18-May-2020_(07:42:45),adaptive_exp,c5,36165,COCO_val2014_000000479030.jpg,a train traveling down train tracks next to a forest
+adaptive_exp_18-May-2020_(07:42:45),adaptive_exp,c5,389,COCO_val2014_000000085329.jpg,a woman in a black dress and a woman in a dress
+adaptive_exp_18-May-2020_(07:42:45),adaptive_exp,c5,20259,COCO_val2014_000000020276.jpg,a man riding a wave on top of a surfboard
+adaptive_exp_18-May-2020_(07:42:45),adaptive_exp,c5,24024,COCO_val2014_000000165752.jpg,a dog is standing on a bench in the grass
+adaptive_exp_18-May-2020_(07:42:45),adaptive_exp,c5,8933,COCO_val2014_000000396693.jpg,a man riding a wave on top of a surfboard
+adaptive_exp_18-May-2020_(07:42:45),adaptive_exp,c5,22630,COCO_val2014_000000451234.jpg,a street sign for UNK street in a city
+adaptive_exp_20-May-2020_(10:08:50),adaptive_exp,cp6,10574,COCO_val2014_000000406377.jpg,a train traveling down train tracks next to a bridge
+adaptive_exp_20-May-2020_(10:08:50),adaptive_exp,cp6,31456,COCO_val2014_000000365945.jpg,a bed with a white bedspread and a red blanket
+adaptive_exp_20-May-2020_(10:08:50),adaptive_exp,cp6,27582,COCO_val2014_000000252573.jpg,a cat laying on a floor next to a computer mouse
+adaptive_exp_20-May-2020_(10:08:50),adaptive_exp,cp6,16358,COCO_val2014_000000440514.jpg,a large clock tower with a large clock on each of its sides
+adaptive_exp_20-May-2020_(10:08:50),adaptive_exp,cp6,25155,COCO_val2014_000000545111.jpg,a vase with a flower in it sitting on a table
+adaptive_exp_20-May-2020_(10:08:50),adaptive_exp,cp6,23730,COCO_val2014_000000173584.jpg,a group of jets flying in the sky
+adaptive_exp_20-May-2020_(10:08:50),adaptive_exp,cp6,7107,COCO_val2014_000000036082.jpg,a kitchen with a microwave and a microwave
+adaptive_exp_20-May-2020_(10:08:50),adaptive_exp,cp6,6738,COCO_val2014_000000552503.jpg,a table with a bowl of soup and a bowl of soup
+adaptive_exp_20-May-2020_(10:08:50),adaptive_exp,cp6,14229,COCO_val2014_000000340894.jpg,a computer desk with a laptop and a monitor
+adaptive_exp_20-May-2020_(10:08:50),adaptive_exp,cp6,10578,COCO_val2014_000000161231.jpg,a train is stopped at a train station
+adaptive_exp_20-May-2020_(10:08:50),adaptive_exp,cp6,2384,COCO_val2014_000000288799.jpg,a train is traveling down the tracks near a building
+adaptive_exp_20-May-2020_(10:08:50),adaptive_exp,cp6,35979,COCO_val2014_000000333746.jpg,a train on a track with a sky background
+adaptive_exp_20-May-2020_(10:08:50),adaptive_exp,cp6,13457,COCO_val2014_000000358817.jpg,a traffic light sitting on the side of a road
+adaptive_exp_20-May-2020_(10:08:50),adaptive_exp,cp6,28619,COCO_val2014_000000491765.jpg,a sandwich and french fries on a plate
+adaptive_exp_20-May-2020_(10:08:50),adaptive_exp,cp6,36165,COCO_val2014_000000479030.jpg,a train on a track with trees in the background
+adaptive_exp_20-May-2020_(10:08:50),adaptive_exp,cp6,389,COCO_val2014_000000085329.jpg,a woman wearing a tie and a shirt
+adaptive_exp_20-May-2020_(10:08:50),adaptive_exp,cp6,20259,COCO_val2014_000000020276.jpg,a man riding a wave on top of a surfboard
+adaptive_exp_20-May-2020_(10:08:50),adaptive_exp,cp6,24024,COCO_val2014_000000165752.jpg,a dog is sitting in the grass with a frisbee
+adaptive_exp_20-May-2020_(10:08:50),adaptive_exp,cp6,8933,COCO_val2014_000000396693.jpg,a man riding a wave on top of a surfboard
+adaptive_exp_20-May-2020_(10:08:50),adaptive_exp,cp6,22630,COCO_val2014_000000451234.jpg,a street sign on a street corner with people walking
+adaptive_exp_16-May-2020_(20:27:05),adaptive_exp,cp7,10574,COCO_val2014_000000406377.jpg,a train traveling down tracks next to a bridge
+adaptive_exp_16-May-2020_(20:27:05),adaptive_exp,cp7,31456,COCO_val2014_000000365945.jpg,a bed with a white bedspread and a red blanket
+adaptive_exp_16-May-2020_(20:27:05),adaptive_exp,cp7,27582,COCO_val2014_000000252573.jpg,a cat laying on the floor next to a remote control
+adaptive_exp_16-May-2020_(20:27:05),adaptive_exp,cp7,16358,COCO_val2014_000000440514.jpg,a large clock tower with a clock on each of its sides
+adaptive_exp_16-May-2020_(20:27:05),adaptive_exp,cp7,25155,COCO_val2014_000000545111.jpg,a clear glass vase with orange orange on it
+adaptive_exp_16-May-2020_(20:27:05),adaptive_exp,cp7,23730,COCO_val2014_000000173584.jpg,a fighter jet flying through a blue sky
+adaptive_exp_16-May-2020_(20:27:05),adaptive_exp,cp7,7107,COCO_val2014_000000036082.jpg,a kitchen with a microwave and a stove
+adaptive_exp_16-May-2020_(20:27:05),adaptive_exp,cp7,6738,COCO_val2014_000000552503.jpg,a bowl of soup with a spoon and a bowl of soup on a table
+adaptive_exp_16-May-2020_(20:27:05),adaptive_exp,cp7,14229,COCO_val2014_000000340894.jpg,a computer desk with a laptop and a monitor
+adaptive_exp_16-May-2020_(20:27:05),adaptive_exp,cp7,10578,COCO_val2014_000000161231.jpg,a train is traveling down the tracks near a station
+adaptive_exp_16-May-2020_(20:27:05),adaptive_exp,cp7,2384,COCO_val2014_000000288799.jpg,a train is going down the tracks near a station
+adaptive_exp_16-May-2020_(20:27:05),adaptive_exp,cp7,35979,COCO_val2014_000000333746.jpg,a train is traveling down the tracks near a traffic light
+adaptive_exp_16-May-2020_(20:27:05),adaptive_exp,cp7,13457,COCO_val2014_000000358817.jpg,a traffic light on a street with a building in the background
+adaptive_exp_16-May-2020_(20:27:05),adaptive_exp,cp7,28619,COCO_val2014_000000491765.jpg,a sandwich and fries on a white plate
+adaptive_exp_16-May-2020_(20:27:05),adaptive_exp,cp7,36165,COCO_val2014_000000479030.jpg,a train is traveling down the tracks near a forest
+adaptive_exp_16-May-2020_(20:27:05),adaptive_exp,cp7,389,COCO_val2014_000000085329.jpg,a woman in a black dress and a woman in a black dress
+adaptive_exp_16-May-2020_(20:27:05),adaptive_exp,cp7,20259,COCO_val2014_000000020276.jpg,a man riding a wave on top of a surfboard
+adaptive_exp_16-May-2020_(20:27:05),adaptive_exp,cp7,24024,COCO_val2014_000000165752.jpg,a dog is standing on a bench in the grass
+adaptive_exp_16-May-2020_(20:27:05),adaptive_exp,cp7,8933,COCO_val2014_000000396693.jpg,a man riding a wave on top of a surfboard
+adaptive_exp_16-May-2020_(20:27:05),adaptive_exp,cp7,22630,COCO_val2014_000000451234.jpg,a street sign on a street corner with a sign that says UNK
+adaptive_exp_02-May-2020_(17:10:57),adaptive_exp,cp8,10574,COCO_val2014_000000406377.jpg,a train is going down the tracks near a bridge
+adaptive_exp_02-May-2020_(17:10:57),adaptive_exp,cp8,31456,COCO_val2014_000000365945.jpg,a bed with a white bedspread and a wooden table
+adaptive_exp_02-May-2020_(17:10:57),adaptive_exp,cp8,27582,COCO_val2014_000000252573.jpg,a cat laying on a carpet with a remote control
+adaptive_exp_02-May-2020_(17:10:57),adaptive_exp,cp8,16358,COCO_val2014_000000440514.jpg,a large building with a clock on the front of it
+adaptive_exp_02-May-2020_(17:10:57),adaptive_exp,cp8,25155,COCO_val2014_000000545111.jpg,a yellow orange and black orange water and some trees
+adaptive_exp_02-May-2020_(17:10:57),adaptive_exp,cp8,23730,COCO_val2014_000000173584.jpg,a group of fighter jets flying in the sky
+adaptive_exp_02-May-2020_(17:10:57),adaptive_exp,cp8,7107,COCO_val2014_000000036082.jpg,a kitchen with a microwave and a microwave
+adaptive_exp_02-May-2020_(17:10:57),adaptive_exp,cp8,6738,COCO_val2014_000000552503.jpg,a table with bowls of food on top
+adaptive_exp_02-May-2020_(17:10:57),adaptive_exp,cp8,14229,COCO_val2014_000000340894.jpg,a laptop computer sitting on top of a desk
+adaptive_exp_02-May-2020_(17:10:57),adaptive_exp,cp8,10578,COCO_val2014_000000161231.jpg,a train is parked on the tracks at a station
+adaptive_exp_02-May-2020_(17:10:57),adaptive_exp,cp8,2384,COCO_val2014_000000288799.jpg,a train is going down the tracks near a building
+adaptive_exp_02-May-2020_(17:10:57),adaptive_exp,cp8,35979,COCO_val2014_000000333746.jpg,a train is going down the tracks near a building
+adaptive_exp_02-May-2020_(17:10:57),adaptive_exp,cp8,13457,COCO_val2014_000000358817.jpg,a traffic light and a street sign on a pole
+adaptive_exp_02-May-2020_(17:10:57),adaptive_exp,cp8,28619,COCO_val2014_000000491765.jpg,a sandwich and fries are on a white plate
+adaptive_exp_02-May-2020_(17:10:57),adaptive_exp,cp8,36165,COCO_val2014_000000479030.jpg,a train is coming down the tracks near a forest
+adaptive_exp_02-May-2020_(17:10:57),adaptive_exp,cp8,389,COCO_val2014_000000085329.jpg,a woman wearing a white shirt and black tie
+adaptive_exp_02-May-2020_(17:10:57),adaptive_exp,cp8,20259,COCO_val2014_000000020276.jpg,a man riding a wave on a surfboard
+adaptive_exp_02-May-2020_(17:10:57),adaptive_exp,cp8,24024,COCO_val2014_000000165752.jpg,a dog is sitting on a bench in the grass
+adaptive_exp_02-May-2020_(17:10:57),adaptive_exp,cp8,8933,COCO_val2014_000000396693.jpg,a man riding a wave on a surfboard
+adaptive_exp_02-May-2020_(17:10:57),adaptive_exp,cp8,22630,COCO_val2014_000000451234.jpg,a street sign on a street corner with a sign of the UNK street
+adaptive_exp_19-May-2020_(20:08:10),adaptive_exp,cp9,10574,COCO_val2014_000000406377.jpg,a train is on the tracks near a building
+adaptive_exp_19-May-2020_(20:08:10),adaptive_exp,cp9,31456,COCO_val2014_000000365945.jpg,a bed with a blanket and a pillow on it
+adaptive_exp_19-May-2020_(20:08:10),adaptive_exp,cp9,27582,COCO_val2014_000000252573.jpg,a cat laying on a carpet with a remote control
+adaptive_exp_19-May-2020_(20:08:10),adaptive_exp,cp9,16358,COCO_val2014_000000440514.jpg,a large clock tower with a large clock on each of its sides
+adaptive_exp_19-May-2020_(20:08:10),adaptive_exp,cp9,25155,COCO_val2014_000000545111.jpg,a clear vase with orange and orange flowers in it
+adaptive_exp_19-May-2020_(20:08:10),adaptive_exp,cp9,23730,COCO_val2014_000000173584.jpg,a group of planes flying in the air
+adaptive_exp_19-May-2020_(20:08:10),adaptive_exp,cp9,7107,COCO_val2014_000000036082.jpg,a kitchen with a microwave and a microwave
+adaptive_exp_19-May-2020_(20:08:10),adaptive_exp,cp9,6738,COCO_val2014_000000552503.jpg,a table with a bowl of soup and a plate of food
+adaptive_exp_19-May-2020_(20:08:10),adaptive_exp,cp9,14229,COCO_val2014_000000340894.jpg,a desk with a laptop and a monitor
+adaptive_exp_19-May-2020_(20:08:10),adaptive_exp,cp9,10578,COCO_val2014_000000161231.jpg,a train is parked at the station
+adaptive_exp_19-May-2020_(20:08:10),adaptive_exp,cp9,2384,COCO_val2014_000000288799.jpg,a train is on the tracks next to a building
+adaptive_exp_19-May-2020_(20:08:10),adaptive_exp,cp9,35979,COCO_val2014_000000333746.jpg,a train is traveling down the tracks near a street
+adaptive_exp_19-May-2020_(20:08:10),adaptive_exp,cp9,13457,COCO_val2014_000000358817.jpg,a traffic light on a street with a building in the background
+adaptive_exp_19-May-2020_(20:08:10),adaptive_exp,cp9,28619,COCO_val2014_000000491765.jpg,a sandwich and fries are on a plate
+adaptive_exp_19-May-2020_(20:08:10),adaptive_exp,cp9,36165,COCO_val2014_000000479030.jpg,a train is on the tracks near a forest
+adaptive_exp_19-May-2020_(20:08:10),adaptive_exp,cp9,389,COCO_val2014_000000085329.jpg,a woman wearing a black shirt and tie
+adaptive_exp_19-May-2020_(20:08:10),adaptive_exp,cp9,20259,COCO_val2014_000000020276.jpg,a man riding a wave on a surfboard
+adaptive_exp_19-May-2020_(20:08:10),adaptive_exp,cp9,24024,COCO_val2014_000000165752.jpg,a dog is sitting in the grass with a frisbee
+adaptive_exp_19-May-2020_(20:08:10),adaptive_exp,cp9,8933,COCO_val2014_000000396693.jpg,a man riding a wave on a surfboard
+adaptive_exp_19-May-2020_(20:08:10),adaptive_exp,cp9,22630,COCO_val2014_000000451234.jpg,a street sign that is in front of a store
+adaptive_exp_17-May-2020_(05:49:26),adaptive_exp,cp10,10574,COCO_val2014_000000406377.jpg,a train on a track with a bridge in the background
+adaptive_exp_17-May-2020_(05:49:26),adaptive_exp,cp10,31456,COCO_val2014_000000365945.jpg,a bed with a white bedspread and a blue blanket
+adaptive_exp_17-May-2020_(05:49:26),adaptive_exp,cp10,27582,COCO_val2014_000000252573.jpg,a cat laying on a carpet with a remote control
+adaptive_exp_17-May-2020_(05:49:26),adaptive_exp,cp10,16358,COCO_val2014_000000440514.jpg,a large clock tower with a clock on the side of it
+adaptive_exp_17-May-2020_(05:49:26),adaptive_exp,cp10,25155,COCO_val2014_000000545111.jpg,a glass vase with a small orange and orange liquid
+adaptive_exp_17-May-2020_(05:49:26),adaptive_exp,cp10,23730,COCO_val2014_000000173584.jpg,a fighter jet flying through a blue sky
+adaptive_exp_17-May-2020_(05:49:26),adaptive_exp,cp10,7107,COCO_val2014_000000036082.jpg,a kitchen with a microwave and a microwave
+adaptive_exp_17-May-2020_(05:49:26),adaptive_exp,cp10,6738,COCO_val2014_000000552503.jpg,a bowl of soup with a spoon in it
+adaptive_exp_17-May-2020_(05:49:26),adaptive_exp,cp10,14229,COCO_val2014_000000340894.jpg,a computer desk with a laptop and a monitor
+adaptive_exp_17-May-2020_(05:49:26),adaptive_exp,cp10,10578,COCO_val2014_000000161231.jpg,a train on a track with a sky background
+adaptive_exp_17-May-2020_(05:49:26),adaptive_exp,cp10,2384,COCO_val2014_000000288799.jpg,a train on a track near a building
+adaptive_exp_17-May-2020_(05:49:26),adaptive_exp,cp10,35979,COCO_val2014_000000333746.jpg,a train on a track with a sky background
+adaptive_exp_17-May-2020_(05:49:26),adaptive_exp,cp10,13457,COCO_val2014_000000358817.jpg,a traffic light with a red light and a large building in the background
+adaptive_exp_17-May-2020_(05:49:26),adaptive_exp,cp10,28619,COCO_val2014_000000491765.jpg,a sandwich with fries and a drink
+adaptive_exp_17-May-2020_(05:49:26),adaptive_exp,cp10,36165,COCO_val2014_000000479030.jpg,a train on a track with trees in the background
+adaptive_exp_17-May-2020_(05:49:26),adaptive_exp,cp10,389,COCO_val2014_000000085329.jpg,a woman wearing a black dress and a black shirt and a black tie
+adaptive_exp_17-May-2020_(05:49:26),adaptive_exp,cp10,20259,COCO_val2014_000000020276.jpg,a man in a wet suit riding a wave on a surfboard
+adaptive_exp_17-May-2020_(05:49:26),adaptive_exp,cp10,24024,COCO_val2014_000000165752.jpg,a dog is standing on a bench in a field
+adaptive_exp_17-May-2020_(05:49:26),adaptive_exp,cp10,8933,COCO_val2014_000000396693.jpg,a man riding a wave on a surfboard
+adaptive_exp_17-May-2020_(05:49:26),adaptive_exp,cp10,22630,COCO_val2014_000000451234.jpg,a street sign on a street corner in the city
+adaptive_exp_17-May-2020_(08:04:44),adaptive_exp,c1p1,10574,COCO_val2014_000000406377.jpg,a train is traveling down the tracks near a bridge
+adaptive_exp_17-May-2020_(08:04:44),adaptive_exp,c1p1,31456,COCO_val2014_000000365945.jpg,a bed with a blanket on it and a small bed in the background
+adaptive_exp_17-May-2020_(08:04:44),adaptive_exp,c1p1,27582,COCO_val2014_000000252573.jpg,a cat laying on a couch with a remote control
+adaptive_exp_17-May-2020_(08:04:44),adaptive_exp,c1p1,16358,COCO_val2014_000000440514.jpg,a large clock tower is shown in a city
+adaptive_exp_17-May-2020_(08:04:44),adaptive_exp,c1p1,25155,COCO_val2014_000000545111.jpg,a yellow liquid in a glass vase on a table
+adaptive_exp_17-May-2020_(08:04:44),adaptive_exp,c1p1,23730,COCO_val2014_000000173584.jpg,a fighter jet flying in the sky
+adaptive_exp_17-May-2020_(08:04:44),adaptive_exp,c1p1,7107,COCO_val2014_000000036082.jpg,a kitchen with a microwave and a microwave
+adaptive_exp_17-May-2020_(08:04:44),adaptive_exp,c1p1,6738,COCO_val2014_000000552503.jpg,a bowl of soup with a salad and a salad
+adaptive_exp_17-May-2020_(08:04:44),adaptive_exp,c1p1,14229,COCO_val2014_000000340894.jpg,a computer desk with a laptop and a keyboard
+adaptive_exp_17-May-2020_(08:04:44),adaptive_exp,c1p1,10578,COCO_val2014_000000161231.jpg,a train is on the tracks at a station
+adaptive_exp_17-May-2020_(08:04:44),adaptive_exp,c1p1,2384,COCO_val2014_000000288799.jpg,a train is traveling down the tracks near a building
+adaptive_exp_17-May-2020_(08:04:44),adaptive_exp,c1p1,35979,COCO_val2014_000000333746.jpg,a train is traveling down the tracks near a city
+adaptive_exp_17-May-2020_(08:04:44),adaptive_exp,c1p1,13457,COCO_val2014_000000358817.jpg,a traffic light on a street with a sign
+adaptive_exp_17-May-2020_(08:04:44),adaptive_exp,c1p1,28619,COCO_val2014_000000491765.jpg,a sandwich and fries are on a plate
+adaptive_exp_17-May-2020_(08:04:44),adaptive_exp,c1p1,36165,COCO_val2014_000000479030.jpg,a train is on the tracks next to a platform
+adaptive_exp_17-May-2020_(08:04:44),adaptive_exp,c1p1,389,COCO_val2014_000000085329.jpg,a woman in a dress and black shirt with a tie
+adaptive_exp_17-May-2020_(08:04:44),adaptive_exp,c1p1,20259,COCO_val2014_000000020276.jpg,a man riding a wave on a surfboard
+adaptive_exp_17-May-2020_(08:04:44),adaptive_exp,c1p1,24024,COCO_val2014_000000165752.jpg,a dog is sitting on a bench in front of a house
+adaptive_exp_17-May-2020_(08:04:44),adaptive_exp,c1p1,8933,COCO_val2014_000000396693.jpg,a man riding a wave on a surfboard
+adaptive_exp_17-May-2020_(08:04:44),adaptive_exp,c1p1,22630,COCO_val2014_000000451234.jpg,a street sign advertising a restaurant and UNK
+adaptive_exp_17-May-2020_(14:41:20),adaptive_exp,c2p2,10574,COCO_val2014_000000406377.jpg,a train traveling down train tracks next to a bridge
+adaptive_exp_17-May-2020_(14:41:20),adaptive_exp,c2p2,31456,COCO_val2014_000000365945.jpg,a bed with a white bedspread and a white bedspread
+adaptive_exp_17-May-2020_(14:41:20),adaptive_exp,c2p2,27582,COCO_val2014_000000252573.jpg,a cat laying on a carpet with a remote control
+adaptive_exp_17-May-2020_(14:41:20),adaptive_exp,c2p2,16358,COCO_val2014_000000440514.jpg,a large building with a clock on the side of it
+adaptive_exp_17-May-2020_(14:41:20),adaptive_exp,c2p2,25155,COCO_val2014_000000545111.jpg,a glass vase with a flower in it
+adaptive_exp_17-May-2020_(14:41:20),adaptive_exp,c2p2,23730,COCO_val2014_000000173584.jpg,a fighter jet flying in a blue sky
+adaptive_exp_17-May-2020_(14:41:20),adaptive_exp,c2p2,7107,COCO_val2014_000000036082.jpg,a kitchen with a stove microwave sink and refrigerator
+adaptive_exp_17-May-2020_(14:41:20),adaptive_exp,c2p2,6738,COCO_val2014_000000552503.jpg,a bowl of soup with carrots and meat
+adaptive_exp_17-May-2020_(14:41:20),adaptive_exp,c2p2,14229,COCO_val2014_000000340894.jpg,a computer desk with a laptop on top of it
+adaptive_exp_17-May-2020_(14:41:20),adaptive_exp,c2p2,10578,COCO_val2014_000000161231.jpg,a train is traveling down the tracks near a building
+adaptive_exp_17-May-2020_(14:41:20),adaptive_exp,c2p2,2384,COCO_val2014_000000288799.jpg,a train is on the tracks near a building
+adaptive_exp_17-May-2020_(14:41:20),adaptive_exp,c2p2,35979,COCO_val2014_000000333746.jpg,a train traveling down the tracks of a city
+adaptive_exp_17-May-2020_(14:41:20),adaptive_exp,c2p2,13457,COCO_val2014_000000358817.jpg,a traffic light on a street with a building in the background
+adaptive_exp_17-May-2020_(14:41:20),adaptive_exp,c2p2,28619,COCO_val2014_000000491765.jpg,a sandwich and fries are on a plate
+adaptive_exp_17-May-2020_(14:41:20),adaptive_exp,c2p2,36165,COCO_val2014_000000479030.jpg,a train on a track with a sky background
+adaptive_exp_17-May-2020_(14:41:20),adaptive_exp,c2p2,389,COCO_val2014_000000085329.jpg,a woman with a tie and a black shirt
+adaptive_exp_17-May-2020_(14:41:20),adaptive_exp,c2p2,20259,COCO_val2014_000000020276.jpg,a man riding a wave on a surfboard
+adaptive_exp_17-May-2020_(14:41:20),adaptive_exp,c2p2,24024,COCO_val2014_000000165752.jpg,a dog is sitting on a bench in the grass
+adaptive_exp_17-May-2020_(14:41:20),adaptive_exp,c2p2,8933,COCO_val2014_000000396693.jpg,a man riding a surfboard on a wave in the ocean
+adaptive_exp_17-May-2020_(14:41:20),adaptive_exp,c2p2,22630,COCO_val2014_000000451234.jpg,a street sign for a market on a street
+adaptive_exp_15-May-2020_(23:48:17),adaptive_exp,c3p3,10574,COCO_val2014_000000406377.jpg,a train traveling down tracks next to a bridge
+adaptive_exp_15-May-2020_(23:48:17),adaptive_exp,c3p3,31456,COCO_val2014_000000365945.jpg,a bed with a white bedspread and a blue bedspread
+adaptive_exp_15-May-2020_(23:48:17),adaptive_exp,c3p3,27582,COCO_val2014_000000252573.jpg,a cat laying on a couch with a remote control
+adaptive_exp_15-May-2020_(23:48:17),adaptive_exp,c3p3,16358,COCO_val2014_000000440514.jpg,a large clock tower with a large clock on the side of it
+adaptive_exp_15-May-2020_(23:48:17),adaptive_exp,c3p3,25155,COCO_val2014_000000545111.jpg,a red apple is on a glass table
+adaptive_exp_15-May-2020_(23:48:17),adaptive_exp,c3p3,23730,COCO_val2014_000000173584.jpg,a group of planes flying in the sky
+adaptive_exp_15-May-2020_(23:48:17),adaptive_exp,c3p3,7107,COCO_val2014_000000036082.jpg,a kitchen with a microwave and a microwave
+adaptive_exp_15-May-2020_(23:48:17),adaptive_exp,c3p3,6738,COCO_val2014_000000552503.jpg,a bowl of soup with a variety of vegetables
+adaptive_exp_15-May-2020_(23:48:17),adaptive_exp,c3p3,14229,COCO_val2014_000000340894.jpg,a desk with a computer and a laptop on it
+adaptive_exp_15-May-2020_(23:48:17),adaptive_exp,c3p3,10578,COCO_val2014_000000161231.jpg,a train is parked on the tracks near a station
+adaptive_exp_15-May-2020_(23:48:17),adaptive_exp,c3p3,2384,COCO_val2014_000000288799.jpg,a train is traveling down the tracks near a building
+adaptive_exp_15-May-2020_(23:48:17),adaptive_exp,c3p3,35979,COCO_val2014_000000333746.jpg,a train is traveling down the tracks near a city
+adaptive_exp_15-May-2020_(23:48:17),adaptive_exp,c3p3,13457,COCO_val2014_000000358817.jpg,a traffic light on a street in the city
+adaptive_exp_15-May-2020_(23:48:17),adaptive_exp,c3p3,28619,COCO_val2014_000000491765.jpg,a sandwich and fries are on a plate
+adaptive_exp_15-May-2020_(23:48:17),adaptive_exp,c3p3,36165,COCO_val2014_000000479030.jpg,a train is traveling down the tracks near a forest
+adaptive_exp_15-May-2020_(23:48:17),adaptive_exp,c3p3,389,COCO_val2014_000000085329.jpg,a woman wearing a black dress and a black dress
+adaptive_exp_15-May-2020_(23:48:17),adaptive_exp,c3p3,20259,COCO_val2014_000000020276.jpg,a man riding a wave on top of a surfboard
+adaptive_exp_15-May-2020_(23:48:17),adaptive_exp,c3p3,24024,COCO_val2014_000000165752.jpg,a dog is sitting on a bench in front of a fence
+adaptive_exp_15-May-2020_(23:48:17),adaptive_exp,c3p3,8933,COCO_val2014_000000396693.jpg,a man riding a wave on a surfboard
+adaptive_exp_15-May-2020_(23:48:17),adaptive_exp,c3p3,22630,COCO_val2014_000000451234.jpg,a street sign on a street corner with a sign saying go by
+adaptive_exp_03-May-2020_(12:06:05),adaptive_exp,c4p4,10574,COCO_val2014_000000406377.jpg,a train traveling down train tracks next to a building
+adaptive_exp_03-May-2020_(12:06:05),adaptive_exp,c4p4,31456,COCO_val2014_000000365945.jpg,a bed with a blanket on top of it
+adaptive_exp_03-May-2020_(12:06:05),adaptive_exp,c4p4,27582,COCO_val2014_000000252573.jpg,a cat laying on a carpet with a remote control on it
+adaptive_exp_03-May-2020_(12:06:05),adaptive_exp,c4p4,16358,COCO_val2014_000000440514.jpg,a large tower with a clock on it
+adaptive_exp_03-May-2020_(12:06:05),adaptive_exp,c4p4,25155,COCO_val2014_000000545111.jpg,a yellow apple with a yellow liquid in it
+adaptive_exp_03-May-2020_(12:06:05),adaptive_exp,c4p4,23730,COCO_val2014_000000173584.jpg,a fighter jet flying through a blue sky
+adaptive_exp_03-May-2020_(12:06:05),adaptive_exp,c4p4,7107,COCO_val2014_000000036082.jpg,a kitchen with a microwave oven and other appliances
+adaptive_exp_03-May-2020_(12:06:05),adaptive_exp,c4p4,6738,COCO_val2014_000000552503.jpg,a table with bowls and bowls of food on it
+adaptive_exp_03-May-2020_(12:06:05),adaptive_exp,c4p4,14229,COCO_val2014_000000340894.jpg,a laptop computer sitting on top of a desk
+adaptive_exp_03-May-2020_(12:06:05),adaptive_exp,c4p4,10578,COCO_val2014_000000161231.jpg,a train on a track with people standing around
+adaptive_exp_03-May-2020_(12:06:05),adaptive_exp,c4p4,2384,COCO_val2014_000000288799.jpg,a train on a track with buildings in the background
+adaptive_exp_03-May-2020_(12:06:05),adaptive_exp,c4p4,35979,COCO_val2014_000000333746.jpg,a train on a track with a sky background
+adaptive_exp_03-May-2020_(12:06:05),adaptive_exp,c4p4,13457,COCO_val2014_000000358817.jpg,a traffic light on a street in the city
+adaptive_exp_03-May-2020_(12:06:05),adaptive_exp,c4p4,28619,COCO_val2014_000000491765.jpg,a sandwich and fries on a plate
+adaptive_exp_03-May-2020_(12:06:05),adaptive_exp,c4p4,36165,COCO_val2014_000000479030.jpg,a train on a track with trees in the background
+adaptive_exp_03-May-2020_(12:06:05),adaptive_exp,c4p4,389,COCO_val2014_000000085329.jpg,a woman with a tie and a shirt
+adaptive_exp_03-May-2020_(12:06:05),adaptive_exp,c4p4,20259,COCO_val2014_000000020276.jpg,a man riding a wave on a surfboard
+adaptive_exp_03-May-2020_(12:06:05),adaptive_exp,c4p4,24024,COCO_val2014_000000165752.jpg,a dog sitting on a bench in a field
+adaptive_exp_03-May-2020_(12:06:05),adaptive_exp,c4p4,8933,COCO_val2014_000000396693.jpg,a man riding a wave on a surfboard
+adaptive_exp_03-May-2020_(12:06:05),adaptive_exp,c4p4,22630,COCO_val2014_000000451234.jpg,a street sign on a street corner with people walking on it
