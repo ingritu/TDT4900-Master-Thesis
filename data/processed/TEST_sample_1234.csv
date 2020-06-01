@@ -1,0 +1,41 @@
+model_name,model_type,dataset,image_id,image_name,caption
+basic_08-May-2020_(22:16:18),basic,coco,22223,COCO_val2014_000000233968.jpg,a group of young men playing a game of soccer
+basic_08-May-2020_(22:16:18),basic,coco,20041,COCO_val2014_000000248774.jpg,a horse is standing in a field with a dog
+basic_08-May-2020_(22:16:18),basic,coco,9855,COCO_val2014_000000549261.jpg,a man is standing in front of a bunch of bananas
+basic_08-May-2020_(22:16:18),basic,coco,12418,COCO_val2014_000000141962.jpg,a man riding a motorcycle on a street
+basic_08-May-2020_(22:16:18),basic,coco,34544,COCO_val2014_000000022213.jpg,a group of people standing around a man holding a frisbee
+basic_08-May-2020_(22:16:18),basic,coco,19702,COCO_val2014_000000440354.jpg,a fire hydrant is painted green and yellow
+basic_08-May-2020_(22:16:18),basic,coco,39719,COCO_val2014_000000195086.jpg,a woman is playing a video game on a wii
+basic_08-May-2020_(22:16:18),basic,coco,26426,COCO_val2014_000000415770.jpg,a woman is playing tennis on a court
+basic_08-May-2020_(22:16:18),basic,coco,11358,COCO_val2014_000000449879.jpg,a man sitting on a motorcycle in a parking lot
+basic_08-May-2020_(22:16:18),basic,coco,1131,COCO_val2014_000000540806.jpg,a man riding a motorcycle with a woman on back of it
+basic_08-May-2020_(22:16:18),basic,coco,25475,COCO_val2014_000000386764.jpg,a little boy holding a bat in a batting cage
+basic_08-May-2020_(22:16:18),basic,coco,19725,COCO_val2014_000000504813.jpg,a clock is hanging on a wall in a room
+basic_08-May-2020_(22:16:18),basic,coco,37741,COCO_val2014_000000224664.jpg,a person is flying a kite on the beach
+basic_08-May-2020_(22:16:18),basic,coco,3230,COCO_val2014_000000348708.jpg,a plate with a banana and a cup of coffee
+basic_08-May-2020_(22:16:18),basic,coco,28223,COCO_val2014_000000339356.jpg,a plate of food with a sandwich and a salad
+basic_08-May-2020_(22:16:18),basic,coco,29789,COCO_val2014_000000047632.jpg,a bathroom with a toilet and a sink
+basic_08-May-2020_(22:16:18),basic,coco,22206,COCO_val2014_000000497334.jpg,a person laying on a bed with a book
+basic_08-May-2020_(22:16:18),basic,coco,21259,COCO_val2014_000000112591.jpg,a man in a kitchen with a white hat
+basic_08-May-2020_(22:16:18),basic,coco,23171,COCO_val2014_000000551987.jpg,a man is holding a toothbrush in his mouth
+basic_08-May-2020_(22:16:18),basic,coco,35791,COCO_val2014_000000299023.jpg,a woman is sitting at a table with a plate of food
+adaptive_11-May-2020_(17:29:25),adaptive,coco,22223,COCO_val2014_000000233968.jpg,a group of people playing soccer on a field
+adaptive_11-May-2020_(17:29:25),adaptive,coco,20041,COCO_val2014_000000248774.jpg,a horse standing in a field next to a fence
+adaptive_11-May-2020_(17:29:25),adaptive,coco,9855,COCO_val2014_000000549261.jpg,a bunch of bananas hanging from a tree
+adaptive_11-May-2020_(17:29:25),adaptive,coco,12418,COCO_val2014_000000141962.jpg,a man riding a motorcycle with a dog on the back
+adaptive_11-May-2020_(17:29:25),adaptive,coco,34544,COCO_val2014_000000022213.jpg,a group of people on a boat in the water
+adaptive_11-May-2020_(17:29:25),adaptive,coco,19702,COCO_val2014_000000440354.jpg,a fire hydrant is in the middle of a field
+adaptive_11-May-2020_(17:29:25),adaptive,coco,39719,COCO_val2014_000000195086.jpg,a young girl is playing with a wii controller
+adaptive_11-May-2020_(17:29:25),adaptive,coco,26426,COCO_val2014_000000415770.jpg,a woman holding a tennis racquet on a tennis court
+adaptive_11-May-2020_(17:29:25),adaptive,coco,11358,COCO_val2014_000000449879.jpg,a man sitting on a motorcycle in front of a building
+adaptive_11-May-2020_(17:29:25),adaptive,coco,1131,COCO_val2014_000000540806.jpg,a man riding a motorcycle down a street
+adaptive_11-May-2020_(17:29:25),adaptive,coco,25475,COCO_val2014_000000386764.jpg,a young boy is playing with a bat in the grass
+adaptive_11-May-2020_(17:29:25),adaptive,coco,19725,COCO_val2014_000000504813.jpg,a clock on a pole in the dark
+adaptive_11-May-2020_(17:29:25),adaptive,coco,37741,COCO_val2014_000000224664.jpg,a person standing on a beach flying a kite
+adaptive_11-May-2020_(17:29:25),adaptive,coco,3230,COCO_val2014_000000348708.jpg,a plate with a banana and a banana on it
+adaptive_11-May-2020_(17:29:25),adaptive,coco,28223,COCO_val2014_000000339356.jpg,a bunch of food is on a white plate
+adaptive_11-May-2020_(17:29:25),adaptive,coco,29789,COCO_val2014_000000047632.jpg,a bathroom with a sink toilet and a sink
+adaptive_11-May-2020_(17:29:25),adaptive,coco,22206,COCO_val2014_000000497334.jpg,a pair of scissors sitting on top of a bed
+adaptive_11-May-2020_(17:29:25),adaptive,coco,21259,COCO_val2014_000000112591.jpg,a man in a white shirt and a tie
+adaptive_11-May-2020_(17:29:25),adaptive,coco,23171,COCO_val2014_000000551987.jpg,a man and a woman are eating a hot dog
+adaptive_11-May-2020_(17:29:25),adaptive,coco,35791,COCO_val2014_000000299023.jpg,a woman is sitting at a table with a pot and a pot of food on
