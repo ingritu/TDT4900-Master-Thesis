@@ -48,6 +48,5 @@ if __name__ == '__main__':
                                    seed,
                                    sample_size=sample_size)
 
-    # save results 
+    # save results
     res_df.to_csv(save_file, index=False)
-
