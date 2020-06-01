@@ -10,13 +10,13 @@ ROOT_PATH = Path(__file__).absolute().parents[2]
 
 def get_image_caption(model_path, image_id):
     print('get image caption')
-    with open(model_path.joinpath('TEST_test_result.json')) as json_file:
+    with open(model_path.joinpath('TEST_test_result.json'), 'r') as json_file:
         result = json.load(json_file)
 
     # result is a list of dictionaries
     for obj in result:
         if obj['image_id'] == image_id:
-            return result['caption']
+            return obj['caption']
     return None
 
 
@@ -29,7 +29,7 @@ def get_model_type(model_name, exp=True):
 
 def get_model_trainset(model_path, model_type):
     print('get model trainset')
-    with open(model_path.joinpath(model_type + "_log.txt")) as log_file:
+    with open(model_path.joinpath(model_type + "_log.txt"), 'r') as log_file:
         data = log_file.readlines()
     data = data[3]  # line where training data is logged
     data = data.split(' ')[-1]  # dataset path is the last word at the line
@@ -83,13 +83,18 @@ def sample_image_captions(models,
 
     for model_name in models:
         model_type = get_model_type(model_name, exp=exp)
+        print(model_type)
         model_path = models_dir.joinpath(model_name)
+        print(model_path)
         trainset = get_model_trainset(model_path, model_type)
+        print(trainset)
 
         for i in range(len(sample_df)):
             image_id = sample_df.loc[i, 'image_id']
             image_name = sample_df.loc[i, 'image_name']
+            print('image_id:', image_id, 'image_name:', image_name)
             caption = get_image_caption(model_path, image_id)
+            print('caption:', caption)
 
             if caption is not None:
                 # add to df
