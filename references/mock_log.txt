@@ -1,0 +1,62 @@
+################# LOG FILE #################
+
+DATA and FEATURES
+Training data path: /path/to/project/TDT4900-Master-Thesis/data/interim/karpathy_split/coco_train_clean.csv
+Feature path: /path/to/project/TDT4900-Master-Thesis/data/processed/images/karpathy_split/coco_encoded_visual_attention_full.pkl
+Vocabulary path: /path/to/project/TDT4900-Master-Thesis/data/interim/karpathy_split/coco_vocabulary.csv
+Vocabulary size: 10003
+
+## CONFIGS / HYPERPARAMETERS ##
+Optimizer: adam
+Learning rate: 0.0001
+
+####### MODEL #######
+Model name: adaptive
+SEED: 222
+
+AdaptiveModel(
+  (encoder): ImageEncoder(
+    (average_pool): AvgPool2d(kernel_size=8, stride=8, padding=0)
+    (v_affine): Linear(in_features=1536, out_features=512, bias=True)
+    (v_dr): Dropout(p=0.5, inplace=False)
+    (global_affine): Linear(in_features=1536, out_features=512, bias=True)
+    (g_dr): Dropout(p=0.5, inplace=False)
+  )
+  (decoder): AdaptiveDecoder(
+    (embedding): Embedding(10003, 512)
+    (sentinel_lstm): SentinelLSTM(
+      (lstm_kernel): LSTMCell(1024, 512)
+      (x_gate): Linear(in_features=1024, out_features=512, bias=True)
+      (h_gate): Linear(in_features=512, out_features=512, bias=True)
+    )
+    (attention_block): AttentionLayer(
+      (v_att): Linear(in_features=512, out_features=512, bias=True)
+      (s_proj): Linear(in_features=512, out_features=512, bias=True)
+      (s_proj_dr): Dropout(p=0.5, inplace=False)
+      (s_att): Linear(in_features=512, out_features=512, bias=True)
+      (h_proj): Linear(in_features=512, out_features=512, bias=True)
+      (h_proj_dr): Dropout(p=0.5, inplace=False)
+      (h_att): Linear(in_features=512, out_features=512, bias=True)
+      (alpha_layer): Linear(in_features=512, out_features=1, bias=True)
+      (alpha_dr): Dropout(p=0.5, inplace=False)
+      (context_proj): Linear(in_features=512, out_features=512, bias=True)
+      (context_proj_dr): Dropout(p=0.5, inplace=False)
+    )
+    (decoder): MultimodalDecoder(
+      (output_layer): Linear(in_features=512, out_features=10003, bias=True)
+    )
+  )
+)
+Trainable parameters: 17340692
+
+## Training Configs ##
+Epochs: 100
+Batch size: 80
+Loss function: cross_entropy
+
+## Train log!
+
+####### END OF TRAINING INFO #######
+Training time: 1-2:50:45
+
+Model save path: /path/to/project/TDT4900-Master-Thesis/models/adaptive_02-May-2020_(02:10:32)/BEST_checkpoint.pth.tar
