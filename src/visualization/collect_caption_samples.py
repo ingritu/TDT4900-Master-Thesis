@@ -29,7 +29,7 @@ if __name__ == '__main__':
     sample_size = args['sample_size']
 
     processed_path = ROOT_PATH.joinpath('data', 'processed')
-    test_path = processed_path.joinpath('coco_test.csv')
+    test_path = processed_path.joinpath('karpathy_split', 'coco_test.csv')
     save_name = 'TEST_sample_' + str(seed) + '.csv'
     save_file = processed_path.joinpath(save_name)
 
