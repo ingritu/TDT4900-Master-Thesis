@@ -8,6 +8,7 @@ data/processed/*
 !data/processed/test_vocab_results.csv
 !data/processed/adaptive_test_results.csv
 !data/processed/adaptive_test_vocab_results.csv
+!data/processed/TEST_sample_*
 !data/external/p5.csv
 !src/data
 __pycache__/
