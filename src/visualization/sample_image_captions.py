@@ -37,7 +37,7 @@ def get_model_trainset(model_path, model_type):
     reversed_data = data[::-1]
     idx = reversed_data.find('/')
     data = data[path_length - idx:]
-    data = data.replace('_train_clean.csv', '')
+    data = data.replace('_train_clean.csv', '').strip()
     return data
 
 
