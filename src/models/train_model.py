@@ -37,7 +37,7 @@ if __name__ == '__main__':
                         help='Validation batch size. The number of images in a'
                              ' batch. The actual batch size is '
                              'val_batch_size * beam_size. '
-                             'The default value is 1.')
+                             'The default value is 1.')  # do not change this value
     parser.add_argument('--epochs', type=int, default=50,
                         help='The number of epochs to train the network for. '
                              'The default value is 50 epochs.')
