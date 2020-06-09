@@ -462,6 +462,9 @@ class Generator:
             Path to csv file containing the test set.
         batch_size : int.
             The number of images to predict on simultaneously. Default 1.
+            Do not set batch_size to anything else. 
+            Batch-Beam search was not finished. The logic is not correct, 
+            only compatible with batch_size=1.
         beam_size : int.
             Default is 1, which is the same as doing greedy inference.
 
