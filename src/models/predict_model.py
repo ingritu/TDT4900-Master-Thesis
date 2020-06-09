@@ -40,12 +40,12 @@ if __name__ == '__main__':
                         help='Name of the models directory. '
                              'Should be something like '
                              'adaptive_decoder_dd-Mon-yyyy_(hh:mm:ss).')
-    parser.add_argument('--val-batch-size', type=int, default=250,
+    parser.add_argument('--val-batch-size', type=int, default=1,
                         help='Validation batch size. '
                              'The number of images in a batch. '
                              'The actual batch size is val_batch_size * '
                              'beam_size. '
-                             'The default value is 250.')
+                             'The default value is 1.')  # do not change this value
     parser.add_argument('--beam-size', type=int, default=3,
                         help='Beam size to use in beam search '
                              'inference algorithm. '
