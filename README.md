@@ -298,7 +298,9 @@ optional arguments:
 ```
 
 ## Project Structure
-This project uses the Data Science CookieCutter template.
+This project uses the Data Science CookieCutter template. Some of the scripts 
+ended up not being used for the pipeline but they have not been removed since 
+they were a part of the process.
 ```
 /
 ├── data/
@@ -308,33 +310,31 @@ This project uses the Data Science CookieCutter template.
 │   └── README.md
 ├── docs/
 │   └── README.md
+├── doxygen_config
 ├── models/
 │   └── README.md
 ├── notebooks/
-│   ├── annotation_file_exploration.ipynb
-│   ├── karpathy_split_exploration.ipynb
-│   ├── README.md
-│   ├── visualize_word_frequency.ipynb
-│   └── visuals/
+│   └── README.md
 ├── README.md
 ├── references/
-│   ├── annotation_mock.json
-│   ├── karpathy_dataset_mock.json
-│   ├── logs_and_checkpoints.txt
-│   ├── README.md
-│   └── run_notes.txt
+│   └── README.md
 ├── reports/
 │   └── README.md
 ├── requirements.txt
 └── src/
     ├── data/
+    │   ├── combine_files.py
     │   ├── data_cleaning.py
     │   ├── data_generator.py
+    │   ├── dataset.py
     │   ├── handle_karpathy_split.py
-    │   ├── load_vocabulary.py
     │   ├── make_dataset.py
+    │   ├── make_experiments.py
+    │   ├── prepare_for_translate.py
+    │   ├── preprocess_coco.py
+    │   ├── reduce_images_in_dataset.py
+    │   ├── repair_files.py
     │   ├── split_flickr8k.py
-    │   ├── subset_splits.py
     │   ├── text_to_csv.py
     │   └── utils.py
     ├── features/
@@ -346,13 +346,21 @@ This project uses the Data Science CookieCutter template.
     ├── models/
     │   ├── beam.py
     │   ├── custom_layers.py
+    │   ├── do_experiments.py
     │   ├── generator_framework.py
     │   ├── predict_model.py
     │   ├── torch_generators.py
     │   ├── train_model.py
     │   └── utils.py
-    └── visualization/
-        └── visualize.py
+    ├── visualization/
+    │   ├── add_test_scores.py
+    │   ├── collect_caption_samples.py
+    │   ├── collect_test_scores.py
+    │   ├── collect_vocab_size.py
+    │   ├── count_vocabulary.py
+    │   ├── sample_image_captions.py
+    │   └── visualize.py
+    └── utils.py
 ```
 ## Acknowledgements
 The model implementation is based on the work of 
